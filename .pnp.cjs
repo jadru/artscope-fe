@@ -28,7 +28,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
-            ["@fontsource/public-sans", "npm:4.5.12"],\
             ["@headlessui/react", "virtual:91979fc0b9ed9f54a27f21ea1a2c0eb3c97ed22ef0ed4903c5dbfe85e21e768c5455b04746fe2945188a9024c2b1617c3952e733e40748e33091f0249a9ee49e#npm:1.7.13"],\
             ["@swc/cli", "virtual:91979fc0b9ed9f54a27f21ea1a2c0eb3c97ed22ef0ed4903c5dbfe85e21e768c5455b04746fe2945188a9024c2b1617c3952e733e40748e33091f0249a9ee49e#npm:0.1.62"],\
             ["@swc/core", "npm:1.3.39"],\
@@ -171,15 +170,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@eslint-js-npm-8.36.0-1f52b8accd-b7d6b84b82.zip/node_modules/@eslint/js/",\
           "packageDependencies": [\
             ["@eslint/js", "npm:8.36.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@fontsource/public-sans", [\
-        ["npm:4.5.12", {\
-          "packageLocation": "./.yarn/cache/@fontsource-public-sans-npm-4.5.12-a569be2e83-65e98407bb.zip/node_modules/@fontsource/public-sans/",\
-          "packageDependencies": [\
-            ["@fontsource/public-sans", "npm:4.5.12"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -1918,7 +1908,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["artplatform", "workspace:."],\
-            ["@fontsource/public-sans", "npm:4.5.12"],\
             ["@headlessui/react", "virtual:91979fc0b9ed9f54a27f21ea1a2c0eb3c97ed22ef0ed4903c5dbfe85e21e768c5455b04746fe2945188a9024c2b1617c3952e733e40748e33091f0249a9ee49e#npm:1.7.13"],\
             ["@swc/cli", "virtual:91979fc0b9ed9f54a27f21ea1a2c0eb3c97ed22ef0ed4903c5dbfe85e21e768c5455b04746fe2945188a9024c2b1617c3952e733e40748e33091f0249a9ee49e#npm:0.1.62"],\
             ["@swc/core", "npm:1.3.39"],\
