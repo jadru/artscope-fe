@@ -29,6 +29,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["@headlessui/react", "virtual:91979fc0b9ed9f54a27f21ea1a2c0eb3c97ed22ef0ed4903c5dbfe85e21e768c5455b04746fe2945188a9024c2b1617c3952e733e40748e33091f0249a9ee49e#npm:1.7.13"],\
+            ["@heroicons/react", "virtual:91979fc0b9ed9f54a27f21ea1a2c0eb3c97ed22ef0ed4903c5dbfe85e21e768c5455b04746fe2945188a9024c2b1617c3952e733e40748e33091f0249a9ee49e#npm:2.0.16"],\
             ["@swc/cli", "virtual:91979fc0b9ed9f54a27f21ea1a2c0eb3c97ed22ef0ed4903c5dbfe85e21e768c5455b04746fe2945188a9024c2b1617c3952e733e40748e33091f0249a9ee49e#npm:0.1.62"],\
             ["@swc/core", "npm:1.3.39"],\
             ["@types/jest", "npm:29.4.0"],\
@@ -205,6 +206,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "@types/react-dom",\
             "@types/react",\
             "react-dom",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@heroicons/react", [\
+        ["npm:2.0.16", {\
+          "packageLocation": "./.yarn/cache/@heroicons-react-npm-2.0.16-ce9dfa3c94-1e51bfec72.zip/node_modules/@heroicons/react/",\
+          "packageDependencies": [\
+            ["@heroicons/react", "npm:2.0.16"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:91979fc0b9ed9f54a27f21ea1a2c0eb3c97ed22ef0ed4903c5dbfe85e21e768c5455b04746fe2945188a9024c2b1617c3952e733e40748e33091f0249a9ee49e#npm:2.0.16", {\
+          "packageLocation": "./.yarn/__virtual__/@heroicons-react-virtual-d34da93b53/0/cache/@heroicons-react-npm-2.0.16-ce9dfa3c94-1e51bfec72.zip/node_modules/@heroicons/react/",\
+          "packageDependencies": [\
+            ["@heroicons/react", "virtual:91979fc0b9ed9f54a27f21ea1a2c0eb3c97ed22ef0ed4903c5dbfe85e21e768c5455b04746fe2945188a9024c2b1617c3952e733e40748e33091f0249a9ee49e#npm:2.0.16"],\
+            ["@types/react", "npm:18.0.28"],\
+            ["react", "npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
             "react"\
           ],\
           "linkType": "HARD"\
@@ -1909,6 +1932,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["artplatform", "workspace:."],\
             ["@headlessui/react", "virtual:91979fc0b9ed9f54a27f21ea1a2c0eb3c97ed22ef0ed4903c5dbfe85e21e768c5455b04746fe2945188a9024c2b1617c3952e733e40748e33091f0249a9ee49e#npm:1.7.13"],\
+            ["@heroicons/react", "virtual:91979fc0b9ed9f54a27f21ea1a2c0eb3c97ed22ef0ed4903c5dbfe85e21e768c5455b04746fe2945188a9024c2b1617c3952e733e40748e33091f0249a9ee49e#npm:2.0.16"],\
             ["@swc/cli", "virtual:91979fc0b9ed9f54a27f21ea1a2c0eb3c97ed22ef0ed4903c5dbfe85e21e768c5455b04746fe2945188a9024c2b1617c3952e733e40748e33091f0249a9ee49e#npm:0.1.62"],\
             ["@swc/core", "npm:1.3.39"],\
             ["@types/jest", "npm:29.4.0"],\
