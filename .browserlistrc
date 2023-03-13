@@ -1,0 +1,9 @@
+# Browsers that we support
+# https://github.com/browserslist/browserslist#readme
+
+# 전세계 점유율 2% 이상의 브라우저만 지원
+> 2%
+# 최근 2개 버전의 브라우저
+last 2 versions
+# IE 10 이하 미지원
+not ie <= 10

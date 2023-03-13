@@ -1,8 +1,7 @@
 import React from "react";
 import "./styles/tailwind.css";
-import "@fontsource/public-sans";
-import { Main } from "./pages";
+import { TabLayout } from "./components";
 
-const App: React.FC = () => <Main />;
+const App: React.FC = () => <TabLayout />;
 
 export default App;
