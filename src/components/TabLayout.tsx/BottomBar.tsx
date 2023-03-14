@@ -1,9 +1,18 @@
 import React from "react";
+import { TabAtom } from "../../states/atom";
+import { useRecoilState } from "recoil";
+import { TabAtomType } from "type/atomType";
 
 export const BottomBar: React.FC = () => {
+  const [tab, setTab] = useRecoilState(TabAtom);
+
+  const onTabButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    // @ts-ignore
+    setTab(e.currentTarget.value);
+  };
   return (
     <div className="btm-nav md:bottom-8 md:w-96 md:left-1/2 md:-ml-48 md:rounded-2xl md:shadow-xl md:outline md:outline-1 md:outline-zinc-500">
-      <button>
+      <button className={tab === "home" ? "text-emerald-600" : ""} value="home" onClick={onTabButtonClick}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
           <path
             fillRule="evenodd"
@@ -14,7 +23,7 @@ export const BottomBar: React.FC = () => {
 
         <span className="btm-nav-label">Home</span>
       </button>
-      <button className="active">
+      <button className={tab === "upload" ? "text-emerald-600" : ""} value="upload" onClick={onTabButtonClick}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
           <path
             fillRule="evenodd"
@@ -25,8 +34,8 @@ export const BottomBar: React.FC = () => {
 
         <span className="btm-nav-label">Upload</span>
       </button>
-      <button>
-        <div className="indicator">
+      <button className={`${tab === "alert" ? "text-emerald-600" : ""}`} value="alert" onClick={onTabButtonClick}>
+        <div className={`indicator`}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
             <path
               fillRule="evenodd"
@@ -39,9 +48,9 @@ export const BottomBar: React.FC = () => {
         </div>
         <span className="btm-nav-label">Alert</span>
       </button>
-      <button>
+      <button className={`${tab === "profile" ? "text-emerald-600" : ""}`} value="profile" onClick={onTabButtonClick}>
         <label tabIndex={0} className="avatar">
-          <div className="w-4.5 rounded-full p-0.1">
+          <div className={`${tab === "profile" ? "text-emerald-600" : ""} w-4.5 rounded-full p-0.1 outline outline-1"`}>
             <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
           </div>
         </label>
