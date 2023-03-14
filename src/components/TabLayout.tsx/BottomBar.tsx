@@ -50,7 +50,7 @@ export const BottomBar: React.FC = () => {
       </button>
       <button className={`${tab === "profile" ? "text-emerald-600" : ""}`} value="profile" onClick={onTabButtonClick}>
         <label tabIndex={0} className="avatar">
-          <div className="rounded-full p-0.1 outline outline-1 w-4">
+          <div className={`${tab === "profile" ? "border-emerald-600" : ""} rounded-full w-5 border`}>
             <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
           </div>
         </label>
