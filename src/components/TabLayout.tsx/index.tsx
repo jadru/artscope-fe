@@ -1,11 +1,23 @@
 import React, { useState } from "react";
+import { BottomBar } from "./BottomBar";
+import { NavBar } from "./NavBar";
 
-const TabLayout = () => (
-  <div className="w-full h-full flex flex-col">
-    <div className="h-16 flex items-center justify-center">
-      <p className="font-extrabold">Art Platform</p>
-    </div>
-    <div>Tab 위치</div>
+interface Props {
+  children: React.ReactNode;
+  className?: string;
+  classNameChild?: string;
+}
+
+const TabLayout: React.FC<Props> = ({ children, className, classNameChild }) => (
+  <div className={`w-full h-full flex flex-col ${className}`}>
+    <NavBar
+      title="ArtPlatform"
+      onSearchClick={() => {
+        alert("검색");
+      }}
+    />
+    <div className={`pt-16 pb-20 md:pb-28 ${classNameChild}`}>{children}</div>
+    <BottomBar />
   </div>
 );
 
