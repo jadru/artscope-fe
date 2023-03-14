@@ -11,7 +11,7 @@ export const BottomBar: React.FC = () => {
     setTab(e.currentTarget.value);
   };
   return (
-    <div className="btm-nav md:bottom-8 md:w-96 md:left-1/2 md:-ml-48 md:rounded-2xl md:shadow-xl md:outline md:outline-1 md:outline-zinc-500">
+    <div className="btm-nav md:bottom-8 md:w-96 md:left-1/2 md:-ml-48 md:rounded-2xl md:shadow-xl">
       <button className={tab === "home" ? "text-emerald-600" : ""} value="home" onClick={onTabButtonClick}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
           <path
@@ -50,7 +50,7 @@ export const BottomBar: React.FC = () => {
       </button>
       <button className={`${tab === "profile" ? "text-emerald-600" : ""}`} value="profile" onClick={onTabButtonClick}>
         <label tabIndex={0} className="avatar">
-          <div className={`${tab === "profile" ? "text-emerald-600" : ""} w-4.5 rounded-full p-0.1 outline outline-1"`}>
+          <div className="rounded-full p-0.1 outline outline-1 w-4">
             <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
           </div>
         </label>
