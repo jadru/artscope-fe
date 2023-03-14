@@ -12,6 +12,8 @@
     "daisyui": "^2.51.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-query": "^3.39.3",
+    "recoil": "^0.7.7",
     "tsc": "^2.0.4",
     "typescript": "*"
   },
