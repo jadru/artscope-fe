@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  artplatform-fe:
+    platform: linux/amd64
+    container_name: artplatform-fe
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ".:/app"
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
