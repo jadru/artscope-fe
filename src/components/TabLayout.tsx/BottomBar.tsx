@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react"
 import { TabAtom } from "../../states/atom";
 import { useRecoilState } from "recoil";
 import { TabAtomType } from "type/atomType";
+import { useNavigate } from "react-router-dom"
 
 export const BottomBar: React.FC = () => {
+  // @ts-ignore
   const [tab, setTab] = useRecoilState(TabAtom);
+
+  const navigate = useNavigate();
 
   const onTabButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     // @ts-ignore
     setTab(e.currentTarget.value);
   };
+
+  useEffect(() => {
+    navigate('/'+ tab);
+  },[tab]);
   return (
     <div className="btm-nav md:bottom-8 md:w-96 md:left-1/2 md:-ml-48 md:rounded-2xl md:shadow-xl">
       <button className={tab === "home" ? "text-emerald-600" : ""} value="home" onClick={onTabButtonClick}>
@@ -34,7 +42,7 @@ export const BottomBar: React.FC = () => {
 
         <span className="btm-nav-label">Upload</span>
       </button>
-      <button className={`${tab === "alert" ? "text-emerald-600" : ""}`} value="alert" onClick={onTabButtonClick}>
+      {/** <button className={`${tab === "alert" ? "text-emerald-600" : ""}`} value="alert" onClick={onTabButtonClick}>
         <div className={`indicator`}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
             <path
@@ -47,7 +55,7 @@ export const BottomBar: React.FC = () => {
           <span className="badge badge-xs badge-primary indicator-item"></span>
         </div>
         <span className="btm-nav-label">Alert</span>
-      </button>
+      </button>**/}
       <button className={`${tab === "profile" ? "text-emerald-600" : ""}`} value="profile" onClick={onTabButtonClick}>
         <label tabIndex={0} className="avatar">
           <div className={`${tab === "profile" ? "border-emerald-600" : ""} rounded-full w-5 border`}>

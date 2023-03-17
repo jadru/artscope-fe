@@ -17,7 +17,7 @@
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
-    },
+    }
   },
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
