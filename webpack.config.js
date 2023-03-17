@@ -3,13 +3,12 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   // Production 빌드 시, 리액트 코드 트랜스파일링 할 시작점 설정.
-  entry: "./src/index.tsx",
+  entry: "./src/index.js",
   output: {
-    path: path.join(__dirname, "/dist"),
+    path: path.join(__dirname, "/build"),
     filename: "[name].[contenthash].js",
-    publicPath: "/dist/"
+    publicPath: "/"
   },
-  watch: true,
 
   // webpack Develop 모드 실행 시, 사용될 static 파일들 경로와 관리 방식 설정.
   devServer: {
@@ -26,7 +25,7 @@ module.exports = {
       {
         test: /\.([jt]sx?)?$/,
         use: "swc-loader",
-        exclude: /node_modules/,
+        exclude: /.yarn/,
       },
       {
         test: /\.p?css$/i,
