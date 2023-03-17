@@ -7,7 +7,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, "/build"),
     filename: "[name].[contenthash].js",
-    publicPath: "/"
+    publicPath: "/",
   },
 
   // webpack Develop 모드 실행 시, 사용될 static 파일들 경로와 관리 방식 설정.
@@ -17,9 +17,13 @@ module.exports = {
     },
     compress: true,
     port: 3000,
+    historyApiFallback: true,
   },
 
-  // swc 연동을 위한 swc-loader 장착.
+  watchOptions: {
+    poll: true,
+    ignored: "/.yarn/",
+  },
   module: {
     rules: [
       {
@@ -31,6 +35,13 @@ module.exports = {
         test: /\.p?css$/i,
         include: path.resolve(__dirname, "src"),
         use: ["style-loader", "css-loader", "postcss-loader" /* 로더 설정 */],
+      },
+      {
+        test: /\.(jpe?g|png|svg|gif|ico|eot|ttf|woff|woff2|mp4|pdf|webm|txt)$/,
+        type: "asset/resource",
+        generator: {
+          filename: "static/chunks/[path][name].[hash][ext]",
+        },
       },
     ],
   },

@@ -8,7 +8,7 @@ interface Props {
 
 export const NavBar: React.FC<Props> = ({ title, className, onSearchClick }) => {
   return (
-    <div className={`navbar bg-white fixed z-50 ${className}`}>
+    <div className={`navbar bg-white/95 fixed z-50 ${className}`}>
       <div className="navbar-start"></div>
       <div className="navbar-center">
         <a className="btn btn-ghost normal-case text-xl">{title ? title : "title"}</a>
