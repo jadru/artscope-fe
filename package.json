@@ -4,8 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --mode=development --open --hot",
-    "build": "webpack --mode=development --progress"
+    "start": "webpack-dev-server --mode development --open --hot",
+    "build": "webpack --mode development --progress --no-watch",
+    "docker:up": "docker-compose up -d",
+    "serve:dev": "webpack-dev-server --open"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.16",
