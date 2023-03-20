@@ -1,5 +1,5 @@
+import { TabLayout, ResponsiveGrid } from "@/components";
 import React from "react";
-import { TabLayout, ResponsiveGrid } from "../../components";
 
 const Main: React.FC = () => (
   <TabLayout className="px-2" classNameChild="mt-2">

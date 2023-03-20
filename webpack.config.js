@@ -24,6 +24,7 @@ module.exports = {
     poll: true,
     ignored: "/.yarn/",
   },
+
   module: {
     rules: [
       {
@@ -48,6 +49,9 @@ module.exports = {
 
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
   },
 
   // 번들링된 JS 코드를 html 파일과 매핑 및 주입시키기 위한 플러그인 설정.

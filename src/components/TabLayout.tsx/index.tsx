@@ -1,6 +1,6 @@
-import React, { useState } from "react";
 import { BottomBar } from "./BottomBar";
 import { NavBar } from "./NavBar";
+import React from "react";
 
 interface Props {
   children?: React.ReactNode;
@@ -8,14 +8,17 @@ interface Props {
   classNameChild?: string;
 }
 
-const TabLayout: React.FC<Props> = ({ children, className, classNameChild }) => {
-  return (
-    <div className={`w-full h-full flex flex-col ${className}`}>
-      <NavBar title="ArtPlatform" onSearchClick={() => {}} />
-      <div className={`pt-16 pb-20 md:pb-28 ${classNameChild}`}>{children}</div>
-      <BottomBar />
-    </div>
-  );
-};
+const TabLayout: React.FC<Props> = ({ children, className, classNameChild }) => (
+  <div className={`w-full h-full flex flex-col ${className}`}>
+    <NavBar
+      title="ArtPlatform"
+      onSearchClick={() => {
+        console.log("Search Button Clicked");
+      }}
+    />
+    <div className={`pt-16 pb-20 md:pb-28 ${classNameChild}`}>{children}</div>
+    <BottomBar />
+  </div>
+);
 
 export default TabLayout;

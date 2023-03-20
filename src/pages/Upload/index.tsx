@@ -1,8 +1,8 @@
-import { TabLayout } from "../../components";
+import { TabLayout } from "@/components";
 import React, { useState } from "react";
 
 export const Upload: React.FC = () => {
-  const [isEdited, setIsEdited] = useState(false);
+  const [,] = useState(false);
   return (
     <TabLayout>
       <div className={"flex items-center justify-center w-full h-full"}>
@@ -17,7 +17,7 @@ export const Upload: React.FC = () => {
               </div>
             ))}
           </div>
-          <textarea className="textarea textarea-primary resize-none" placeholder="Bio"></textarea>
+          <textarea className="textarea textarea-primary resize-none" placeholder="Bio" />
           <button className="btn btn-primary" type="submit">
             Submit
           </button>
