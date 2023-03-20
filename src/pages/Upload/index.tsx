@@ -10,7 +10,7 @@ export const Upload: React.FC = () => {
           <input type="file" className="file-input file-input-bordered file-input-primary w-full" multiple />
           <div className="flex flex-row min-w-full overflow-x-scroll">
             {Array.from({ length: 40 }).map((value, index) => (
-              <div className="p-16 bg-orange-400 rounded-md">
+              <div className="p-16 bg-orange-400 rounded-md" key={index + "_"}>
                 <button className="btn" />
                 <p className="text-white">{index + 1}</p>
                 <input type="text" />

@@ -13,7 +13,7 @@ export const Member: React.FC = () => (
       <div className="card flex flex-row">
         <div className="avatar">
           <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-            <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+            <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" alt={"profile"} />
           </div>
         </div>
         <div className="flex flex-col">
@@ -23,7 +23,7 @@ export const Member: React.FC = () => (
       </div>
       <ResponsiveGrid>
         {Array.from({ length: 40 }).map((value, index) => (
-          <div className="p-16 bg-orange-400 rounded-md">
+          <div className="p-16 bg-orange-400 rounded-md" key={index + "_"}>
             <p className="text-white">{index + 1}</p>
           </div>
         ))}
