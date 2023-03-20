@@ -10,11 +10,11 @@ on:
 
 env:
   # Use docker.io for Docker Hub if empty
-  REGISTRY: harbor.megabrain.kr
+  REGISTRY: docker.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: mega/website
-  DOCKER_REGISTRY_USERNAME: admin
-  DOCKER_REGISTRY_PASSWORD: ${{ secrets.MEGA_HARBOR_PW }}
+  IMAGE_NAME: jadru/artplatform-fe
+  DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
 jobs:
   build:
