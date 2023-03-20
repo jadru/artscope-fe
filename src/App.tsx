@@ -1,10 +1,10 @@
+import { Error } from "@/components";
+import { Main, Member, Upload } from "@/pages";
 import React from "react";
-import "./styles/tailwind.pcss";
-import { Main, Member, Upload } from "./pages";
+import "@/styles/tailwind.pcss";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { RecoilRoot } from "recoil";
-import { Error } from "./components";
 
 const queryClient = new QueryClient();
 
@@ -13,6 +13,10 @@ const router = createBrowserRouter([
     path: "/",
     errorElement: <Error />,
     children: [
+      {
+        path: "",
+        element: <Main />,
+      },
       {
         path: "home",
         element: <Main />,

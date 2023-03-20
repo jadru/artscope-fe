@@ -1,11 +1,9 @@
-import React, { useEffect } from "react"
 import { TabAtom } from "../../states/atom";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { TabAtomType } from "type/atomType";
-import { useNavigate } from "react-router-dom"
 
 export const BottomBar: React.FC = () => {
-  // @ts-ignore
   const [tab, setTab] = useRecoilState(TabAtom);
 
   const navigate = useNavigate();
@@ -16,8 +14,8 @@ export const BottomBar: React.FC = () => {
   };
 
   useEffect(() => {
-    navigate('/'+ tab);
-  },[tab]);
+    navigate("/" + tab);
+  }, [navigate, tab]);
   return (
     <div className="btm-nav md:bottom-8 md:w-96 md:left-1/2 md:-ml-48 md:rounded-2xl md:shadow-xl">
       <button className={tab === "home" ? "text-emerald-600" : ""} value="home" onClick={onTabButtonClick}>
@@ -59,7 +57,7 @@ export const BottomBar: React.FC = () => {
       <button className={`${tab === "profile" ? "text-emerald-600" : ""}`} value="profile" onClick={onTabButtonClick}>
         <label tabIndex={0} className="avatar">
           <div className={`${tab === "profile" ? "border-emerald-600" : ""} rounded-full w-5 border`}>
-            <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+            <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" alt={"profile"} />
           </div>
         </label>
         <span className="btm-nav-label">Accounts</span>

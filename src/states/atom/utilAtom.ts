@@ -1,6 +1,6 @@
-import React from "react";
 import { atom } from "recoil";
-import { TabAtomType } from "../../type/atomType";
+// eslint-disable-next-line
+import { TabAtomType } from "../../types/atomType";
 
 export const TabAtom = atom<TabAtomType>({
   key: "TabAtom",

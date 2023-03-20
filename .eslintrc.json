@@ -4,22 +4,32 @@
     "es2021": true
   },
   "extends": [
-    "eslint:recommended",
     "plugin:react/recommended",
     "plugin:import/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:prettier/recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:react-hooks/recommended",
-    "standard-with-typescript"
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
-  "overrides": [],
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
+  "overrides": [
+    {
+      "files": ["*.js", "*.jsx"],
+      "rules": {
+        "@typescript-eslint/explicit-function-return-type": "off"
+      }
     }
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "project": ["./tsconfig.json"]
   },
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["react", "@typescript-eslint", "autofix", "react-hooks"],
   "rules": {
     "react/react-in-jsx-scope": 0,
     "react/jsx-uses-react": 0,
@@ -29,6 +39,82 @@
       {
         "additionalHooks": "useRecoilCallback"
       }
-    ]
+    ],
+    "arrow-body-style": ["error", "as-needed"],
+    "react/self-closing-comp": [
+         "error", {
+           "component": true,
+           "html": true
+         }
+       ],
+    "autofix/no-unused-vars": [
+         "error",
+         {
+           "argsIgnorePattern": "^_",
+           "ignoreRestSiblings": true,
+           "destructuredArrayIgnorePattern": "^_"
+         }
+        ],
+     "@typescript-eslint/consistent-type-imports": [
+       "error",
+       {
+         "prefer": "type-imports"
+       }
+     ],
+     "import/order": [
+       "error",
+       {
+         "groups": [
+           "builtin",
+           "external",
+           "parent",
+           "sibling",
+           "index",
+           "object",
+           "type"
+         ],
+         "pathGroups": [
+           {
+             "pattern": "@/**/**",
+             "group": "parent",
+             "position": "before"
+           }
+         ],
+         "alphabetize": { "order": "asc" }
+       }
+     ],
+    "react-hooks/exhaustive-deps": "error",
+    "prettier/prettier": [
+      "error",
+      {
+        "useTabs": false
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "no-empty-interface": "off",
+    "@typescript-eslint/ban-ts-comment": "warn"
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          [
+            "@",
+            "./src"
+          ]
+        ],
+        "extensions": [
+          ".js",
+          ".ts",
+          ".tsx",
+          ".jsx",
+          ".json",
+          ".pcss",
+          ".css"
+        ]
+      }
+    }
   }
 }
