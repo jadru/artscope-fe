@@ -8,4 +8,4 @@ COPY . .
 RUN yarn install
 
 # 앱 실행
-CMD ["yarn", "serve:dev"]
+CMD ["yarn", "start"]
