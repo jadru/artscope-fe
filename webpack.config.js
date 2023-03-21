@@ -12,6 +12,7 @@ module.exports = {
 
   // webpack Develop 모드 실행 시, 사용될 static 파일들 경로와 관리 방식 설정.
   devServer: {
+    disableHostCheck: true,
     static: {
       directory: path.join(__dirname, "public"),
     },
