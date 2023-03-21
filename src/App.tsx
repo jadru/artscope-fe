@@ -1,5 +1,5 @@
 import { Error } from "@/components";
-import { Main, Member, Upload } from "@/pages";
+import { Home, Member, Upload } from "@/pages";
 import React from "react";
 import "@/styles/tailwind.pcss";
 import { QueryClientProvider, QueryClient } from "react-query";
@@ -15,11 +15,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Main />,
+        element: <Home />,
       },
       {
         path: "home",
-        element: <Main />,
+        element: <Home />,
       },
       {
         path: "upload",

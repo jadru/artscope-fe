@@ -1,8 +1,9 @@
-import { TabLayout, ResponsiveGrid } from "@/components";
+import { TabLayout, ResponsiveGrid, TopMenu } from "@/components";
 import React from "react";
 
-const Main: React.FC = () => (
+const Home: React.FC = () => (
   <TabLayout className="px-2" classNameChild="mt-2">
+    <TopMenu />
     <ResponsiveGrid>
       {Array.from({ length: 40 }).map((value, index) => (
         <div className="p-16 bg-orange-400 rounded-md" key={"_" + index}>
@@ -13,4 +14,4 @@ const Main: React.FC = () => (
   </TabLayout>
 );
 
-export default Main;
+export default Home;
