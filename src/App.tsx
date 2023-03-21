@@ -1,5 +1,5 @@
 import { Error } from "@/components";
-import { Home, Member, Upload } from "@/pages";
+import { Exibition202306, Home, Member, Upload } from "@/pages";
 import React from "react";
 import "@/styles/tailwind.pcss";
 import { QueryClientProvider, QueryClient } from "react-query";
@@ -28,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Member />,
+      },
+      {
+        path: "upload/2023-summer",
+        element: <Exibition202306 />,
       },
     ],
   },
