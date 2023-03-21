@@ -37,14 +37,14 @@ jobs:
       # 새 이미지 버전으로 파일 수정
       - name: Update Kubernetes resources
         run: |
-          cd apps/art-fe
+          cd apps/art-fe/
           kustomize edit set image jadru/artplatform-fe:${{ steps.image.outputs.version }}
           cat artfe.yaml
 
       # 수정된 파일 commit & push
       - name: Commit files
         run: |
-          cd Mega-Kubernetes
+          cd megabrain-infra-manager
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
           git commit -am "Update image tag"
