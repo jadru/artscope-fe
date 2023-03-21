@@ -8,13 +8,11 @@ on:
   pull_request:
     branches: [ "main" ]
 
-needs: Docker Build and Push to Docker Hub
-
 jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    # build job 완료 후 진행
+    needs: Docker
 
     steps:
       - name: Get verion
