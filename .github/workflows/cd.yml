@@ -8,6 +8,8 @@ on:
   pull_request:
     branches: [ "main" ]
 
+needs: Docker Build and Push to Docker Hub
+
 jobs:
   deploy:
     name: Deploy
@@ -39,7 +41,7 @@ jobs:
         run: |
           cd apps/art-fe/
           kustomize edit set image jadru/artplatform-fe:${{ steps.image.outputs.version }}
-          cat artfe.yaml
+          cat kustomization.yaml
 
       # 수정된 파일 commit & push
       - name: Commit files
