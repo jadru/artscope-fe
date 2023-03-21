@@ -2,8 +2,11 @@ name: cd
 
 on:
   push:
-    branches:
-      - "main"
+    branches: [ "main" ]
+    # Publish semver tags as releases.
+    tags: [ "*.*" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   deploy:
@@ -24,14 +27,12 @@ jobs:
         uses: imranismail/setup-kustomize@v1
 
       - name: Checkout kustomize repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           # kubernetes 설정정보 저장소
           repository: inje-megabrain/megabrain-infra-manager
-          ref: dev
           # 다른 저장소에 push 하려면 Personal Access Token이 필요.
           token: ${{ secrets.ARGOCD_ACTION_TOKEN }}
-          path: megabrain-infra-manager
 
       # 새 이미지 버전으로 파일 수정
       - name: Update Kubernetes resources
