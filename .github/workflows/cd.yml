@@ -37,7 +37,7 @@ jobs:
       # 새 이미지 버전으로 파일 수정
       - name: Update Kubernetes resources
         run: |
-          cd apps/artfe
+          cd megabrain-infra-manager/apps/art-fe
           kustomize edit set image jadru/artplatform-fe:${{ steps.image.outputs.version }}
           cat artfe.yaml
 
