@@ -1,8 +1,10 @@
 import * as React from 'react';
 
 import ResponsiveGrid from '@/components/Grid/ResponsiveGrid';
+import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
+import { NavBar } from '@/components/TabLayout/NavBar';
 import TopMenu from '@/components/TopMenu';
 
 /**
@@ -20,8 +22,10 @@ import TopMenu from '@/components/TopMenu';
 export default function HomePage() {
   return (
     <div>
+      <Seo templateTitle='Playlist' />
       <main>
         <section>
+          <NavBar title='ArtPlatform' />
           <TabLayout className='px-2' classNameChild='mt-2'>
             <TopMenu />
             <ResponsiveGrid>

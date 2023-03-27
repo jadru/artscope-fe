@@ -2,14 +2,16 @@ import Image from 'next/image';
 import React from 'react';
 
 import ResponsiveGrid from '@/components/Grid/ResponsiveGrid';
+import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 
 const Profile = () => (
   <>
+    <Seo templateTitle='Profile' />
     <TabLayout>
-      <div className='flex w-full flex-col items-center space-y-2'>
-        <div className='card flex flex-row'>
+      <div className='flex w-full max-w-2xl flex-col items-center space-y-2'>
+        <div className='flex flex-row'>
           <div className='avatar'>
             <div className='ring-primary w-24 rounded-full ring ring-offset-2 ring-offset-base-100'>
               <Image
