@@ -5,7 +5,7 @@ const Summer2023KS = () => (
     <div className='hero min-h-screen bg-black text-white'>
       <video
         className='fixed z-0 sm:w-4/5 md:w-1/3'
-        src={require('./banner_1.webm')}
+        src={require('~/videos/banner_1.webm')}
         loop
         autoPlay
         muted

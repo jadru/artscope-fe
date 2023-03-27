@@ -1,6 +1,4 @@
-import React from 'react';
-
-import BottomBar from '@/components/TabLayout/BottomBar';
+import React, { FunctionComponent } from 'react';
 
 import { NavBar } from './NavBar';
 
@@ -10,7 +8,7 @@ interface Props {
   classNameChild?: string;
 }
 
-const TabLayout: React.FC<Props> = ({
+const TabLayout: FunctionComponent<Props> = ({
   children,
   className,
   classNameChild,
@@ -23,8 +21,7 @@ const TabLayout: React.FC<Props> = ({
         console.log('Search Button Clicked');
       }}
     />
-    <div className={`pt-16 pb-20 md:pb-28 ${classNameChild}`}>{children}</div>
-    <BottomBar />
+    <div className={`pt-16 ${classNameChild}`}>{children}</div>
   </div>
 );
 
