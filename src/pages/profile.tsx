@@ -8,7 +8,7 @@ import BottomBar from '@/components/TabLayout/BottomBar';
 const Profile = () => (
   <>
     <TabLayout>
-      <div className='flex w-full flex-col items-center'>
+      <div className='flex w-full flex-col items-center space-y-2'>
         <div className='card flex flex-row'>
           <div className='avatar'>
             <div className='ring-primary w-24 rounded-full ring ring-offset-2 ring-offset-base-100'>
@@ -24,6 +24,10 @@ const Profile = () => (
             <p>누구누구누구</p>
             <p>@asdfasdf</p>
           </div>
+        </div>
+        <div>
+          <p>adsfasdfasdfasdfasdfasdfasdfasdf</p>
+          <p>asdfasdffdassdfafdsafasd</p>
         </div>
         <ResponsiveGrid>
           {Array.from({ length: 40 }).map((value, index) => (
