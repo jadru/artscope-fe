@@ -1,9 +1,13 @@
-import React from "react";
+import React, { FunctionComponent } from 'react';
 
-interface Props {
-  children?: React.ReactNode;
-}
+type Props = {
+  children: React.ReactNode;
+};
 
-export const ResponsiveGrid: React.FC<Props> = ({ children }) => (
-  <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 -z-50">{children}</div>
+const ResponsiveGrid: FunctionComponent<Props> = ({ children }) => (
+  <div className='-z-50 grid gap-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+    {children}
+  </div>
 );
+
+export default ResponsiveGrid;
