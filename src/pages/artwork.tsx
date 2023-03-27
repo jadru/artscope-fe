@@ -3,7 +3,6 @@ import * as React from 'react';
 import ResponsiveGrid from '@/components/Grid/ResponsiveGrid';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
-import TopMenu from '@/components/TopMenu';
 
 export default function HomePage() {
   return (
@@ -11,7 +10,6 @@ export default function HomePage() {
       <main>
         <section>
           <TabLayout className='px-2' classNameChild='mt-2'>
-            <TopMenu />
             <ResponsiveGrid>
               {Array.from({ length: 40 }).map((value, index) => (
                 <div

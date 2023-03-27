@@ -37,7 +37,7 @@ const BottomBar: FunctionComponent<Props> = ({ tab = 'home' }) => {
             height='20'
             viewBox='0 0 24 24'
             fill='none'
-            stroke={tab !== 'artwork' ? '#000000' : 'rgb(5 150 105)'}
+            stroke='currentColor'
             strokeWidth='3.5'
             strokeLinecap='round'
             strokeLinejoin='round'
