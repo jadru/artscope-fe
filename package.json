@@ -65,7 +65,7 @@
       "eslint --max-warnings=0",
       "prettier -w"
     ],
-    "src/**/*.{json,css,scss,md,webmanifest}": [
+    "src/**/*.{css,scss,md,webmanifest}": [
       "prettier -w"
     ]
   }
