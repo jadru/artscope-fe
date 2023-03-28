@@ -77,7 +77,7 @@ const Upload = () => {
                   height={300}
                   width={300}
                 />
-                <p className='text-xl font-medium text-gray-800'>
+                <p className='text-xl font-medium text-gray-800 dark:text-gray-200'>
                   작품(사진과 동영상)을 <br /> 여기에 끌어다 놓으세요
                 </p>
                 <p className='btn-primary btn'>업로드하기</p>
@@ -144,33 +144,44 @@ const Upload = () => {
             </div>
           </div>
           <p className='mb-8 text-4xl font-bold'>작품 업로드</p>
-          <div
-            className='tooltip-open tooltip tooltip-bottom mb-12 flex grid w-[302px] grid-cols-3 flex-col items-center justify-center'
-            data-tip='업로드한 미디어를 선텍하면 설명을 추가할 수 있습니다'
-          >
+          <div className='flex grid w-[302px] grid-cols-3 flex-col items-center justify-center space-y-0 space-x-0'>
             {fileUrls &&
               fileUrls.length > 0 &&
               fileUrls.map((file, index) => (
                 <a
                   key={index + '_'}
+                  className='m-0'
                   href='#modal-artwork-media'
                   onClick={() => setIndexFileforModal(index)}
                 >
-                  <div className='relative m-1 h-24 w-24 border p-0'>
+                  <div
+                    className={`${
+                      fileUrls[index].description !== ''
+                        ? 'tooltip tooltip-bottom'
+                        : ''
+                    } relative m-0 mt-1 h-24 w-24 border p-0`}
+                    data-tip={fileUrls[index].description}
+                  >
                     {file.type.startsWith('image') ? (
                       <Image
                         src={file.url}
                         alt={'uploaded image ' + index}
+                        style={{ margin: 0, padding: 0, objectFit: 'cover' }}
                         fill
-                        style={{ objectFit: 'cover' }}
                       />
                     ) : (
-                      <video src={file.url} style={{ objectFit: 'cover' }} />
+                      <video
+                        className='h-24 w-24 object-cover'
+                        src={file.url}
+                      />
                     )}
                   </div>
                 </a>
               ))}
           </div>
+          <p className='my-6 text-sm font-bold '>
+            업로드한 미디어를 선텍하면 설명을 추가할 수 있습니다.
+          </p>
           <input
             className='text-md input-primary input mb-2 w-[302px]'
             placeholder='작품 제목'
