@@ -6,6 +6,7 @@ const nextConfig = {
 
   reactStrictMode: true,
   swcMinify: true,
+  output: 'standalone',
 
   // Uncoment to add domain whitelist
   // images: {
@@ -25,6 +26,18 @@ const nextConfig = {
           options: {
             typescript: true,
             icon: true,
+          },
+        },
+      ],
+    });
+
+    config.module.rules.push({
+      test: /\.(mov|mp4|webm)$/,
+      use: [
+        {
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]',
           },
         },
       ],
