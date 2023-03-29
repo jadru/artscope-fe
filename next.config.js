@@ -12,6 +12,9 @@ const nextConfig = {
     ];
   },
 
+  images: {
+    domains: ['media-xi-art-storage.s3.ap-northeast-2.amazonaws.com'],
+  },
   reactStrictMode: true,
   swcMinify: true,
   output: 'standalone',

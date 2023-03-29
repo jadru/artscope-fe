@@ -1,30 +1,44 @@
+import axios from 'axios';
 import Lottie from 'lottie-react';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { toast } from 'react-toastify';
 
 import Seo from '@/components/Seo';
+import Skeleton from '@/components/Skeleton';
 import BottomBar from '@/components/TabLayout/BottomBar';
 
 const FILETYPES = ['JPG', 'PNG', 'GIF', 'MP4', 'MOV'];
 
 const Upload = () => {
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [fileUrls, setFileUrls] = useState<
     { type: string; url: string; file: File; description: string }[]
   >([]);
   const [indexFileforModal, setIndexFileforModal] = useState<number>(0);
 
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(uploadedFiles);
-    convertFiletoUrl(uploadedFiles);
-  }, [uploadedFiles]);
-  const handleFileChange = (file: File[]) => {
-    if (file) setUploadedFiles(file);
+  const singleUploadMedia = async (file: File, index: number) => {
+    const formData = new FormData();
+    formData.append('multipartFile', file);
+    axios
+      .post('/api/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((res) => {
+        setFileUrls((prev) => {
+          prev[index].url =
+            process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + res.data;
+          return prev;
+        });
+      })
+      .catch((err) => {
+        toast.error(err.response.data);
+      });
   };
-  const convertFiletoUrl = (files: File[]) => {
+
+  const convertFiletoUrl = async (files: File[]) => {
     const urlList: {
       type: string;
       url: string;
@@ -34,12 +48,15 @@ const Upload = () => {
     for (let i = 0; i < files.length; i++) {
       urlList.push({
         type: files[i].type,
-        url: URL.createObjectURL(files[i]),
+        url: '',
         file: files[i],
         description: '',
       });
     }
-    setFileUrls(urlList);
+    await setFileUrls(urlList);
+    await urlList.forEach((file, index) => {
+      singleUploadMedia(file.file, index);
+    });
   };
   const alertError = (ErrorMessege: string) => {
     toast.warn(ErrorMessege, {
@@ -60,7 +77,7 @@ const Upload = () => {
           <div className='mb-12 flex h-full w-full flex-col items-center justify-center space-y-2 py-12'>
             <p className='mb-8 text-4xl font-bold'>작품 업로드</p>
             <FileUploader
-              handleChange={handleFileChange}
+              handleChange={convertFiletoUrl}
               name='file'
               types={FILETYPES}
               multiple={true}
@@ -151,8 +168,8 @@ const Upload = () => {
                 <a
                   key={index + '_'}
                   className='m-0'
-                  href='#modal-artwork-media'
-                  onClick={() => setIndexFileforModal(index)}
+                  href={file.url !== '' ? '#modal-artwork-media' : ''}
+                  onClick={() => file.url !== '' && setIndexFileforModal(index)}
                 >
                   <div
                     className={`${
@@ -162,7 +179,9 @@ const Upload = () => {
                     } relative m-0 mt-1 h-24 w-24 border p-0`}
                     data-tip={fileUrls[index].description}
                   >
-                    {file.type.startsWith('image') ? (
+                    {file.url && file.url === '' ? (
+                      <Skeleton className='h-24 w-24' />
+                    ) : file.type.startsWith('image') ? (
                       <Image
                         src={file.url}
                         alt={'uploaded image ' + index}
