@@ -3,6 +3,14 @@ const nextConfig = {
   eslint: {
     dirs: ['src'],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://art.be.megabrain.kr:443/api/:path*',
+      },
+    ];
+  },
 
   reactStrictMode: true,
   swcMinify: true,
