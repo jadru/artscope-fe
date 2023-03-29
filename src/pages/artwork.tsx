@@ -15,9 +15,7 @@ import { NavBar } from '@/components/TabLayout/NavBar';
 const OFFSET = 30;
 const getArtWorkList = ({ pageParam = OFFSET }) =>
   axios
-    .get('https://pokeapi.co/api/v2/pokemon', {
-      // axios.get(url, config),
-      // url전체를 템플릿 리터럴로 넘기든 config의 params로 넘기든 취향에 맞게 넘기자.
+    .get('/api/artwork', {
       params: {
         limit: OFFSET,
         offset: pageParam,
@@ -70,8 +68,11 @@ export default function Playlist() {
                   <div key={index} onClick={() => setScrollY(window.scrollY)}>
                     {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                     {/** @ts-ignore **/}
-                    {group.results.map((pokemon) => (
-                      <p key={pokemon.name}>{pokemon.name}</p>
+                    {group.map((artwork) => (
+                      <>
+                        <p key={artwork.id}>{artwork.title}</p>
+                        <p>{artwork.description}</p>
+                      </>
                     ))}
                   </div>
                 ))}
