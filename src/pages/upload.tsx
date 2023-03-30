@@ -13,7 +13,13 @@ const FILETYPES = ['JPG', 'PNG', 'GIF', 'MP4', 'MOV'];
 
 const Upload = () => {
   const [fileUrls, setFileUrls] = useState<
-    { type: string; url: string; file: File; description: string }[]
+    {
+      type: string;
+      url: string;
+      file: File;
+      description: string;
+      isLoading: boolean;
+    }[]
   >([]);
   const [indexFileforModal, setIndexFileforModal] = useState<number>(0);
 
@@ -28,9 +34,11 @@ const Upload = () => {
       })
       .then((res) => {
         setFileUrls((prev) => {
-          prev[index].url =
+          const newState = [...prev];
+          newState[index].url =
             process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + res.data;
-          return prev;
+          newState[index].isLoading = false;
+          return newState;
         });
       })
       .catch((err) => {
@@ -44,6 +52,7 @@ const Upload = () => {
       url: string;
       file: File;
       description: string;
+      isLoading: boolean;
     }[] = [];
     for (let i = 0; i < files.length; i++) {
       urlList.push({
@@ -51,6 +60,7 @@ const Upload = () => {
         url: '',
         file: files[i],
         description: '',
+        isLoading: true,
       });
     }
     await setFileUrls(urlList);
@@ -87,7 +97,7 @@ const Upload = () => {
               onMaxSizeError={() => alertError('파일 용량이 너무 큽니다')}
               onMaxFilesError={() => alertError('파일 개수가 너무 많습니다')}
             >
-              <div className='border-1 rounded-box flex w-96 flex-col items-center justify-center space-y-3 border border-fuchsia-900 p-12'>
+              <div className='md:border-1 rounded-box flex w-96 flex-col items-center justify-center space-y-3 p-12 md:border md:border-fuchsia-900'>
                 <Lottie
                   loop={true}
                   animationData={require('../../public/animation/110586-line-art.json')}
@@ -164,41 +174,46 @@ const Upload = () => {
           <div className='flex grid w-[302px] grid-cols-3 flex-col items-center justify-center space-y-0 space-x-0'>
             {fileUrls &&
               fileUrls.length > 0 &&
-              fileUrls.map((file, index) => (
-                <a
-                  key={index + '_'}
-                  className='m-0'
-                  href={file.url !== '' ? '#modal-artwork-media' : ''}
-                  onClick={() => file.url !== '' && setIndexFileforModal(index)}
-                >
-                  <div
-                    className={`${
-                      fileUrls[index].description !== ''
-                        ? 'tooltip tooltip-bottom'
-                        : ''
-                    } relative m-0 mt-1 h-24 w-24 border p-0`}
-                    data-tip={fileUrls[index].description}
+              fileUrls.map((file, index) =>
+                file.isLoading ? (
+                  <Skeleton className='m-0 h-24 w-24' key={index + '_'} />
+                ) : (
+                  <a
+                    key={index + '_'}
+                    className='m-0'
+                    href={file.url !== '' ? '#modal-artwork-media' : ''}
+                    onClick={() =>
+                      file.url !== '' && setIndexFileforModal(index)
+                    }
                   >
-                    {file.url && file.url === '' ? (
-                      <Skeleton className='h-24 w-24' />
-                    ) : file.type.startsWith('image') ? (
-                      <Image
-                        src={file.url}
-                        alt={'uploaded image ' + index}
-                        style={{ margin: 0, padding: 0, objectFit: 'cover' }}
-                        fill
-                      />
-                    ) : (
-                      <video
-                        className='h-24 w-24 object-cover'
-                        src={file.url}
-                      />
-                    )}
-                  </div>
-                </a>
-              ))}
+                    <div
+                      className={`${
+                        fileUrls[index].description !== ''
+                          ? 'tooltip tooltip-bottom'
+                          : ''
+                      } relative m-0 mt-1 h-24 w-24 p-0`}
+                      data-tip={fileUrls[index].description}
+                    >
+                      {file.type.startsWith('image') ? (
+                        <Image
+                          className='border'
+                          src={file.url}
+                          alt={'uploaded image ' + index}
+                          style={{ margin: 0, padding: 0, objectFit: 'cover' }}
+                          fill
+                        />
+                      ) : (
+                        <video
+                          className='m-0 h-24 w-24 border object-cover p-0'
+                          src={file.url}
+                        />
+                      )}
+                    </div>
+                  </a>
+                )
+              )}
           </div>
-          <p className='my-6 text-sm font-bold '>
+          <p className='my-6 text-sm font-bold text-gray-700'>
             업로드한 미디어를 선텍하면 설명을 추가할 수 있습니다.
           </p>
           <input
