@@ -9,6 +9,12 @@ const nextConfig = {
         source: '/api/:path*',
         destination: 'https://art.be.megabrain.kr:443/api/:path*',
       },
+      {
+        source: '/oauth2',
+        destination:
+          'https://art.be.megabrain.kr:443/oauth2/authorization/google',
+        basePath: false,
+      },
     ];
   },
 
