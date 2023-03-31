@@ -4,10 +4,14 @@ import React, { FunctionComponent } from 'react';
 
 type Props = {
   tab: 'playlist' | 'artwork' | 'upload' | 'profile';
+  dark?: boolean;
 };
-const BottomBar: FunctionComponent<Props> = ({ tab = 'home' }) => {
+const BottomBar: FunctionComponent<Props> = ({
+  tab = 'home',
+  dark = false,
+}) => {
   return (
-    <div className='pb-20 md:pb-28'>
+    <div className={`pb-20 md:pb-28 ${dark ? 'bg-dark' : ''}`}>
       <div className='btm-nav md:bottom-8 md:left-1/2 md:-ml-48 md:w-96 md:rounded-2xl md:shadow-xl'>
         <Link
           className={`${tab === 'playlist' ? 'text-emerald-600' : ''}`}
