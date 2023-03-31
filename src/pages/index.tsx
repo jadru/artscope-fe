@@ -1,6 +1,6 @@
+import Link from 'next/link';
 import * as React from 'react';
 
-import ResponsiveGrid from '@/components/Grid/ResponsiveGrid';
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
@@ -15,10 +15,6 @@ import TopMenu from '@/components/TopMenu';
  * @see https://stackoverflow.com/questions/68103844/how-to-override-next-js-svg-module-declaration
  */
 
-// !STARTERCONF -> Select !STARTERCONF and CMD + SHIFT + F
-// Before you begin editing, follow all comments with `STARTERCONF`,
-// to customize the default configuration.
-
 export default function HomePage() {
   return (
     <div>
@@ -28,16 +24,30 @@ export default function HomePage() {
           <NavBar title='ArtPlatform' />
           <TabLayout className='px-2' classNameChild='mt-2'>
             <TopMenu />
-            <ResponsiveGrid>
-              {Array.from({ length: 40 }).map((value, index) => (
-                <div
-                  className='rounded-md bg-orange-400 p-16'
-                  key={'_' + index}
-                >
-                  <p className='text-white'>{index + 1}</p>
+            <div className='flex flex-col'>
+              <div className='card image-full w-96 bg-base-100 shadow-xl'>
+                <video
+                  src={require('~/videos/banner_1.webm')}
+                  loop
+                  autoPlay
+                  muted
+                />
+                <div className='card-body'>
+                  <h2 className='card-title'>
+                    2023 금샘 미술관 전시 작품 공모
+                  </h2>
+                  <p>🥤 접수기간 : 2023. 04.01 - 05. 30</p>
+                  <div className='card-actions justify-end'>
+                    <Link
+                      className='btn-primary btn'
+                      href='/exhibition/2023-summer-ks'
+                    >
+                      전시 알아보기
+                    </Link>
+                  </div>
                 </div>
-              ))}
-            </ResponsiveGrid>
+              </div>
+            </div>
           </TabLayout>
           <BottomBar tab='playlist' />
         </section>

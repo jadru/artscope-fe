@@ -5,20 +5,25 @@ interface Props {
   title?: string;
   className?: string;
   onSearchClick?: () => void;
+  black?: boolean;
 }
 
 export const NavBar: React.FC<Props> = ({
+  // eslint-disable-next-line
   title,
   className,
   onSearchClick,
+  black = false,
 }) => (
   <div
-    className={`navbar fixed z-50 bg-white/95 dark:bg-base-100 ${className}`}
+    className={`navbar fixed z-50 ${
+      !black ? 'bg-white/95' : 'bg-black/90 text-gray-200'
+    } dark:bg-base-100 ${className}`}
   >
     <div className='navbar-start' />
     <div className='navbar-center'>
-      <Link className='btn-ghost btn text-xl normal-case' href='/'>
-        {title ? title : 'title'}
+      <Link className='btn-ghost btn text-xl font-bold normal-case' href='/'>
+        Waveform
       </Link>
     </div>
     <div className='navbar-end'>

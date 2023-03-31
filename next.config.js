@@ -25,41 +25,41 @@ const nextConfig = {
   swcMinify: true,
   output: 'standalone',
 
-  // Uncoment to add domain whitelist
-  // images: {
-  //   domains: [
-  //     'res.cloudinary.com',
-  //   ],
-  // },
+  future: {
+    webpack5: true,
+  },
 
   // SVGR
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/i,
-      issuer: /\.[jt]sx?$/,
-      use: [
-        {
-          loader: '@svgr/webpack',
-          options: {
-            typescript: true,
-            icon: true,
-          },
-        },
-      ],
-    });
+  webpack(config, { isServer, webpack }) {
+    config.plugins.push(new webpack.EnvironmentPlugin(process.env));
+    config.optimization.minimize = false;
 
-    config.module.rules.push({
-      test: /\.(mov|mp4|webm)$/,
-      use: [
-        {
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
+    config.module.rules.push(
+      {
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        use: [
+          {
+            loader: '@svgr/webpack',
+            options: {
+              typescript: true,
+              icon: true,
+            },
           },
-        },
-      ],
-    });
-
+        ],
+      },
+      {
+        test: /\.(mov|mp4|webm|ogg|swf|ogv)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name]-[hash].[ext]',
+            },
+          },
+        ],
+      }
+    );
     return config;
   },
 };
