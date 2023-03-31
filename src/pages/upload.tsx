@@ -9,19 +9,21 @@ import Seo from '@/components/Seo';
 import Skeleton from '@/components/Skeleton';
 import BottomBar from '@/components/TabLayout/BottomBar';
 
+import { ArtWorkMediaType, ArtWorkType } from '@/types';
+
 const FILETYPES = ['JPG', 'PNG', 'GIF', 'MP4', 'MOV'];
 
+const initialArtWork: ArtWorkType = {
+  title: '',
+  description: '',
+  visible: true,
+  mediaUrls: [],
+};
+
 const Upload = () => {
-  const [fileUrls, setFileUrls] = useState<
-    {
-      type: string;
-      url: string;
-      file: File;
-      description: string;
-      isLoading: boolean;
-    }[]
-  >([]);
+  const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
   const [indexFileforModal, setIndexFileforModal] = useState<number>(0);
+  const [artwork, setArtwork] = useState<ArtWorkType>(initialArtWork);
 
   const singleUploadMedia = async (file: File, index: number) => {
     const formData = new FormData();
@@ -35,9 +37,8 @@ const Upload = () => {
       .then((res) => {
         setFileUrls((prev) => {
           const newState = [...prev];
-          newState[index].url =
+          newState[index].mediaUrl =
             process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + res.data;
-          newState[index].isLoading = false;
           return newState;
         });
       })
@@ -47,20 +48,13 @@ const Upload = () => {
   };
 
   const convertFiletoUrl = async (files: File[]) => {
-    const urlList: {
-      type: string;
-      url: string;
-      file: File;
-      description: string;
-      isLoading: boolean;
-    }[] = [];
+    const urlList: ArtWorkMediaType[] = [];
     for (let i = 0; i < files.length; i++) {
       urlList.push({
-        type: files[i].type,
-        url: '',
+        mediaType: files[i].type.startsWith('image') ? 'image' : 'video',
+        mediaUrl: '',
         file: files[i],
         description: '',
-        isLoading: true,
       });
     }
     await setFileUrls(urlList);
@@ -80,6 +74,47 @@ const Upload = () => {
       theme: 'light',
     });
   };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await setArtwork((prev) => {
+      const newState: ArtWorkType = { ...prev };
+      fileUrls.forEach((file) => {
+        newState.mediaUrls?.push({
+          mediaType: file.mediaType,
+          mediaUrl: file.mediaUrl,
+        });
+      });
+      return newState;
+    });
+    await axios
+      .post('/api/artwork', artwork)
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success('작품이 등록되었습니다.');
+          window.location.href = '/artwork';
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data);
+      });
+  };
+
+  const handleChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    e.target.name === 'visible'
+      ? setArtwork((prev) => {
+          return { ...artwork, visible: !prev.visible };
+        })
+      : setArtwork({
+          ...artwork,
+          [e.target.name]: e.target.value,
+        });
+  };
+
   return (
     <>
       {fileUrls.length === 0 ? (
@@ -113,20 +148,20 @@ const Upload = () => {
           </div>
         </>
       ) : (
-        <div className='flex h-full w-full flex-col items-center justify-center py-12'>
+        <div className='flex h-full w-full flex-col items-center justify-center pt-12'>
           <div className='modal' id='modal-artwork-media'>
             <div className='modal-box flex flex-col items-center justify-center text-center'>
               <p className='text-lg'>미디어 설명 추가</p>
-              {fileUrls[indexFileforModal].type.startsWith('image') ? (
+              {fileUrls[indexFileforModal].mediaType === 'image' ? (
                 <Image
-                  src={fileUrls[indexFileforModal].url}
+                  src={fileUrls[indexFileforModal].mediaUrl}
                   alt='uploaded image'
                   width={300}
                   height={300}
                 />
               ) : (
                 <video
-                  src={fileUrls[indexFileforModal].url}
+                  src={fileUrls[indexFileforModal].mediaUrl}
                   width={300}
                   autoPlay
                   loop
@@ -175,15 +210,15 @@ const Upload = () => {
             {fileUrls &&
               fileUrls.length > 0 &&
               fileUrls.map((file, index) =>
-                file.isLoading ? (
+                file.mediaUrl === '' ? (
                   <Skeleton className='m-0 h-24 w-24' key={index + '_'} />
                 ) : (
                   <a
                     key={index + '_'}
                     className='m-0'
-                    href={file.url !== '' ? '#modal-artwork-media' : ''}
+                    href={file.mediaUrl !== '' ? '#modal-artwork-media' : ''}
                     onClick={() =>
-                      file.url !== '' && setIndexFileforModal(index)
+                      file.mediaUrl !== '' && setIndexFileforModal(index)
                     }
                   >
                     <div
@@ -194,10 +229,10 @@ const Upload = () => {
                       } relative m-0 mt-1 h-24 w-24 p-0`}
                       data-tip={fileUrls[index].description}
                     >
-                      {file.type.startsWith('image') ? (
+                      {file.mediaType === 'image' ? (
                         <Image
                           className='border'
-                          src={file.url}
+                          src={file.mediaUrl}
                           alt={'uploaded image ' + index}
                           style={{ margin: 0, padding: 0, objectFit: 'cover' }}
                           fill
@@ -205,7 +240,7 @@ const Upload = () => {
                       ) : (
                         <video
                           className='m-0 h-24 w-24 border object-cover p-0'
-                          src={file.url}
+                          src={file.mediaUrl}
                         />
                       )}
                     </div>
@@ -216,21 +251,39 @@ const Upload = () => {
           <p className='my-6 text-sm font-bold text-gray-700'>
             업로드한 미디어를 선텍하면 설명을 추가할 수 있습니다.
           </p>
-          <input
-            className='text-md input-primary input mb-2 w-[302px]'
-            placeholder='작품 제목'
-          />
-          <textarea
-            className='text-md textarea-primary textarea mb-2 h-64 w-[302px] resize-none'
-            placeholder='작품에 대한 간단한 설명 입력'
-          />
-          <div className='form-control mb-2 w-[302px] '>
-            <label className='label cursor-pointer'>
-              <span className='label-text'>내 작품 숨기기</span>
-              <input type='checkbox' className='toggle-success toggle' />
-            </label>
-          </div>
-          <button className='btn-primary btn w-[302px]'>작품 업로드</button>
+          <form
+            className='flex h-full w-full flex-col items-center justify-center space-y-2'
+            onSubmit={handleSubmit}
+          >
+            <input
+              type='text'
+              name='title'
+              className='text-md input-primary input mb-2 w-[302px]'
+              placeholder='작품 제목'
+              onChange={handleChange}
+            />
+            <textarea
+              name='description'
+              className='text-md textarea-primary textarea mb-2 h-64 w-[302px] resize-none'
+              placeholder='작품에 대한 간단한 설명 입력'
+              onChange={handleChange}
+            />
+            <div className='form-control mb-2 w-[302px] '>
+              <label className='label cursor-pointer'>
+                <span className='label-text'>내 작품 숨기기</span>
+                <input
+                  type='checkbox'
+                  className='toggle-success toggle'
+                  name='visible'
+                  onChange={handleChange}
+                  checked={artwork.visible}
+                />
+              </label>
+            </div>
+            <button className='btn-primary btn w-[302px]' type='submit'>
+              작품 업로드
+            </button>
+          </form>
         </div>
       )}
       <Seo templateTitle='Upload' />
