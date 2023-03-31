@@ -30,10 +30,7 @@ const nextConfig = {
   },
 
   // SVGR
-  webpack(config, { isServer, webpack }) {
-    config.plugins.push(new webpack.EnvironmentPlugin(process.env));
-    config.optimization.minimize = false;
-
+  webpack(config) {
     config.module.rules.push(
       {
         test: /\.svg$/i,
@@ -50,14 +47,7 @@ const nextConfig = {
       },
       {
         test: /\.(mov|mp4|webm|ogg|swf|ogv)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name]-[hash].[ext]',
-            },
-          },
-        ],
+        type: 'asset/resource',
       }
     );
     return config;

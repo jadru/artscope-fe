@@ -25,8 +25,9 @@ export default function HomePage() {
           <TabLayout className='px-2' classNameChild='mt-2'>
             <TopMenu />
             <div className='flex flex-col'>
-              <div className='card image-full w-96 bg-base-100 shadow-xl'>
+              <div className='card image-full max-h-44 w-96 bg-base-100 shadow-xl'>
                 <video
+                  className='max-h-48 w-full rounded-2xl object-cover'
                   src={require('~/videos/banner_1.webm')}
                   loop
                   autoPlay
