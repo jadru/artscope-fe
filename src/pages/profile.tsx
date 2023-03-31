@@ -1,7 +1,5 @@
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import React from 'react';
-import useSWR from 'swr';
 
 import ResponsiveGrid from '@/components/Grid/ResponsiveGrid';
 import Seo from '@/components/Seo';
@@ -9,11 +7,12 @@ import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 
 const Profile = () => {
-  const { data } = useSWR('/auth');
-  const { push } = useRouter();
-  if (!data) {
-    push('/login');
-  }
+  // const { data } = useSWR('/auth');
+  // const { push } = useRouter();
+  // if (!data) {
+  //   // eslint-disable-next-line
+  //   push('/login').then((r) => console.log(r));
+  // }
   return (
     <>
       <Seo templateTitle='Profile' />

@@ -13,20 +13,25 @@ const Summer2023KS = () => (
     <NavBar title='ArtPlatform' black={true} />
     <TabLayout className='m-0 w-full bg-dark p-0 pt-0' paddingTop={true}>
       <div className='min-h-screen'>
-        <video className='fixed sm:w-4/5 md:w-1/3' loop autoPlay muted>
-          <source src={Video} type='video/webm' />
-        </video>
-        <div className='hero-content flex-col lg:flex-row'>
+        <div className=' hero-content  z-30 flex-col lg:flex-row'>
           <div>
-            <p className='text-2xl font-thin text-gray-200 md:text-5xl'>
+            <p className='relative z-10 text-2xl font-thin text-gray-200 mix-blend-difference md:text-5xl'>
               {
                 '<금샘미술관>에서 새로운 창작 언어를 모색하는 작가들에게 작품을 공모합니다. <금샘미술관>은 금정문화회관 내부에 위치해 있으며, 독자적인 기획과 작가 네트워크를 통해 변화하는 시각적인 흐름을 담아 전시 콘텐츠를 활성화시키고 있습니다. 한편으로는 미술관으로서의 정체성을 확립하여 금정구의 고유한 지역 미술관으로서 역할을 하고자 합니다. 자신만의 언어와 표현법으로 이야기를 펼치고 있는 모든 작가들이 새롭게 준비하고 있는 플랫폼을 통해 작품을 공개할 수 있는 기회를 마련하고자 합니다. 미술관의 높은 문턱과 전시의 기회가 쉽지 않은 숨은 작가들에게 귀중한 발표의 장으로도 활용될 것입니다. 시각언어와 예술이 다양한 만남과 화학적 변화를 이루고 있는 시기에, 온라인 플랫폼을 개방하여 변화와 혁신들을 직접 눈으로 살펴볼 수 있는 계기를 마련하고자 합니다. 제출된 작품 중 기획적으로 선별된 작품들은 공모전의 형식으로 금샘미술관 전시실에서 전시를 가지게 됩니다. 콘텐츠와 지역, 공간과 작가들의 의미 있는 만남이 온라인과 오프 공간에서 동시에 열리게 되는 이번 공모기획에 많은 응모와 지원 바랍니다.'
               }
             </p>
+            <video
+              className='fixed left-1/2 top-1/2 m-auto -translate-x-1/2 -translate-y-1/2 sm:w-4/5 md:w-1/3'
+              loop
+              autoPlay
+              muted
+            >
+              <source src={Video} type='video/webm' />
+            </video>
           </div>
         </div>
       </div>
-      <div className='hero relative min-h-screen bg-white/75 text-black'>
+      <div className='hero relative min-h-screen bg-white/50 text-black backdrop-blur-xl'>
         <div className='hero-content flex-col'>
           <div>
             <p>

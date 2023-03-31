@@ -12,7 +12,7 @@ const BottomBar: FunctionComponent<Props> = ({
 }) => {
   return (
     <div className={`pb-20 md:pb-28 ${dark ? 'bg-dark' : ''}`}>
-      <div className='btm-nav md:bottom-8 md:left-1/2 md:-ml-48 md:w-96 md:rounded-2xl md:shadow-xl'>
+      <div className='btm-nav z-30 md:bottom-8 md:left-1/2 md:-ml-48 md:w-96 md:rounded-2xl md:shadow-xl'>
         <Link
           className={`${tab === 'playlist' ? 'text-emerald-600' : ''}`}
           href='/'
