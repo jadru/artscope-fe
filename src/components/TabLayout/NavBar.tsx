@@ -23,7 +23,7 @@ export const NavBar: React.FC<Props> = ({
     <div className='navbar-start' />
     <div className='navbar-center'>
       <Link className='btn-ghost btn text-xl font-bold normal-case' href='/'>
-        Waveform
+        Artscope
       </Link>
     </div>
     <div className='navbar-end'>

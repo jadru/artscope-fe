@@ -25,6 +25,7 @@ const Summer2023KS = () => (
               loop
               autoPlay
               muted
+              playsInline
             >
               <source src={Video} type='video/webm' />
             </video>

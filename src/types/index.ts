@@ -16,3 +16,30 @@ export type ArtWorkType = {
 };
 
 export type MediaType = 'image' | 'video';
+
+export type ArtWorkApiResponseType = {
+  artworks: {
+    id: number;
+    title: string;
+    description: string;
+    member: string;
+    thumbnail: {
+      id: number;
+      mediaType: MediaType;
+      mediaUrl: string;
+    };
+    artworkMedias: {
+      id: number;
+      mediaType: MediaType;
+      mediaUrl: string;
+    }[];
+    createdTime: Date;
+    updatedTime: Date | null;
+  }[];
+  pageInfo: {
+    page: number;
+    size: number;
+    totalPages: number;
+    totalElements: number;
+  };
+};
