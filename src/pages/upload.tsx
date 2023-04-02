@@ -1,17 +1,21 @@
 import axios from 'axios';
 import Lottie from 'lottie-react';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { toast } from 'react-toastify';
+import { useRecoilValue } from 'recoil';
 
 import Seo from '@/components/Seo';
 import Skeleton from '@/components/Skeleton';
 import BottomBar from '@/components/TabLayout/BottomBar';
 
+import { tokenAtom } from '@/states/atoms';
+
 import { ArtWorkMediaType, ArtWorkType } from '@/types';
 
-const FILETYPES = ['JPG', 'PNG', 'GIF', 'MP4', 'MOV'];
+const FILETYPES = ['JPG', 'JPEG', 'PNG', 'GIF', 'MP4', 'MOV'];
 
 const initialArtWork: ArtWorkType = {
   title: '',
@@ -21,9 +25,17 @@ const initialArtWork: ArtWorkType = {
 };
 
 const Upload = () => {
+  const token = useRecoilValue(tokenAtom);
+  const { push } = useRouter();
   const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
   const [indexFileforModal, setIndexFileforModal] = useState<number>(0);
   const [artwork, setArtwork] = useState<ArtWorkType>(initialArtWork);
+
+  useEffect(() => {
+    if (!token) {
+      push('/login').then(() => toast('로그인이 필요합니다.'));
+    }
+  }, [token, push]);
 
   const singleUploadMedia = async (file: File, index: number) => {
     const formData = new FormData();
@@ -88,7 +100,7 @@ const Upload = () => {
       return newState;
     });
     await axios
-      .post('/api/artwork', artwork)
+      .post('/api/artworks', artwork)
       .then((res) => {
         if (res.status === 200) {
           toast.success('작품이 등록되었습니다.');

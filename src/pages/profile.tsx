@@ -1,18 +1,25 @@
 import Image from 'next/image';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { useRecoilValue } from 'recoil';
 
 import ResponsiveGrid from '@/components/Grid/ResponsiveGrid';
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 
+import { tokenAtom } from '@/states/atoms';
+
 const Profile = () => {
-  // const { data } = useSWR('/auth');
-  // const { push } = useRouter();
-  // if (!data) {
-  //   // eslint-disable-next-line
-  //   push('/login').then((r) => console.log(r));
-  // }
+  const token = useRecoilValue(tokenAtom);
+  const { push } = useRouter();
+
+  useEffect(() => {
+    if (!token) {
+      push('/login').then(() => toast('로그인이 필요합니다.'));
+    }
+  }, [token, push]);
   return (
     <>
       <Seo templateTitle='Profile' />
