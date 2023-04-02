@@ -1,9 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { useSetRecoilState } from 'recoil';
 import * as yup from 'yup';
 
 import ErrorMessageInput from '@/components/ErrorMessageInput';
@@ -11,6 +13,8 @@ import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
+
+import { tokenAtom } from '@/states/atoms';
 
 const loginSchema = yup.object().shape({
   username: yup.string().required('아이디를 입력하세요.'),
@@ -29,15 +33,22 @@ const Login = () => {
   } = useForm<loginInputs>({
     resolver: yupResolver(loginSchema),
   });
+
+  const { push } = useRouter();
+  const setToken = useSetRecoilState(tokenAtom);
   const onSubmit: SubmitHandler<loginInputs> = (data) =>
     !isSubmitting &&
     axios
       .post('/api/login', data)
       .then((res) => {
-        toast.success(res.data);
+        setToken(res.data.accessToken);
+        axios.defaults.headers.common[
+          'Authorization'
+        ] = `Bearer ${res.data.accessToken}`;
+        push('/').then(() => toast.success('로그인이 완료되었습니다.'));
       })
       .catch((err) => {
-        toast.error(err.response.data);
+        toast.error(err.response?.data);
       });
 
   return (
