@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { AiOutlineGoogle } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import { useSetRecoilState } from 'recoil';
 import * as yup from 'yup';
@@ -100,7 +101,7 @@ const Login = () => {
             href='https://art.be.megabrain.kr:443/oauth2/authorization/google'
             className='btn-secondary btn-wide btn'
           >
-            구글로 로그인
+            <AiOutlineGoogle /> &nbsp;구글로 로그인
           </Link>
         </form>
       </TabLayout>
