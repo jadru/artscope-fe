@@ -11,7 +11,7 @@ import Seo from '@/components/Seo';
 import Skeleton from '@/components/Skeleton';
 import BottomBar from '@/components/TabLayout/BottomBar';
 
-import { tokenAtom } from '@/states/atoms';
+import { tokenSelector } from '@/states/selectors';
 
 import { ArtWorkMediaType, ArtWorkType } from '@/types';
 
@@ -25,7 +25,7 @@ const initialArtWork: ArtWorkType = {
 };
 
 const Upload = () => {
-  const token = useRecoilValue(tokenAtom);
+  const token = useRecoilValue(tokenSelector);
   const { push } = useRouter();
   const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
   const [indexFileforModal, setIndexFileforModal] = useState<number>(0);
@@ -33,7 +33,7 @@ const Upload = () => {
 
   useEffect(() => {
     if (!token) {
-      push('/login').then(() => toast('로그인이 필요합니다.'));
+      push('/login').then(() => toast.warn('로그인이 필요합니다.'));
     }
   }, [token, push]);
 
@@ -44,6 +44,7 @@ const Upload = () => {
       .post('/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: token,
         },
       })
       .then((res) => {
@@ -100,11 +101,12 @@ const Upload = () => {
       return newState;
     });
     await axios
-      .post('/api/artworks', artwork)
+      .post('/api/artworks', artwork, { headers: { Authorization: token } })
       .then((res) => {
-        if (res.status === 200) {
-          toast.success('작품이 등록되었습니다.');
-          window.location.href = '/artwork';
+        if (res.status === 201) {
+          push('/artwork').then(() =>
+            toast.success('작품이 업로드되었습니다.')
+          );
         }
       })
       .catch((err) => {
