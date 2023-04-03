@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Image from 'next/image';
 import * as React from 'react';
 import { useRef } from 'react';
 import { useInfiniteQuery } from 'react-query';
@@ -36,38 +37,56 @@ export default function Playlist() {
   );
 
   return (
-    <div>
+    <>
       <Seo templateTitle='Artwork' />
-      <main>
-        <section>
-          <NavBar title='ArtPlatform' />
-          <TabLayout className='px-2' classNameChild='mt-2'>
-            {status === 'loading' && <p>불러오는 중</p>}
-            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-            {/** @ts-ignore **/}
-            {status === 'error' && <p>{error.message}</p>}
-            <ResponsiveGrid>
-              {status === 'success' &&
-                data.pages.map((group) =>
-                  group.artworks.map((artwork) => (
-                    <div key={artwork.id}>
-                      <p>{artwork.title}</p>
-                      <p>{artwork.description}</p>
-                      <p>
-                        {new Date(artwork.createdTime).toLocaleDateString(
-                          'ko-KR'
-                        )}
-                      </p>
+      <NavBar title='ArtPlatform' />
+      <TabLayout className='px-2' classNameChild='mt-2'>
+        {status === 'loading' && <p>불러오는 중</p>}
+        {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+        {/** @ts-ignore **/}
+        {status === 'error' && <p>{error.message}</p>}
+        <ResponsiveGrid>
+          {status === 'success' &&
+            data.pages.map((group) =>
+              group.artworks.map((artwork) => (
+                <div key={artwork.id} className='w-full border bg-base-100'>
+                  {artwork.thumbnail && (
+                    <div className='relative m-0 h-32 w-full p-0'>
+                      {artwork.thumbnail.mediaType === 'image' ? (
+                        artwork.thumbnail.mediaUrl !== 'string' && (
+                          <Image
+                            src={artwork.thumbnail.mediaUrl}
+                            alt={artwork.title}
+                            fill
+                            style={{
+                              margin: 0,
+                              padding: 0,
+                              objectFit: 'cover',
+                            }}
+                          />
+                        )
+                      ) : (
+                        <video
+                          className='m-0 w-full border object-cover p-0'
+                          src={artwork.thumbnail.mediaUrl}
+                        />
+                      )}
                     </div>
-                  ))
-                )}
-              <div ref={bottom} />
-              {isFetchingNextPage && <p>계속 불러오는 중</p>}
-            </ResponsiveGrid>
-          </TabLayout>
-          <BottomBar tab='artwork' />
-        </section>
-      </main>
-    </div>
+                  )}
+                  <div className=''>
+                    <h2 className='m-1.5 text-2xl font-light'>
+                      {artwork.title}
+                    </h2>
+                    <p className='m-1.5'> {artwork.description}</p>
+                  </div>
+                </div>
+              ))
+            )}
+          <div ref={bottom} />
+          {isFetchingNextPage && <p>계속 불러오는 중</p>}
+        </ResponsiveGrid>
+      </TabLayout>
+      <BottomBar tab='artwork' />
+    </>
   );
 }
