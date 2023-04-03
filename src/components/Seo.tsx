@@ -3,19 +3,17 @@ import { useRouter } from 'next/router';
 
 // !STARTERCONF Change these default meta
 const defaultMeta = {
-  title: 'ArtPlatform',
-  siteName: 'ArtPlatform',
-  description:
-    'A starter for Next.js, Tailwind CSS, and TypeScript with Absolute Import, Seo, Link component, pre-configured with Husky',
-  /** Without additional '/' on the end, e.g. https://theodorusclarence.com */
-  url: 'https://tsnext-tw.thcl.dev',
+  title: 'Artscope',
+  siteName: 'Artscope',
+  description: '새로운 예술 플랫폼',
+  url: 'https://www.artscope.kr',
   type: 'website',
   robots: 'follow, index',
   /**
    * No need to be filled, will be populated with openGraph function
    * If you wish to use a normal image, just specify the path below
    */
-  image: 'https://tsnext-tw.thcl.dev/images/large-og.png',
+  image: 'https://www.artscope.kr/large-og.png',
 };
 
 type SeoProps = {

@@ -14,7 +14,7 @@ const BottomBar: FunctionComponent<Props> = ({
     <div className={`pb-20 md:pb-28 ${dark ? 'bg-dark' : ''}`}>
       <div className='btm-nav z-30 md:bottom-8 md:left-1/2 md:-ml-48 md:w-96 md:rounded-2xl md:shadow-xl'>
         <Link
-          className={`${tab === 'playlist' ? 'text-emerald-600' : ''}`}
+          className={`${tab === 'playlist' ? 'text-blue-600' : ''}`}
           href='/'
         >
           <svg
@@ -32,7 +32,7 @@ const BottomBar: FunctionComponent<Props> = ({
           <span className='btm-nav-label'>Home</span>
         </Link>
         <Link
-          className={tab !== 'artwork' ? '' : 'text-emerald-600'}
+          className={tab !== 'artwork' ? '' : 'text-blue-600'}
           href='/artwork'
         >
           <svg
@@ -53,7 +53,7 @@ const BottomBar: FunctionComponent<Props> = ({
           <span className='btm-nav-label'>ArtWork</span>
         </Link>
         <Link
-          className={tab !== 'upload' ? '' : 'text-emerald-600'}
+          className={tab !== 'upload' ? '' : 'text-blue-600'}
           href='/upload'
         >
           <svg
@@ -72,13 +72,13 @@ const BottomBar: FunctionComponent<Props> = ({
           <span className='btm-nav-label'>Upload</span>
         </Link>
         <Link
-          className={tab !== 'profile' ? '' : 'text-emerald-600'}
+          className={tab !== 'profile' ? '' : 'text-blue-600'}
           href='/profile'
         >
           <label tabIndex={0} className='avatar'>
             <div
               className={`${
-                tab === 'profile' ? 'border-emerald-600' : ''
+                tab === 'profile' ? 'text-blue-600' : ''
               } w-5 rounded-full border`}
             >
               <Image

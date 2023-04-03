@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
 
@@ -5,7 +6,6 @@ import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
-import TopMenu from '@/components/TopMenu';
 
 /**
  * SVGR Support
@@ -21,33 +21,30 @@ export default function HomePage() {
       <Seo templateTitle='Playlist' />
       <main>
         <section>
-          <NavBar title='ArtPlatform' />
-          <TabLayout className='px-2' classNameChild='mt-2'>
-            <TopMenu />
-            <div className='flex flex-col'>
-              <div className='card image-full max-h-44 w-96 bg-base-100 shadow-xl'>
-                <video
+          <NavBar />
+          <TabLayout>
+            <div className='flex flex-col items-center px-2'>
+              <h1 className='py-6 text-3xl font-light'>Art Playlist</h1>
+              <Link
+                href='/exhibition/2023-summer-ks'
+                className='card image-full max-h-44 w-full bg-base-100 shadow-xl hover:bg-blend-lighten md:w-2/3'
+              >
+                <Image
                   className='max-h-48 w-full rounded-2xl object-cover'
-                  src={require('~/videos/banner_1.webm')}
-                  loop
-                  autoPlay
-                  muted
+                  src={require('~/images/exhibition/2023-summer/1.jpeg')}
+                  alt='2023 금샘 미술관 전시 작품 공모'
+                  fill
+                  style={{
+                    objectFit: 'cover',
+                  }}
                 />
-                <div className='card-body'>
+                <div className='card-body h-full justify-center'>
                   <h2 className='card-title'>
                     2023 금샘 미술관 전시 작품 공모
                   </h2>
                   <p>🥤 접수기간 : 2023. 04.01 - 05. 30</p>
-                  <div className='card-actions justify-end'>
-                    <Link
-                      className='btn-primary btn'
-                      href='/exhibition/2023-summer-ks'
-                    >
-                      전시 알아보기
-                    </Link>
-                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
           </TabLayout>
           <BottomBar tab='playlist' />
