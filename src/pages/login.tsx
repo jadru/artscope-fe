@@ -1,5 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -15,7 +16,9 @@ import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 
-import { tokenAtom } from '@/states/atoms';
+import { decodedTokenAtom, tokenAtom } from '@/states/atoms';
+
+import { decodedTokenType } from '@/types';
 
 const loginSchema = yup.object().shape({
   username: yup.string().required('아이디를 입력하세요.'),
@@ -37,13 +40,21 @@ const Login = () => {
 
   const { push } = useRouter();
   const setToken = useSetRecoilState(tokenAtom);
+  const setDecodedToken = useSetRecoilState(decodedTokenAtom);
   const onSubmit: SubmitHandler<loginInputs> = (data) =>
     !isSubmitting &&
     axios
       .post('/api/login', data)
       .then((res) => {
-        setToken(res.data.accessToken);
-        push('/').then(() => toast.success('로그인이 완료되었습니다.'));
+        const token = res.data.accessToken;
+        const decodedToken = jwt_decode(token) as decodedTokenType;
+        setToken(token);
+        setDecodedToken(decodedToken);
+        push('/').then(() => {
+          toast.success('로그인이 완료되었습니다.');
+          if (decodedToken.auth === 'ROLE_USER')
+            push('/artist/info').then(() => toast('작가 정보를 입력해주세요.'));
+        });
       })
       .catch((err) => {
         toast.error(err.response?.data);
@@ -88,21 +99,19 @@ const Login = () => {
                 {errors.password ? errors.password.message : ''}
               </ErrorMessageInput>
             </div>
-          </div>
-          <div className='mt-4 flex flex-col space-y-1.5'>
-            <button className='btn-primary btn-wide btn' type='submit'>
+            <button className='btn-primary btn-block btn mt-4' type='submit'>
               로그인
             </button>
-            <Link className='btn-primary btn-wide btn' href='/signup'>
+            <Link className='btn-primary btn-block btn mt-2' href='/signup'>
               회원가입
             </Link>
+            <Link
+              href='https://art.be.megabrain.kr:443/oauth2/authorization/google'
+              className='btn-secondary btn-block btn mt-2'
+            >
+              <AiOutlineGoogle /> &nbsp;구글로 로그인
+            </Link>
           </div>
-          <Link
-            href='https://art.be.megabrain.kr:443/oauth2/authorization/google'
-            className='btn-secondary btn-wide btn'
-          >
-            <AiOutlineGoogle /> &nbsp;구글로 로그인
-          </Link>
         </form>
       </TabLayout>
       <BottomBar tab='profile' />

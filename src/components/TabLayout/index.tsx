@@ -16,7 +16,11 @@ const TabLayout: FunctionComponent<Props> = ({
   <div
     className={`flex h-full w-full flex-col items-center justify-center ${className}`}
   >
-    <div className={`${paddingTop ? 'pt-16' : ''} ${classNameChild}`}>
+    <div
+      className={`${
+        paddingTop ? 'pt-16' : ''
+      } ${classNameChild} w-screen max-w-4xl px-2 md:px-4`}
+    >
       {children}
     </div>
   </div>

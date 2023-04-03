@@ -43,3 +43,9 @@ export type ArtWorkApiResponseType = {
     totalElements: number;
   };
 };
+
+export type decodedTokenType = {
+  sub: string;
+  exp: number;
+  auth: string;
+};

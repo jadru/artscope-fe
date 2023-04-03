@@ -40,7 +40,7 @@ export default function Playlist() {
     <>
       <Seo templateTitle='Artwork' />
       <NavBar title='ArtPlatform' />
-      <TabLayout className='px-2' classNameChild='mt-2'>
+      <TabLayout classNameChild='mt-2'>
         {status === 'loading' && <p>불러오는 중</p>}
         {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
         {/** @ts-ignore **/}
