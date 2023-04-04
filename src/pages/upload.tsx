@@ -2,17 +2,15 @@ import axios from 'axios';
 import Lottie from 'lottie-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { toast } from 'react-toastify';
-import { useRecoilValue } from 'recoil';
 
 import Seo from '@/components/Seo';
 import Skeleton from '@/components/Skeleton';
 import BottomBar from '@/components/TabLayout/BottomBar';
 
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
-import { tokenSelector } from '@/states/selectors';
 
 import { ArtWorkMediaType, ArtWorkType } from '@/types';
 
@@ -26,17 +24,11 @@ const initialArtWork: ArtWorkType = {
 };
 
 const Upload = () => {
-  const token = useRecoilValue(tokenSelector);
   const { push } = useRouter();
+
   const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
   const [indexFileforModal, setIndexFileforModal] = useState<number>(0);
   const [artwork, setArtwork] = useState<ArtWorkType>(initialArtWork);
-
-  useEffect(() => {
-    if (!token) {
-      push('/login').then(() => toast.warn('로그인이 필요합니다.'));
-    }
-  }, [token, push]);
 
   const singleUploadMedia = async (file: File, index: number) => {
     const formData = new FormData();
@@ -45,14 +37,12 @@ const Upload = () => {
       .post('/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: token,
         },
       })
       .then((res) => {
         setFileUrls((prev) => {
           const newState = [...prev];
-          newState[index].mediaUrl =
-            NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + res.data;
+          newState[index].mediaUrl = res.data;
           return newState;
         });
       })
@@ -97,12 +87,13 @@ const Upload = () => {
         newState.mediaUrls?.push({
           mediaType: file.mediaType,
           mediaUrl: file.mediaUrl,
+          description: file.description,
         });
       });
       return newState;
     });
     await axios
-      .post('/api/artworks', artwork, { headers: { Authorization: token } })
+      .post('/api/artworks', artwork)
       .then((res) => {
         if (res.status === 201) {
           push('/artwork').then(() =>
@@ -176,7 +167,11 @@ const Upload = () => {
                 />
               ) : (
                 <video
-                  src={fileUrls[indexFileforModal].mediaUrl}
+                  src={
+                    NEXT_PUBLIC_MEDIA_STORAGE_URL +
+                    '/' +
+                    fileUrls[indexFileforModal].mediaUrl
+                  }
                   width={300}
                   autoPlay
                   loop
@@ -221,7 +216,7 @@ const Upload = () => {
             </div>
           </div>
           <p className='mb-8 text-4xl font-bold'>작품 업로드</p>
-          <div className='flex grid w-[302px] grid-cols-3 flex-col items-center justify-center space-y-0 space-x-0'>
+          <div className='grid w-[302px] grid-cols-3 flex-col items-center justify-center space-y-0 space-x-0'>
             {fileUrls &&
               fileUrls.length > 0 &&
               fileUrls.map((file, index) =>
@@ -255,7 +250,9 @@ const Upload = () => {
                       ) : (
                         <video
                           className='m-0 h-24 w-24 border object-cover p-0'
-                          src={file.mediaUrl}
+                          src={
+                            NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + file.mediaUrl
+                          }
                         />
                       )}
                     </div>

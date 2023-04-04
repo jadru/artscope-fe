@@ -19,8 +19,12 @@ const nextConfig = {
   },
 
   images: {
-    domains: ['media-xi-art-storage.s3.ap-northeast-2.amazonaws.com'],
+    domains: ['d14sxnpwbfro1f.cloudfront.net'],
+    loader: 'custom',
+    loaderFile: './src/utils/imageLoader.ts',
+    minimumCacheTTL: 60,
   },
+
   reactStrictMode: true,
   swcMinify: true,
   output: 'standalone',

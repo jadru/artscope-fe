@@ -6,4 +6,4 @@ export const showLogger = isLocal
   : process.env.NEXT_PUBLIC_SHOW_LOGGER === 'true' ?? false;
 
 export const NEXT_PUBLIC_MEDIA_STORAGE_URL =
-  'https://media-xi-art-storage.s3.ap-northeast-2.amazonaws.com';
+  'https://d14sxnpwbfro1f.cloudfront.net';

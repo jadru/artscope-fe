@@ -30,8 +30,8 @@ export default function HomePage() {
                 className='card image-full max-h-44 w-full bg-base-100 shadow-xl hover:bg-blend-lighten md:w-2/3'
               >
                 <Image
-                  className='max-h-48 w-full rounded-2xl object-cover'
-                  src={require('~/images/exhibition/2023-summer/1.jpeg')}
+                  className='h-full w-full rounded-2xl object-cover'
+                  src='static/exhibition/2023-01-03.jpeg'
                   alt='2023 금샘 미술관 전시 작품 공모'
                   fill
                   style={{

@@ -4,10 +4,10 @@ import jwt_decode from 'jwt-decode';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { Cookies } from 'react-cookie';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineGoogle } from 'react-icons/ai';
 import { toast } from 'react-toastify';
-import { useSetRecoilState } from 'recoil';
 import * as yup from 'yup';
 
 import ErrorMessageInput from '@/components/ErrorMessageInput';
@@ -16,9 +16,7 @@ import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 
-import { decodedTokenAtom, tokenAtom } from '@/states/atoms';
-
-import { decodedTokenType } from '@/types';
+import jxios from '@/utils/jxios';
 
 const loginSchema = yup.object().shape({
   username: yup.string().required('아이디를 입력하세요.'),
@@ -37,22 +35,27 @@ const Login = () => {
   } = useForm<loginInputs>({
     resolver: yupResolver(loginSchema),
   });
-
+  const cookies = new Cookies();
   const { push } = useRouter();
-  const setToken = useSetRecoilState(tokenAtom);
-  const setDecodedToken = useSetRecoilState(decodedTokenAtom);
   const onSubmit: SubmitHandler<loginInputs> = (data) =>
     !isSubmitting &&
-    axios
+    jxios
       .post('/api/login', data)
       .then((res) => {
-        const token = res.data.accessToken;
-        const decodedToken = jwt_decode(token) as decodedTokenType;
-        setToken(token);
-        setDecodedToken(decodedToken);
+        const { accessToken, refreshToken } = res.data;
+        const decodedRefreshToken: { exp: number } = jwt_decode(refreshToken);
+        const decodedAccessToken: { auth: string } = jwt_decode(accessToken);
+        cookies.set('refreshToken', refreshToken, {
+          expires: new Date(decodedRefreshToken.exp * 1000),
+        });
+        axios.defaults.headers.common[
+          'Authorization'
+        ] = `Bearer ${accessToken}`;
         push('/').then(() => {
           toast.success('로그인이 완료되었습니다.');
-          if (decodedToken.auth === 'ROLE_USER')
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          if (decodedAccessToken.auth === 'ROLE_USER')
             push('/artist/info').then(() => toast('작가 정보를 입력해주세요.'));
         });
       })

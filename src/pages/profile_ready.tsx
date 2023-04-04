@@ -1,25 +1,25 @@
 import Image from 'next/image';
-import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { toast } from 'react-toastify';
-import { useRecoilValue } from 'recoil';
+import useSWR from 'swr';
 
 import ResponsiveGrid from '@/components/Grid/ResponsiveGrid';
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 
-import { tokenAtom } from '@/states/atoms';
+import jxios from '@/utils/jxios';
 
 const Profile = () => {
-  const token = useRecoilValue(tokenAtom);
-  const { push } = useRouter();
+  const fetcher = (url: string) =>
+    jxios
+      .get(url)
+      .then((res) => res.data)
+      .catch(() => toast.error('프로필을 불러오는데 실패했습니다.'));
+  const { data, error, isLoading } = useSWR('/api/members/profile', fetcher);
 
-  useEffect(() => {
-    if (!token) {
-      push('/login').then(() => toast.warn('로그인이 필요합니다.'));
-    }
-  }, [token, push]);
+  if (error) return <div>failed to load</div>;
+  if (isLoading) return <div>loading...</div>;
   return (
     <>
       <Seo templateTitle='Profile' />
@@ -42,7 +42,7 @@ const Profile = () => {
             </div>
           </div>
           <div>
-            <p>adsfasdfasdfasdfasdfasdfasdfasdf</p>
+            <p>{data}</p>
             <p>asdfasdffdassdfafdsafasd</p>
           </div>
           <ResponsiveGrid>
