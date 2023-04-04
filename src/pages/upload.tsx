@@ -11,6 +11,7 @@ import Seo from '@/components/Seo';
 import Skeleton from '@/components/Skeleton';
 import BottomBar from '@/components/TabLayout/BottomBar';
 
+import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 import { tokenSelector } from '@/states/selectors';
 
 import { ArtWorkMediaType, ArtWorkType } from '@/types';
@@ -51,7 +52,7 @@ const Upload = () => {
         setFileUrls((prev) => {
           const newState = [...prev];
           newState[index].mediaUrl =
-            process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + res.data;
+            NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + res.data;
           return newState;
         });
       })
