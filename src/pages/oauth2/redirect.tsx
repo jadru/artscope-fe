@@ -27,8 +27,8 @@ const RedirectOAuth2 = () => {
           toast.success('로그인이 완료되었습니다.');
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          if (decodedAccessToken.auth === 'ROLE_USER')
-            push('/artist/info').then(() => toast('작가 정보를 입력해주세요.'));
+          if (decodedAccessToken.auth === 'ROLE_USER') ㅌ;
+          push('/artist/info').then(() => toast('작가 정보를 입력해주세요.'));
         });
       });
     } catch (err) {
