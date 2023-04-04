@@ -14,7 +14,7 @@ const Summer2023KS = () => (
     <NavBar title='ArtPlatform' black={true} />
     <TabLayout className='m-0 w-full bg-dark p-0 pt-0' paddingTop={true}>
       <Image
-        src='static/exhibition/2023-01-03.jpeg'
+        src='static/exhibition/2023-01-02.jpeg'
         fill
         alt='background for exhibition'
         className='fixed opacity-30'
