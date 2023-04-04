@@ -1,9 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useRecoilValue } from 'recoil';
 import * as yup from 'yup';
 
 import ErrorMessageInput from '@/components/ErrorMessageInput';
@@ -11,7 +9,7 @@ import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 
-import { tokenSelector } from '@/states/selectors';
+import jxios from '@/utils/jxios';
 
 interface ArtistForm {
   introduction: string;
@@ -28,7 +26,6 @@ const artistSchema = yup.object().shape({
 });
 
 const ArtistInfo = () => {
-  const token = useRecoilValue(tokenSelector);
   const { push } = useRouter();
   const {
     register,
@@ -40,12 +37,8 @@ const ArtistInfo = () => {
 
   const onArtistInfoSubmit = (data: ArtistForm) => {
     !isSubmitting &&
-      axios
-        .post('/api/members/artist', data, {
-          headers: {
-            Authorization: token,
-          },
-        })
+      jxios
+        .post('/api/members/artist', data)
         .then(() => {
           push('/profile').then(() =>
             toast.success('아티스트 정보가 입력되었습니다.')

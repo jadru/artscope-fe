@@ -10,6 +10,7 @@ export type ArtWorkType = {
   mediaUrls?: {
     mediaType: MediaType;
     mediaUrl: string;
+    description: string;
   }[];
   title: string;
   visible: boolean;
@@ -49,3 +50,23 @@ export type decodedTokenType = {
   exp: number;
   auth: string;
 };
+
+export type profileApiType = {
+  username: string;
+  name: string;
+  email: string;
+  picture: string;
+  oauthProvider: null | 'google' | 'naver';
+  activated: boolean;
+  artistStatus: artistStatusType;
+  snsUrl: string;
+  websiteUrl: string;
+  introduction: string;
+  history: string;
+  authrities: roleType[];
+  createdTime: Date;
+  updatedTime: Date | null;
+};
+
+export type artistStatusType = 'NONE' | 'PENDING' | 'APPROVED' | 'REJECTED';
+export type roleType = 'ROLE_USER' | 'ROLE_ARTIST' | 'ROLE_ADMIN';
