@@ -8,8 +8,9 @@ import jxios from '@/utils/jxios';
 
 const RedirectOAuth2 = () => {
   const { push, query } = useRouter();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const cookies = new Cookies();
   useEffect(() => {
-    const cookies = new Cookies();
     if (query.token)
       try {
         jxios
@@ -44,7 +45,7 @@ const RedirectOAuth2 = () => {
         else message = String(err);
         toast.error(message);
       }
-  }, [push, query]);
+  }, [cookies, push, query]);
 
   return <div></div>;
 };
