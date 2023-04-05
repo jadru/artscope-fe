@@ -25,26 +25,31 @@ export default function HomePage() {
           <TabLayout>
             <div className='flex flex-col items-center px-2'>
               <h1 className='py-6 text-3xl font-light'>Art Playlist</h1>
-              <Link
-                href='/exhibition/2023-summer-ks'
-                className='card image-full max-h-44 w-full bg-base-100 shadow-xl hover:bg-blend-lighten md:w-2/3'
-              >
-                <Image
-                  className='h-full w-full rounded-2xl object-cover'
-                  src='static/exhibition/2023-01-03.jpeg'
-                  alt='2023 금샘 미술관 전시 작품 공모'
-                  fill
-                  style={{
-                    objectFit: 'cover',
-                  }}
-                />
-                <div className='card-body h-full justify-center'>
+              <div className='card w-96 bg-base-100 shadow-xl'>
+                <figure className='px-10 pt-10'>
+                  <Image
+                    className='h-full rounded-2xl'
+                    src='static/exhibition/2023-01-01.jpeg'
+                    alt='2023 금샘 미술관 전시 작품 공모'
+                    width={384}
+                    height={100}
+                  />
+                </figure>
+                <div className='card-body items-center text-center'>
                   <h2 className='card-title'>
                     2023 금샘 미술관 전시 작품 공모
                   </h2>
-                  <p>🥤 접수기간 : 2023. 04.01 - 05. 30</p>
+                  <p>2023. 04.01 - 05. 30</p>
+                  <div className='card-actions'>
+                    <Link
+                      href='/exhibition/2023-summer-ks'
+                      className='btn-primary btn'
+                    >
+                      더 알아보기
+                    </Link>
+                  </div>
                 </div>
-              </Link>
+              </div>
             </div>
           </TabLayout>
           <BottomBar tab='playlist' />
