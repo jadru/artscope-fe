@@ -27,6 +27,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     const cookies = new Cookies();
     if (!isTokenRefreshing && router.asPath !== '/oauth2/redirect') {
+      // eslint-disable-next-line no-console
+      console.log(
+        'refreshing token...',
+        router.asPath,
+        cookies.get('refreshToken')
+      );
       if (
         !jxios.defaults.headers.common['Authorization'] &&
         cookies.get('refreshToken')
