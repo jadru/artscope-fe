@@ -282,7 +282,7 @@ const Upload = () => {
             />
             <div className='form-control mb-2 w-[302px] '>
               <label className='label cursor-pointer'>
-                <span className='label-text'>내 작품 숨기기</span>
+                <span className='label-text'>내 작품 공개</span>
                 <input
                   type='checkbox'
                   className='toggle-success toggle'

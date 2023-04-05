@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -44,19 +43,18 @@ const Login = () => {
       .then((res) => {
         const { accessToken, refreshToken } = res.data;
         const decodedRefreshToken: { exp: number } = jwt_decode(refreshToken);
-        const decodedAccessToken: { auth: string } = jwt_decode(accessToken);
         cookies.set('refreshToken', refreshToken, {
           expires: new Date(decodedRefreshToken.exp * 1000),
         });
-        axios.defaults.headers.common[
+        jxios.defaults.headers.common[
           'Authorization'
         ] = `Bearer ${accessToken}`;
         push('/').then(() => {
           toast.success('로그인이 완료되었습니다.');
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          if (decodedAccessToken.auth === 'ROLE_USER')
-            push('/artist/info').then(() => toast('작가 정보를 입력해주세요.'));
+          // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // // @ts-ignore
+          // if (decodedAccessToken.auth === 'ROLE_USER')
+          //   push('/artist/info').then(() => toast('작가 정보를 입력해주세요.'));
         });
       })
       .catch((err) => {

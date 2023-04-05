@@ -69,4 +69,8 @@ export type profileApiType = {
 };
 
 export type artistStatusType = 'NONE' | 'PENDING' | 'APPROVED' | 'REJECTED';
-export type roleType = 'ROLE_USER' | 'ROLE_ARTIST' | 'ROLE_ADMIN';
+export type roleType =
+  | 'ROLE_GUEST'
+  | 'ROLE_USER'
+  | 'ROLE_ARTIST'
+  | 'ROLE_ADMIN';
