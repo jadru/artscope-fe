@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   useEffect(() => {
     const cookies = new Cookies();
-    if (!isTokenRefreshing) {
+    if (!isTokenRefreshing && router.asPath !== '/oauth2/redirect') {
       if (
         !jxios.defaults.headers.common['Authorization'] &&
         cookies.get('refreshToken')
