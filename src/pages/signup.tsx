@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -11,6 +10,8 @@ import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
+
+import jxios from '@/utils/jxios';
 
 const loginSchema = yup.object().shape({
   username: yup.string().required('아이디를 입력하세요.'),
@@ -49,8 +50,10 @@ const Signup = () => {
   const onSubmit: SubmitHandler<loginInputs> = (data) =>
     !isSubmitting &&
     delete data.passwordCheck &&
-    axios
-      .post('/api/members', data)
+    jxios
+      .post('/api/members', data, {
+        withCredentials: false,
+      })
       .then(() => {
         push('/login').then(() => toast.success('회원가입이 완료되었습니다.'));
       })

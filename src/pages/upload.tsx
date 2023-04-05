@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Lottie from 'lottie-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -11,6 +10,7 @@ import Skeleton from '@/components/Skeleton';
 import BottomBar from '@/components/TabLayout/BottomBar';
 
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
+import jxios from '@/utils/jxios';
 
 import { ArtWorkMediaType, ArtWorkType } from '@/types';
 
@@ -33,7 +33,7 @@ const Upload = () => {
   const singleUploadMedia = async (file: File, index: number) => {
     const formData = new FormData();
     formData.append('multipartFile', file);
-    axios
+    jxios
       .post('/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -92,7 +92,7 @@ const Upload = () => {
       });
       return newState;
     });
-    await axios
+    await jxios
       .post('/api/artworks', artwork)
       .then((res) => {
         if (res.status === 201) {
@@ -295,6 +295,7 @@ const Upload = () => {
             <button className='btn-primary btn w-[302px]' type='submit'>
               작품 업로드
             </button>
+            <p>작품을 업로드하면 2023 금샘미술관 작품 공모에 공모됩니다.</p>
           </form>
         </div>
       )}

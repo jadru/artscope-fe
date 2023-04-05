@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Image from 'next/image';
 import * as React from 'react';
 import { useRef } from 'react';
@@ -10,11 +9,13 @@ import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 
+import jxios from '@/utils/jxios';
+
 import { ArtWorkApiResponseType } from '@/types';
 
 const OFFSET = 10;
 const getArtWorkList = ({ pageParam = 0 }) =>
-  axios
+  jxios
     .get('/api/artworks', {
       params: {
         size: OFFSET,
