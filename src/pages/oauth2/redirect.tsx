@@ -8,9 +8,8 @@ import jxios from '@/utils/jxios';
 
 const RedirectOAuth2 = () => {
   const { push, query } = useRouter();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const cookies = new Cookies();
   useEffect(() => {
+    const cookies = new Cookies();
     if (query.token)
       jxios
         .post('/api/refresh', query.token, {
@@ -25,8 +24,6 @@ const RedirectOAuth2 = () => {
           cookies.set('refreshToken', refreshToken, {
             expires: new Date(decodedRefreshToken.exp * 1000),
           });
-          // eslint-disable-next-line no-console
-          console.log(refreshToken);
           jxios.defaults.headers.common[
             'Authorization'
           ] = `Bearer ${accessToken}`;
@@ -42,7 +39,7 @@ const RedirectOAuth2 = () => {
           toast.error(err.message);
           push('/').then(() => toast.error('로그인에 실패했습니다.'));
         });
-  }, [cookies, push, query]);
+  }, [push, query]);
 
   return <div></div>;
 };
