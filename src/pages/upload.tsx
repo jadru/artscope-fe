@@ -291,10 +291,23 @@ const Upload = () => {
                 />
               </label>
             </div>
-            <button className='btn-primary btn w-[302px]' type='submit'>
+            <p className='text-sm font-light text-slate-600'>
+              작품을 업로드하면 2023 금샘미술관 전시에 공모됩니다.
+            </p>
+            <button
+              className='btn-primary btn w-[302px]'
+              type='submit'
+              disabled={
+                fileUrls.reduce(
+                  (acc, cur) => cur.mediaUrl === '' || acc,
+                  false
+                ) ||
+                !artwork.title ||
+                !artwork.description
+              }
+            >
               작품 업로드
             </button>
-            <p>작품을 업로드하면 2023 금샘미술관 작품 공모에 공모됩니다.</p>
           </form>
         </div>
       )}
