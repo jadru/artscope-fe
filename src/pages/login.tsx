@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import jwt_decode from 'jwt-decode';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Cookies } from 'react-cookie';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineGoogle } from 'react-icons/ai';
@@ -34,8 +34,17 @@ const Login = () => {
   } = useForm<loginInputs>({
     resolver: yupResolver(loginSchema),
   });
-  const cookies = new Cookies();
-  const { push } = useRouter();
+  const cookies = useMemo(() => new Cookies(), []);
+  const { push, asPath } = useRouter();
+  useEffect(() => {
+    if (
+      cookies.get('refreshToken') ||
+      jxios.defaults.headers.common['Authorization']
+    ) {
+      push('/').then(() => toast.success('이미 로그인 되어있습니다.'));
+    }
+  }, [cookies, push, asPath]);
+
   const onSubmit: SubmitHandler<loginInputs> = (data) =>
     !isSubmitting &&
     jxios
