@@ -11,6 +11,7 @@ const RedirectOAuth2 = () => {
     const decodedToken: { exp: number } = jwt_decode(token);
     await cookies.set('refreshToken', token, {
       expires: new Date(decodedToken.exp * 1000),
+      path: '/',
     });
     await push('/');
   };
