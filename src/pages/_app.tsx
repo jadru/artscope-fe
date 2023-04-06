@@ -71,7 +71,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         }
       }
     }
-  }, [router.events, router, isTokenRefreshing]);
+  }, [router, isTokenRefreshing, router.asPath]);
   return (
     <CookiesProvider>
       <ToastContainer />
