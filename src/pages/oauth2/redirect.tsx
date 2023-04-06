@@ -1,4 +1,3 @@
-import jwt_decode from 'jwt-decode';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { Cookies } from 'react-cookie';
@@ -20,9 +19,9 @@ const RedirectOAuth2 = () => {
         })
         .then((res) => {
           const { accessToken, refreshToken } = res.data;
-          const decodedRefreshToken: { exp: number } = jwt_decode(refreshToken);
+          // const decodedRefreshToken: { exp: number } = jwt_decode(refreshToken);
           cookies.set('refreshToken', refreshToken, {
-            expires: new Date(decodedRefreshToken.exp * 1000),
+            // expires: new Date(decodedRefreshToken.exp * 1000),
           });
           jxios.defaults.headers.common[
             'Authorization'
