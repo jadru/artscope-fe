@@ -3,7 +3,7 @@ import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
-import { Cookies } from 'react-cookie';
+import { Cookies, CookiesProvider } from 'react-cookie';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -73,7 +73,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [router.events, router, isTokenRefreshing]);
   return (
-    <>
+    <CookiesProvider>
       <ToastContainer />
       <QueryClientProvider client={queryClient}>
         <Script
@@ -96,7 +96,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <Component {...pageProps} />
       </QueryClientProvider>
-    </>
+    </CookiesProvider>
   );
 }
 
