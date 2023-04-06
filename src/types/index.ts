@@ -7,7 +7,7 @@ export type ArtWorkMediaType = {
 
 export type ArtWorkType = {
   description: string;
-  mediaUrls?: {
+  mediaUrls: {
     mediaType: MediaType;
     mediaUrl: string;
     description: string;
