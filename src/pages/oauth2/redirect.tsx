@@ -15,7 +15,6 @@ const RedirectOAuth2 = () => {
       jxios
         .post('/api/refresh', query.token, {
           withCredentials: false,
-          data: query.token,
           headers: {
             'Content-Type': 'text/plain',
           },
@@ -26,6 +25,8 @@ const RedirectOAuth2 = () => {
           cookies.set('refreshToken', refreshToken, {
             expires: new Date(decodedRefreshToken.exp * 1000),
           });
+          // eslint-disable-next-line no-console
+          console.log(refreshToken);
           jxios.defaults.headers.common[
             'Authorization'
           ] = `Bearer ${accessToken}`;
