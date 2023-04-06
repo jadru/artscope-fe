@@ -25,11 +25,9 @@ const initialArtWork: ArtWorkType = {
 
 const Upload = () => {
   const { push } = useRouter();
-
   const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
   const [indexFileforModal, setIndexFileforModal] = useState<number>(0);
   const [artwork, setArtwork] = useState<ArtWorkType>(initialArtWork);
-
   const singleUploadMedia = async (file: File, index: number) => {
     const formData = new FormData();
     formData.append('multipartFile', file);
@@ -79,22 +77,23 @@ const Upload = () => {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await setArtwork((prev) => {
-      const newState: ArtWorkType = { ...prev };
-      fileUrls.forEach((file) => {
-        newState.mediaUrls?.push({
-          mediaType: file.mediaType,
-          mediaUrl: file.mediaUrl,
-          description: file.description,
-        });
+    const newState = { ...artwork };
+    newState.mediaUrls = [];
+    fileUrls.forEach((media) => {
+      newState.mediaUrls.push({
+        mediaType: media.mediaType,
+        mediaUrl: media.mediaUrl,
+        description: media.description,
       });
-      return newState;
     });
-    await jxios
-      .post('/api/artworks', artwork)
+    jxios
+      .post('/api/artworks', newState)
       .then((res) => {
+        setFileUrls([]);
+        setIndexFileforModal(0);
+        setArtwork(initialArtWork);
         if (res.status === 201) {
           push('/artwork').then(() =>
             toast.success('작품이 업로드되었습니다.')

@@ -12,39 +12,35 @@ const RedirectOAuth2 = () => {
   const cookies = new Cookies();
   useEffect(() => {
     if (query.token)
-      try {
-        jxios
-          .post('/api/refresh', query.token, {
-            withCredentials: false,
-            data: query.token,
-            headers: {
-              'Content-Type': 'text/plain',
-            },
-          })
-          .then((res) => {
-            const { accessToken, refreshToken } = res.data;
-            const decodedRefreshToken: { exp: number } =
-              jwt_decode(refreshToken);
-            cookies.set('refreshToken', refreshToken, {
-              expires: new Date(decodedRefreshToken.exp * 1000),
-            });
-            jxios.defaults.headers.common[
-              'Authorization'
-            ] = `Bearer ${accessToken}`;
-            push('/').then(() => {
-              toast.success('로그인이 완료되었습니다.');
-              // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // // @ts-ignore
-              // if (decodedAccessToken.auth === 'ROLE_USER')
-              //   push('/artist/info').then(() => toast('작가 정보를 입력해주세요.'));
-            });
+      jxios
+        .post('/api/refresh', query.token, {
+          withCredentials: false,
+          data: query.token,
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        })
+        .then((res) => {
+          const { accessToken, refreshToken } = res.data;
+          const decodedRefreshToken: { exp: number } = jwt_decode(refreshToken);
+          cookies.set('refreshToken', refreshToken, {
+            expires: new Date(decodedRefreshToken.exp * 1000),
           });
-      } catch (err) {
-        let message;
-        if (err instanceof Error) message = err.message;
-        else message = String(err);
-        toast.error(message);
-      }
+          jxios.defaults.headers.common[
+            'Authorization'
+          ] = `Bearer ${accessToken}`;
+          push('/').then(() => {
+            toast.success('로그인이 완료되었습니다.');
+            // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // // @ts-ignore
+            // if (decodedAccessToken.auth === 'ROLE_USER')
+            //   push('/artist/info').then(() => toast('작가 정보를 입력해주세요.'));
+          });
+        })
+        .catch((err) => {
+          toast.error(err.message);
+          push('/').then(() => toast.error('로그인에 실패했습니다.'));
+        });
   }, [cookies, push, query]);
 
   return <div></div>;
