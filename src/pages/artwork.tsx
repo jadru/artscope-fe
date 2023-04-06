@@ -1,7 +1,10 @@
+import jwt_decode from 'jwt-decode';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import * as React from 'react';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
+import { toast } from 'react-toastify';
 
 import ResponsiveGrid from '@/components/Grid/ResponsiveGrid';
 import Seo from '@/components/Seo';
@@ -25,6 +28,8 @@ const getArtWorkList = ({ pageParam = 0 }) =>
     .then((res) => res?.data);
 export default function Playlist() {
   const bottom = useRef(null);
+  const router = useRouter();
+  const [isAdmin, setIsAdmin] = useState(false);
   const { data, error, isFetchingNextPage, status } = useInfiniteQuery(
     'artworkList', // data의 이름
     getArtWorkList,
@@ -36,7 +41,16 @@ export default function Playlist() {
       },
     }
   );
-
+  useEffect(() => {
+    if (jxios.defaults.headers.common.Authorization) {
+      const decoded: { auth: string } = jwt_decode(
+        jxios.defaults.headers.common.Authorization as string
+      );
+      if (decoded.auth.includes('ROLE_ADMIN')) {
+        setIsAdmin(true);
+      }
+    }
+  }, []);
   return (
     <>
       <Seo templateTitle='Artwork' />
@@ -79,6 +93,23 @@ export default function Playlist() {
                       {artwork.title}
                     </h2>
                     <p className='m-1.5'> {artwork.description}</p>
+                    {isAdmin && (
+                      <button
+                        onClick={() =>
+                          jxios
+                            .delete('/api/artworks/' + artwork.id)
+                            .then(() => {
+                              router.replace(router.asPath).then(() => {
+                                toast.success(
+                                  artwork.title + '이 삭제되었습니다.'
+                                );
+                              });
+                            })
+                        }
+                      >
+                        delete
+                      </button>
+                    )}
                   </div>
                 </div>
               ))
