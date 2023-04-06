@@ -5,21 +5,17 @@ import { Cookies } from 'react-cookie';
 
 const RedirectOAuth2 = () => {
   const { push, query } = useRouter();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const saveToken = async (token: string) => {
-    const cookies = new Cookies();
-    const decodedToken: { exp: number } = jwt_decode(token);
-    await cookies.set('refreshToken', token, {
-      expires: new Date(decodedToken.exp * 1000),
-      path: '/',
-    });
-    await push('/');
-  };
   useEffect(() => {
     if (query.token) {
-      saveToken(query.token as string);
+      const cookies = new Cookies();
+      const decodedToken: { exp: number } = jwt_decode(query.token as string);
+      cookies.set('refreshToken', query.token, {
+        expires: new Date(decodedToken.exp * 1000),
+        path: '/',
+      });
+      push('/');
     }
-  }, [saveToken, query.token]);
+  }, [push, query.token]);
 
   return <div></div>;
 };
