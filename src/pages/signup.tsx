@@ -63,7 +63,7 @@ const Signup = () => {
 
   return (
     <>
-      <Seo templateTitle='Login' />
+      <Seo templateTitle='Signup' />
       <NavBar title='ArtPlatform' />
       <TabLayout>
         <form

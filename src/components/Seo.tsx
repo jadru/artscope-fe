@@ -5,7 +5,8 @@ import { useRouter } from 'next/router';
 const defaultMeta = {
   title: 'Artscope',
   siteName: 'Artscope',
-  description: '새로운 예술 플랫폼',
+  description:
+    '시각언어와 예술, 작품들의 공간적 만남과 변화를 온라인 공간을 통해 연결 하고자 하는 콘텐츠 전용 플랫폼입니다. 개방적 플랫폼을 통해 변화와 혁신들을 직접 눈으로 살펴볼 수 있는 계기를 마련하고자 합니다. 누구나 자신의 고유한 작업을 직접 포스팅하고 테마와 스토리를 공유할 수 있는 공간이기도 하며 또한 작업의 피드백을 공유해 볼 수도 있습니다. 이곳에서 지니게 되는 각각의 스토리를 통해 콘텐츠와 지역, 공간과 작가들의 감정과 색감이 상호 연결되어 반응을 이루게 됩니다. 온라인과 오프 공간에서 다양한 프로그램과 기획을 통해 동시에 열리게 되는 플랫폼 artscope 가 생명력 있는 시선을 발견하고자 하는 많은 사람들에게 특색 있는 공간이 되기를 기대합니다.',
   url: 'https://www.artscope.kr',
   type: 'website',
   robots: 'follow, index',

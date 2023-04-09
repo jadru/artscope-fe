@@ -1,22 +1,23 @@
 export type ArtWorkMediaType = {
   mediaType: MediaType;
-  mediaUrl: string;
   file: File;
   description: string;
 };
 
 export type ArtWorkType = {
-  description: string;
-  mediaUrls: {
-    mediaType: MediaType;
-    mediaUrl: string;
+  dto: {
     description: string;
-  }[];
-  title: string;
-  visible: boolean;
+    medias: {
+      mediaType: MediaType;
+      description: string;
+    }[];
+    title: string;
+    visible: boolean;
+  };
+  mediaFiles: File[];
 };
 
-export type MediaType = 'image' | 'video';
+export type MediaType = 'image' | 'video' | 'audio';
 
 export type ArtWorkApiResponseType = {
   artworks: {

@@ -3,7 +3,7 @@ import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
-import { Cookies, CookiesProvider } from 'react-cookie';
+import { Cookies } from 'react-cookie';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -12,6 +12,7 @@ import '@/styles/globals.css';
 import '@/styles/colors.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 
+import { artistAuthRequired } from '@/constant/auth';
 import { GA_TRACKING_ID } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
@@ -19,8 +20,6 @@ import jxios from '@/utils/jxios';
  * !STARTERCONF info
  * ? `Layout` component is called in every page using `np` snippets. If you have consistent layout across all page, you can add it here too
  */
-
-const artistAuthRequired = ['/profile', '/upload', '/artist/info'];
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
@@ -76,7 +75,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [router, isTokenRefreshing, router.asPath]);
   return (
-    <CookiesProvider>
+    <>
       <ToastContainer limit={2} theme={isDark ? 'dark' : 'light'} />
       <QueryClientProvider client={queryClient}>
         <Script
@@ -99,7 +98,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <Component {...pageProps} />
       </QueryClientProvider>
-    </CookiesProvider>
+    </>
   );
 }
 
