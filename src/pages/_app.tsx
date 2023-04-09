@@ -3,7 +3,7 @@ import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
-import { Cookies, CookiesProvider } from 'react-cookie';
+import { Cookies } from 'react-cookie';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -76,7 +76,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [router, isTokenRefreshing, router.asPath]);
   return (
-    <CookiesProvider>
+    <>
       <ToastContainer limit={2} theme={isDark ? 'dark' : 'light'} />
       <QueryClientProvider client={queryClient}>
         <Script
@@ -99,7 +99,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <Component {...pageProps} />
       </QueryClientProvider>
-    </CookiesProvider>
+    </>
   );
 }
 
