@@ -25,6 +25,7 @@ const artistAuthRequired = ['/profile', '/upload', '/artist/info'];
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
   const [isTokenRefreshing, setIsTokenRefreshing] = useState(false);
+  const [isDark, setDark] = useState(false);
   const router = useRouter();
   useEffect(() => {
     const cookies = new Cookies();
@@ -70,11 +71,13 @@ function MyApp({ Component, pageProps }: AppProps) {
           router.push('/login').then(() => toast.warn('로그인이 필요합니다.'));
         }
       }
+      if (document.documentElement.classList.contains('dark')) setDark(true);
+      else setDark(false);
     }
   }, [router, isTokenRefreshing, router.asPath]);
   return (
     <CookiesProvider>
-      <ToastContainer />
+      <ToastContainer limit={2} theme={isDark ? 'dark' : 'light'} />
       <QueryClientProvider client={queryClient}>
         <Script
           strategy='afterInteractive'
