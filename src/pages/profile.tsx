@@ -1,6 +1,8 @@
 import jwt_decode from 'jwt-decode';
 import Image from 'next/image';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useMemo } from 'react';
+import { Cookies } from 'react-cookie';
 import { AiFillSafetyCertificate } from 'react-icons/ai';
 import { HiOutlineDocumentSearch } from 'react-icons/hi';
 import { toast } from 'react-toastify';
@@ -34,6 +36,16 @@ const Profile = () => {
   //   error: profileartworkError,
   //   isLoading: profileartworkLoading,
   // } = useSWR('/api/members/profile/' + decodedToken.sub, fetcher);
+
+  const cookies = useMemo(() => new Cookies(), []);
+  const { push } = useRouter();
+  const handleLogout = () => {
+    jxios.post('/api/logout').then(() => {
+      cookies.remove('refreshToken');
+      jxios.defaults.headers.common['Authorization'] = undefined;
+      push('/').then(() => toast.success('로그아웃 되었습니다.'));
+    });
+  };
 
   if (profileError) return <div>failed to load</div>;
   if (profileLoading) {
@@ -75,6 +87,9 @@ const Profile = () => {
                 <p>{profileData.introduction}</p>
                 <p>{profileData.history}</p>
               </div>
+              <button className='btn-primary btn' onClick={handleLogout}>
+                로그아웃
+              </button>
             </div>
           </TabLayout>
           <BottomBar tab='profile' />
