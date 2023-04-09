@@ -9,11 +9,6 @@ const nextConfig = {
         source: '/api/:path*',
         destination: 'https://api.artscope.kr/api/:path*',
       },
-      {
-        source: '/oauth2',
-        destination: 'https://api.artscope.kr/api/oauth2/authorization/google',
-        basePath: false,
-      },
     ];
   },
 
