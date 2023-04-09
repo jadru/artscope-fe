@@ -14,11 +14,13 @@ const Summer2023KS = () => {
       <div className='hero min-h-screen bg-base-200'>
         <div className='hero-content text-center'>
           <div className='max-w-md'>
-            <h1 className='text-5xl font-bold'>
-              금샘미술관에서 새로운 창작 언어를 모색하는 작가들에게 작품을
-              공모합니다.
+            <h1 className='block break-all text-3xl font-bold md:text-4xl'>
+              금샘미술관에서
+              <br /> 새로운 창작 언어를 모색하는
+              <br />
+              작가들에게 작품을 공모합니다.
             </h1>
-            <p className='py-6'>
+            <p className='block break-all py-6'>
               금샘미술관은 금정문화회관 내부에 위치해 있으며, 독자적인 기획과
               작가 네트워크를 통해 변화하는 시각적인 흐름을 담아 전시 콘텐츠를
               활성화시키고 있습니다. 한편으로는 미술관으로서의 정체성을 확립하여
@@ -47,6 +49,7 @@ const Summer2023KS = () => {
             autoPlay
             muted
             playsInline
+            poster={`${NEXT_PUBLIC_MEDIA_STORAGE_URL}/static/banner_1.png`}
           >
             <source
               src={`${NEXT_PUBLIC_MEDIA_STORAGE_URL}/static/banner_1.webm`}
