@@ -11,4 +11,4 @@ export const NEXT_PUBLIC_MEDIA_STORAGE_URL =
 export const GA_TRACKING_ID = 'G-Q0QQE9ZHG0';
 
 export const OAUTH2_GOOGLE_URI =
-  'https://api.artscope.kr/api/oauth2/authorization/google';
+  'https://api.artscope.kr/oauth2/authorization/google';
