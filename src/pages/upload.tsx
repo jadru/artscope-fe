@@ -38,6 +38,7 @@ const initialArtWork: ArtWorkType = {
 const Upload = () => {
   const { push } = useRouter();
   const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
+  const [imgs, setImgs] = useState<string[]>([]);
   const [indexFileforModal, setIndexFileforModal] = useState<number>(0);
   const [artwork, setArtwork] = useState<ArtWorkType>(initialArtWork);
   const [isUpload, setIsUpload] = useState<boolean>(false);
@@ -48,6 +49,7 @@ const Upload = () => {
       return;
     }
     const urlList: ArtWorkMediaType[] = [];
+    const imgList: string[] = [];
     for (let i = 0; i < files.length; i++) {
       urlList.push({
         mediaType: files[i].type.startsWith('image')
@@ -58,7 +60,9 @@ const Upload = () => {
         file: files[i],
         description: '',
       });
+      imgList.push(URL.createObjectURL(files[i]));
     }
+    await setImgs(imgList);
     await setFileUrls(urlList);
   };
 
@@ -70,7 +74,7 @@ const Upload = () => {
     const inputData = new FormData(e.target as HTMLFormElement);
     newState.dto.title = inputData.get('title') as string;
     newState.dto.description = inputData.get('description') as string;
-    newState.dto.visible = inputData.get('visible') === 'true';
+    newState.dto.visible = inputData.get('visible') === 'on';
 
     const formData = new FormData();
     newState.dto.medias = [];
@@ -96,7 +100,7 @@ const Upload = () => {
         setFileUrls([]);
         setIndexFileforModal(0);
         setArtwork(initialArtWork);
-        setIsUpload(false);
+
         if (res.status === 201) {
           push('/artwork').then(() =>
             toast.success('작품이 업로드되었습니다.')
@@ -105,6 +109,9 @@ const Upload = () => {
       })
       .catch((err) => {
         toast.error(err.response.data);
+      })
+      .finally(() => {
+        setIsUpload(false);
       });
   };
 
@@ -147,14 +154,14 @@ const Upload = () => {
               <p className='text-lg'>미디어 설명 추가</p>
               {fileUrls[indexFileforModal].mediaType === 'image' ? (
                 <Image
-                  src={URL.createObjectURL(fileUrls[indexFileforModal].file)}
+                  src={imgs[indexFileforModal]}
                   alt='uploaded image'
                   width={300}
                   height={300}
                 />
               ) : (
                 <video
-                  src={URL.createObjectURL(fileUrls[indexFileforModal].file)}
+                  src={imgs[indexFileforModal]}
                   width={300}
                   autoPlay
                   loop
@@ -164,7 +171,7 @@ const Upload = () => {
               )}
               <input
                 type='text'
-                placeholder='설명을 입력해주세요'
+                placeholder='작가, 제목, 작품기법, 사이즈, 제작연도 등'
                 value={fileUrls[indexFileforModal].description}
                 className='input-bordered input-primary input mt-2 w-[300px]'
                 onChange={(e) => {
@@ -231,14 +238,14 @@ const Upload = () => {
                       {file.mediaType === 'image' ? (
                         <Image
                           className='h-auto border object-contain'
-                          src={URL.createObjectURL(fileUrls[index].file)}
+                          src={imgs[index]}
                           alt={'uploaded image ' + index}
                           fill
                         />
                       ) : file.mediaType === 'video' ? (
                         <video
                           className='m-0 h-24 w-24 border object-cover p-0'
-                          src={URL.createObjectURL(fileUrls[index].file)}
+                          src={imgs[index]}
                         />
                       ) : (
                         <div className='m-0 flex h-24 w-24 items-center justify-center border'>
@@ -253,7 +260,7 @@ const Upload = () => {
                   </a>
                 ))}
             </div>
-            <p className='my-6 text-sm font-bold text-gray-700'>
+            <p className='my-6 text-sm font-bold text-gray-700 dark:text-neutral-400'>
               업로드한 미디어를 선텍하면 설명을 추가할 수 있습니다.
             </p>
             <form
@@ -280,11 +287,10 @@ const Upload = () => {
                     type='checkbox'
                     className='toggle-success toggle'
                     name='visible'
-                    checked={artwork.dto.visible}
                   />
                 </label>
               </div>
-              <p className='text-sm font-light text-slate-600'>
+              <p className='text-sm font-light text-slate-600 dark:text-neutral-400'>
                 작품을 업로드하면 2023 금샘미술관 전시에 공모됩니다.
               </p>
               <button
