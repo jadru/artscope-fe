@@ -15,6 +15,7 @@ import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 
+import { OAUTH2_GOOGLE_URI } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
 const loginSchema = yup.object().shape({
@@ -116,7 +117,7 @@ const Login = () => {
               회원가입
             </Link>
             <Link
-              href='https://art.be.megabrain.kr:443/oauth2/authorization/google'
+              href={OAUTH2_GOOGLE_URI}
               className='btn-secondary btn-block btn mt-2'
             >
               <AiOutlineGoogle /> &nbsp;구글로 로그인
