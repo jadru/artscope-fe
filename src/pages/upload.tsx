@@ -42,6 +42,10 @@ const Upload = () => {
   const [artwork, setArtwork] = useState<ArtWorkType>(initialArtWork);
 
   const handleFileSelected = async (files: File[]) => {
+    if (files.length > 8) {
+      toast.warn('최대 8개의 파일만 업로드할 수 있습니다.');
+      return;
+    }
     const urlList: ArtWorkMediaType[] = [];
     for (let i = 0; i < files.length; i++) {
       urlList.push({
@@ -56,35 +60,28 @@ const Upload = () => {
     }
     await setFileUrls(urlList);
   };
-  const alertError = (ErrorMessege: string) => {
-    toast.warn(ErrorMessege, {
-      position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    });
-  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newState = { ...artwork };
-    newState.mediaFiles = [];
+    const formData = new FormData();
     newState.dto.medias = [];
     fileUrls.forEach((media) => {
-      newState.mediaFiles.push(media.file);
+      formData.append('mediaFiles', media.file);
       newState.dto.medias.push({
         mediaType: media.mediaType,
         description: media.description,
       });
     });
+    formData.append(
+      'dto',
+      new Blob([JSON.stringify(newState.dto)], { type: 'application/json' })
+    );
     jxios
-      .post('/api/artworks', newState, {
+      .post('/api/artworks', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
         },
       })
       .then((res) => {
@@ -135,9 +132,9 @@ const Upload = () => {
               multiple={true}
               label='사진과 동영상을 여기에 끌어오세요'
               hoverTitle='여기에 놓기'
-              onTypeError={() => alertError('지원하지 않는 파일 형식입니다')}
-              onMaxSizeError={() => alertError('파일 용량이 너무 큽니다')}
-              onMaxFilesError={() => alertError('파일 개수가 너무 많습니다')}
+              onTypeError={() => toast.warn('지원하지 않는 파일 형식입니다')}
+              onMaxSizeError={() => toast.warn('파일 용량이 너무 큽니다')}
+              onMaxFilesError={() => toast.warn('파일 개수가 너무 많습니다')}
             >
               <div className='md:border-1 rounded-box flex w-96 flex-col items-center justify-center space-y-3 p-12 md:border md:border-fuchsia-900'>
                 <Lottie
