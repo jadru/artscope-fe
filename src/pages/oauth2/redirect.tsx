@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import { Cookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 
+import Seo from '@/components/Seo';
+
 import jxios from '@/utils/jxios';
 
 const RedirectOAuth2 = () => {
@@ -38,7 +40,7 @@ const RedirectOAuth2 = () => {
     }
   }, [push, query.token]);
 
-  return <div></div>;
+  return <Seo templateTitle='Google Login'></Seo>;
 };
 
 export default RedirectOAuth2;
