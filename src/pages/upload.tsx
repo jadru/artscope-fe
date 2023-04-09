@@ -40,6 +40,7 @@ const Upload = () => {
   const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
   const [indexFileforModal, setIndexFileforModal] = useState<number>(0);
   const [artwork, setArtwork] = useState<ArtWorkType>(initialArtWork);
+  const [isUpload, setIsUpload] = useState<boolean>(false);
 
   const handleFileSelected = async (files: File[]) => {
     if (files.length > 8) {
@@ -61,23 +62,30 @@ const Upload = () => {
     await setFileUrls(urlList);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    if (isUpload) return;
     e.preventDefault();
+    await setIsUpload(true);
     const newState = { ...artwork };
+    const inputData = new FormData(e.target as HTMLFormElement);
+    newState.dto.title = inputData.get('title') as string;
+    newState.dto.description = inputData.get('description') as string;
+    newState.dto.visible = inputData.get('visible') === 'true';
+
     const formData = new FormData();
     newState.dto.medias = [];
-    fileUrls.forEach((media) => {
+    await fileUrls.forEach((media) => {
       formData.append('mediaFiles', media.file);
       newState.dto.medias.push({
         mediaType: media.mediaType,
         description: media.description,
       });
     });
-    formData.append(
+    await formData.append(
       'dto',
       new Blob([JSON.stringify(newState.dto)], { type: 'application/json' })
     );
-    jxios
+    await jxios
       .post('/api/artworks', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -88,6 +96,7 @@ const Upload = () => {
         setFileUrls([]);
         setIndexFileforModal(0);
         setArtwork(initialArtWork);
+        setIsUpload(false);
         if (res.status === 201) {
           push('/artwork').then(() =>
             toast.success('작품이 업로드되었습니다.')
@@ -97,26 +106,6 @@ const Upload = () => {
       .catch((err) => {
         toast.error(err.response.data);
       });
-  };
-
-  const handleChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    e.target.name === 'visible'
-      ? setArtwork((prev) => {
-          return {
-            ...artwork,
-            dto: { ...prev.dto, visible: !prev.dto.visible },
-          };
-        })
-      : setArtwork((prev) => {
-          return {
-            ...artwork,
-            dto: { ...prev.dto, [e.target.name]: e.target.value },
-          };
-        });
   };
 
   return (
@@ -169,6 +158,8 @@ const Upload = () => {
                   width={300}
                   autoPlay
                   loop
+                  muted
+                  controls
                 />
               )}
               <input
@@ -180,6 +171,14 @@ const Upload = () => {
                   const newFileUrls = [...fileUrls];
                   newFileUrls[indexFileforModal].description = e.target.value;
                   setFileUrls(newFileUrls);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    document
+                      .querySelector('.modal-action .btn')
+                      ?.dispatchEvent(new MouseEvent('click'));
+                  }
                 }}
               />
               <div className='modal-action'>
@@ -216,7 +215,7 @@ const Upload = () => {
                 fileUrls.length > 0 &&
                 fileUrls.map((file, index) => (
                   <a
-                    key={index + '_'}
+                    key={Math.random()}
                     className='m-0'
                     href='#modal-artwork-media'
                     onClick={() => setIndexFileforModal(index)}
@@ -231,17 +230,24 @@ const Upload = () => {
                     >
                       {file.mediaType === 'image' ? (
                         <Image
-                          className='border'
+                          className='h-auto border object-contain'
                           src={URL.createObjectURL(fileUrls[index].file)}
                           alt={'uploaded image ' + index}
-                          style={{ margin: 0, padding: 0, objectFit: 'cover' }}
                           fill
                         />
-                      ) : (
+                      ) : file.mediaType === 'video' ? (
                         <video
                           className='m-0 h-24 w-24 border object-cover p-0'
                           src={URL.createObjectURL(fileUrls[index].file)}
                         />
+                      ) : (
+                        <div className='m-0 flex h-24 w-24 items-center justify-center border'>
+                          <p className='text-2xl font-extrabold'>
+                            AUDIO
+                            <br />
+                            FILE
+                          </p>
+                        </div>
                       )}
                     </div>
                   </a>
@@ -259,13 +265,13 @@ const Upload = () => {
                 name='title'
                 className='text-md input-primary input mb-2 w-[302px]'
                 placeholder='작품 제목'
-                onChange={handleChange}
+                required
               />
               <textarea
                 name='description'
                 className='text-md textarea-primary textarea mb-2 h-64 w-[302px] resize-none'
                 placeholder='작품에 대한 간단한 설명 입력'
-                onChange={handleChange}
+                required
               />
               <div className='form-control mb-2 w-[302px] '>
                 <label className='label cursor-pointer'>
@@ -274,7 +280,6 @@ const Upload = () => {
                     type='checkbox'
                     className='toggle-success toggle'
                     name='visible'
-                    onChange={handleChange}
                     checked={artwork.dto.visible}
                   />
                 </label>
@@ -283,13 +288,9 @@ const Upload = () => {
                 작품을 업로드하면 2023 금샘미술관 전시에 공모됩니다.
               </p>
               <button
-                className='btn-primary btn w-[302px]'
+                className={`btn-primary btn w-[302px] ${isUpload && 'loading'}`}
                 type='submit'
-                disabled={
-                  !artwork.dto.title ||
-                  !artwork.dto.description ||
-                  fileUrls.length <= 0
-                }
+                disabled={fileUrls.length <= 0}
               >
                 작품 업로드
               </button>

@@ -11,8 +11,7 @@ const nextConfig = {
       },
       {
         source: '/oauth2',
-        destination:
-          'https://art.be.megabrain.kr:443/oauth2/authorization/google',
+        destination: 'https://api.artscope.kr/api/oauth2/authorization/google',
         basePath: false,
       },
     ];

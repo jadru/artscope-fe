@@ -61,7 +61,7 @@ const Profile = () => {
             <div className='flex w-full flex-col items-center justify-center space-y-2 text-center'>
               <div className='card flex w-[300px] flex-row justify-between bg-white/60 px-8 py-6 drop-shadow-2xl'>
                 <div className='avatar'>
-                  <div className='ring-primary w-24 rounded-full bg-white/50 ring ring-offset-2 ring-offset-base-100'>
+                  <div className='mask mask-hexagon w-24 rounded-full bg-white/50'>
                     {profileData.picture ? (
                       <Image
                         src={profileData.picture}
