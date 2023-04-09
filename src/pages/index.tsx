@@ -18,7 +18,7 @@ import { NavBar } from '@/components/TabLayout/NavBar';
 export default function HomePage() {
   return (
     <div>
-      <Seo templateTitle='Playlist' />
+      <Seo />
       <main>
         <section>
           <NavBar />

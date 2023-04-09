@@ -12,6 +12,7 @@ import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 
+import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
 import { ArtWorkApiResponseType } from '@/types';
@@ -83,12 +84,20 @@ export default function Playlist() {
                       ) : (
                         <video
                           className='m-0 w-full border object-cover p-0'
-                          src={artwork.thumbnail.mediaUrl}
+                          src={
+                            NEXT_PUBLIC_MEDIA_STORAGE_URL +
+                            '/' +
+                            artwork.thumbnail.mediaUrl
+                          }
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
                         />
                       )}
                     </div>
                   )}
-                  <div className=''>
+                  <div>
                     <h2 className='m-1.5 text-2xl font-light'>
                       {artwork.title}
                     </h2>

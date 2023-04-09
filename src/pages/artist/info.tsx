@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
 import ErrorMessageInput from '@/components/ErrorMessageInput';
+import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
@@ -51,6 +52,7 @@ const ArtistInfo = () => {
 
   return (
     <>
+      <Seo templateTitle='아티스트 정보 입력' />
       <NavBar />
       <TabLayout classNameChild='sm:max-w-md'>
         <form
