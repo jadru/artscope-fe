@@ -7,7 +7,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'https://art.be.megabrain.kr:443/api/:path*',
+        destination: 'https://api.artscope.kr/api/:path*',
       },
       {
         source: '/oauth2',
@@ -19,7 +19,7 @@ const nextConfig = {
   },
 
   images: {
-    domains: ['d14sxnpwbfro1f.cloudfront.net'],
+    domains: ['d14sxnpwbfro1f.cloudfront.net/prod'],
     loader: 'custom',
     loaderFile: './src/utils/imageLoader.ts',
     minimumCacheTTL: 60,
