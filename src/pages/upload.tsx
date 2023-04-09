@@ -117,6 +117,7 @@ const Upload = () => {
 
   return (
     <>
+      <Seo templateTitle='작품 업로드' />
       {fileUrls.length === 0 ? (
         <>
           <div className='mb-12 flex h-full w-full flex-col items-center justify-center space-y-2 py-12'>
