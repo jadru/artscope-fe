@@ -124,7 +124,7 @@ const Login = () => {
           </div>
         </form>
       </TabLayout>
-      <BottomBar tab='profile' />
+      <BottomBar tab='login' />
     </>
   );
 };
