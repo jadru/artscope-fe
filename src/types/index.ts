@@ -4,7 +4,7 @@ export type ArtWorkMediaType = {
   description: string;
 };
 
-export type ArtWorkType = {
+export type ArtWorkApiRequestType = {
   dto: {
     description: string;
     medias: {
@@ -20,30 +20,34 @@ export type ArtWorkType = {
 export type MediaType = 'image' | 'video' | 'audio';
 
 export type ArtWorkApiResponseType = {
-  artworks: {
-    id: number;
-    title: string;
-    description: string;
-    member: string;
-    thumbnail: {
-      id: number;
-      mediaType: MediaType;
-      mediaUrl: string;
-    };
-    artworkMedias: {
-      id: number;
-      mediaType: MediaType;
-      mediaUrl: string;
-    }[];
-    createdTime: Date;
-    updatedTime: Date | null;
-  }[];
+  artworks: ArtworkType[];
   pageInfo: {
     page: number;
     size: number;
     totalPages: number;
     totalElements: number;
   };
+};
+
+export type ArtworkType = {
+  id: number;
+  title: string;
+  description: string;
+  member: string;
+  thumbnail: {
+    id: number;
+    mediaType: MediaType;
+    mediaUrl: string;
+    description: string;
+  };
+  artworkMedias: {
+    id: number;
+    mediaType: MediaType;
+    mediaUrl: string;
+    description: string;
+  }[];
+  createdTime: Date;
+  updatedTime: Date | null;
 };
 
 export type decodedTokenType = {

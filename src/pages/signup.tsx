@@ -10,6 +10,7 @@ import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
+import Title from '@/components/Title';
 
 import jxios from '@/utils/jxios';
 
@@ -66,11 +67,11 @@ const Signup = () => {
       <Seo templateTitle='Signup' />
       <NavBar title='ArtPlatform' />
       <TabLayout>
+        <Title>회원가입</Title>
         <form
           className='flex h-full w-full flex-col items-center justify-center space-y-5'
           onSubmit={handleSubmit(onSubmit)}
         >
-          <p className='my-8 text-4xl font-thin'>로그인</p>
           <div className='form-control w-full max-w-md'>
             <label className='label'>
               <span className='label-text'>이메일 입력</span>

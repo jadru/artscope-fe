@@ -14,6 +14,7 @@ import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
+import Title from '@/components/Title';
 
 import { OAUTH2_GOOGLE_URI } from '@/constant/env';
 import jxios from '@/utils/jxios';
@@ -76,11 +77,11 @@ const Login = () => {
       <Seo templateTitle='Login' />
       <NavBar title='ArtPlatform' />
       <TabLayout>
+        <Title>로그인</Title>
         <form
           className='flex h-full w-full flex-col items-center justify-center space-y-6'
           onSubmit={handleSubmit(onSubmit)}
         >
-          <p className='my-8 text-4xl font-thin'>로그인</p>
           <div className='w-full max-w-md'>
             <div className='form-control w-full max-w-md'>
               <label className='label'>

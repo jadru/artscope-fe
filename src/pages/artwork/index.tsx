@@ -1,5 +1,6 @@
 import jwt_decode from 'jwt-decode';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -11,6 +12,7 @@ import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
+import Title from '@/components/Title';
 
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
@@ -57,6 +59,7 @@ export default function Playlist() {
       <Seo templateTitle='Artwork' />
       <NavBar title='ArtPlatform' />
       <TabLayout classNameChild='mt-2'>
+        <Title>Artworks</Title>
         {status === 'loading' && <p>불러오는 중</p>}
         {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
         {/** @ts-ignore **/}
@@ -65,7 +68,11 @@ export default function Playlist() {
           {status === 'success' &&
             data.pages.map((group) =>
               group.artworks.map((artwork) => (
-                <div key={artwork.id} className='w-full border bg-base-100'>
+                <Link
+                  href={'/artwork/' + artwork.id}
+                  key={artwork.id}
+                  className='w-full rounded-2xl border bg-base-100 hover:bg-base-200 dark:border-slate-600'
+                >
                   {artwork.thumbnail && (
                     <div className='relative m-0 h-32 w-full p-0'>
                       {artwork.thumbnail.mediaType === 'image' ? (
@@ -73,6 +80,7 @@ export default function Playlist() {
                           <Image
                             src={artwork.thumbnail.mediaUrl}
                             alt={artwork.title}
+                            className='rounded-2xl'
                             fill
                             style={{
                               margin: 0,
@@ -83,7 +91,7 @@ export default function Playlist() {
                         )
                       ) : (
                         <video
-                          className='m-0 w-full border object-cover p-0'
+                          className='m-0 w-full rounded-2xl border object-cover p-0'
                           src={
                             NEXT_PUBLIC_MEDIA_STORAGE_URL +
                             '/' +
@@ -120,7 +128,7 @@ export default function Playlist() {
                       </button>
                     )}
                   </div>
-                </div>
+                </Link>
               ))
             )}
           <div ref={bottom} />
