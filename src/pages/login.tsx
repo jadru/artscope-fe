@@ -60,13 +60,20 @@ const Login = () => {
         jxios.defaults.headers.common[
           'Authorization'
         ] = `Bearer ${accessToken}`;
-        push('/').then(() => {
-          toast.success('로그인이 완료되었습니다.');
-          // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // // @ts-ignore
-          // if (decodedAccessToken.auth === 'ROLE_USER')
-          //   push('/artist/info').then(() => toast('작가 정보를 입력해주세요.'));
-        });
+        jxios
+          .get('/api/members/profile')
+          .then((res) => {
+            if (res.data.artistStatus === 'NONE') {
+              push('/artist/info').then(() =>
+                toast.info('작가 정보를 입력해주세요.')
+              );
+            } else {
+              push('/').then(() => toast.success('로그인이 완료되었습니다.'));
+            }
+          })
+          .catch(() => {
+            push('/').then(() => toast.success('로그인이 완료되었습니다.'));
+          });
       })
       .catch((err) => {
         toast.error(err.response?.data);
