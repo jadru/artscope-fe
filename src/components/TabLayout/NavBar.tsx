@@ -17,7 +17,7 @@ export const NavBar: React.FC<Props> = ({
 }) => (
   <div
     className={`navbar fixed z-50 ${
-      !black ? 'bg-white/95' : 'bg-black/90 text-gray-200'
+      !black ? 'bg-white/60' : 'bg-black/90 text-gray-200'
     } dark:bg-base-100 ${className}`}
   >
     <div className='navbar-start' />

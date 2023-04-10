@@ -10,7 +10,7 @@ const Summer2023KS = () => {
   return (
     <>
       <Seo templateTitle='2023 금샘 미술관 전시 작품 공모' />
-      <NavBar title='ArtPlatform' black={true} />
+      <NavBar title='ArtPlatform' />
       <div className='hero min-h-screen bg-base-200'>
         <div className='hero-content text-center'>
           <div className='max-w-md'>
