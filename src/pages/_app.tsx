@@ -1,5 +1,6 @@
 import jwt_decode from 'jwt-decode';
 import { AppProps } from 'next/app';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
@@ -76,6 +77,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [router, isTokenRefreshing, router.asPath]);
   return (
     <>
+      <Head>
+        <meta
+          name='viewport'
+          content='width=device-width, initial-scale=1.0, user-scalable=no'
+        />
+      </Head>
       <ToastContainer limit={2} theme={isDark ? 'dark' : 'light'} />
       <QueryClientProvider client={queryClient}>
         <Script
