@@ -26,8 +26,8 @@ export default function HomePage() {
           <TabLayout>
             <div className='flex flex-col items-center px-2'>
               <Title>Art Playlist</Title>
-              <div className='card w-96 bg-base-100 shadow-xl'>
-                <figure className='px-10 pt-10'>
+              <div className='card mx-2 w-80 border bg-base-100 shadow-md dark:border-neutral-500 md:w-96'>
+                <figure className='px-0 pt-0  md:px-10 md:pt-10'>
                   <Image
                     className='h-full rounded-2xl'
                     src='static/exhibition/2023-01-01.jpeg'

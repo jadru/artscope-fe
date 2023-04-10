@@ -9,6 +9,7 @@ import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
+import Title from '@/components/Title';
 
 import jxios from '@/utils/jxios';
 
@@ -59,7 +60,7 @@ const ArtistInfo = () => {
           onSubmit={handleSubmit(onArtistInfoSubmit)}
           className='mt-6 max-w-md space-y-2'
         >
-          <h1>아티스트 정보 입력</h1>
+          <Title>아티스트 정보 입력</Title>
           <div className='form-control w-full max-w-md'>
             <label className='label'>
               <span className='label-text'>아티스트 소개 입력</span>
