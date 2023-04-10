@@ -43,7 +43,7 @@ const Profile = () => {
   const { push } = useRouter();
   const handleLogout = () => {
     jxios.post('/api/logout').then(() => {
-      cookies.remove('refreshToken');
+      cookies.remove('refreshToken', { path: '/' });
       jxios.defaults.headers.common['Authorization'] = undefined;
       push('/').then(() => toast.success('로그아웃 되었습니다.'));
     });

@@ -74,7 +74,7 @@ const Slug = () => {
             <ResponsiveGrid>
               {data.artworkMedias.map((artworkMedia) => (
                 <>
-                  <div key={artworkMedia.id} className='relative h-64 w-64'>
+                  <div key={artworkMedia.id} className='relative h-64 w-full'>
                     {artworkMedia.mediaType === 'image' ? (
                       <Image
                         src={artworkMedia.mediaUrl}
@@ -85,6 +85,7 @@ const Slug = () => {
                       />
                     ) : (
                       <video
+                        className='rounded-2xl'
                         src={
                           NEXT_PUBLIC_MEDIA_STORAGE_URL +
                           '/' +
@@ -97,8 +98,12 @@ const Slug = () => {
                         playsInline
                       />
                     )}
+                    {artworkMedia.description && (
+                      <p className='absolute bottom-0 w-full truncate rounded-b-2xl bg-black/50 p-0.5 text-center text-xl font-bold text-white'>
+                        {artworkMedia.description}
+                      </p>
+                    )}
                   </div>
-                  <p>{artworkMedia.description}</p>
                 </>
               ))}
             </ResponsiveGrid>
