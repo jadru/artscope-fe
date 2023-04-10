@@ -1,0 +1,20 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /404
+Disallow: /artist/**
+Disallow: /oauth2/**
+Disallow: /login
+Disallow: /signup
+Disallow: /admin/**
+Disallow: /api/**
+Disallow: /_next/**
+Disallow: /upload
+
+# Host
+Host: https://www.artscope.kr
+
+# Sitemaps
+Sitemap: https://www.artscope.kr/sitemap.xml
+
+#DaumWebMasterTool:8e6ee93a4ed7202944d306c4ab5f6c04887e2d9fbeee6cd80bacff242b216ceb:W3cKAtGlj9VjXhaxyxdstw==
