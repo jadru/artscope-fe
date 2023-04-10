@@ -106,10 +106,10 @@ export default function Playlist() {
                     </div>
                   )}
                   <div>
-                    <h2 className='m-1.5 text-2xl font-light'>
+                    <h2 className='mx-2 mt-2 truncate text-xl font-bold'>
                       {artwork.title}
                     </h2>
-                    <p className='m-1.5'> {artwork.description}</p>
+                    <p className='mx-2 mb-2'> {artwork.description}</p>
                     {isAdmin && (
                       <button
                         onClick={() =>
