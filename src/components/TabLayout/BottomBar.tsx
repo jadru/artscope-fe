@@ -42,7 +42,17 @@ const BottomBar: FunctionComponent<Props> = ({
 
           <span className='btm-nav-label'>아트워크</span>
         </Link>
-        {isArtist ? (
+        {!isArtist ? (
+          <>
+            <Link
+              className={tab !== 'login' ? '' : 'text-blue-600'}
+              href='/login'
+            >
+              <BsFillPersonFill className='h-5 w-5' />
+              <span className='btm-nav-label'>로그인</span>
+            </Link>
+          </>
+        ) : (
           <>
             <Link
               className={tab !== 'upload' ? '' : 'text-blue-600'}
@@ -60,14 +70,6 @@ const BottomBar: FunctionComponent<Props> = ({
               <span className='btm-nav-label'>프로필</span>
             </Link>
           </>
-        ) : (
-          <Link
-            className={tab !== 'login' ? '' : 'text-blue-600'}
-            href='/login'
-          >
-            <BsFillPersonFill className='h-5 w-5' />
-            <span className='btm-nav-label'>로그인</span>
-          </Link>
         )}
       </div>
     </div>

@@ -43,7 +43,7 @@ const Upload = () => {
   const [indexFileforModal, setIndexFileforModal] = useState<number>(0);
   const [artwork, setArtwork] = useState<ArtWorkApiRequestType>(initialArtWork);
   const [isUpload, setIsUpload] = useState<boolean>(false);
-
+  const [checkVisible, setCheckVisible] = useState<boolean>(true);
   const handleFileSelected = async (files: File[]) => {
     if (files.length > 8) {
       toast.warn('최대 8개의 파일만 업로드할 수 있습니다.');
@@ -75,7 +75,7 @@ const Upload = () => {
     const inputData = new FormData(e.target as HTMLFormElement);
     newState.dto.title = inputData.get('title') as string;
     newState.dto.description = inputData.get('description') as string;
-    newState.dto.visible = inputData.get('visible') === 'on';
+    newState.dto.visible = checkVisible;
 
     const formData = new FormData();
     newState.dto.medias = [];
@@ -283,11 +283,13 @@ const Upload = () => {
               />
               <div className='form-control mb-2 w-[302px] '>
                 <label className='label cursor-pointer'>
-                  <span className='label-text'>내 작품 공개</span>
+                  <span className='label-text'>내 작품 플랫폼에 공개</span>
                   <input
                     type='checkbox'
                     className='toggle-success toggle'
                     name='visible'
+                    onClick={() => setCheckVisible((prev) => !prev)}
+                    checked={checkVisible}
                   />
                 </label>
               </div>
