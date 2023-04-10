@@ -60,35 +60,37 @@ const Profile = () => {
           <TabLayout>
             <div className='flex w-full flex-col items-center justify-center space-y-2 text-center'>
               <div className='card flex w-[300px] flex-row justify-between bg-white/60 px-8 py-6 drop-shadow-2xl'>
-                <div className='avatar'>
-                  <div className='mask mask-hexagon w-24 rounded-full bg-white/50'>
-                    {profileData.picture ? (
-                      <Image
-                        src={profileData.picture}
-                        alt='profile'
-                        width={200}
-                        height={200}
-                      />
-                    ) : (
-                      <Lottie
-                        animationData={ProfileAnimation}
-                        className='h-24 w-24'
-                      />
-                    )}
+                <div className='indicator'>
+                  <span className='badge-secondary badge indicator-item'>
+                    {(profileData.artistStatus === 'APPROVED' && (
+                      <AiFillSafetyCertificate className='h-4 w-4' />
+                    )) ||
+                      (profileData.artistStatus === 'PENDING' && (
+                        <HiOutlineDocumentSearch className='h-4 w-4' />
+                      ))}
+                  </span>
+                  <div className='avatar'>
+                    <div className='mask mask-hexagon w-24 rounded-full bg-white/50'>
+                      {profileData.picture ? (
+                        <Image
+                          src={profileData.picture}
+                          alt='profile'
+                          width={200}
+                          height={200}
+                        />
+                      ) : (
+                        <Lottie
+                          animationData={ProfileAnimation}
+                          className='h-24 w-24'
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className='flex flex-col justify-center pr-4 text-black'>
                   <p className='text-2xl font-bold'>{profileData.name}</p>
                   <p>
-                    <>
-                      @{decodedToken?.sub}{' '}
-                      {(profileData.artistStatus === 'APPROVED' && (
-                        <AiFillSafetyCertificate className='h-2 w-2' />
-                      )) ||
-                        (profileData.artistStatus === 'PENDING' && (
-                          <HiOutlineDocumentSearch className='h-2 w-2' />
-                        ))}
-                    </>
+                    <>@{decodedToken?.sub} </>
                   </p>
                 </div>
               </div>
