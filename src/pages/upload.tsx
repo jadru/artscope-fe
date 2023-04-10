@@ -7,10 +7,11 @@ import { toast } from 'react-toastify';
 
 import Seo from '@/components/Seo';
 import BottomBar from '@/components/TabLayout/BottomBar';
+import Title from '@/components/Title';
 
 import jxios from '@/utils/jxios';
 
-import { ArtWorkMediaType, ArtWorkType } from '@/types';
+import { ArtWorkApiRequestType, ArtWorkMediaType } from '@/types';
 
 const FILETYPES = [
   'JPG',
@@ -25,7 +26,7 @@ const FILETYPES = [
   'OGG',
 ];
 
-const initialArtWork: ArtWorkType = {
+const initialArtWork: ArtWorkApiRequestType = {
   dto: {
     title: '',
     description: '',
@@ -40,7 +41,7 @@ const Upload = () => {
   const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
   const [imgs, setImgs] = useState<string[]>([]);
   const [indexFileforModal, setIndexFileforModal] = useState<number>(0);
-  const [artwork, setArtwork] = useState<ArtWorkType>(initialArtWork);
+  const [artwork, setArtwork] = useState<ArtWorkApiRequestType>(initialArtWork);
   const [isUpload, setIsUpload] = useState<boolean>(false);
 
   const handleFileSelected = async (files: File[]) => {
@@ -116,12 +117,11 @@ const Upload = () => {
   };
 
   return (
-    <>
-      <Seo templateTitle='작품 업로드' />
+    <div>
+      <Title className='hidden'>작품 업로드</Title>
       {fileUrls.length === 0 ? (
         <>
           <div className='mb-12 flex h-full w-full flex-col items-center justify-center space-y-2 py-12'>
-            <p className='mb-8 text-4xl font-bold'>작품 업로드</p>
             <FileUploader
               handleChange={handleFileSelected}
               name='file'
@@ -307,7 +307,7 @@ const Upload = () => {
       )}
       <Seo templateTitle='Upload' />
       <BottomBar tab='upload' />
-    </>
+    </div>
   );
 };
 

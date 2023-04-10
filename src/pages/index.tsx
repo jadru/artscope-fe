@@ -6,6 +6,7 @@ import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
+import Title from '@/components/Title';
 
 /**
  * SVGR Support
@@ -24,7 +25,7 @@ export default function HomePage() {
           <NavBar />
           <TabLayout>
             <div className='flex flex-col items-center px-2'>
-              <h1 className='py-6 text-3xl font-light'>Art Playlist</h1>
+              <Title>Art Playlist</Title>
               <div className='card w-96 bg-base-100 shadow-xl'>
                 <figure className='px-10 pt-10'>
                   <Image
@@ -36,9 +37,9 @@ export default function HomePage() {
                   />
                 </figure>
                 <div className='card-body items-center text-center'>
-                  <h2 className='card-title'>
+                  <h1 className='card-title'>
                     2023 금샘 미술관 전시 작품 공모
-                  </h2>
+                  </h1>
                   <p>2023. 04.01 - 05. 30</p>
                   <div className='card-actions'>
                     <Link
