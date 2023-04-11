@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { FunctionComponent, useLayoutEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Cookies } from 'react-cookie';
 import { AiFillHome } from 'react-icons/ai';
 import {
@@ -20,7 +20,7 @@ const BottomBar: FunctionComponent<Props> = ({
 }) => {
   const [isArtist, setIsArtist] = useState(false);
   const cookies = new Cookies();
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (
       jxios.defaults.headers.common['Authorization'] ||
       cookies.get('refreshToken')
