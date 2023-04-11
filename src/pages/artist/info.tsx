@@ -4,8 +4,6 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
-import useAuth from '@/hooks/useAuth';
-
 import ErrorMessageInput from '@/components/ErrorMessageInput';
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
@@ -30,7 +28,6 @@ const artistSchema = yup.object().shape({
 });
 
 const ArtistInfo = () => {
-  useAuth();
   const { push } = useRouter();
   const {
     register,

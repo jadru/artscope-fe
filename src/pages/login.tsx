@@ -9,6 +9,8 @@ import { AiOutlineGoogle } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
+import useAuth from '@/hooks/useAuth';
+
 import ErrorMessageInput from '@/components/ErrorMessageInput';
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
@@ -29,6 +31,7 @@ interface loginInputs {
   password: string;
 }
 const Login = () => {
+  useAuth();
   const {
     register,
     handleSubmit,
@@ -51,6 +54,7 @@ const Login = () => {
       .then((res) => {
         const { accessToken, refreshToken } = res.data;
         const decodedRefreshToken: { exp: number } = jwt_decode(refreshToken);
+        cookies.remove('refreshToken');
         cookies.set('refreshToken', refreshToken, {
           expires: new Date(decodedRefreshToken.exp * 1000),
           path: '/',

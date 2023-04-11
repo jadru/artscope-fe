@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import useSWR from 'swr';
 
+import useAuth from '@/hooks/useAuth';
+
 import ProfileCard from '@/components/ProfileCard';
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
@@ -15,6 +17,7 @@ import jxios from '@/utils/jxios';
 import { ArtworkType, profileApiType } from '@/types';
 
 const Slug = () => {
+  useAuth();
   const router = useRouter();
   const slug = (router.query.slug as string[]) || [];
   const fetcher = (url: string) => jxios.get(url).then((res) => res.data);
