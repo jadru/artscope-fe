@@ -7,8 +7,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { toast } from 'react-toastify';
 
-import useAuth from '@/hooks/useAuth';
-
 import ResponsiveGrid from '@/components/Grid/ResponsiveGrid';
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
@@ -23,8 +21,7 @@ import { ArtworkType } from '@/types';
 
 const OFFSET = 10;
 
-export default function Playlist() {
-  useAuth();
+export default function Artwork() {
   const bottom = useRef(null);
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(false);
