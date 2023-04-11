@@ -1,6 +1,7 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import { Cookies } from 'react-cookie';
+import { toast } from 'react-toastify';
 
 const Jaxios = axios.create({
   withCredentials: true,
@@ -29,28 +30,44 @@ const getRefreshToken = async () => {
       });
     })
     .catch(() => {
-      cookies.remove('refreshToken', { path: '/' });
+      cookies.remove('refreshToken');
     });
 };
-
 Jaxios.interceptors.response.use(
   (res) => res,
   async (err) => {
-    const {
-      config,
-      response: { status },
-    } = err;
-
-    /** 1 */
-    if (status !== 401 || config.sent) {
-      return Promise.reject(err);
+    const { config, response } = err;
+    const cookies = new Cookies();
+    if (response && response.status) {
+      switch (response.status || config.sent) {
+        case 401:
+        case 403:
+          if (cookies.get('refreshToken')) {
+            config.sent = true;
+            await getRefreshToken();
+            return axios(config);
+          } else {
+            toast.error(`
+              ${response.data.message}
+                ${
+                  response.data.detail !== null
+                    ? ' : ' + response.data.detail
+                    : ''
+                }`);
+            return Promise.reject(err);
+          }
+        default:
+          toast.error(`
+              ${response.data.message}
+                ${
+                  response.data.detail !== null
+                    ? ' : ' + response.data.detail
+                    : ''
+                }`);
+          return Promise.reject(err);
+      }
     }
-
-    /** 2 */
-    config.sent = true;
-    await getRefreshToken();
-
-    return axios(config);
+    return Promise.reject(err);
   }
 );
 

@@ -39,11 +39,8 @@ const Login = () => {
   const cookies = useMemo(() => new Cookies(), []);
   const { push, asPath } = useRouter();
   useEffect(() => {
-    if (
-      cookies.get('refreshToken') ||
-      jxios.defaults.headers.common['Authorization']
-    ) {
-      push('/').then(() => toast.success('이미 로그인 되어있습니다.'));
+    if (jxios.defaults.headers.common['Authorization']) {
+      push('/').then(() => toast.info('이미 로그인 되어있습니다.'));
     }
   }, [cookies, push, asPath]);
 
@@ -122,10 +119,7 @@ const Login = () => {
             <button className='btn-primary btn-block btn mt-4' type='submit'>
               로그인
             </button>
-            <Link
-              className='btn-primary btn-block btn mt-2'
-              href='/auth/signup'
-            >
+            <Link className='btn-primary btn-block btn mt-2' href='/signup'>
               회원가입
             </Link>
             <Link

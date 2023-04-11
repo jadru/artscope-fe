@@ -38,7 +38,14 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     profileData && (
       <>
         <div className='justify-Center shadow-3xl flex w-full flex-col items-center space-y-4 rounded-3xl border bg-white/60 p-6'>
-          <div className='indicator'>
+          <div
+            className='tooltip tooltip-bottom indicator'
+            data-tip={
+              (profileData.artistStatus === 'APPROVED' && '아티스트입니다.') ||
+              (profileData.artistStatus === 'PENDING' &&
+                '아티스트 심사중입니다.')
+            }
+          >
             <span className='badge-secondary badge indicator-item'>
               {(profileData.artistStatus === 'APPROVED' && (
                 <AiFillSafetyCertificate className='h-4 w-4' />

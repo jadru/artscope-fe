@@ -2,7 +2,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
 import ErrorMessageInput from '@/components/ErrorMessageInput';
@@ -56,12 +55,7 @@ const Signup = () => {
         withCredentials: false,
       })
       .then(() => {
-        push('/auth/login').then(() =>
-          toast.success('회원가입이 완료되었습니다.')
-        );
-      })
-      .catch((err) => {
-        toast.error(err.response.data);
+        push('/login');
       });
 
   return (

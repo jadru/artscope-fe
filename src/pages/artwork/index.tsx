@@ -40,6 +40,7 @@ export default function Artwork() {
           size: OFFSET,
           page: pageParam,
         },
+        withCredentials: true,
       });
       return response.data;
     },

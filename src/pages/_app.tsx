@@ -2,6 +2,7 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
+import { CookiesProvider } from 'react-cookie';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastContainer } from 'react-toastify';
 import { RecoilRoot } from 'recoil';
@@ -33,17 +34,18 @@ function MyApp({ Component, pageProps }: AppProps) {
           content='width=device-width, initial-scale=1.0, user-scalable=no'
         />
       </Head>
-      <ToastContainer limit={2} theme={isDark ? 'dark' : 'light'} />
-      <QueryClientProvider client={queryClient}>
-        <Script
-          strategy='afterInteractive'
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
-        />
-        <Script
-          id='gtag-init'
-          strategy='afterInteractive'
-          dangerouslySetInnerHTML={{
-            __html: `
+      <CookiesProvider>
+        <ToastContainer limit={2} theme={isDark ? 'dark' : 'light'} />
+        <QueryClientProvider client={queryClient}>
+          <Script
+            strategy='afterInteractive'
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+          />
+          <Script
+            id='gtag-init'
+            strategy='afterInteractive'
+            dangerouslySetInnerHTML={{
+              __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
@@ -51,10 +53,11 @@ function MyApp({ Component, pageProps }: AppProps) {
               page_path: window.location.pathname,
             });
           `,
-          }}
-        />
-        <Component {...pageProps} />
-      </QueryClientProvider>
+            }}
+          />
+          <Component {...pageProps} />
+        </QueryClientProvider>
+      </CookiesProvider>
     </RecoilRoot>
   );
 }
