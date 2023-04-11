@@ -10,6 +10,7 @@ import jxios from '@/utils/jxios';
 
 const RedirectOAuth2 = () => {
   const { push, query } = useRouter();
+
   useEffect(() => {
     if (query.token) {
       const cookies = new Cookies();
@@ -47,8 +48,8 @@ const RedirectOAuth2 = () => {
             });
         })
         .catch(() => {
-          cookies.remove('refreshToken');
-          push('/login').then(() => toast.warn('로그인이 필요합니다.'));
+          cookies.remove('refreshToken', { path: '/' });
+          push('/auth/login').then(() => toast.warn('로그인이 필요합니다.'));
         });
     }
   }, [push, query.token]);

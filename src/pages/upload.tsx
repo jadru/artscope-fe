@@ -5,10 +5,17 @@ import React, { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { toast } from 'react-toastify';
 
+import useAuth from '@/hooks/useAuth';
+
 import Seo from '@/components/Seo';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import Title from '@/components/Title';
 
+import {
+  UPLOAD_DESCRIPTION_MAX_INPUT_LENGTH,
+  UPLOAD_MEDIA_MAX_INPUT_LENGTH,
+  UPLOAD_TITLE_MAX_INPUT_LENGTH,
+} from '@/constant/config';
 import jxios from '@/utils/jxios';
 
 import { ArtWorkApiRequestType, ArtWorkMediaType } from '@/types';
@@ -37,6 +44,7 @@ const initialArtWork: ArtWorkApiRequestType = {
 };
 
 const Upload = () => {
+  useAuth();
   const { push } = useRouter();
   const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
   const [imgs, setImgs] = useState<string[]>([]);
@@ -188,6 +196,7 @@ const Upload = () => {
                       ?.dispatchEvent(new MouseEvent('click'));
                   }
                 }}
+                maxLength={UPLOAD_MEDIA_MAX_INPUT_LENGTH}
               />
               <div className='modal-action'>
                 {indexFileforModal > 0 && (
@@ -274,12 +283,14 @@ const Upload = () => {
                 className='text-md input-primary input mb-2 w-[302px]'
                 placeholder='작품 제목'
                 required
+                maxLength={UPLOAD_TITLE_MAX_INPUT_LENGTH}
               />
               <textarea
                 name='description'
                 className='text-md textarea-primary textarea mb-2 h-64 w-[302px] resize-none'
                 placeholder='작품에 대한 간단한 설명 입력'
                 required
+                maxLength={UPLOAD_DESCRIPTION_MAX_INPUT_LENGTH}
               />
               <div className='form-control mb-2 w-[302px] '>
                 <label className='label cursor-pointer'>

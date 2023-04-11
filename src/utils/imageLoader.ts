@@ -3,9 +3,19 @@ import { ImageLoaderProps } from 'next/image';
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 
 const imageLoader = ({ src, width, quality }: ImageLoaderProps) => {
-  return `${NEXT_PUBLIC_MEDIA_STORAGE_URL}/${src}?w=${width}&q=${
-    quality || 75
-  }&f=webp`;
+  if (!src.startsWith('http')) {
+    if (src.endsWith('.gif')) {
+      return `${NEXT_PUBLIC_MEDIA_STORAGE_URL}/${src}?w=${width}&q=${
+        quality || 100
+      }`;
+    } else {
+      return `${NEXT_PUBLIC_MEDIA_STORAGE_URL}/${src}?w=${width}&q=${
+        quality || 75
+      }&f=webp`;
+    }
+  } else {
+    return `${src}?w=${width}&q=${quality || 75}`;
+  }
 };
 
 // eslint-disable-next-line import/no-default-export

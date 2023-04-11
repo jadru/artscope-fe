@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useLayoutEffect, useState } from 'react';
+import { Cookies } from 'react-cookie';
 import { AiFillHome } from 'react-icons/ai';
 import {
   BsFillBrushFill,
@@ -18,12 +19,16 @@ const BottomBar: FunctionComponent<Props> = ({
   dark = false,
 }) => {
   const [isArtist, setIsArtist] = useState(false);
-  useEffect(() => {
-    if (jxios.defaults.headers.common['Authorization']) {
+  const cookies = new Cookies();
+  useLayoutEffect(() => {
+    if (
+      jxios.defaults.headers.common['Authorization'] ||
+      cookies.get('refreshToken')
+    ) {
       setIsArtist(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [jxios.defaults.headers.common['Authorization']]);
+  }, []);
   return (
     <div className={`pb-20 md:pb-28 ${dark ? 'bg-dark' : ''}`}>
       <div className='btm-nav z-30 md:bottom-8 md:left-1/2 md:-ml-48 md:w-96 md:rounded-2xl md:shadow-xl'>
@@ -46,7 +51,7 @@ const BottomBar: FunctionComponent<Props> = ({
           <>
             <Link
               className={tab !== 'login' ? '' : 'text-blue-600'}
-              href='/login'
+              href='/auth/login'
             >
               <BsFillPersonFill className='h-5 w-5' />
               <span className='btm-nav-label'>로그인</span>

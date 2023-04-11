@@ -56,6 +56,7 @@ const Login = () => {
         const decodedRefreshToken: { exp: number } = jwt_decode(refreshToken);
         cookies.set('refreshToken', refreshToken, {
           expires: new Date(decodedRefreshToken.exp * 1000),
+          path: '/',
         });
         jxios.defaults.headers.common[
           'Authorization'
@@ -121,7 +122,10 @@ const Login = () => {
             <button className='btn-primary btn-block btn mt-4' type='submit'>
               로그인
             </button>
-            <Link className='btn-primary btn-block btn mt-2' href='/signup'>
+            <Link
+              className='btn-primary btn-block btn mt-2'
+              href='/auth/signup'
+            >
               회원가입
             </Link>
             <Link

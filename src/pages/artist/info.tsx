@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
+import useAuth from '@/hooks/useAuth';
+
 import ErrorMessageInput from '@/components/ErrorMessageInput';
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
@@ -28,6 +30,7 @@ const artistSchema = yup.object().shape({
 });
 
 const ArtistInfo = () => {
+  useAuth();
   const { push } = useRouter();
   const {
     register,
@@ -68,7 +71,7 @@ const ArtistInfo = () => {
             <input
               type='text'
               placeholder='아티스트 소개를 입력해주세요'
-              className='input-bordered input-primary input w-full'
+              className='input-bordered input w-full'
               {...register('introduction')}
             />
             <ErrorMessageInput>
@@ -79,10 +82,9 @@ const ArtistInfo = () => {
             <label className='label'>
               <span className='label-text'>활동 정보</span>
             </label>
-            <input
-              type='text'
+            <textarea
               placeholder='활동 정보를 입력해주세요'
-              className='input-bordered input-primary input w-full'
+              className='textarea-bordered textarea w-full'
               {...register('history')}
             />
             <ErrorMessageInput>
@@ -96,7 +98,7 @@ const ArtistInfo = () => {
             <input
               type='url'
               placeholder='SNS 주소를 입력해주세요'
-              className='input-bordered input-primary input w-full'
+              className='input-bordered input w-full'
               {...register('snsUrl')}
             />
             <ErrorMessageInput>
@@ -110,7 +112,7 @@ const ArtistInfo = () => {
             <input
               type='url'
               placeholder='웹사이트 주소를 입력해주세요'
-              className='input-bordered input-primary input w-full'
+              className='input-bordered input w-full'
               {...register('websiteUrl')}
             />
             <ErrorMessageInput>
