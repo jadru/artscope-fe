@@ -49,7 +49,7 @@ const RedirectOAuth2 = () => {
         })
         .catch(() => {
           cookies.remove('refreshToken', { path: '/' });
-          push('/auth/login').then(() => toast.warn('로그인이 필요합니다.'));
+          push('/login');
         });
     }
   }, [push, query.token]);

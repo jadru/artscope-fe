@@ -51,7 +51,7 @@ const BottomBar: FunctionComponent<Props> = ({
           <>
             <Link
               className={tab !== 'login' ? '' : 'text-blue-600'}
-              href='/auth/login'
+              href='/login'
             >
               <BsFillPersonFill className='h-5 w-5' />
               <span className='btm-nav-label'>로그인</span>

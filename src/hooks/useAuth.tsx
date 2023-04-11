@@ -2,7 +2,6 @@ import jwt_decode from 'jwt-decode';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
 import { Cookies } from 'react-cookie';
-import { toast } from 'react-toastify';
 import { useRecoilState } from 'recoil';
 
 import { artistAuthRequired } from '@/constant/auth';
@@ -42,29 +41,25 @@ const useAuth = () => {
             });
           })
           .catch(() => {
-            cookies.remove('refreshToken', { path: '/' });
-            router
-              .push('/auth/login')
-              .then(() => toast.warn('로그인이 필요합니다.'));
+            cookies.remove('refreshToken');
+            router.push('/login');
           })
           .finally(() => setIsTokenRefreshing(false));
       }
       if (artistAuthRequired.includes(router.asPath)) {
         if (
           !jxios.defaults.headers.common['Authorization'] &&
-          !isTokenRefreshing &&
           !cookies.get('refreshToken')
         ) {
-          router
-            .push('/auth/login')
-            .then(() => toast.warn('로그인이 필요합니다.'));
+          await router.push('/login');
         }
       }
     }
   }, [isTokenRefreshing, router, cookies, setIsTokenRefreshing]);
   useEffect(() => {
     refresh();
-  }, [refresh]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 };
 
 export default useAuth;

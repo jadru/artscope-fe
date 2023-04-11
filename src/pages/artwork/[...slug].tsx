@@ -47,10 +47,13 @@ const Slug = () => {
             </div>
             {data.artworkMedias.map((artworkMedia) => (
               <>
-                <div key={artworkMedia.id} className='unset relative w-full'>
+                <div
+                  key={artworkMedia.id}
+                  className='unset relative h-auto w-full'
+                >
                   {artworkMedia.mediaType === 'image' ? (
                     <Image
-                      className='relative h-full w-full'
+                      className='relative h-auto w-full'
                       src={artworkMedia.mediaUrl}
                       alt='artworkMedia'
                       width={200}
