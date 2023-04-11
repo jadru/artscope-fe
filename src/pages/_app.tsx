@@ -1,21 +1,17 @@
-import jwt_decode from 'jwt-decode';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
-import { Cookies } from 'react-cookie';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import { RecoilRoot } from 'recoil';
 
 import '@/styles/globals.css';
 // !STARTERCONF This is for demo purposes, remove @/styles/colors.css import immediately
 import '@/styles/colors.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 
-import { artistAuthRequired } from '@/constant/auth';
 import { GA_TRACKING_ID } from '@/constant/env';
-import jxios from '@/utils/jxios';
 
 /**
  * !STARTERCONF info
@@ -24,59 +20,13 @@ import jxios from '@/utils/jxios';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
-  const [isTokenRefreshing, setIsTokenRefreshing] = useState(false);
   const [isDark, setDark] = useState(false);
-  const router = useRouter();
   useEffect(() => {
-    const cookies = new Cookies();
-    if (!isTokenRefreshing && !router.asPath.startsWith('/oauth2/redirect')) {
-      if (
-        !jxios.defaults.headers.common['Authorization'] &&
-        cookies.get('refreshToken')
-      ) {
-        setIsTokenRefreshing(true);
-        jxios
-          .post('/api/refresh', cookies.get('refreshToken'), {
-            withCredentials: false,
-            data: cookies.get('refreshToken'),
-            headers: {
-              'Content-Type': 'text/plain',
-            },
-          })
-          .then((res) => {
-            const { accessToken, refreshToken } = res.data;
-            jxios.defaults.headers.common[
-              'Authorization'
-            ] = `Bearer ${accessToken}`;
-            const decodedRefreshToken: { exp: number } =
-              jwt_decode(refreshToken);
-            cookies.set('refreshToken', refreshToken, {
-              expires: new Date(decodedRefreshToken.exp * 1000),
-            });
-          })
-          .catch(() => {
-            cookies.remove('refreshToken');
-            router
-              .push('/login')
-              .then(() => toast.warn('로그인이 필요합니다.'));
-          })
-          .finally(() => setIsTokenRefreshing(false));
-      }
-      if (artistAuthRequired.includes(router.asPath)) {
-        if (
-          !jxios.defaults.headers.common['Authorization'] &&
-          !isTokenRefreshing &&
-          !cookies.get('refreshToken')
-        ) {
-          router.push('/login').then(() => toast.warn('로그인이 필요합니다.'));
-        }
-      }
-      if (document.documentElement.classList.contains('dark')) setDark(true);
-      else setDark(false);
-    }
-  }, [router, isTokenRefreshing, router.asPath]);
+    if (document.documentElement.classList.contains('dark')) setDark(true);
+    else setDark(false);
+  }, []);
   return (
-    <>
+    <RecoilRoot>
       <Head>
         <meta
           name='viewport'
@@ -105,7 +55,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <Component {...pageProps} />
       </QueryClientProvider>
-    </>
+    </RecoilRoot>
   );
 }
 

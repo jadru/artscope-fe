@@ -25,10 +25,11 @@ const getRefreshToken = async () => {
       const decodedRefreshToken: { exp: number } = jwt_decode(refreshToken);
       cookies.set('refreshToken', refreshToken, {
         expires: new Date(decodedRefreshToken.exp * 1000),
+        path: '/',
       });
     })
     .catch(() => {
-      cookies.remove('refreshToken');
+      cookies.remove('refreshToken', { path: '/' });
     });
 };
 

@@ -3,9 +3,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { toast } from 'react-toastify';
+
+import useAuth from '@/hooks/useAuth';
 
 import ResponsiveGrid from '@/components/Grid/ResponsiveGrid';
 import Seo from '@/components/Seo';
@@ -17,31 +19,38 @@ import Title from '@/components/Title';
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
-import { ArtWorkApiResponseType } from '@/types';
+import { ArtworkType } from '@/types';
 
 const OFFSET = 10;
-const getArtWorkList = ({ pageParam = 0 }) =>
-  jxios
-    .get('/api/artworks', {
-      params: {
-        size: OFFSET,
-        page: pageParam,
-      },
-    })
-    .then((res) => res?.data);
+
 export default function Playlist() {
+  useAuth();
   const bottom = useRef(null);
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(false);
-  const { data, error, isFetchingNextPage, status } = useInfiniteQuery(
-    'artworkList', // data의 이름
-    getArtWorkList,
+  const {
+    data,
+    error,
+    isFetchingNextPage,
+    fetchNextPage,
+    status,
+    hasNextPage,
+  } = useInfiniteQuery(
+    'artworkList',
+    async ({ pageParam = 0 }) => {
+      const response = await jxios.get('/api/artworks', {
+        params: {
+          size: OFFSET,
+          page: pageParam,
+        },
+      });
+      return response.data;
+    },
     {
-      getNextPageParam: (lastPage: ArtWorkApiResponseType) => {
-        if (lastPage.pageInfo.totalPages <= lastPage.pageInfo.page + 1)
-          return undefined;
-        else return lastPage.pageInfo.page + 1;
-      },
+      getNextPageParam: (lastPage) =>
+        lastPage.pageInfo.page <= lastPage.pageInfo.totalPages
+          ? lastPage.pageInfo.page + 1
+          : undefined,
     }
   );
   useEffect(() => {
@@ -54,6 +63,32 @@ export default function Playlist() {
       }
     }
   }, []);
+
+  const handleObserver = useCallback(
+    // eslint-disable-next-line
+    (entries: any) => {
+      const [target] = entries;
+      if (target.isIntersecting && hasNextPage) {
+        fetchNextPage();
+      }
+    },
+    [fetchNextPage, hasNextPage]
+  );
+
+  useEffect(() => {
+    if (bottom) {
+      const element = bottom.current;
+      const option = { threshold: 0 };
+
+      const observer = new IntersectionObserver(handleObserver, option);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      observer.observe(element);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      return () => observer.unobserve(element);
+    } else return;
+  }, [fetchNextPage, hasNextPage, handleObserver]);
   return (
     <>
       <Seo templateTitle='Artwork' />
@@ -67,14 +102,14 @@ export default function Playlist() {
         <ResponsiveGrid>
           {status === 'success' &&
             data.pages.map((group) =>
-              group.artworks.map((artwork) => (
+              group.artworks.map((artwork: ArtworkType) => (
                 <Link
                   href={'/artwork/' + artwork.id}
                   key={artwork.id}
                   className='w-full rounded-2xl border bg-base-100 hover:bg-base-200 dark:border-slate-600'
                 >
                   {artwork.thumbnail && (
-                    <div className='relative m-0 h-32 w-full p-0'>
+                    <div className='relative m-0 h-64 w-full p-0 md:h-32'>
                       {artwork.thumbnail.mediaType === 'image' ? (
                         artwork.thumbnail.mediaUrl !== 'string' && (
                           <Image
@@ -91,7 +126,7 @@ export default function Playlist() {
                         )
                       ) : (
                         <video
-                          className='m-0 w-full rounded-2xl border object-cover p-0'
+                          className='m-0 h-64 w-full rounded-2xl border object-cover p-0 md:h-32'
                           src={
                             NEXT_PUBLIC_MEDIA_STORAGE_URL +
                             '/' +
@@ -131,8 +166,9 @@ export default function Playlist() {
                 </Link>
               ))
             )}
-          <div ref={bottom} />
-          {isFetchingNextPage && <p>계속 불러오는 중</p>}
+          <div ref={bottom} className='h-2'>
+            {isFetchingNextPage && hasNextPage ? 'Loading...' : ''}
+          </div>
         </ResponsiveGrid>
       </TabLayout>
       <BottomBar tab='artwork' />

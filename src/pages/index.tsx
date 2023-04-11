@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
 
+import useAuth from '@/hooks/useAuth';
+
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
@@ -17,6 +19,7 @@ import Title from '@/components/Title';
  */
 
 export default function HomePage() {
+  useAuth();
   return (
     <div>
       <Seo />
