@@ -19,21 +19,24 @@ const Slug = () => {
   const slug = (router.query.slug as string[]) || [];
   const fetcher = (url: string) => jxios.get(url).then((res) => res.data);
   const { data, error, isLoading } = useSWR<ArtworkType>(
-    '/api/artworks/' + String(slug),
+    slug ? '/api/artworks/' + String(slug) : undefined,
     fetcher
   );
   const {
     data: profileData,
     error: profileError,
     isLoading: profileLoading,
-  } = useSWR<profileApiType>('/api/members/' + data?.member, fetcher);
+  } = useSWR<profileApiType>(
+    slug && data ? '/api/members/' + data?.member : undefined,
+    fetcher
+  );
   return (
     <>
       <Seo templateTitle={data?.title ? data.title : 'Detail' + ' - Artwork'} />
       <NavBar />
       <TabLayout>
-        {isLoading || (profileLoading && <p>불러오는 중</p>)}
-        {error || (profileError && <p>에러 발생</p>)}
+        {(isLoading || profileLoading) && <p>불러오는 중</p>}
+        {(error || profileError) && <p>에러 발생</p>}
         {data && (
           <div className='block'>
             <h1 className='my-8 text-center text-4xl font-light'>
