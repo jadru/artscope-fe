@@ -24,6 +24,7 @@ const getRefreshToken = async () => {
       const { accessToken, refreshToken } = res.data;
       Jaxios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
       const decodedRefreshToken: { exp: number } = jwt_decode(refreshToken);
+      cookies.remove('refreshToken');
       cookies.set('refreshToken', refreshToken, {
         expires: new Date(decodedRefreshToken.exp * 1000),
         path: '/',

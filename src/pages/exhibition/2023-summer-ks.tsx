@@ -6,7 +6,6 @@ import { NavBar } from '@/components/TabLayout/NavBar';
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 
 const Summer2023KS = () => {
-  // const endDate = new Date('2023-05-30T23:59:59+0900');
   return (
     <>
       <Seo templateTitle='2023 금샘 미술관 전시 작품 공모' />
