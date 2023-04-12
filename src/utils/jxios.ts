@@ -47,7 +47,8 @@ Jaxios.interceptors.response.use(
             await getRefreshToken();
             return axios(config);
           } else {
-            toast.error(`
+            if (response.data.message)
+              toast.error(`
               ${response.data.message}
                 ${
                   response.data.detail !== null

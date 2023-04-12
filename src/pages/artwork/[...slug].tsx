@@ -41,7 +41,7 @@ const Slug = ({
   const slug = (router.query.slug as string[]) || [];
   const fetcher = (url: string) => jxios.get(url).then((res) => res.data);
   const { data: profileData } = useSWR<profileApiType>(
-    slug && data ? '/util/members/' + data?.member : undefined,
+    slug && data ? '/api/members/' + data?.member : undefined,
     fetcher
   );
   return (
@@ -49,7 +49,7 @@ const Slug = ({
       <Seo
         description={data.description}
         templateTitle={data.title + ' - Artwork'}
-        image={'https://www.artscope.kr/util/og-image?name=' + data.title}
+        image={'https://www.artscope.kr/api/og-image?title=' + data.title}
       />
       <NavBar />
       <TabLayout>

@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
-import { toast } from 'react-toastify';
 
 import ResponsiveGrid from '@/components/Grid/ResponsiveGrid';
 import Seo from '@/components/Seo';
@@ -146,15 +145,15 @@ export default function Artwork() {
                     {isAdmin && (
                       <button
                         onClick={() =>
-                          jxios
-                            .delete('/api/artworks/' + artwork.id)
-                            .then(() => {
-                              router.replace(router.asPath).then(() => {
-                                toast.success(
-                                  artwork.title + '이 삭제되었습니다.'
-                                );
-                              });
-                            })
+                          confirm(
+                            artwork.title + ' 아트워크를 삭제하시겠습니까?'
+                          )
+                            ? jxios
+                                .delete('/api/artworks/' + artwork.id)
+                                .then(() => {
+                                  router.reload();
+                                })
+                            : ''
                         }
                       >
                         delete
