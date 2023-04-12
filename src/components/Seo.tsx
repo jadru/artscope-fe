@@ -20,6 +20,7 @@ const defaultMeta = {
 type SeoProps = {
   date?: string;
   templateTitle?: string;
+  image?: string;
 } & Partial<typeof defaultMeta>;
 
 export default function Seo(props: SeoProps) {
@@ -71,11 +72,7 @@ export default function Seo(props: SeoProps) {
             content={meta.date}
           />
           {/* // !STARTERCONF Remove or change to your name */}
-          <meta
-            name='author'
-            property='article:author'
-            content='Theodorus Clarence'
-          />
+          <meta name='author' property='article:author' content='Media Xi' />
         </>
       )}
 
