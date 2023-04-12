@@ -21,6 +21,7 @@ type SeoProps = {
   date?: string;
   templateTitle?: string;
   image?: string;
+  description?: string;
 } & Partial<typeof defaultMeta>;
 
 export default function Seo(props: SeoProps) {
