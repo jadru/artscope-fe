@@ -12,6 +12,7 @@ module.exports = {
   changefreq: 'daily', // 페이지 주소 변경 빈도 (검색엔진에 제공됨) - always, daily, hourly, monthly, never, weekly, yearly 중 택 1
   priority: 1,
   robotsTxtOptions: {
+    additionalSitemaps: [`https://www.artscope.kr/sitemap-1.xml`],
     policies: [
       {
         userAgent: '*',
@@ -23,14 +24,13 @@ module.exports = {
           '/login',
           '/signup',
           '/admin/**',
-          '/api/**',
+          '/util/**',
           '/_next/**',
           '/upload',
         ],
       },
     ],
   },
-  additionalSitemaps: [`https://www.artscope.kr/sitemap-1.xml`],
   exclude: [
     '/404',
     '/artist/**',
@@ -38,7 +38,7 @@ module.exports = {
     '/login',
     '/signup',
     '/admin/**',
-    '/api/**',
+    '/util/**',
     '/_next/**',
     '/upload',
   ],

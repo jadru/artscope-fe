@@ -6,7 +6,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
+        source: '/util/:path*',
         destination: 'https://api.artscope.kr/api/:path*',
       },
     ];
