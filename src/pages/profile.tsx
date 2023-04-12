@@ -26,7 +26,7 @@ const Profile = () => {
     isLoading: profileLoading,
   } = useSWR<profileApiType>(
     !isTokenLoading && jxios.defaults.headers.common.Authorization
-      ? '/api/members/profile'
+      ? '/util/members/profile'
       : null,
     fetcher
   );
