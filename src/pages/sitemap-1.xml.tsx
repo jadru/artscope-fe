@@ -6,7 +6,7 @@ import jxios from '@/utils/jxios';
 import { ArtWorkApiResponseType } from '@/types';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const apiResponse = await jxios.get('/api/artworks', {
+  const apiResponse = await jxios.get('https://api.artscope.kr/api/artworks', {
     params: {
       page: 0,
       size: 1000,
