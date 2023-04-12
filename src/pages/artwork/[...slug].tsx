@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async ({ params }) => {
   // Fetch data from external API
   const response = await jxios
-    .get('/api/artworks/' + params?.slug)
+    .get('https://api.artscope.kr/api/artworks/' + params?.slug)
     .then((res) => res);
   const data: ArtworkType = response.data;
 
