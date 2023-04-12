@@ -16,7 +16,6 @@ const RedirectOAuth2 = () => {
       const cookies = new Cookies();
       jxios
         .post('/api/refresh', query.token, {
-          withCredentials: false,
           data: cookies.get('refreshToken'),
           headers: {
             'Content-Type': 'text/plain',

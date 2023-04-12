@@ -14,7 +14,6 @@ const getRefreshToken = async () => {
   const cookies = new Cookies();
   axios
     .post('/api/refresh', cookies.get('refreshToken'), {
-      withCredentials: false,
       data: cookies.get('refreshToken'),
       headers: {
         'Content-Type': 'text/plain',

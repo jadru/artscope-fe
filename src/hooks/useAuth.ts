@@ -22,7 +22,6 @@ const useAuth = () => {
         await setIsTokenRefreshing(true);
         await jxios
           .post('/api/refresh', cookies.get('refreshToken'), {
-            withCredentials: false,
             data: cookies.get('refreshToken'),
             headers: {
               'Content-Type': 'text/plain',
