@@ -2,6 +2,8 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 import useSWR from 'swr';
 
+import useAuth from '@/hooks/useAuth';
+
 import ProfileCard from '@/components/ProfileCard';
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
@@ -14,6 +16,7 @@ import jxios from '@/utils/jxios';
 import { profileApiType } from '@/types';
 
 const Profile = () => {
+  useAuth();
   const isTokenLoading = useRecoilValue(isTokenLoadingAtom);
   const fetcher = (url: string) =>
     jxios.get(url, { withCredentials: true }).then((res) => res.data);
@@ -22,7 +25,9 @@ const Profile = () => {
     error: profileError,
     isLoading: profileLoading,
   } = useSWR<profileApiType>(
-    !isTokenLoading ? '/api/members/profile' : null,
+    !isTokenLoading && jxios.defaults.headers.common.Authorization
+      ? '/api/members/profile'
+      : null,
     fetcher
   );
   return (

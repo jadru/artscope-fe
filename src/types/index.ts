@@ -79,3 +79,12 @@ export type roleType =
   | 'ROLE_USER'
   | 'ROLE_ARTIST'
   | 'ROLE_ADMIN';
+
+export type profileApiRequestType = {
+  email?: string;
+  history?: string;
+  introduction?: string;
+  name?: string;
+  snsUrl?: string;
+  websiteUrl?: string;
+};

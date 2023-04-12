@@ -50,13 +50,9 @@ const Signup = () => {
   const onSubmit: SubmitHandler<loginInputs> = (data) =>
     !isSubmitting &&
     delete data.passwordCheck &&
-    jxios
-      .post('/api/members', data, {
-        withCredentials: false,
-      })
-      .then(() => {
-        push('/login');
-      });
+    jxios.post('/api/members', data, {}).then(() => {
+      push('/login');
+    });
 
   return (
     <>

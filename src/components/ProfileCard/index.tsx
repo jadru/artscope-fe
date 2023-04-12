@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 
 import jxios from '@/utils/jxios';
 
-import { profileApiType } from '@/types';
+import { profileApiRequestType, profileApiType } from '@/types';
 
 import ProfileAnimation from '~/animation/8020-profile.json';
 
@@ -28,6 +28,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const cookies = new Cookies();
   const { push, reload } = useRouter();
   const [editMode, setEditMode] = React.useState(false);
+  const [formData, setFormData] = React.useState<profileApiRequestType>({});
   const handleLogout = () => {
     jxios.post('/api/logout').then(() => {
       cookies.remove('refreshToken', { path: '/' });
@@ -70,10 +71,23 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    jxios.put('/api/members/' + profileData?.username, editedData).then(() => {
-      toast.success('프로필 정보가 변경되었습니다.');
-      reload();
-    });
+    jxios
+      .put('/api/members/' + profileData?.username, formData)
+      .then(async () => {
+        await reload();
+        await toast.success('프로필 정보가 변경되었습니다.');
+      });
+  };
+
+  const handleFormChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.id]: e.target.value,
+    }));
   };
 
   return (
@@ -148,32 +162,35 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   id='name'
                   className='input-bordered input truncate text-center text-3xl font-light'
                   defaultValue={profileData.name}
+                  onChange={handleFormChange}
                 />
-                <input
-                  id='username'
-                  className='text-md input-bordered input w-full truncate text-center font-bold'
-                  defaultValue={profileData.username}
-                />
+                <p className='text-md truncate font-bold'>
+                  {'@' + profileData.username}
+                </p>
                 <input
                   id='introduction'
                   className='text-primary text-md input-bordered input w-full whitespace-pre-wrap text-center font-light'
                   defaultValue={profileData.introduction}
+                  onChange={handleFormChange}
                 />
                 <textarea
                   id='history'
                   className='input-bordered input w-full text-left'
                   defaultValue={profileData.history}
+                  onChange={handleFormChange}
                   rows={12}
                 />
                 <input
                   id='snsUrl'
                   className='input-bordered input w-full truncate text-center font-light'
                   defaultValue={profileData.snsUrl}
+                  onChange={handleFormChange}
                 />
                 <input
                   id='websiteUrl'
                   className='input-bordered input w-full truncate text-center font-light'
                   defaultValue={profileData.websiteUrl}
+                  onChange={handleFormChange}
                 />
                 <button id='submitbutton' type='submit' className='hidden' />
               </form>
