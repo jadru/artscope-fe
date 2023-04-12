@@ -47,7 +47,8 @@ const Slug = ({
   return (
     <>
       <Seo
-        templateTitle={data?.title ? data.title : 'Detail' + ' - Artwork'}
+        description={data.description}
+        templateTitle={data.title + ' - Artwork'}
         image={'https://www.artscope.kr/api/og-image?name=' + data.title}
       />
       <NavBar />
