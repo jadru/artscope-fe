@@ -1,3 +1,4 @@
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -16,30 +17,44 @@ import jxios from '@/utils/jxios';
 
 import { ArtworkType, profileApiType } from '@/types';
 
-const Slug = () => {
+export const getServerSideProps: GetServerSideProps<{
+  data: ArtworkType;
+}> = async ({ params }) => {
+  // Fetch data from external API
+  const response = await jxios
+    .get('/api/artworks/' + params?.slug)
+    .then((res) => res);
+  const data: ArtworkType = response.data;
+
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
+  // Pass data to the page via props
+  return { props: { data } };
+};
+
+const Slug = ({
+  data,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   useAuth();
   const router = useRouter();
   const slug = (router.query.slug as string[]) || [];
   const fetcher = (url: string) => jxios.get(url).then((res) => res.data);
-  const { data, error, isLoading } = useSWR<ArtworkType>(
-    slug ? '/api/artworks/' + String(slug) : undefined,
-    fetcher
-  );
-  const {
-    data: profileData,
-    error: profileError,
-    isLoading: profileLoading,
-  } = useSWR<profileApiType>(
+  const { data: profileData } = useSWR<profileApiType>(
     slug && data ? '/api/members/' + data?.member : undefined,
     fetcher
   );
   return (
     <>
-      <Seo templateTitle={data?.title ? data.title : 'Detail' + ' - Artwork'} />
+      <Seo
+        templateTitle={data?.title ? data.title : 'Detail' + ' - Artwork'}
+        image={'https://www.artscope.kr/api/og-image?name=' + data.title}
+      />
       <NavBar />
       <TabLayout>
-        {(isLoading || profileLoading) && <p>불러오는 중</p>}
-        {(error || profileError) && <p>에러 발생</p>}
         {data && (
           <div className='block'>
             <h1 className='my-8 text-center text-4xl font-light'>
