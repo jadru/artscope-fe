@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
-import { v1 } from 'uuid';
+import { v4 } from 'uuid';
 
 export const isTokenLoadingAtom = atom<boolean>({
-  key: 'isTokenLoadingAtom/' + v1,
+  key: 'isTokenLoadingAtom' + v4(),
   default: false,
 });

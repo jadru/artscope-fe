@@ -13,7 +13,7 @@ const Footer = () => {
           <Link
             href='https://art.geumjeong.go.kr'
             target='_blank'
-            className='link-secondary'
+            className='link text-slate-600'
           >
             금샘미술관
           </Link>
