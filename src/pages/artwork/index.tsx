@@ -6,6 +6,7 @@ import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
 
+import Footer from '@/components/Footer';
 import ResponsiveGrid from '@/components/Grid/ResponsiveGrid';
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
@@ -168,6 +169,7 @@ export default function Artwork() {
           </div>
         </ResponsiveGrid>
       </TabLayout>
+      <Footer />
       <BottomBar tab='artwork' />
     </>
   );

@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 
 import useAuth from '@/hooks/useAuth';
 
+import Footer from '@/components/Footer';
 import Seo from '@/components/Seo';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import Title from '@/components/Title';
@@ -319,6 +320,7 @@ const Upload = () => {
         </>
       )}
       <Seo templateTitle='Upload' />
+      <Footer />
       <BottomBar tab='upload' />
     </div>
   );

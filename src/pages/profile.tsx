@@ -4,6 +4,7 @@ import useSWR from 'swr';
 
 import useAuth from '@/hooks/useAuth';
 
+import Footer from '@/components/Footer';
 import ProfileCard from '@/components/ProfileCard';
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
@@ -39,6 +40,7 @@ const Profile = () => {
         <TabLayout>
           {profileData && <ProfileCard profileData={profileData} editable />}
         </TabLayout>
+        <Footer />
         <BottomBar tab='profile' />
       </>
     )
