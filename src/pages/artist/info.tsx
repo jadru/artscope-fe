@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
 import ErrorMessageInput from '@/components/ErrorMessageInput';
+import Footer from '@/components/Footer';
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
@@ -121,6 +122,7 @@ const ArtistInfo = () => {
           </button>
         </form>
       </TabLayout>
+      <Footer />
       <BottomBar tab='profile' />
     </>
   );

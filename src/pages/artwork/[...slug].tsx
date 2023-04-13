@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import useSWR from 'swr';
 
+import Footer from '@/components/Footer';
 import ProfileCard from '@/components/ProfileCard';
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
@@ -104,6 +105,7 @@ const Slug = ({
           </div>
         )}
       </TabLayout>
+      <Footer />
       <BottomBar tab='artwork' />
     </>
   );

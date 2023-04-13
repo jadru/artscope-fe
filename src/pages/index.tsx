@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import useAuth from '@/hooks/useAuth';
 
+import Footer from '@/components/Footer';
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
@@ -56,6 +57,7 @@ export default function HomePage() {
               </div>
             </div>
           </TabLayout>
+          <Footer />
           <BottomBar tab='playlist' />
         </section>
       </main>

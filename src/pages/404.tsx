@@ -2,6 +2,7 @@ import Link from 'next/link';
 import * as React from 'react';
 import { RiAlarmWarningFill } from 'react-icons/ri';
 
+import Footer from '@/components/Footer';
 import Seo from '@/components/Seo';
 
 export default function NotFoundPage() {
@@ -22,6 +23,7 @@ export default function NotFoundPage() {
             <Link className='link mt-4 md:text-lg' href='/'>
               홈으로 돌아가기
             </Link>
+            <Footer />
           </div>
         </section>
       </main>

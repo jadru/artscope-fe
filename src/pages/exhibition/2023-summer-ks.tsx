@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Footer from '@/components/Footer';
 import Seo from '@/components/Seo';
 import { NavBar } from '@/components/TabLayout/NavBar';
 
@@ -157,6 +158,7 @@ const Summer2023KS = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };
