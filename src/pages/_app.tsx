@@ -29,10 +29,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
       <Head>
-        <meta
-          name='viewport'
-          content='width=device-width, initial-scale=1.0, user-scalable=no'
-        />
+        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
       </Head>
       <CookiesProvider>
         <ToastContainer limit={2} theme={isDark ? 'dark' : 'light'} />
