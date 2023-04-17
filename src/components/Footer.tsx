@@ -8,12 +8,12 @@ interface Props {
 const Footer: FC<Props> = ({ dark = false, absolute = false }) => {
   return (
     <footer
-      className={`footer w-full items-center py-6 ${dark ? '' : ''} ${
-        absolute ? 'fixed bottom-[-2px] pb-4' : ''
-      }`}
+      className={`footer w-full items-center py-6 ${
+        dark ? '' : 'dark:bg-dark'
+      } ${absolute ? 'fixed bottom-[-2px] pb-4' : ''}`}
     >
       <div className={`w-full ${dark ? 'text-gray-100' : 'text-dark'}`}>
-        <p className='w-full text-center'>
+        <p className='w-full text-center dark:text-gray-100'>
           <strong>Artscope</strong> by{' '}
           <Link className='link text-violet-400' href='#'>
             Media Xi

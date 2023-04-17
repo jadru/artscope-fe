@@ -57,8 +57,9 @@ const Slug = ({
     if (jxios.defaults.headers.common.Authorization) {
       let token = jxios.defaults.headers.common.Authorization as string;
       token = token.replace('Bearer ', '');
-      const decodedToken: { sub: string } = jwt_decode(token);
-      data.member === decodedToken.sub && setIsEdit(true);
+      const decodedToken: { sub: string; auth: string } = jwt_decode(token);
+      data.member === decodedToken.sub ||
+        (decodedToken.auth.includes('ROLE_ADMIN') && setIsEdit(true));
     }
   }, [data]);
 

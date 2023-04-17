@@ -16,8 +16,8 @@ const TabLayout: FunctionComponent<Props> = ({
   dark = false,
 }) => (
   <div
-    className={`flex h-full w-full flex-col items-center justify-center ${
-      dark ? 'bg-black' : 'bg-white'
+    className={`flex h-full min-h-[85vh] w-full flex-col items-center justify-center ${
+      dark ? 'bg-black' : 'bg-white dark:bg-dark'
     } ${className} `}
   >
     <div
