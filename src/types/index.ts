@@ -38,12 +38,16 @@ export type ArtworkType = {
     id: number;
     mediaType: MediaType;
     mediaUrl: string;
+    imageHeight: number;
+    imageWidth: number;
     description: string;
   };
   artworkMedias: {
     id: number;
     mediaType: MediaType;
     mediaUrl: string;
+    imageHeight: number;
+    imageWidth: number;
     description: string;
   }[];
   createdTime: Date;

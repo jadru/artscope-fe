@@ -93,7 +93,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   return (
     profileData && (
       <>
-        <div className='justify-Center shadow-3xl relative flex w-full flex-col items-center space-y-4 rounded-3xl border bg-white/60 p-6'>
+        <div className='justify-Center shadow-3xl relative flex w-full flex-col items-center space-y-4 rounded-3xl bg-white/60 p-6 shadow-xl'>
           {editable &&
             (editMode ? (
               <label
@@ -217,7 +217,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                     (profileData.artistStatus === 'APPROVED' &&
                       '아티스트입니다.') ||
                     (profileData.artistStatus === 'PENDING' &&
-                      '아티스트 심사중입니다.')
+                      '아티스트 심사중입니다.') ||
+                    (profileData.artistStatus === 'REJECTED' && '') ||
+                    (profileData.artistStatus === 'NONE' && '')
                   }
                 >
                   <span className='badge-secondary badge indicator-item'>

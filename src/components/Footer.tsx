@@ -9,7 +9,7 @@ const Footer: FC<Props> = ({ dark = false, absolute = false }) => {
   return (
     <footer
       className={`footer w-full items-center py-6 ${dark ? '' : ''} ${
-        absolute ? 'fixed bottom-[80px] pb-2 md:bottom-[-2px]' : ''
+        absolute ? 'fixed bottom-[-2px] pb-4' : ''
       }`}
     >
       <div className={`w-full ${dark ? 'text-gray-100' : 'text-dark'}`}>
