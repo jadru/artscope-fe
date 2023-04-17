@@ -1,9 +1,7 @@
-import jwt_decode from 'jwt-decode';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import * as React from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
@@ -23,8 +21,6 @@ const OFFSET = 10;
 
 export default function Artwork() {
   const bottom = useRef(null);
-  const router = useRouter();
-  const [isAdmin, setIsAdmin] = useState(false);
   const {
     data,
     error,
@@ -51,16 +47,6 @@ export default function Artwork() {
           : undefined,
     }
   );
-  useEffect(() => {
-    if (jxios.defaults.headers.common.Authorization) {
-      const decoded: { auth: string } = jwt_decode(
-        jxios.defaults.headers.common.Authorization as string
-      );
-      if (decoded.auth.includes('ROLE_ADMIN')) {
-        setIsAdmin(true);
-      }
-    }
-  }, []);
 
   const handleObserver = useCallback(
     // eslint-disable-next-line
@@ -141,23 +127,6 @@ export default function Artwork() {
                     <p className='absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 p-1 text-left text-xl font-bold text-white backdrop-blur duration-300 group-hover:ease-in-out'>
                       {artwork.title}
                     </p>
-                    {isAdmin && (
-                      <button
-                        onClick={() =>
-                          confirm(
-                            artwork.title + ' 아트워크를 삭제하시겠습니까?'
-                          )
-                            ? jxios
-                                .delete('/api/artworks/' + artwork.id)
-                                .then(() => {
-                                  router.reload();
-                                })
-                            : ''
-                        }
-                      >
-                        delete
-                      </button>
-                    )}
                   </Link>
                 ))
               )}

@@ -38,7 +38,7 @@ export default function HomePage() {
               fill
               style={{ objectFit: 'cover' }}
             />
-            <div className='hero-content flex-col border-slate-500 py-16 text-gray-100 md:rounded-2xl md:border md:bg-white/10 md:px-8 md:backdrop-blur-md'>
+            <div className='hero-content flex-col border-slate-500 py-16 text-gray-100 md:rounded-2xl md:border md:bg-black/30 md:px-8 md:backdrop-blur-md'>
               <h1 className=''>2023 금샘 미술관 전시 작품 공모</h1>
               <p>2023.04.01 - 05.30</p>
               <Link

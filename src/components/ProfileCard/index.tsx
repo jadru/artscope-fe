@@ -93,7 +93,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   return (
     profileData && (
       <>
-        <div className='justify-Center shadow-3xl relative flex w-full flex-col items-center space-y-4 rounded-3xl bg-white/60 p-6 shadow-xl'>
+        <div className='justify-Center shadow-3xl relative flex w-full flex-col items-center space-y-4 rounded-3xl bg-white/60 p-6 shadow-xl dark:bg-black/60 dark:text-gray-100'>
           {editable &&
             (editMode ? (
               <label
@@ -160,7 +160,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <>
               <form
                 onSubmit={handleFormSubmit}
-                className='flex flex-col items-center justify-center space-y-3 divide-solid text-center text-black'
+                className='flex flex-col items-center justify-center space-y-3 divide-solid text-center text-black dark:text-gray-100'
               >
                 <input
                   id='name'
@@ -249,7 +249,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   </div>
                 </div>
               )}
-              <div className='flex flex-col items-center justify-center space-y-3 divide-solid text-center text-black'>
+              <div className='flex flex-col items-center justify-center space-y-3 divide-solid text-center text-black dark:text-gray-100'>
                 <p className='truncate text-3xl font-light'>
                   {profileData.name}
                 </p>
