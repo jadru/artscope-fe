@@ -2,7 +2,7 @@ import jwt_decode from 'jwt-decode';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import useSWR from 'swr';
@@ -48,13 +48,20 @@ const Slug = ({
     slug && data ? '/api/members/' + data?.member : undefined,
     fetcher
   );
-  let token = jxios.defaults.headers.common.Authorization as string;
-  token = token.replace('Bearer ', '');
-  const decodedToken: { sub: string } = jwt_decode(token);
-  // eslint-disable-next-line
-  const [isEdit, setIsEdit] = useState(data.member === decodedToken.sub);
+
+  const [isEdit, setIsEdit] = useState(false);
   // eslint-disable-next-line
   const [editMode, setEditMode] = useState(false);
+
+  useEffect(() => {
+    if (jxios.defaults.headers.common.Authorization) {
+      let token = jxios.defaults.headers.common.Authorization as string;
+      token = token.replace('Bearer ', '');
+      const decodedToken: { sub: string } = jwt_decode(token);
+      data.member === decodedToken.sub && setIsEdit(true);
+    }
+  }, [data]);
+
   return (
     <>
       <Seo
