@@ -39,12 +39,14 @@ const BottomBar: FunctionComponent<Props> = ({
     >
       <div
         className={`btm-nav z-30 md:bottom-8 md:left-1/2 md:-ml-48 md:w-96 md:rounded-2xl md:shadow-xl ${
-          dark ? 'bg-dark text-gray-100' : ''
+          dark
+            ? 'bg-transparent text-gray-100 outline outline-2 md:shadow-none'
+            : ''
         }`}
       >
         <Link
           className={`${tab === 'playlist' ? 'text-blue-600' : ''} ${
-            dark ? 'bg-dark md:rounded-l-2xl' : ''
+            dark ? 'bg-transparent text-[#2A2F4F] md:rounded-l-2xl' : ''
           }`}
           href='/'
         >
@@ -53,7 +55,7 @@ const BottomBar: FunctionComponent<Props> = ({
         </Link>
         <Link
           className={`${tab === 'artwork' ? 'text-blue-600' : ''} ${
-            dark ? 'bg-dark' : ''
+            dark ? 'bg-transparent' : ''
           }`}
           href='/artwork'
         >
@@ -65,7 +67,7 @@ const BottomBar: FunctionComponent<Props> = ({
           <>
             <Link
               className={`${tab === 'login' ? 'text-blue-600' : ''} ${
-                dark ? 'bg-dark md:rounded-r-2xl' : ''
+                dark ? 'bg-transparent md:rounded-r-2xl' : ''
               }`}
               href='/login'
             >
@@ -77,7 +79,7 @@ const BottomBar: FunctionComponent<Props> = ({
           <>
             <Link
               className={`${tab === 'upload' ? 'text-blue-600' : ''} ${
-                dark ? 'bg-dark' : ''
+                dark ? 'bg-transparent' : ''
               }`}
               href='/upload'
             >
@@ -87,7 +89,7 @@ const BottomBar: FunctionComponent<Props> = ({
             </Link>
             <Link
               className={`${tab === 'profile' ? 'text-blue-600' : ''} ${
-                dark ? 'bg-dark md:rounded-r-2xl' : ''
+                dark ? 'bg-transparent md:rounded-r-2xl' : ''
               }`}
               href='/profile'
             >
