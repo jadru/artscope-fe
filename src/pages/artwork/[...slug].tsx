@@ -72,7 +72,7 @@ const Slug = ({
       <NavBar />
       <TabLayout>
         {data && (
-          <div className='block'>
+          <div className='block space-y-1.5'>
             <h1 className='my-8 text-center text-4xl font-light'>
               {data?.title}
             </h1>
@@ -90,8 +90,8 @@ const Slug = ({
                       className='relative h-auto w-full'
                       src={artworkMedia.mediaUrl}
                       alt='artworkMedia'
-                      width={200}
-                      height={160}
+                      width={artworkMedia.imageWidth}
+                      height={artworkMedia.imageHeight}
                       sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                     />
                   ) : (
@@ -110,13 +110,14 @@ const Slug = ({
                     />
                   )}
                   {artworkMedia.description && (
-                    <p className='absolute bottom-0 w-full truncate rounded-b-2xl bg-black/50 p-0.5 text-center text-xl font-bold text-white'>
+                    <p className='w-full rounded-b-2xl pt-0.5 text-left text-xl'>
                       {artworkMedia.description}
                     </p>
                   )}
                 </div>
               </>
             ))}
+            <div className='h-6'></div>
             {isEdit && (
               <div className='my-4 flex items-center justify-between'>
                 <div className='btn-group'>

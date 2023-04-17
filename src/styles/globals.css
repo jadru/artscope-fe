@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  padding: max(0px, env(safe-area-inset-top))
+    max(0px, env(safe-area-inset-right)) max(0px, env(safe-area-inset-bottom))
+    max(0px, env(safe-area-inset-left));
+}
+
 :root {
   /* #region  /**=========== Primary Color =========== */
   /* !STARTERCONF Customize these variable, copy and paste from /styles/colors.css for list of colors */

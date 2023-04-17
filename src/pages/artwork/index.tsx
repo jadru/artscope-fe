@@ -5,9 +5,9 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 import Footer from '@/components/Footer';
-import ResponsiveGrid from '@/components/Grid/ResponsiveGrid';
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
@@ -97,52 +97,50 @@ export default function Artwork() {
         {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
         {/** @ts-ignore **/}
         {status === 'error' && <p>{error.message}</p>}
-        <ResponsiveGrid>
-          {status === 'success' &&
-            data.pages.map((group) =>
-              group.artworks.map((artwork: ArtworkType) => (
-                <Link
-                  href={'/artwork/' + artwork.id}
-                  key={artwork.id}
-                  className='w-full rounded-2xl border bg-base-100 hover:bg-base-200 dark:border-slate-600'
-                >
-                  {artwork.thumbnail && (
-                    <div className='relative m-0 h-64 w-full p-0 md:h-32'>
-                      {artwork.thumbnail.mediaType === 'image' ? (
-                        artwork.thumbnail.mediaUrl !== 'string' && (
-                          <Image
-                            src={artwork.thumbnail.mediaUrl}
-                            alt={artwork.title}
-                            className='rounded-2xl'
-                            fill
-                            style={{
-                              margin: 0,
-                              padding: 0,
-                              objectFit: 'cover',
-                            }}
+        <ResponsiveMasonry
+          columnsCountBreakPoints={{ 400: 1, 540: 2, 768: 2, 1024: 3 }}
+        >
+          <Masonry gutter='0.4rem'>
+            {status === 'success' &&
+              data.pages.map((group) =>
+                group.artworks.map((artwork: ArtworkType) => (
+                  <Link
+                    href={'/artwork/' + artwork.id}
+                    key={artwork.id}
+                    className='group relative flex cursor-pointer justify-center overflow-hidden bg-base-100 text-center dark:border-slate-600'
+                  >
+                    {artwork.thumbnail && (
+                      <div className='relative m-0 w-full p-0'>
+                        {artwork.thumbnail.mediaType === 'image' ? (
+                          artwork.thumbnail.mediaUrl !== 'string' && (
+                            <Image
+                              src={artwork.thumbnail.mediaUrl}
+                              alt={artwork.title}
+                              width={artwork.thumbnail.imageWidth}
+                              height={artwork.thumbnail.imageHeight}
+                              className='object-cover duration-500 ease-in-out group-hover:scale-110'
+                              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                            />
+                          )
+                        ) : (
+                          <video
+                            className='m-0 w-full border object-cover duration-300 ease-in-out group-hover:scale-105'
+                            src={
+                              NEXT_PUBLIC_MEDIA_STORAGE_URL +
+                              '/' +
+                              artwork.thumbnail.mediaUrl
+                            }
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
                           />
-                        )
-                      ) : (
-                        <video
-                          className='m-0 h-64 w-full rounded-2xl border object-cover p-0 md:h-32'
-                          src={
-                            NEXT_PUBLIC_MEDIA_STORAGE_URL +
-                            '/' +
-                            artwork.thumbnail.mediaUrl
-                          }
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                        />
-                      )}
-                    </div>
-                  )}
-                  <div>
-                    <h2 className='mx-2 mt-2 truncate text-xl font-bold'>
+                        )}
+                      </div>
+                    )}
+                    <p className='absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 p-1 text-left text-xl font-bold text-white backdrop-blur duration-300 group-hover:ease-in-out'>
                       {artwork.title}
-                    </h2>
-                    <p className='mx-2 mb-2'> {artwork.description}</p>
+                    </p>
                     {isAdmin && (
                       <button
                         onClick={() =>
@@ -160,14 +158,14 @@ export default function Artwork() {
                         delete
                       </button>
                     )}
-                  </div>
-                </Link>
-              ))
-            )}
-          <div ref={bottom} className='h-2'>
-            {isFetchingNextPage && hasNextPage ? 'Loading...' : ''}
-          </div>
-        </ResponsiveGrid>
+                  </Link>
+                ))
+              )}
+            <div ref={bottom} className='h-2'>
+              {isFetchingNextPage && hasNextPage ? 'Loading...' : ''}
+            </div>
+          </Masonry>
+        </ResponsiveMasonry>
       </TabLayout>
       <Footer />
       <BottomBar tab='artwork' />

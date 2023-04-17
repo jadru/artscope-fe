@@ -33,7 +33,9 @@ const BottomBar: FunctionComponent<Props> = ({
   }, []);
   return (
     <div
-      className={`${noSpace ? '' : 'pb-20 md:pb-28'} ${dark ? 'bg-black' : ''}`}
+      className={`${noSpace ? 'h-0' : 'pb-20 md:pb-28'} ${
+        dark ? 'bg-black' : ''
+      }`}
     >
       <div
         className={`btm-nav z-30 md:bottom-8 md:left-1/2 md:-ml-48 md:w-96 md:rounded-2xl md:shadow-xl ${

@@ -23,7 +23,7 @@ const TabLayout: FunctionComponent<Props> = ({
     <div
       className={`${
         paddingTop ? 'pt-16' : ''
-      } w-screen max-w-4xl px-2 md:px-4 ${classNameChild}`}
+      } w-screen max-w-4xl ${classNameChild}`}
     >
       {children}
     </div>

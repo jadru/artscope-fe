@@ -15,6 +15,7 @@ const defaultMeta = {
    * If you wish to use a normal image, just specify the path below
    */
   image: 'https://www.artscope.kr/large-og.jpg',
+  themeColor: '#FFFFFF',
 };
 
 type SeoProps = {
@@ -22,6 +23,7 @@ type SeoProps = {
   templateTitle?: string;
   image?: string;
   description?: string;
+  themeColor?: string;
 } & Partial<typeof defaultMeta>;
 
 export default function Seo(props: SeoProps) {
@@ -81,9 +83,9 @@ export default function Seo(props: SeoProps) {
       {favicons.map((linkProps) => (
         <link key={linkProps.href} {...linkProps} />
       ))}
-      <meta name='msapplication-TileColor' content='#ffffff' />
+      <meta name='msapplication-TileColor' content={meta.themeColor} />
       <meta name='msapplication-config' content='/favicon/browserconfig.xml' />
-      <meta name='theme-color' content='#ffffff' />
+      <meta name='theme-color' content={meta.themeColor} />
     </Head>
   );
 }
@@ -112,7 +114,7 @@ const favicons: Array<React.ComponentPropsWithoutRef<'link'>> = [
   {
     rel: 'mask-icon',
     href: '/favicon/safari-pinned-tab.svg',
-    color: '#00e887',
+    color: '#5328c1',
   },
   { rel: 'shortcut icon', href: '/favicon/favicon.ico' },
 ];

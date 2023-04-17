@@ -14,3 +14,4 @@ declare module '*.webm' {
 }
 
 declare module 'react-session-api';
+declare module 'react-responsive-masonry';

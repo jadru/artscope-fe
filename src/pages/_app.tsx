@@ -31,6 +31,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     <RecoilRoot>
       <Head>
         <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+        <meta name='apple-mobile-web-app-capable' content='yes' />
+        <meta name='mobile-web-app-capable' content='yes' />
       </Head>
       <CookiesProvider>
         <ToastContainer limit={2} theme={isDark ? 'dark' : 'light'} />
