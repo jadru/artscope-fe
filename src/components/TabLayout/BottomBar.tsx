@@ -13,10 +13,12 @@ import jxios from '@/utils/jxios';
 type Props = {
   tab: 'playlist' | 'artwork' | 'upload' | 'profile' | 'login';
   dark?: boolean;
+  noSpace?: boolean;
 };
 const BottomBar: FunctionComponent<Props> = ({
   tab = 'home',
   dark = false,
+  noSpace = false,
 }) => {
   const [isArtist, setIsArtist] = useState(false);
   const cookies = new Cookies();
@@ -30,17 +32,27 @@ const BottomBar: FunctionComponent<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className={`pb-20 md:pb-28 ${dark ? 'bg-dark' : ''}`}>
-      <div className='btm-nav z-30 md:bottom-8 md:left-1/2 md:-ml-48 md:w-96 md:rounded-2xl md:shadow-xl'>
+    <div
+      className={`${noSpace ? '' : 'pb-20 md:pb-28'} ${dark ? 'bg-black' : ''}`}
+    >
+      <div
+        className={`btm-nav z-30 md:bottom-8 md:left-1/2 md:-ml-48 md:w-96 md:rounded-2xl md:shadow-xl ${
+          dark ? 'bg-dark text-gray-100' : ''
+        }`}
+      >
         <Link
-          className={`${tab === 'playlist' ? 'text-blue-600' : ''}`}
+          className={`${tab === 'playlist' ? 'text-blue-600' : ''} ${
+            dark ? 'bg-dark md:rounded-l-2xl' : ''
+          }`}
           href='/'
         >
           <AiFillHome className='h-5 w-5' />
           <span className='btm-nav-label'>홈</span>
         </Link>
         <Link
-          className={tab !== 'artwork' ? '' : 'text-blue-600'}
+          className={`${tab === 'artwork' ? 'text-blue-600' : ''} ${
+            dark ? 'bg-dark' : ''
+          }`}
           href='/artwork'
         >
           <BsFillGrid1X2Fill className='h-5 w-5' />
@@ -50,7 +62,9 @@ const BottomBar: FunctionComponent<Props> = ({
         {!isArtist ? (
           <>
             <Link
-              className={tab !== 'login' ? '' : 'text-blue-600'}
+              className={`${tab === 'login' ? 'text-blue-600' : ''} ${
+                dark ? 'bg-dark md:rounded-r-2xl' : ''
+              }`}
               href='/login'
             >
               <BsFillPersonFill className='h-5 w-5' />
@@ -60,7 +74,9 @@ const BottomBar: FunctionComponent<Props> = ({
         ) : (
           <>
             <Link
-              className={tab !== 'upload' ? '' : 'text-blue-600'}
+              className={`${tab === 'upload' ? 'text-blue-600' : ''} ${
+                dark ? 'bg-dark' : ''
+              }`}
               href='/upload'
             >
               <BsFillBrushFill className='h-5 w-5' />
@@ -68,7 +84,9 @@ const BottomBar: FunctionComponent<Props> = ({
               <span className='btm-nav-label'>업로드</span>
             </Link>
             <Link
-              className={tab !== 'profile' ? '' : 'text-blue-600'}
+              className={`${tab === 'profile' ? 'text-blue-600' : ''} ${
+                dark ? 'bg-dark md:rounded-r-2xl' : ''
+              }`}
               href='/profile'
             >
               <BsFillPersonFill className='h-5 w-5' />

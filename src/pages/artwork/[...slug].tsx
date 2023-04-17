@@ -1,7 +1,10 @@
+import jwt_decode from 'jwt-decode';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
+import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import { toast } from 'react-toastify';
 import useSWR from 'swr';
 
 import Footer from '@/components/Footer';
@@ -45,6 +48,13 @@ const Slug = ({
     slug && data ? '/api/members/' + data?.member : undefined,
     fetcher
   );
+  let token = jxios.defaults.headers.common.Authorization as string;
+  token = token.replace('Bearer ', '');
+  const decodedToken: { sub: string } = jwt_decode(token);
+  // eslint-disable-next-line
+  const [isEdit, setIsEdit] = useState(data.member === decodedToken.sub);
+  // eslint-disable-next-line
+  const [editMode, setEditMode] = useState(false);
   return (
     <>
       <Seo
@@ -100,7 +110,45 @@ const Slug = ({
                 </div>
               </>
             ))}
-            <div className='h-8'></div>
+            {isEdit && (
+              <div className='my-4 flex items-center justify-between'>
+                <div className='btn-group'>
+                  <button
+                    className='btn-primary btn'
+                    onClick={() => {
+                      alert('작품 수정은 준비중입니다.');
+                    }}
+                  >
+                    <AiOutlineEdit />
+                  </button>
+                  <button
+                    className='btn-error btn'
+                    onClick={() => {
+                      confirm('정말 삭제하시겠습니까?') &&
+                        jxios.delete('/api/artworks/' + data.id).then(() => {
+                          router.push('/artwork').then(() => {
+                            toast.success('작품이 삭제되었습니다.');
+                          });
+                        });
+                    }}
+                  >
+                    <AiOutlineDelete />
+                  </button>
+                </div>
+                <div className='text-right'>
+                  <p>
+                    작성일 :{' '}
+                    {new Date(data.createdTime).toLocaleString('ko-KR')}
+                  </p>
+                  {data.updatedTime && (
+                    <p>
+                      업데이트 :{' '}
+                      {new Date(data.updatedTime).toLocaleString('ko-KR')}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
             {profileData && <ProfileCard profileData={profileData} />}
           </div>
         )}

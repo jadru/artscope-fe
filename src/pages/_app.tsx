@@ -26,6 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     if (document.documentElement.classList.contains('dark')) setDark(true);
     else setDark(false);
   }, []);
+
   return (
     <RecoilRoot>
       <Head>

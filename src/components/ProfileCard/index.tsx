@@ -118,9 +118,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   '아티스트입니다.') ||
                   (profileData.artistStatus === 'PENDING' &&
                     '아티스트 심사중입니다.') ||
-                  (profileData.artistStatus === 'NONE' &&
-                    '아티스트 정보를 입력해주세요.') ||
-                  '아티스트 심사가 거절되었습니다.'}
+                  (profileData.artistStatus === 'REJECTED' &&
+                    '아티스트 심사가 거절되었습니다.') ||
+                  (profileData.artistStatus === 'NONE' && (
+                    <Link className='btn-secondary btn' href='/artist/info'>
+                      아티스트 정보 입력
+                    </Link>
+                  ))}
               </p>
               <input
                 type='file'
@@ -167,31 +171,40 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 <p className='text-md truncate font-bold'>
                   {'@' + profileData.username}
                 </p>
-                <input
-                  id='introduction'
-                  className='text-primary text-md input-bordered input w-full whitespace-pre-wrap text-center font-light'
-                  defaultValue={profileData.introduction}
-                  onChange={handleFormChange}
-                />
-                <textarea
-                  id='history'
-                  className='input-bordered input w-full text-left'
-                  defaultValue={profileData.history}
-                  onChange={handleFormChange}
-                  rows={12}
-                />
-                <input
-                  id='snsUrl'
-                  className='input-bordered input w-full truncate text-center font-light'
-                  defaultValue={profileData.snsUrl}
-                  onChange={handleFormChange}
-                />
-                <input
-                  id='websiteUrl'
-                  className='input-bordered input w-full truncate text-center font-light'
-                  defaultValue={profileData.websiteUrl}
-                  onChange={handleFormChange}
-                />
+                {profileData.artistStatus === 'NONE' ? (
+                  <Link className='btn-secondary btn' href='/artist/info'>
+                    아티스트 정보 입력
+                  </Link>
+                ) : (
+                  <>
+                    <input
+                      id='introduction'
+                      className='text-primary text-md input-bordered input w-full whitespace-pre-wrap text-center font-light'
+                      defaultValue={profileData.introduction}
+                      onChange={handleFormChange}
+                    />
+                    <textarea
+                      id='history'
+                      className='input-bordered input w-full text-left'
+                      defaultValue={profileData.history}
+                      onChange={handleFormChange}
+                      rows={12}
+                    />
+                    <input
+                      id='snsUrl'
+                      className='input-bordered input w-full truncate text-center font-light'
+                      defaultValue={profileData.snsUrl}
+                      onChange={handleFormChange}
+                    />
+                    <input
+                      id='websiteUrl'
+                      className='input-bordered input w-full truncate text-center font-light'
+                      defaultValue={profileData.websiteUrl}
+                      onChange={handleFormChange}
+                    />
+                  </>
+                )}
+
                 <button id='submitbutton' type='submit' className='hidden' />
               </form>
             </>

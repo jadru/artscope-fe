@@ -5,7 +5,7 @@ interface Props {
   title?: string;
   className?: string;
   onSearchClick?: () => void;
-  black?: boolean;
+  dark?: boolean;
 }
 
 export const NavBar: React.FC<Props> = ({
@@ -13,11 +13,11 @@ export const NavBar: React.FC<Props> = ({
   title,
   className,
   onSearchClick,
-  black = false,
+  dark = false,
 }) => (
   <div
     className={`navbar fixed z-50 ${
-      !black ? 'bg-white/60' : 'bg-black/90 text-gray-200'
+      !dark ? 'bg-white/60' : 'bg-black/50 text-gray-200'
     } backdrop-blur-md dark:bg-base-100 ${className}`}
   >
     <div className='navbar-start' />
