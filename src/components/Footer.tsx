@@ -15,7 +15,7 @@ const Footer: FC<Props> = ({ dark = false, absolute = false }) => {
       <div className={`w-full ${dark ? 'text-gray-100' : 'text-dark'}`}>
         <p className='w-full text-center dark:text-gray-100'>
           <strong>Artscope</strong> by{' '}
-          <Link className='link text-violet-400' href='#'>
+          <Link className='link text-amber-300' href='#'>
             Media Xi
           </Link>{' '}
           x{' '}

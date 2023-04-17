@@ -10,7 +10,6 @@ import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
-import Title from '@/components/Title';
 
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
@@ -78,7 +77,6 @@ export default function Artwork() {
       <Seo templateTitle='Artwork' />
       <NavBar title='ArtPlatform' />
       <TabLayout classNameChild='mt-2'>
-        <Title>Artworks</Title>
         {status === 'loading' && <p>불러오는 중</p>}
         {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
         {/** @ts-ignore **/}
