@@ -10,7 +10,7 @@ import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 
-import ArtistAnimation from '../../public/animation/70504-artist-illustration.json';
+import ArtistAnimation from '../../public/animation/141993-spin-sobky-like-siri.json';
 
 /**
  * SVGR Support
@@ -29,24 +29,26 @@ export default function HomePage() {
         <NavBar transparent dark />
         <TabLayout
           dark
-          classNameChild='max-w-none px-0 md:px-0 overflow-hidden bg-[#917FB3] touch-action-none'
+          main
+          className='relative min-h-screen touch-none overflow-hidden bg-[#917FB3] sm:min-h-screen'
+          classNameChild='max-w-none px-0 md:px-0 overflow-hidden bg-[#917FB3] h-screen'
           paddingTop={false}
         >
-          <div className='hero relative h-screen px-0 sm:-mt-36 md:mt-0'>
-            <div className='hero-content flex-col py-8 text-gray-100'>
-              <Lottie
-                animationData={ArtistAnimation}
-                className='mx-12 sm:-mt-36 md:-mt-12'
-              />
+          <div className='relative h-screen overflow-hidden px-0 sm:-mt-36 md:mt-0'>
+            <Lottie
+              animationData={ArtistAnimation}
+              className='-mt-36 h-[130vh] w-[190vw] overflow-hidden lg:h-[200vh] lg:w-[120vw]'
+            />
+            <div className='absolute top-1/3 left-6 flex-col space-y-3 py-8 text-gray-100 md:left-24'>
               <h1>2023 금샘 미술관 전시 작품 공모</h1>
               <p>2023.04.01 - 05.30</p>
               <Link
                 href='/exhibition/2023-summer-ks'
-                className='btn-outline btn-accent btn'
+                className='btn-outline btn text-gray-100 hover:bg-gray-100 hover:text-gray-900'
               >
                 더 알아보기
               </Link>
-              <Footer dark />
+              <Footer dark left />
             </div>
           </div>
         </TabLayout>
