@@ -37,7 +37,7 @@ export default function HomePage() {
           <div className='relative h-screen overflow-hidden px-0 sm:-mt-36 md:mt-0'>
             <Lottie
               animationData={ArtistAnimation}
-              className='-mt-36 h-[130vh] w-[190vw] overflow-hidden lg:h-[200vh] lg:w-[120vw]'
+              className='mt-8 h-[80vh] overflow-hidden md:mt-24'
             />
             <div className='absolute top-1/3 left-6 flex-col space-y-3 py-8 text-gray-100 md:left-24'>
               <h1>2023 금샘 미술관 전시 작품 공모</h1>
