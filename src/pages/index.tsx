@@ -1,5 +1,6 @@
 import Lottie from 'lottie-react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 
 import useAuth from '@/hooks/useAuth';
@@ -22,6 +23,7 @@ import ArtistAnimation from '../../public/animation/141993-spin-sobky-like-siri.
 
 export default function HomePage() {
   useAuth();
+  const router = useRouter();
   return (
     <main>
       <Seo themeColor='#917FB3' />
@@ -30,21 +32,24 @@ export default function HomePage() {
         <TabLayout
           dark
           main
-          className='relative min-h-screen touch-none overflow-hidden bg-[#917FB3] sm:min-h-screen'
-          classNameChild='max-w-none px-0 md:px-0 overflow-hidden bg-[#917FB3] h-screen'
+          className='from-20% via-60% to-20% relative min-h-screen touch-none overflow-hidden bg-gradient-to-br from-[#6F38C5] via-[#87A2FB] to-[#ADDDD0] dark:from-indigo-900 dark:via-cyan-700 dark:to-emerald-600 sm:min-h-screen'
+          classNameChild='max-w-none px-0 md:px-0 overflow-hidden h-screen'
           paddingTop={false}
         >
-          <div className='relative h-screen overflow-hidden px-0 sm:-mt-36 md:mt-0'>
+          <div className='relative flex h-screen items-center justify-center overflow-hidden px-0'>
             <Lottie
               animationData={ArtistAnimation}
-              className='mt-8 h-[80vh] overflow-hidden md:mt-24'
+              className='absolute top-1/2 left-1/2 w-[76vw] -translate-x-[38vw] -translate-y-[38vw] cursor-pointer overflow-hidden'
+              onClick={() => {
+                router.push('/exhibition/2023-summer-ks');
+              }}
             />
-            <div className='absolute top-1/3 left-6 flex-col space-y-3 py-8 text-gray-100 md:left-24'>
+            <div className='flex-col space-y-3 py-8 text-gray-100 md:left-24'>
               <h1>2023 금샘 미술관 전시 작품 공모</h1>
               <p>2023.04.01 - 05.30</p>
               <Link
                 href='/exhibition/2023-summer-ks'
-                className='btn-outline btn text-gray-100 hover:bg-gray-100 hover:text-gray-900'
+                className='btn-outline btn text-gray-100 hover:bg-gray-100'
               >
                 더 알아보기
               </Link>

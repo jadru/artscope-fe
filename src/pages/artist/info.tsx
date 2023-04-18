@@ -24,8 +24,11 @@ interface ArtistForm {
 const artistSchema = yup.object().shape({
   introduction: yup.string().required('아티스트 소개를 입력해주세요.'),
   history: yup.string(),
-  snsUrl: yup.string().required('SNS 주소를 입력해주세요.'),
-  websiteUrl: yup.string(),
+  snsUrl: yup
+    .string()
+    .url('URL을 입력해주세요')
+    .required('SNS 주소를 입력해주세요.'),
+  websiteUrl: yup.string().url('URL을 입력해주세요'),
 });
 
 const ArtistInfo = () => {

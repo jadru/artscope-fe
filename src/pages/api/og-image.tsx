@@ -1,7 +1,7 @@
 import { ImageResponse, NextRequest } from 'next/server';
 
 export const config = {
-  runtime: 'experimental-edge',
+  runtime: 'edge',
 };
 
 export default function handler(request: NextRequest) {

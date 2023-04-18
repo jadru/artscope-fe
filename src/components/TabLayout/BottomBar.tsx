@@ -39,12 +39,12 @@ const BottomBar: FunctionComponent<Props> = ({
     >
       <div
         className={`btm-nav z-30 md:bottom-8 md:left-1/2 md:-ml-48 md:w-96 md:rounded-2xl md:shadow-xl ${
-          dark ? 'bg-white/20 text-gray-100 backdrop-blur md:shadow-none' : ''
+          dark ? 'bg-black/20 text-gray-100 backdrop-blur md:shadow-none' : ''
         }`}
       >
         <Link
           className={`${tab === 'playlist' ? 'text-blue-600' : ''} ${
-            dark ? 'bg-transparent text-[#2A2F4F] md:rounded-l-2xl' : ''
+            dark ? 'bg-transparent text-emerald-300 md:rounded-l-2xl' : ''
           }`}
           href='/'
         >

@@ -124,19 +124,19 @@ const Slug = ({
             ))}
             <div className='h-6'></div>
 
-            <div className='my-4 flex items-center justify-between'>
+            <div className='my-4 flex items-center justify-between border-2 border-black/50 pr-4 dark:border-white/30'>
               {isEdit && (
-                <div className='btn-group'>
+                <div className=''>
                   <button
-                    className='btn-primary btn'
+                    className='btn-ghost btn text-blue-600 dark:text-blue-400'
                     onClick={() => {
                       alert('작품 수정은 준비중입니다.');
                     }}
                   >
-                    <AiOutlineEdit />
+                    <AiOutlineEdit className='h-6 w-6' />
                   </button>
                   <button
-                    className='btn-error btn'
+                    className='btn-ghost btn text-warning'
                     onClick={() => {
                       confirm('정말 삭제하시겠습니까?') &&
                         jxios.delete('/api/artworks/' + data.id).then(() => {
@@ -146,7 +146,7 @@ const Slug = ({
                         });
                     }}
                   >
-                    <AiOutlineDelete />
+                    <AiOutlineDelete className='h-6 w-6' />
                   </button>
                 </div>
               )}

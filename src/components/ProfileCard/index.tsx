@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Cookies } from 'react-cookie';
-import { AiFillSafetyCertificate } from 'react-icons/ai';
+import { AiFillSafetyCertificate, AiOutlineFileImage } from 'react-icons/ai';
 import { BiEdit, BiSave } from 'react-icons/bi';
-import { BsFillImageFill } from 'react-icons/bs';
 import { HiOutlineDocumentSearch } from 'react-icons/hi';
+import { ImCancelCircle } from 'react-icons/im';
 import { toast } from 'react-toastify';
 
 import jxios from '@/utils/jxios';
@@ -93,15 +93,23 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   return (
     profileData && (
       <>
-        <div className='justify-Center shadow-3xl relative flex w-full flex-col items-center space-y-4 rounded-3xl bg-white/60 p-6 dark:bg-black/60 dark:text-gray-100'>
+        <div className='relative flex w-full flex-col items-center justify-center space-y-4 border-2 border-black/50 p-6 dark:border-white/30 dark:text-gray-100'>
           {editable &&
             (editMode ? (
-              <label
-                className='absolute bottom-5 right-5'
-                htmlFor='submitbutton'
-              >
-                <BiSave className='h-6 w-6 text-slate-600 hover:text-cyan-500' />
-              </label>
+              <>
+                <button
+                  className='absolute bottom-5 right-12'
+                  onClick={() => setEditMode(false)}
+                >
+                  <ImCancelCircle className='h-6 w-6 text-slate-600 hover:text-cyan-500' />
+                </button>
+                <label
+                  className='absolute bottom-5 right-5'
+                  htmlFor='submitbutton'
+                >
+                  <BiSave className='h-6 w-6 text-slate-600 hover:text-cyan-500' />
+                </label>
+              </>
             ) : (
               <button
                 className='absolute bottom-5 right-5'
@@ -134,25 +142,29 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 itemType='image'
               />
               <label className='h-18 w-18' htmlFor='file'>
-                <a className='group avatar cursor-pointer'>
-                  <div className='h-full w-full rounded-full'>
+                <a className='group avatar relative h-24 w-24 cursor-pointer'>
+                  <div className='mask -z-0 rounded-full border'>
                     {profileData.picture ? (
                       <Image
                         src={profileData.picture}
                         alt='profile'
-                        width={120}
-                        height={120}
-                        className='w-18 h-18'
+                        width={150}
+                        height={150}
+                        className='object-cover'
                       />
                     ) : (
-                      <>
-                        <div className='flex h-full w-full items-center justify-center bg-black'>
-                          <BsFillImageFill className='absolute h-8 w-8 self-center' />
-                        </div>
-                      </>
+                      <Lottie
+                        animationData={ProfileAnimation}
+                        className='w-full'
+                      />
                     )}
                   </div>
-                  <div className='opacity-0 group-hover:opacity-50'></div>
+                  <div
+                    className='absolute bottom-0 right-0 z-20 flex h-full w-full flex-col items-center justify-center rounded-full bg-dark/50 text-gray-100 opacity-0 group-hover:opacity-50 dark:bg-white/50'
+                    style={{ display: 'flex' }}
+                  >
+                    <AiOutlineFileImage className='h-12 w-12' />
+                  </div>
                 </a>
               </label>
             </>
@@ -231,19 +243,20 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                         <HiOutlineDocumentSearch className='h-4 w-4' />
                       ))}
                   </span>
-                  <div className='group avatar'>
-                    <div className='h-18 w-18 mask rounded-full bg-black/50 '>
+                  <div className='group avatar h-24 w-24'>
+                    <div className='mask rounded-full border'>
                       {profileData.picture ? (
                         <Image
                           src={profileData.picture}
                           alt='profile'
                           width={150}
                           height={150}
+                          className='object-cover'
                         />
                       ) : (
                         <Lottie
                           animationData={ProfileAnimation}
-                          className='h-18 w-18'
+                          className='w-full'
                         />
                       )}
                     </div>

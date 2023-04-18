@@ -93,13 +93,12 @@ export default function Artwork() {
                               alt={artwork.title}
                               width={artwork.thumbnail.imageWidth}
                               height={artwork.thumbnail.imageHeight}
-                              className='cursor-zoom-in object-cover duration-500 ease-in-out group-hover:scale-110'
-                              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                              className='w-full cursor-zoom-in object-contain duration-500 ease-in-out group-hover:scale-110'
                             />
                           )
                         ) : (
                           <video
-                            className='m-0 w-full border object-cover duration-300 ease-in-out group-hover:scale-105'
+                            className='group-hover:blur-1 m-0 w-full duration-300 ease-in-out group-hover:scale-105'
                             src={
                               NEXT_PUBLIC_MEDIA_STORAGE_URL +
                               '/' +
