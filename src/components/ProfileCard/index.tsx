@@ -93,7 +93,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   return (
     profileData && (
       <>
-        <div className='justify-Center shadow-3xl relative flex w-full flex-col items-center space-y-4 rounded-3xl bg-white/60 p-6 shadow-xl dark:bg-black/60 dark:text-gray-100'>
+        <div className='justify-Center shadow-3xl relative flex w-full flex-col items-center space-y-4 rounded-3xl bg-white/60 p-6 dark:bg-black/60 dark:text-gray-100'>
           {editable &&
             (editMode ? (
               <label
@@ -133,25 +133,26 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 onChange={handleEditSubmit}
                 itemType='image'
               />
-              <label className='' htmlFor='file'>
-                <a className='avatar'>
-                  <div className='mask w-24 rounded-full bg-neutral-600 text-cyan-50 hover:bg-neutral-700 hover:bg-blend-darken'>
+              <label className='h-18 w-18' htmlFor='file'>
+                <a className='group avatar cursor-pointer'>
+                  <div className='h-full w-full rounded-full'>
                     {profileData.picture ? (
                       <Image
-                        className='hover:opacity-50'
                         src={profileData.picture}
                         alt='profile'
-                        width={200}
-                        height={200}
+                        width={120}
+                        height={120}
+                        className='w-18 h-18'
                       />
                     ) : (
                       <>
-                        <div className='flex h-full w-full items-center justify-center'>
+                        <div className='flex h-full w-full items-center justify-center bg-black'>
                           <BsFillImageFill className='absolute h-8 w-8 self-center' />
                         </div>
                       </>
                     )}
                   </div>
+                  <div className='opacity-0 group-hover:opacity-50'></div>
                 </a>
               </label>
             </>
@@ -222,7 +223,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                     (profileData.artistStatus === 'NONE' && '')
                   }
                 >
-                  <span className='badge-secondary badge indicator-item'>
+                  <span className='indicator-center indicator-bottom badge-secondary badge indicator-item'>
                     {(profileData.artistStatus === 'APPROVED' && (
                       <AiFillSafetyCertificate className='h-4 w-4' />
                     )) ||
@@ -230,19 +231,19 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                         <HiOutlineDocumentSearch className='h-4 w-4' />
                       ))}
                   </span>
-                  <div className='avatar'>
-                    <div className='mask w-24 rounded-full bg-white/50'>
+                  <div className='group avatar'>
+                    <div className='h-18 w-18 mask rounded-full bg-black/50 '>
                       {profileData.picture ? (
                         <Image
                           src={profileData.picture}
                           alt='profile'
-                          width={200}
-                          height={200}
+                          width={150}
+                          height={150}
                         />
                       ) : (
                         <Lottie
                           animationData={ProfileAnimation}
-                          className='h-24 w-24'
+                          className='h-18 w-18'
                         />
                       )}
                     </div>

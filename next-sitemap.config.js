@@ -2,17 +2,18 @@
  * @type {import('next-sitemap').IConfig}
  * @see https://github.com/iamvishnusankar/next-sitemap#readme
  */
+
 module.exports = {
   // !STARTERCONF Change the siteUrl
   /** Without additional '/' on the end, e.g. https://theodorusclarence.com */
-  siteUrl: 'https://www.artscope.kr',
+  siteUrl: process.env.NEXT_PUBLIC_ROOT_URL,
 
   generateRobotsTxt: true,
   sitemapSize: 7000, // sitemap별 최대 크기 (최대 크기가 넘어갈 경우 복수개의 sitemap으로 분리됨)
   changefreq: 'daily', // 페이지 주소 변경 빈도 (검색엔진에 제공됨) - always, daily, hourly, monthly, never, weekly, yearly 중 택 1
   priority: 1,
   robotsTxtOptions: {
-    additionalSitemaps: [`https://www.artscope.kr/sitemap-1.xml`],
+    additionalSitemaps: [`${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap-1.xml`],
     policies: [
       {
         userAgent: '*',

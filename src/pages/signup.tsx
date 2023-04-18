@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -29,6 +30,10 @@ const loginSchema = yup.object().shape({
     .string()
     .oneOf([yup.ref('password')], '비밀번호가 일치하지 않습니다.')
     .required('비밀번호를 한번 더 입력해주세요.'),
+  agree: yup
+    .boolean()
+    .oneOf([true], '약관에 동의해주세요.')
+    .required('약관에 동의해주세요.'),
 });
 
 interface loginInputs {
@@ -37,6 +42,7 @@ interface loginInputs {
   email: string;
   passwordCheck?: string;
   name: string;
+  agree?: boolean;
 }
 const Signup = () => {
   const {
@@ -51,6 +57,7 @@ const Signup = () => {
   const onSubmit: SubmitHandler<loginInputs> = (data) =>
     !isSubmitting &&
     delete data.passwordCheck &&
+    delete data.agree &&
     jxios.post('/api/members', data, {}).then(() => {
       push('/login');
     });
@@ -133,6 +140,36 @@ const Signup = () => {
             />
             <ErrorMessageInput>
               {errors.passwordCheck ? errors.passwordCheck.message : ''}
+            </ErrorMessageInput>
+          </div>
+          <div className='w-full max-w-md items-center justify-center'>
+            <input
+              type='checkbox'
+              className='checkbox-primary checkbox'
+              {...register('agree')}
+            />
+            <label className='ml-2 cursor-pointer'>
+              <span className='text-gray-500'>
+                <Link
+                  className='link-primary link'
+                  href='https://plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/consent/1.html'
+                  target='_blank'
+                >
+                  개인정보 수집 및 이용
+                </Link>
+                {' 및 '}
+                <Link
+                  className='link-primary link'
+                  href='https://www.plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/privacy-policy'
+                  target='_blank'
+                >
+                  개인정보 처리방침
+                </Link>
+                에 동의합니다.
+              </span>
+            </label>
+            <ErrorMessageInput>
+              {errors.agree ? errors.agree.message : ''}
             </ErrorMessageInput>
           </div>
           <button className='btn-primary btn-wide btn mt-4' type='submit'>

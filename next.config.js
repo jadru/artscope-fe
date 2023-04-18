@@ -7,13 +7,13 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'https://api.artscope.kr/api/:path*',
+        destination: process.env.NEXT_PUBLIC_API_URL + '/api/:path*',
       },
     ];
   },
 
   images: {
-    domains: ['d14sxnpwbfro1f.cloudfront.net/prod'],
+    domains: [process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL],
     loader: 'custom',
     loaderFile: './src/utils/imageLoader.ts',
     minimumCacheTTL: 60,

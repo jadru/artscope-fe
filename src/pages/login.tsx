@@ -19,7 +19,7 @@ import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 import Title from '@/components/Title';
 
-import { OAUTH2_GOOGLE_URI } from '@/constant/env';
+import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
 const loginSchema = yup.object().shape({
@@ -128,11 +128,31 @@ const Login = () => {
               회원가입
             </Link>
             <Link
-              href={OAUTH2_GOOGLE_URI}
+              href={NEXT_PUBLIC_API_URL + '/oauth2/authorization/google'}
               className='btn-secondary btn-block btn mt-2'
             >
               <AiOutlineGoogle /> &nbsp;구글로 로그인
             </Link>
+            <p className='mt-3 break-keep text-center text-sm font-bold text-dark dark:text-gray-200'>
+              구글 로그인 및 회원가입시
+              <br />
+              <Link
+                className='link-primary link'
+                href='https://plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/consent/1.html'
+                target='_blank'
+              >
+                개인정보 수집 및 이용 동의서
+              </Link>
+              {' 및 '}
+              <Link
+                className='link-primary link'
+                href='https://www.plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/privacy-policy'
+                target='_blank'
+              >
+                개인정보 처리방침
+              </Link>
+              에 동의하게 됩니다.
+            </p>
           </div>
         </form>
       </TabLayout>
