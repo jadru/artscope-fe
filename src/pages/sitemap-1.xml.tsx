@@ -1,12 +1,13 @@
 import { GetServerSidePropsContext } from 'next';
 import { getServerSideSitemap } from 'next-sitemap';
 
+import { NEXT_PUBLIC_API_URL, NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
 import { ArtWorkApiResponseType } from '@/types';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const apiResponse = await jxios.get('https://api.artscope.kr/api/artworks', {
+  const apiResponse = await jxios.get(NEXT_PUBLIC_API_URL + '/api/artworks', {
     params: {
       page: 0,
       size: 1000,
@@ -16,7 +17,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const data: ArtWorkApiResponseType = apiResponse.data;
 
   const artworks = data.artworks.map((artwork) => ({
-    loc: 'https://www.artscope.kr/artwork/' + artwork.id,
+    loc: NEXT_PUBLIC_ROOT_URL + '/artwork/' + artwork.id,
     lastmod: new Date(
       artwork.updatedTime ? artwork.updatedTime : artwork.createdTime
     ).toISOString(),

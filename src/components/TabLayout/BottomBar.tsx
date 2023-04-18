@@ -39,9 +39,7 @@ const BottomBar: FunctionComponent<Props> = ({
     >
       <div
         className={`btm-nav z-30 md:bottom-8 md:left-1/2 md:-ml-48 md:w-96 md:rounded-2xl md:shadow-xl ${
-          dark
-            ? 'bg-white/20 text-gray-100 outline outline-1 backdrop-blur md:shadow-none'
-            : ''
+          dark ? 'bg-white/20 text-gray-100 backdrop-blur md:shadow-none' : ''
         }`}
       >
         <Link

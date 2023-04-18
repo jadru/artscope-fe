@@ -14,7 +14,11 @@ import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 
-import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
+import {
+  NEXT_PUBLIC_API_URL,
+  NEXT_PUBLIC_MEDIA_STORAGE_URL,
+  NEXT_PUBLIC_ROOT_URL,
+} from '@/constant/env';
 import jxios from '@/utils/jxios';
 
 import { ArtworkType, profileApiType } from '@/types';
@@ -24,7 +28,7 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async ({ params }) => {
   // Fetch data from external API
   const response = await jxios
-    .get('https://api.artscope.kr/api/artworks/' + params?.slug)
+    .get(NEXT_PUBLIC_API_URL + '/api/artworks/' + params?.slug)
     .then((res) => res);
   const data: ArtworkType = response.data;
 
@@ -54,7 +58,7 @@ const Slug = ({
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
-    if (jxios.defaults.headers.common.Authorization) {
+    if (data && jxios.defaults.headers.common.Authorization) {
       let token = jxios.defaults.headers.common.Authorization as string;
       token = token.replace('Bearer ', '');
       const decodedToken: { sub: string; auth: string } = jwt_decode(token);
@@ -68,7 +72,7 @@ const Slug = ({
       <Seo
         description={data.description}
         templateTitle={data.title + ' - Artwork'}
-        image={'https://www.artscope.kr/api/og-image?title=' + data.title}
+        image={NEXT_PUBLIC_ROOT_URL + '/api/og-image?title=' + data.title}
       />
       <NavBar />
       <TabLayout>
@@ -77,8 +81,8 @@ const Slug = ({
             <h1 className='my-8 text-center text-4xl font-light'>
               {data?.title}
             </h1>
-            <div className='my-8 text-lg'>
-              <p className='text-center'>{data.description}</p>
+            <div className='my-12 text-lg'>
+              <p className='break-keep text-left'>{data.description}</p>
             </div>
             {data.artworkMedias.map((artworkMedia) => (
               <>
@@ -111,7 +115,7 @@ const Slug = ({
                     />
                   )}
                   {artworkMedia.description && (
-                    <p className='w-full rounded-b-2xl pt-0.5 text-left text-xl'>
+                    <p className='w-full pt-0.5 text-left text-lg'>
                       {artworkMedia.description}
                     </p>
                   )}
@@ -119,8 +123,9 @@ const Slug = ({
               </>
             ))}
             <div className='h-6'></div>
-            {isEdit && (
-              <div className='my-4 flex items-center justify-between'>
+
+            <div className='my-4 flex items-center justify-between'>
+              {isEdit && (
                 <div className='btn-group'>
                   <button
                     className='btn-primary btn'
@@ -144,20 +149,20 @@ const Slug = ({
                     <AiOutlineDelete />
                   </button>
                 </div>
-                <div className='text-right'>
+              )}
+              <div className='text-right'>
+                <p>
+                  작성일 : {new Date(data.createdTime).toLocaleString('ko-KR')}
+                </p>
+                {data.updatedTime && (
                   <p>
-                    작성일 :{' '}
-                    {new Date(data.createdTime).toLocaleString('ko-KR')}
+                    업데이트 :{' '}
+                    {new Date(data.updatedTime).toLocaleString('ko-KR')}
                   </p>
-                  {data.updatedTime && (
-                    <p>
-                      업데이트 :{' '}
-                      {new Date(data.updatedTime).toLocaleString('ko-KR')}
-                    </p>
-                  )}
-                </div>
+                )}
               </div>
-            )}
+            </div>
+
             {profileData && <ProfileCard profileData={profileData} />}
           </div>
         )}

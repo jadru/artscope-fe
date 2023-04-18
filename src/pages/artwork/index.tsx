@@ -82,7 +82,7 @@ export default function Artwork() {
         {/** @ts-ignore **/}
         {status === 'error' && <p>{error.message}</p>}
         <ResponsiveMasonry
-          columnsCountBreakPoints={{ 400: 1, 540: 2, 768: 2, 1024: 3, 1600: 4 }}
+          columnsCountBreakPoints={{ 400: 1, 768: 2, 1024: 3, 1600: 4 }}
         >
           <Masonry gutter='0.4rem'>
             {status === 'success' &&
