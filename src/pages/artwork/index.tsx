@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
-import { useCallback, useEffect, useRef } from 'react';
+import { ReactElement, useEffect, useRef } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
@@ -47,31 +48,21 @@ export default function Artwork() {
     }
   );
 
-  const handleObserver = useCallback(
-    // eslint-disable-next-line
-    (entries: any) => {
-      const [target] = entries;
-      if (target.isIntersecting && hasNextPage) {
-        fetchNextPage();
-      }
-    },
-    [fetchNextPage, hasNextPage]
-  );
+  const ObservationComponent = (): ReactElement => {
+    const [ref, inView] = useInView();
 
-  useEffect(() => {
-    if (bottom) {
-      const element = bottom.current;
-      const option = { threshold: 0 };
+    useEffect(() => {
+      if (!data) return;
 
-      const observer = new IntersectionObserver(handleObserver, option);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      observer.observe(element);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      return () => observer.unobserve(element);
-    } else return;
-  }, [fetchNextPage, hasNextPage, handleObserver]);
+      const pageLastIdx = data.pages.length - 1;
+      const isLast = data?.pages[pageLastIdx].isLast;
+
+      if (!isLast && inView) fetchNextPage();
+    }, [inView]);
+
+    return <div ref={ref} />;
+  };
+
   return (
     <>
       <Seo templateTitle='Artwork' />
@@ -129,8 +120,13 @@ export default function Artwork() {
                   </Link>
                 ))
               )}
-            <div ref={bottom} className='h-2'>
-              {isFetchingNextPage && hasNextPage ? 'Loading...' : ''}
+            <div ref={bottom} className='mb-1 h-1'>
+              <ObservationComponent />
+              {isFetchingNextPage
+                ? 'Loading more...'
+                : hasNextPage
+                ? 'Load More'
+                : 'Nothing more to load'}
             </div>
           </Masonry>
         </ResponsiveMasonry>
