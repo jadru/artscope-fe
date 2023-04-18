@@ -1,4 +1,4 @@
-Dockerfile
+Dockerfile.production
 .dockerignore
 node_modules
 npm-debug.log
