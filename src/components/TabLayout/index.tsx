@@ -6,6 +6,8 @@ interface Props {
   classNameChild?: string;
   paddingTop?: boolean;
   dark?: boolean;
+  fullWidth?: boolean;
+  main?: boolean;
 }
 
 const TabLayout: FunctionComponent<Props> = ({
@@ -14,16 +16,18 @@ const TabLayout: FunctionComponent<Props> = ({
   classNameChild,
   paddingTop = true,
   dark = false,
+  fullWidth = false,
+  main = false,
 }) => (
   <div
     className={`flex h-full min-h-[85vh] w-full flex-col items-center justify-center ${
-      dark ? 'bg-black' : 'bg-white dark:bg-dark'
+      dark ? '' : 'bg-white dark:bg-dark'
     } ${className} `}
   >
     <div
-      className={`${
-        paddingTop ? 'pt-16' : ''
-      } w-screen max-w-4xl px-2 md:px-3 ${classNameChild}`}
+      className={`${paddingTop ? 'pt-16' : ''} w-screen ${
+        !main && 'px-2 md:px-3'
+      } ${fullWidth ? 'w-full' : 'max-w-4xl'} ${classNameChild}`}
     >
       {children}
     </div>

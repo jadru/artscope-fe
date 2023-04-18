@@ -4,8 +4,13 @@ import { FC } from 'react';
 interface Props {
   dark?: boolean;
   absolute?: boolean;
+  left?: boolean;
 }
-const Footer: FC<Props> = ({ dark = false, absolute = false }) => {
+const Footer: FC<Props> = ({
+  dark = false,
+  absolute = false,
+  left = false,
+}) => {
   return (
     <footer
       className={`footer w-full items-center py-6 ${
@@ -13,7 +18,11 @@ const Footer: FC<Props> = ({ dark = false, absolute = false }) => {
       } ${absolute ? 'fixed bottom-[-2px] pb-4' : ''}`}
     >
       <div className={`w-full ${dark ? 'text-gray-100' : 'text-dark'}`}>
-        <p className='w-full text-center dark:text-gray-100'>
+        <p
+          className={`w-full ${
+            left ? 'text-left' : 'text-center'
+          } dark:text-gray-100`}
+        >
           <strong>Artscope</strong> by{' '}
           <Link className='link text-amber-300' href='#'>
             Media Xi

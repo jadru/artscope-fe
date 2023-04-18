@@ -40,7 +40,7 @@ const BottomBar: FunctionComponent<Props> = ({
       <div
         className={`btm-nav z-30 md:bottom-8 md:left-1/2 md:-ml-48 md:w-96 md:rounded-2xl md:shadow-xl ${
           dark
-            ? 'bg-transparent text-gray-100 outline outline-2 md:shadow-none'
+            ? 'bg-white/20 text-gray-100 outline outline-1 backdrop-blur md:shadow-none'
             : ''
         }`}
       >
@@ -59,7 +59,7 @@ const BottomBar: FunctionComponent<Props> = ({
           }`}
           href='/artwork'
         >
-          <BsFillGrid1X2Fill className='h-5 w-5' />
+          <BsFillGrid1X2Fill className='my-0.5 h-4 w-4' />
 
           <span className='btm-nav-label'>아트워크</span>
         </Link>
