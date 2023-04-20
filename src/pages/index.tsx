@@ -45,7 +45,7 @@ export default function HomePage() {
               }}
             />
             <div className='flex-col space-y-3 py-8 text-gray-100 md:left-24'>
-              <h1>2023 금샘 미술관 전시 작품 공모</h1>
+              <h1>2023 금샘미술관 전시 작품 공모</h1>
               <p>2023.04.01 - 05.30</p>
               <Link
                 href='/exhibition/2023-summer-ks'

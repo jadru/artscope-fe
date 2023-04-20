@@ -122,13 +122,24 @@ const Slug = ({
                 </div>
               </>
             ))}
-            <div className='h-6'></div>
+            <div className='h-8'></div>
 
-            <div className='my-4 flex items-center justify-between border-2 border-black/50 pr-4 dark:border-white/30'>
+            <div className='my-4 flex flex-col'>
+              <div className='text-left'>
+                <p>
+                  작성일 : {new Date(data.createdTime).toLocaleString('ko-KR')}
+                </p>
+                {data.updatedTime && (
+                  <p>
+                    업데이트 :{' '}
+                    {new Date(data.updatedTime).toLocaleString('ko-KR')}
+                  </p>
+                )}
+              </div>
               {isEdit && (
-                <div className=''>
+                <div className='btn-group mt-2'>
                   <button
-                    className='btn-ghost btn text-blue-600 dark:text-blue-400'
+                    className='btn-accent btn'
                     onClick={() => {
                       alert('작품 수정은 준비중입니다.');
                     }}
@@ -136,7 +147,7 @@ const Slug = ({
                     <AiOutlineEdit className='h-6 w-6' />
                   </button>
                   <button
-                    className='btn-ghost btn text-warning'
+                    className='btn-warning btn'
                     onClick={() => {
                       confirm('정말 삭제하시겠습니까?') &&
                         jxios.delete('/api/artworks/' + data.id).then(() => {
@@ -150,17 +161,6 @@ const Slug = ({
                   </button>
                 </div>
               )}
-              <div className='text-right'>
-                <p>
-                  작성일 : {new Date(data.createdTime).toLocaleString('ko-KR')}
-                </p>
-                {data.updatedTime && (
-                  <p>
-                    업데이트 :{' '}
-                    {new Date(data.updatedTime).toLocaleString('ko-KR')}
-                  </p>
-                )}
-              </div>
             </div>
 
             {profileData && <ProfileCard profileData={profileData} />}
