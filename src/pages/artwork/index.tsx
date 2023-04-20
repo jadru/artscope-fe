@@ -21,32 +21,26 @@ const OFFSET = 12;
 
 export default function Artwork() {
   const bottom = useRef(null);
-  const {
-    data,
-    error,
-    isFetchingNextPage,
-    fetchNextPage,
-    status,
-    hasNextPage,
-  } = useInfiniteQuery(
-    'artworkList',
-    async ({ pageParam = 0 }) => {
-      const response = await jxios.get('/api/artworks', {
-        params: {
-          size: OFFSET,
-          page: pageParam,
-        },
-        withCredentials: true,
-      });
-      return response.data;
-    },
-    {
-      getNextPageParam: (lastPage) =>
-        lastPage.pageInfo.page <= lastPage.pageInfo.totalPages
-          ? lastPage.pageInfo.page + 1
-          : undefined,
-    }
-  );
+  const { data, error, isFetchingNextPage, fetchNextPage, status } =
+    useInfiniteQuery(
+      'artworkList',
+      async ({ pageParam = 0 }) => {
+        const response = await jxios.get('/api/artworks', {
+          params: {
+            size: OFFSET,
+            page: pageParam,
+          },
+          withCredentials: true,
+        });
+        return response.data;
+      },
+      {
+        getNextPageParam: (lastPage) =>
+          lastPage.pageInfo.page <= lastPage.pageInfo.totalPages
+            ? lastPage.pageInfo.page + 1
+            : undefined,
+      }
+    );
 
   const ObservationComponent = (): ReactElement => {
     const [ref, inView] = useInView();
@@ -123,11 +117,7 @@ export default function Artwork() {
               )}
             <div ref={bottom} className='mb-1 h-1'>
               <ObservationComponent />
-              {isFetchingNextPage
-                ? 'Loading more...'
-                : hasNextPage
-                ? 'Load More'
-                : 'Nothing more to load'}
+              {isFetchingNextPage ? '로딩중...' : ''}
             </div>
           </Masonry>
         </ResponsiveMasonry>
