@@ -81,6 +81,16 @@ const Slug = ({
             <h1 className='my-8 text-center text-4xl font-light'>
               {data?.title}
             </h1>
+            <div className='flex items-center justify-center space-x-1'>
+              {data.tags &&
+                data.tags.length > 0 &&
+                data.tags[0] !== '' &&
+                data.tags.map((tag) => (
+                  <span key={tag} className='text-md badge p-2 uppercase'>
+                    {tag}
+                  </span>
+                ))}
+            </div>
             <div className='my-12 text-lg'>
               <p className='break-keep text-left'>{data.description}</p>
             </div>

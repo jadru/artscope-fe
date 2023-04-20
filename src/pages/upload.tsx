@@ -41,6 +41,7 @@ const initialArtWork: ArtWorkApiRequestType = {
     title: '',
     description: '',
     visible: true,
+    tags: [],
     medias: [],
   },
   mediaFiles: [],
@@ -98,6 +99,8 @@ const Upload = () => {
     const inputData = new FormData(e.target as HTMLFormElement);
     newState.dto.title = inputData.get('title') as string;
     newState.dto.description = inputData.get('description') as string;
+    const tagString = inputData.get('tags') as string;
+    newState.dto.tags = tagString.split(',') as string[];
     newState.dto.visible = checkVisible;
 
     const formData = new FormData();
@@ -308,6 +311,13 @@ const Upload = () => {
                   placeholder='작품 컬렉션에 대한 간단한 설명'
                   required
                   maxLength={UPLOAD_DESCRIPTION_MAX_INPUT_LENGTH}
+                />
+                <input
+                  type='text'
+                  name='tags'
+                  className='text-md input-primary input mb-2 w-[302px]'
+                  placeholder='작품 컬렉션 태그 (","로 구분)'
+                  maxLength={UPLOAD_TITLE_MAX_INPUT_LENGTH}
                 />
                 <div className='form-control mb-2 w-[302px] '>
                   <label className='label cursor-pointer'>
