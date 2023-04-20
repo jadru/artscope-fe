@@ -12,6 +12,7 @@ export type ArtWorkApiRequestType = {
       description: string;
     }[];
     title: string;
+    tags: string[];
     visible: boolean;
   };
   mediaFiles: File[];
@@ -33,6 +34,7 @@ export type ArtworkType = {
   id: number;
   title: string;
   description: string;
+  tags: string[];
   member: string;
   thumbnail: {
     id: number;

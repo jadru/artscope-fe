@@ -114,7 +114,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   };
   if (!editable)
     return (
-      <div className='flex w-full flex-col border-2'>
+      <div className='flex w-full flex-col md:border-2'>
         <div className='relative flex w-full flex-row items-center justify-center space-x-12 p-6 dark:text-gray-100'>
           <div
             className={`${
@@ -198,7 +198,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             </div>
           </div>
         </div>
-        <div className='grid w-full grid-cols-3 gap-1 border-t-2 md:gap-2'>
+        <div className='grid w-full grid-cols-3 gap-1 md:gap-2 md:border-t-2'>
           {userArtworksData &&
             userArtworksData.artworks.map((artwork) => (
               <Link
