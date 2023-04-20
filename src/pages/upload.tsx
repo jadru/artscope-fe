@@ -56,8 +56,8 @@ const Upload = () => {
   const [isUpload, setIsUpload] = useState<boolean>(false);
   const [checkVisible, setCheckVisible] = useState<boolean>(true);
   const handleFileSelected = async (files: File[]) => {
-    if (files.length > 8) {
-      toast.warn('최대 8개의 파일만 업로드할 수 있습니다.');
+    if (files.length > 10 || files.length < 5) {
+      toast.warn('5개 이상, 10개 이하의 파일만 업로드할 수 있습니다.');
       return;
     }
     const urlList: ArtWorkMediaType[] = [];
@@ -197,7 +197,7 @@ const Upload = () => {
                 )}
                 <input
                   type='text'
-                  placeholder='작가, 제목, 작품기법, 사이즈, 제작연도 등'
+                  placeholder='제목, 매체, 사이즈, 제작연도 등'
                   value={fileUrls[indexFileforModal].description}
                   className='input-bordered input-primary input mt-2 w-[300px]'
                   onChange={(e) => {
@@ -223,7 +223,7 @@ const Upload = () => {
                         setIndexFileforModal((prevState) => prevState - 1)
                       }
                     >
-                      이전 미디어
+                      {'<--'}
                     </button>
                   )}
                   <a href='#' className='btn'>
@@ -236,7 +236,7 @@ const Upload = () => {
                         setIndexFileforModal((prevState) => prevState + 1)
                       }
                     >
-                      다음 미디어
+                      {'-->'}
                     </button>
                   )}
                 </div>
@@ -298,20 +298,22 @@ const Upload = () => {
                   type='text'
                   name='title'
                   className='text-md input-primary input mb-2 w-[302px]'
-                  placeholder='작품 제목'
+                  placeholder='작품 컬렉션 제목'
                   required
                   maxLength={UPLOAD_TITLE_MAX_INPUT_LENGTH}
                 />
                 <textarea
                   name='description'
                   className='text-md textarea-primary textarea mb-2 h-64 w-[302px] resize-none'
-                  placeholder='작품에 대한 간단한 설명 입력'
+                  placeholder='작품 컬렉션에 대한 간단한 설명'
                   required
                   maxLength={UPLOAD_DESCRIPTION_MAX_INPUT_LENGTH}
                 />
                 <div className='form-control mb-2 w-[302px] '>
                   <label className='label cursor-pointer'>
-                    <span className='label-text'>내 작품 플랫폼에 공개</span>
+                    <span className='label-text'>
+                      작품 컬렉션 Artscope 플랫폼에 공개
+                    </span>
                     <input
                       type='checkbox'
                       className='toggle-success toggle'
