@@ -7,6 +7,7 @@ import { Cookies } from 'react-cookie';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineGoogle } from 'react-icons/ai';
 import { toast } from 'react-toastify';
+import { useSetRecoilState } from 'recoil';
 import * as yup from 'yup';
 
 import useAuth from '@/hooks/useAuth';
@@ -20,6 +21,7 @@ import { NavBar } from '@/components/TabLayout/NavBar';
 import Title from '@/components/Title';
 
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
+import { userNameAndRoleAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
 
 const loginSchema = yup.object().shape({
@@ -40,6 +42,7 @@ const Login = () => {
   } = useForm<loginInputs>({
     resolver: yupResolver(loginSchema),
   });
+  const setUserInfo = useSetRecoilState(userNameAndRoleAtom);
   const cookies = useMemo(() => new Cookies(), []);
   const { push, asPath } = useRouter();
   useEffect(() => {
@@ -54,6 +57,8 @@ const Login = () => {
       .post('/api/login', data)
       .then((res) => {
         const { accessToken, refreshToken } = res.data;
+        const decodedAccessToken: { exp: number; sub: string; auth: string } =
+          jwt_decode(accessToken);
         const decodedRefreshToken: { exp: number } = jwt_decode(refreshToken);
         cookies.remove('refreshToken');
         cookies.set('refreshToken', refreshToken, {
@@ -63,6 +68,10 @@ const Login = () => {
         jxios.defaults.headers.common[
           'Authorization'
         ] = `Bearer ${accessToken}`;
+        setUserInfo({
+          username: decodedAccessToken.sub,
+          role: decodedAccessToken.auth,
+        });
         jxios
           .get('/api/members/profile')
           .then((res) => {

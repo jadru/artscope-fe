@@ -7,9 +7,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastContainer } from 'react-toastify';
 import { RecoilRoot } from 'recoil';
 
-import '@/styles/globals.css';
-// !STARTERCONF This is for demo purposes, remove @/styles/colors.css import immediately
-import '@/styles/colors.css';
+import '@/styles/globals.scss';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 import { GA_TRACKING_ID } from '@/constant/env';

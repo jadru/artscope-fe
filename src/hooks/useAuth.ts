@@ -2,15 +2,16 @@ import jwt_decode from 'jwt-decode';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
 import { Cookies } from 'react-cookie';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { artistAuthRequired } from '@/constant/auth';
-import { isTokenLoadingAtom } from '@/states/atom';
+import { isTokenLoadingAtom, userNameAndRoleAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
 
 const useAuth = () => {
   const [isTokenRefreshing, setIsTokenRefreshing] =
     useRecoilState(isTokenLoadingAtom);
+  const setUserInfo = useSetRecoilState(userNameAndRoleAtom);
   const router = useRouter();
   const cookies = useMemo(() => new Cookies(), []);
   const refresh = useCallback(async () => {
@@ -34,10 +35,19 @@ const useAuth = () => {
             ] = `Bearer ${accessToken}`;
             const decodedRefreshToken: { exp: number } =
               jwt_decode(refreshToken);
+            const decodedAccessToken: {
+              exp: number;
+              sub: string;
+              auth: string;
+            } = jwt_decode(accessToken);
             cookies.remove('refreshToken');
             cookies.set('refreshToken', refreshToken, {
               expires: new Date(decodedRefreshToken.exp * 1000),
               path: '/',
+            });
+            setUserInfo({
+              username: decodedAccessToken.sub,
+              role: decodedAccessToken.auth,
             });
           })
           .catch(() => {
@@ -55,7 +65,7 @@ const useAuth = () => {
         }
       }
     }
-  }, [isTokenRefreshing, router, cookies, setIsTokenRefreshing]);
+  }, [isTokenRefreshing, router, cookies, setIsTokenRefreshing, setUserInfo]);
   useEffect(() => {
     refresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
