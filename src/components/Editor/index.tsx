@@ -15,15 +15,25 @@ import { toast } from 'react-toastify';
 
 import jxios from '../../utils/jxios';
 
-const Editor = ({ data, setEditMode }) => {
+import { ArtworkType } from '@/types';
+
+const Editor = ({
+  data,
+  setEditMode,
+  create = true,
+}: {
+  data: ArtworkType;
+  setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
+  create: boolean;
+}) => {
   const CustomDocument = Document.extend({
     content: 'heading block*',
   });
-  const tagInput = useRef();
+  const tagInput = useRef(HTMLInputElement);
   const router = useRouter();
 
   const editor = useEditor({
-    content: `<h1>${data.title}</h1>${data.description}`,
+    content: !create ? `<h1>${data.title}</h1>${data.description}` : '',
     extensions: [
       CustomDocument,
       StarterKit.configure({
@@ -47,13 +57,18 @@ const Editor = ({ data, setEditMode }) => {
   }, [editor]);
 
   const handleEditSaveButton = () => {
+    if (!editor) return;
     jxios
       .put('/api/artworks/' + data.id, {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         title: editor.getJSON().content[0].content[0].text,
         description: editor
           .getHTML()
           .substring(editor.getHTML().search('</h1>') + 5),
         visible: true,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         tags: tagInput.current.value.split(',').map((tag) => tag.trim()),
       })
       .then((res) => {
@@ -140,6 +155,8 @@ const Editor = ({ data, setEditMode }) => {
           className='input-bordered input mb-6'
           placeholder='태그'
           defaultValue={data.tags}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           ref={tagInput}
         />
       </div>

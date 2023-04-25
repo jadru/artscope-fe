@@ -209,7 +209,7 @@ const Slug = ({
       <>
         <Seo templateTitle={'편집 모드 ' + data.title + ' - Artwork'} />
         <div className='min-h-screen w-screen overflow-scroll'>
-          <Editor data={data} setEditMode={setEditMode} />
+          <Editor data={data} setEditMode={setEditMode} create={false} />
         </div>
       </>
     );
