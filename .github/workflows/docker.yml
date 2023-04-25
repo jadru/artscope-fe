@@ -80,7 +80,7 @@ jobs:
 #      - name: Update Kubernetes resources
 #        run: |
 #          cd apps/art-fe/
-#          kustomize edit set image jadru/artplatform-fe:${{ steps.image.outputs.version }}
+#          kustomize edit.tsx set image jadru/artplatform-fe:${{ steps.image.outputs.version }}
 #          cat kustomization.yaml
 #
 #      # 수정된 파일 commit & push

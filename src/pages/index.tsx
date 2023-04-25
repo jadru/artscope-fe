@@ -26,7 +26,7 @@ export default function HomePage() {
   const router = useRouter();
   return (
     <main>
-      <Seo themeColor='#917FB3' />
+      <Seo themeColor='#6F38C5' />
       <section>
         <NavBar transparent dark />
         <TabLayout

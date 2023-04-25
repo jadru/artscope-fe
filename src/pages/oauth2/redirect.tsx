@@ -3,14 +3,16 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { Cookies } from 'react-cookie';
 import { toast } from 'react-toastify';
+import { useSetRecoilState } from 'recoil';
 
 import Seo from '@/components/Seo';
 
+import { userNameAndRoleAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
 
 const RedirectOAuth2 = () => {
   const { push, query } = useRouter();
-
+  const setUserInfo = useSetRecoilState(userNameAndRoleAtom);
   useEffect(() => {
     if (query.token) {
       const cookies = new Cookies();
@@ -27,6 +29,15 @@ const RedirectOAuth2 = () => {
             'Authorization'
           ] = `Bearer ${accessToken}`;
           const decodedRefreshToken: { exp: number } = jwt_decode(refreshToken);
+          const decodedAccessToken: {
+            exp: number;
+            sub: string;
+            auth: string;
+          } = jwt_decode(accessToken);
+          setUserInfo({
+            username: decodedAccessToken.sub,
+            role: decodedAccessToken.auth,
+          });
           cookies.remove('refreshToken');
           cookies.set('refreshToken', refreshToken, {
             expires: new Date(decodedRefreshToken.exp * 1000),
@@ -52,7 +63,7 @@ const RedirectOAuth2 = () => {
           push('/login');
         });
     }
-  }, [push, query.token]);
+  }, [push, query.token, setUserInfo]);
 
   return <Seo templateTitle='Google Login'></Seo>;
 };

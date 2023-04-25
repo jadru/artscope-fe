@@ -1,12 +1,15 @@
 import jwt_decode from 'jwt-decode';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import { toast } from 'react-toastify';
+import { useRecoilValue } from 'recoil';
 import useSWR from 'swr';
 
+import Editor from '@/components/Editor';
 import Footer from '@/components/Footer';
 import ProfileCard from '@/components/ProfileCard';
 import Seo from '@/components/Seo';
@@ -19,16 +22,23 @@ import {
   NEXT_PUBLIC_MEDIA_STORAGE_URL,
   NEXT_PUBLIC_ROOT_URL,
 } from '@/constant/env';
+import { isTokenLoadingAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
 
 import { ArtworkType, profileApiType } from '@/types';
 
 export const getServerSideProps: GetServerSideProps<{
   data: ArtworkType;
+  isEditMode: boolean;
 }> = async ({ params }) => {
-  // Fetch data from external API
+  if (!params?.slug) {
+    return {
+      notFound: true,
+    };
+  }
+  const id = params.slug[0];
   const response = await jxios
-    .get(NEXT_PUBLIC_API_URL + '/api/artworks/' + params?.slug)
+    .get(NEXT_PUBLIC_API_URL + '/api/artworks/' + id)
     .then((res) => res);
   const data: ArtworkType = response.data;
 
@@ -38,149 +48,171 @@ export const getServerSideProps: GetServerSideProps<{
     };
   }
 
-  // Pass data to the page via props
-  return { props: { data } };
+  const isEditMode = params.slug[1] === 'edit';
+
+  return { props: { data, isEditMode } };
 };
 
 const Slug = ({
   data,
+  isEditMode,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const slug = (router.query.slug as string[]) || [];
+  const isTokenRefreshing = useRecoilValue(isTokenLoadingAtom);
   const fetcher = (url: string) => jxios.get(url).then((res) => res.data);
   const { data: profileData } = useSWR<profileApiType>(
     slug && data ? '/api/members/' + data?.member : undefined,
     fetcher
   );
 
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState<boolean>();
   // eslint-disable-next-line
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState<boolean>(false);
 
   useEffect(() => {
-    if (data && jxios.defaults.headers.common.Authorization) {
+    if (
+      !isTokenRefreshing &&
+      data &&
+      jxios.defaults.headers.common.Authorization
+    ) {
       let token = jxios.defaults.headers.common.Authorization as string;
       token = token.replace('Bearer ', '');
       const decodedToken: { sub: string; auth: string } = jwt_decode(token);
-      data.member === decodedToken.sub ||
-        (decodedToken.auth.includes('ROLE_ADMIN') && setIsEdit(true));
+      if (
+        data.member === decodedToken.sub ||
+        decodedToken.auth.includes('ROLE_ADMIN')
+      ) {
+        setIsEdit(true);
+        isEditMode && setEditMode(true);
+      }
     }
-  }, [data]);
+  }, [data, isEditMode, isTokenRefreshing]);
 
-  return (
-    <>
-      <Seo
-        description={data.description}
-        templateTitle={data.title + ' - Artwork'}
-        image={NEXT_PUBLIC_ROOT_URL + '/api/og-image?title=' + data.title}
-      />
-      <NavBar />
-      <TabLayout>
-        {data && (
-          <div className='block space-y-1.5'>
-            <h1 className='my-8 text-center text-4xl font-light'>
-              {data?.title}
-            </h1>
-            <div className='flex items-center justify-center space-x-1'>
-              {data.tags &&
-                data.tags.length > 0 &&
-                data.tags[0] !== '' &&
-                data.tags.map((tag) => (
-                  <span key={tag} className='text-md badge p-2 uppercase'>
-                    {tag}
-                  </span>
-                ))}
-            </div>
-            <div className='my-12 text-lg'>
-              <p className='break-keep text-left'>{data.description}</p>
-            </div>
-            {data.artworkMedias.map((artworkMedia) => (
-              <>
-                <div
-                  key={artworkMedia.id}
-                  className='unset relative h-auto w-full'
-                >
-                  {artworkMedia.mediaType === 'image' ? (
-                    <Image
-                      className='relative h-auto w-full'
-                      src={artworkMedia.mediaUrl}
-                      alt='artworkMedia'
-                      width={artworkMedia.imageWidth}
-                      height={artworkMedia.imageHeight}
-                      sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-                    />
-                  ) : (
-                    <video
-                      className='relative h-auto w-full'
-                      src={
-                        NEXT_PUBLIC_MEDIA_STORAGE_URL +
-                        '/' +
-                        artworkMedia.mediaUrl
-                      }
-                      controls
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                    />
-                  )}
-                  {artworkMedia.description && (
-                    <p className='w-full pt-0.5 text-left text-lg'>
-                      {artworkMedia.description}
+  if (!editMode)
+    // this is artwork view mode
+    return (
+      <>
+        <Seo
+          description={data.description}
+          templateTitle={data.title + ' - Artwork'}
+          image={NEXT_PUBLIC_ROOT_URL + '/api/og-image?title=' + data.title}
+        />
+        <NavBar />
+        <TabLayout>
+          {data && (
+            <div className='block space-y-1.5'>
+              <h1 className='my-8 text-center text-4xl font-light'>
+                {data?.title}
+              </h1>
+              <div className='flex items-center justify-center space-x-1'>
+                {data.tags &&
+                  data.tags.length > 0 &&
+                  data.tags[0] !== '' &&
+                  data.tags.map((tag) => (
+                    <span key={tag} className='text-md badge p-2 uppercase'>
+                      {tag}
+                    </span>
+                  ))}
+              </div>
+              <div className='my-12 text-lg'>
+                <p className='break-keep text-left'>{data.description}</p>
+              </div>
+              {data.artworkMedias.map((artworkMedia) => (
+                <>
+                  <div
+                    key={artworkMedia.id}
+                    className='unset relative h-auto w-full'
+                  >
+                    {artworkMedia.mediaType === 'image' ? (
+                      <Image
+                        className='relative h-auto w-full'
+                        src={artworkMedia.mediaUrl}
+                        alt='artworkMedia'
+                        width={artworkMedia.imageWidth}
+                        height={artworkMedia.imageHeight}
+                        sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                      />
+                    ) : (
+                      <video
+                        className='relative h-auto w-full'
+                        src={
+                          NEXT_PUBLIC_MEDIA_STORAGE_URL +
+                          '/' +
+                          artworkMedia.mediaUrl
+                        }
+                        controls
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                      />
+                    )}
+                    {artworkMedia.description && (
+                      <p className='w-full pt-0.5 text-left text-lg'>
+                        {artworkMedia.description}
+                      </p>
+                    )}
+                  </div>
+                </>
+              ))}
+              <div className='h-8'></div>
+
+              <div className='my-4 flex flex-col'>
+                <div className='text-left'>
+                  <p>
+                    작성일 :{' '}
+                    {new Date(data.createdTime).toLocaleString('ko-KR')}
+                  </p>
+                  {data.updatedTime && (
+                    <p>
+                      업데이트 :{' '}
+                      {new Date(data.updatedTime).toLocaleString('ko-KR')}
                     </p>
                   )}
                 </div>
-              </>
-            ))}
-            <div className='h-8'></div>
-
-            <div className='my-4 flex flex-col'>
-              <div className='text-left'>
-                <p>
-                  작성일 : {new Date(data.createdTime).toLocaleString('ko-KR')}
-                </p>
-                {data.updatedTime && (
-                  <p>
-                    업데이트 :{' '}
-                    {new Date(data.updatedTime).toLocaleString('ko-KR')}
-                  </p>
+                {isEdit && (
+                  <div className='btn-group mt-2'>
+                    <Link
+                      className='btn-accent btn'
+                      href={'/artwork/' + data.id + '/edit'}
+                    >
+                      <AiOutlineEdit className='h-6 w-6' />
+                    </Link>
+                    <button
+                      className='btn-warning btn'
+                      onClick={() => {
+                        confirm('정말 삭제하시겠습니까?') &&
+                          jxios.delete('/api/artworks/' + data.id).then(() => {
+                            router.push('/artwork').then(() => {
+                              toast.success('작품이 삭제되었습니다.');
+                            });
+                          });
+                      }}
+                    >
+                      <AiOutlineDelete className='h-6 w-6' />
+                    </button>
+                  </div>
                 )}
               </div>
-              {isEdit && (
-                <div className='btn-group mt-2'>
-                  <button
-                    className='btn-accent btn'
-                    onClick={() => {
-                      alert('작품 수정은 준비중입니다.');
-                    }}
-                  >
-                    <AiOutlineEdit className='h-6 w-6' />
-                  </button>
-                  <button
-                    className='btn-warning btn'
-                    onClick={() => {
-                      confirm('정말 삭제하시겠습니까?') &&
-                        jxios.delete('/api/artworks/' + data.id).then(() => {
-                          router.push('/artwork').then(() => {
-                            toast.success('작품이 삭제되었습니다.');
-                          });
-                        });
-                    }}
-                  >
-                    <AiOutlineDelete className='h-6 w-6' />
-                  </button>
-                </div>
-              )}
+              {profileData && <ProfileCard profileData={profileData} />}
             </div>
-
-            {profileData && <ProfileCard profileData={profileData} />}
-          </div>
-        )}
-      </TabLayout>
-      <Footer />
-      <BottomBar tab='artwork' />
-    </>
-  );
+          )}
+        </TabLayout>
+        <Footer />
+        <BottomBar tab='artwork' />
+      </>
+    );
+  // this is artwork edit mode
+  else
+    return (
+      <>
+        <Seo templateTitle={'편집 모드 ' + data.title + ' - Artwork'} />
+        <div className='min-h-screen w-screen overflow-scroll'>
+          <Editor data={data} setEditMode={setEditMode} />
+        </div>
+      </>
+    );
 };
 
 export default Slug;
