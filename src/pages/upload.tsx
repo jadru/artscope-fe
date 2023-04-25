@@ -57,8 +57,8 @@ const Upload = () => {
   const [isUpload, setIsUpload] = useState<boolean>(false);
   const [checkVisible, setCheckVisible] = useState<boolean>(true);
   const handleFileSelected = async (files: File[]) => {
-    if (files.length > 10 || files.length < 5) {
-      toast.warn('5개 이상, 10개 이하의 파일만 업로드할 수 있습니다.');
+    if (files.length > 10) {
+      toast.warn('10개 이하의 파일까지 업로드할 수 있습니다.');
       return;
     }
     const urlList: ArtWorkMediaType[] = [];
