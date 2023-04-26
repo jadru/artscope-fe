@@ -13,6 +13,8 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 
+import { NavBar } from '@/components/TabLayout/NavBar';
+
 import jxios from '../../utils/jxios';
 
 import { ArtworkType } from '@/types';
@@ -83,93 +85,96 @@ const Editor = ({
   };
 
   return (
-    <div className='editor h-full w-full p-12'>
-      {editor && (
-        <BubbleMenu
-          className='bubble-menu'
-          tippyOptions={{ duration: 100 }}
-          editor={editor}
-        >
-          <button
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            className={editor.isActive('bold') ? 'is-active' : ''}
+    <>
+      <NavBar />
+      <div className='h-8'> </div>
+      <div className='editor h-full w-full max-w-2xl p-12'>
+        {editor && (
+          <BubbleMenu
+            className='bubble-menu'
+            tippyOptions={{ duration: 100 }}
+            editor={editor}
           >
-            Bold
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={editor.isActive('italic') ? 'is-active' : ''}
-          >
-            Italic
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={editor.isActive('strike') ? 'is-active' : ''}
-          >
-            Strike
-          </button>
-        </BubbleMenu>
-      )}
+            <button
+              onClick={() => editor.chain().focus().toggleBold().run()}
+              className={editor.isActive('bold') ? 'is-active' : ''}
+            >
+              Bold
+            </button>
+            <button
+              onClick={() => editor.chain().focus().toggleItalic().run()}
+              className={editor.isActive('italic') ? 'is-active' : ''}
+            >
+              Italic
+            </button>
+            <button
+              onClick={() => editor.chain().focus().toggleStrike().run()}
+              className={editor.isActive('strike') ? 'is-active' : ''}
+            >
+              Strike
+            </button>
+          </BubbleMenu>
+        )}
 
-      {editor && (
-        <FloatingMenu
-          className='floating-menu'
-          tippyOptions={{ duration: 100 }}
-          editor={editor}
-        >
-          <button
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 1 }).run()
-            }
-            className={
-              editor.isActive('heading', { level: 1 }) ? 'is-active' : ''
-            }
+        {editor && (
+          <FloatingMenu
+            className='floating-menu'
+            tippyOptions={{ duration: 100 }}
+            editor={editor}
           >
-            H1
-          </button>
-          <button
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 2 }).run()
-            }
-            className={
-              editor.isActive('heading', { level: 2 }) ? 'is-active' : ''
-            }
-          >
-            H2
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={editor.isActive('bulletList') ? 'is-active' : ''}
-          >
-            Bullet List
-          </button>
-        </FloatingMenu>
-      )}
+            <button
+              onClick={() =>
+                editor.chain().focus().toggleHeading({ level: 1 }).run()
+              }
+              className={
+                editor.isActive('heading', { level: 1 }) ? 'is-active' : ''
+              }
+            >
+              H1
+            </button>
+            <button
+              onClick={() =>
+                editor.chain().focus().toggleHeading({ level: 2 }).run()
+              }
+              className={
+                editor.isActive('heading', { level: 2 }) ? 'is-active' : ''
+              }
+            >
+              H2
+            </button>
+            <button
+              onClick={() => editor.chain().focus().toggleBulletList().run()}
+              className={editor.isActive('bulletList') ? 'is-active' : ''}
+            >
+              Bullet List
+            </button>
+          </FloatingMenu>
+        )}
 
-      <div className='form-control w-full max-w-xs'>
-        <label className='label'>
-          <span className='label-text'>태그 입력</span>
-        </label>
-        <input
-          type='text'
-          className='input-bordered input mb-6'
-          placeholder='태그'
-          defaultValue={data.tags}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          ref={tagInput}
+        <EditorContent
+          editor={editor}
+          className='h-full w-full pb-12 focus:outline-none active:outline-none'
         />
+        <div className='fixed bottom-0 left-0 flex w-full items-center justify-center'>
+          <div className='mb-2 items-center justify-center space-x-3 rounded-xl bg-gray-300 p-2'>
+            <span className='label-text'>태그 입력</span>
+            <input
+              type='text'
+              className='input-bordered input'
+              placeholder='태그'
+              defaultValue={data.tags}
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              ref={tagInput}
+            />
+
+            <button onClick={handleEditSaveButton} className='btn-primary btn'>
+              저장하기
+            </button>
+          </div>
+        </div>
       </div>
-
-      <EditorContent
-        editor={editor}
-        className='h-full w-full focus:outline-none active:outline-none'
-      />
-
-      <button onClick={handleEditSaveButton} className='btn-primary btn mt-8'>
-        저장하기
-      </button>
-    </div>
+    </>
   );
 };
 
