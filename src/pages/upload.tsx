@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
+import { AiOutlineCheck, AiOutlineFileImage } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 
 import useAuth from '@/hooks/useAuth';
@@ -36,6 +37,49 @@ const FILETYPES = [
   'OGG',
 ];
 
+const getVideoCover = (file: File, seekTo = 0.0) => {
+  return new Promise((resolve, reject) => {
+    // load the file to a video player
+    const videoPlayer = document.createElement('video');
+    videoPlayer.setAttribute('src', URL.createObjectURL(file));
+    videoPlayer.load();
+    videoPlayer.addEventListener('error', (ex: ErrorEvent) => {
+      reject('error when loading video file' + ex);
+    });
+    // load metadata of the video to get video duration and dimensions
+    videoPlayer.addEventListener('loadedmetadata', () => {
+      // seek to user defined timestamp (in seconds) if possible
+      if (videoPlayer.duration < seekTo) {
+        reject('video is too short.');
+        return;
+      }
+      // delay seeking or else 'seeked' event won't fire on Safari
+      setTimeout(() => {
+        videoPlayer.currentTime = seekTo;
+      }, 200);
+      // extract video thumbnail once seeking is complete
+      videoPlayer.addEventListener('seeked', () => {
+        // define a canvas to have the same dimension as the video
+        const canvas = document.createElement('canvas');
+        canvas.width = videoPlayer.videoWidth;
+        canvas.height = videoPlayer.videoHeight;
+        // draw the video frame to canvas
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        ctx.drawImage(videoPlayer, 0, 0, canvas.width, canvas.height);
+        // return the canvas image as a blob
+        ctx.canvas.toBlob(
+          (blob) => {
+            resolve(blob);
+          },
+          'image/jpeg',
+          0.75 /* quality */
+        );
+      });
+    });
+  });
+};
+
 const initialArtWork: ArtWorkApiRequestType = {
   dto: {
     title: '',
@@ -43,8 +87,10 @@ const initialArtWork: ArtWorkApiRequestType = {
     visible: true,
     tags: [],
     medias: [],
+    thumbnail: { mediaType: 'image', description: '' },
   },
   mediaFiles: [],
+  thumbnailFile: undefined,
 };
 
 const Upload = () => {
@@ -56,6 +102,7 @@ const Upload = () => {
   const [artwork, setArtwork] = useState<ArtWorkApiRequestType>(initialArtWork);
   const [isUpload, setIsUpload] = useState<boolean>(false);
   const [checkVisible, setCheckVisible] = useState<boolean>(true);
+  const [thumbnail, setThumbnail] = useState<number>(0);
   const handleFileSelected = async (files: File[]) => {
     if (files.length > 10) {
       toast.warn('10개 이하의 파일까지 업로드할 수 있습니다.');
@@ -104,6 +151,19 @@ const Upload = () => {
     newState.dto.visible = checkVisible;
 
     const formData = new FormData();
+    if (fileUrls[thumbnail].mediaType === 'video') {
+      const cover = (await getVideoCover(
+        fileUrls[thumbnail].file,
+        1.5
+      )) as Blob;
+      formData.append(
+        'thumbnailFile',
+        new File([cover], 'thumbnail.jpg', { type: 'image/jpeg' })
+      );
+    } else if (fileUrls[thumbnail].mediaType === 'image') {
+      formData.append('thumbnailFile', fileUrls[thumbnail].file);
+    }
+
     newState.dto.medias = [];
     await fileUrls.forEach((media) => {
       formData.append('mediaFiles', media.file);
@@ -253,10 +313,28 @@ const Upload = () => {
                   fileUrls.map((file, index) => (
                     <a
                       key={Math.random()}
-                      className='m-0'
+                      className='relative m-0'
                       href='#modal-artwork-media'
                       onClick={() => setIndexFileforModal(index)}
                     >
+                      {file.mediaType !== 'audio' && (
+                        <button
+                          className={`${
+                            thumbnail === index
+                              ? 'badge-secondary'
+                              : 'badge-primary'
+                          } badge tooltip absolute top-2 left-2 z-40`}
+                          data-tip='썸네일 선택'
+                          onClick={() => setThumbnail(index)}
+                        >
+                          {thumbnail === index ? (
+                            <AiOutlineCheck />
+                          ) : (
+                            <AiOutlineFileImage />
+                          )}
+                        </button>
+                      )}
+
                       <div
                         className={`${
                           fileUrls[index].description !== ''

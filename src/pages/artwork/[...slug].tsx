@@ -10,6 +10,7 @@ import { useRecoilValue } from 'recoil';
 import useSWR from 'swr';
 
 import Editor from '@/components/Editor';
+import ReadOnlyEditor from '@/components/Editor/ReadOnlyEditor';
 import Footer from '@/components/Footer';
 import ProfileCard from '@/components/ProfileCard';
 import Seo from '@/components/Seo';
@@ -115,8 +116,8 @@ const Slug = ({
                     </span>
                   ))}
               </div>
-              <div className='my-12 text-lg'>
-                <p className='break-keep text-left'>{data.description}</p>
+              <div className='my-12'>
+                <ReadOnlyEditor data={data} />
               </div>
               {data.artworkMedias.map((artworkMedia) => (
                 <>
@@ -129,8 +130,8 @@ const Slug = ({
                         className='relative h-auto w-full'
                         src={artworkMedia.mediaUrl}
                         alt='artworkMedia'
-                        width={artworkMedia.imageWidth}
-                        height={artworkMedia.imageHeight}
+                        width={300}
+                        height={300}
                         sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                       />
                     ) : (
@@ -208,9 +209,7 @@ const Slug = ({
     return (
       <>
         <Seo templateTitle={'편집 모드 ' + data.title + ' - Artwork'} />
-        <div className='min-h-screen w-screen overflow-scroll'>
-          <Editor data={data} setEditMode={setEditMode} create={false} />
-        </div>
+        <Editor data={data} setEditMode={setEditMode} create={false} />
       </>
     );
 };

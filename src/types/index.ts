@@ -13,9 +13,14 @@ export type ArtWorkApiRequestType = {
     }[];
     title: string;
     tags: string[];
+    thumbnail: {
+      mediaType: MediaType;
+      description: string;
+    };
     visible: boolean;
   };
   mediaFiles: File[];
+  thumbnailFile?: File;
 };
 
 export type MediaType = 'image' | 'video' | 'audio';
