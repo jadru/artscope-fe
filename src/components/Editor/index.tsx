@@ -85,10 +85,9 @@ const Editor = ({
   };
 
   return (
-    <>
-      <NavBar />
-      <div className='h-8'> </div>
-      <div className='editor h-full w-full max-w-2xl p-12'>
+    <div className='relative flex h-auto min-h-screen flex-col items-center justify-center bg-white dark:bg-dark'>
+      <NavBar className='relative' />
+      <div className='editor mb:pb-0 min-h-[calc(100vh-64px)] w-full max-w-2xl bg-gray-100/70 p-8 shadow dark:bg-black/70 sm:pb-12 md:mb-8 md:rounded-2xl'>
         {editor && (
           <BubbleMenu
             className='bubble-menu'
@@ -155,9 +154,9 @@ const Editor = ({
           editor={editor}
           className='h-full w-full pb-12 focus:outline-none active:outline-none'
         />
-        <div className='fixed bottom-0 left-0 flex w-full items-center justify-center'>
-          <div className='mb-2 items-center justify-center space-x-3 rounded-xl bg-gray-300 p-2'>
-            <span className='label-text'>태그 입력</span>
+        <div className='fixed bottom-0 left-0 flex w-full items-center justify-center md:bottom-10'>
+          <div className='mb-2 items-center justify-center space-x-3 rounded-xl bg-gray-300 p-2 dark:bg-gray-800 md:p-3'>
+            <span className='label-text hidden md:visible'>태그 입력</span>
             <input
               type='text'
               className='input-bordered input'
@@ -174,7 +173,7 @@ const Editor = ({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
