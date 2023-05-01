@@ -2,11 +2,7 @@ import Link from 'next/link';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Cookies } from 'react-cookie';
 import { AiFillHome } from 'react-icons/ai';
-import {
-  BsFillBrushFill,
-  BsFillGrid1X2Fill,
-  BsFillPersonFill,
-} from 'react-icons/bs';
+import { BsFillBrushFill, BsFillPersonFill } from 'react-icons/bs';
 
 import jxios from '@/utils/jxios';
 
@@ -50,16 +46,6 @@ const BottomBar: FunctionComponent<Props> = ({
         >
           <AiFillHome className='h-5 w-5' />
           <span className='btm-nav-label'>홈</span>
-        </Link>
-        <Link
-          className={`${tab === 'artwork' ? 'text-blue-600' : ''} ${
-            dark ? 'bg-transparent' : ''
-          }`}
-          href='/artwork'
-        >
-          <BsFillGrid1X2Fill className='my-0.5 h-4 w-4' />
-
-          <span className='btm-nav-label'>아트워크</span>
         </Link>
         {!isArtist ? (
           <>

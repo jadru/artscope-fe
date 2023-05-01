@@ -5,11 +5,9 @@ import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import React from 'react';
 
-import { ArtworkType } from '@/types';
-
-const ReadOnlyEditor = ({ data }: { data: ArtworkType }) => {
+const ReadOnlyEditor = ({ data }: { data: string }) => {
   const editor = useEditor({
-    content: `${data.description}`,
+    content: `${data}`,
     extensions: [StarterKit, TextStyle, Color, ListItem],
     editorProps: {
       attributes: {
