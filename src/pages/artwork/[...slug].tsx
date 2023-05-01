@@ -112,12 +112,12 @@ const Slug = ({
                   data.tags[0] !== '' &&
                   data.tags.map((tag) => (
                     <span key={tag} className='text-md badge p-2 uppercase'>
-                      {tag}
+                      {tag.replace("'", '')}
                     </span>
                   ))}
               </div>
               <div className='my-12'>
-                <ReadOnlyEditor data={data} />
+                <ReadOnlyEditor data={data.description} />
               </div>
               {data.artworkMedias.map((artworkMedia) => (
                 <>
@@ -185,7 +185,7 @@ const Slug = ({
                       onClick={() => {
                         confirm('정말 삭제하시겠습니까?') &&
                           jxios.delete('/api/artworks/' + data.id).then(() => {
-                            router.push('/artwork').then(() => {
+                            router.push('/').then(() => {
                               toast.success('작품이 삭제되었습니다.');
                             });
                           });

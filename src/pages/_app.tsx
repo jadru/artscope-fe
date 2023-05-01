@@ -33,7 +33,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name='mobile-web-app-capable' content='yes' />
       </Head>
       <CookiesProvider>
-        <ToastContainer limit={2} theme={isDark ? 'dark' : 'light'} />
+        <ToastContainer
+          limit={2}
+          theme={isDark ? 'dark' : 'light'}
+          hideProgressBar
+        />
         <QueryClientProvider client={queryClient}>
           <Script
             strategy='afterInteractive'

@@ -147,7 +147,7 @@ const Upload = () => {
     newState.dto.title = inputData.get('title') as string;
     newState.dto.description = inputData.get('description') as string;
     const tagString = inputData.get('tags') as string;
-    newState.dto.tags = tagString.split(',') as string[];
+    newState.dto.tags = tagString.replace("'", '').split(',') as string[];
     newState.dto.visible = checkVisible;
 
     const formData = new FormData();
@@ -189,9 +189,7 @@ const Upload = () => {
         setArtwork(initialArtWork);
 
         if (res.status === 201) {
-          push('/artwork').then(() =>
-            toast.success('작품이 업로드되었습니다.')
-          );
+          push('/').then(() => toast.success('작품이 업로드되었습니다.'));
         }
       })
       .catch((err) => {
