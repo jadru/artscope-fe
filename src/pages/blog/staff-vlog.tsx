@@ -1,3 +1,7 @@
+import Image from 'next/image';
+import Link from 'next/link';
+import * as React from 'react';
+
 import ReadOnlyEditor from '@/components/Editor/ReadOnlyEditor';
 import Seo from '@/components/Seo';
 import TabLayout from '@/components/TabLayout';
@@ -33,6 +37,24 @@ const blogPost = () => {
       />
       <NavBar />
       <TabLayout>
+        <div className='breadcrumbs text-sm'>
+          <ul>
+            <li>
+              <Link href='/'>Home</Link>
+            </li>
+            <li>
+              <Link href='/'>Blog</Link>
+            </li>
+            <li>🪔 staff vlog</li>
+          </ul>
+        </div>
+        <Image
+          src='prod/blog/staff-vlog.jpeg'
+          alt='staff-vlog-thumbnail'
+          width={1024}
+          height={500}
+          className='mb-8 w-full'
+        />
         <ReadOnlyEditor data={post} />
       </TabLayout>
       <BottomBar tab='playlist' />

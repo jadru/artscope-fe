@@ -51,11 +51,11 @@ const Login = () => {
     }
   }, [cookies, push, asPath]);
 
-  const onSubmit: SubmitHandler<loginInputs> = (data) =>
+  const onSubmit: SubmitHandler<loginInputs> = async (data) =>
     !isSubmitting &&
-    jxios
+    (await jxios
       .post('/api/login', data)
-      .then((res) => {
+      .then(async (res) => {
         const { accessToken, refreshToken } = res.data;
         const decodedAccessToken: { exp: number; sub: string; auth: string } =
           jwt_decode(accessToken);
@@ -68,13 +68,15 @@ const Login = () => {
         jxios.defaults.headers.common[
           'Authorization'
         ] = `Bearer ${accessToken}`;
-        setUserInfo({
-          username: decodedAccessToken.sub,
-          role: decodedAccessToken.auth,
-        });
-        jxios
+
+        await jxios
           .get('/api/members/profile')
-          .then((res) => {
+          .then(async (res) => {
+            await setUserInfo({
+              username: decodedAccessToken.sub,
+              role: decodedAccessToken.auth,
+              profileImage: res.data.picture || undefined,
+            });
             if (res.data.artistStatus === 'NONE') {
               push('/artist/info').then(() =>
                 toast.info('작가 정보를 입력해주세요.')
@@ -89,7 +91,7 @@ const Login = () => {
       })
       .catch((err) => {
         toast.error(err.response?.data);
-      });
+      }));
 
   return (
     <>
