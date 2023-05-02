@@ -23,7 +23,7 @@ const RedirectOAuth2 = () => {
             'Content-Type': 'text/plain',
           },
         })
-        .then((res) => {
+        .then(async (res) => {
           const { accessToken, refreshToken } = res.data;
           jxios.defaults.headers.common[
             'Authorization'
@@ -34,18 +34,20 @@ const RedirectOAuth2 = () => {
             sub: string;
             auth: string;
           } = jwt_decode(accessToken);
-          setUserInfo({
-            username: decodedAccessToken.sub,
-            role: decodedAccessToken.auth,
-          });
+
           cookies.remove('refreshToken');
           cookies.set('refreshToken', refreshToken, {
             expires: new Date(decodedRefreshToken.exp * 1000),
             path: '/',
           });
-          jxios
+          await jxios
             .get('/api/members/profile')
-            .then((res) => {
+            .then(async (res) => {
+              await setUserInfo({
+                username: decodedAccessToken.sub,
+                role: decodedAccessToken.auth,
+                profileImage: res.data.picture || undefined,
+              });
               if (res.data.artistStatus === 'NONE') {
                 push('/artist/info').then(() =>
                   toast.info('작가 정보를 입력해주세요.')

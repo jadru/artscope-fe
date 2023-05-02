@@ -28,7 +28,7 @@ const useAuth = () => {
               'Content-Type': 'text/plain',
             },
           })
-          .then((res) => {
+          .then(async (res) => {
             const { accessToken, refreshToken } = res.data;
             jxios.defaults.headers.common[
               'Authorization'
@@ -45,9 +45,12 @@ const useAuth = () => {
               expires: new Date(decodedRefreshToken.exp * 1000),
               path: '/',
             });
-            setUserInfo({
-              username: decodedAccessToken.sub,
-              role: decodedAccessToken.auth,
+            await jxios.get('/api/members/profile').then(async (res) => {
+              await setUserInfo({
+                username: decodedAccessToken.sub,
+                role: decodedAccessToken.auth,
+                profileImage: res.data.picture || undefined,
+              });
             });
           })
           .catch(() => {

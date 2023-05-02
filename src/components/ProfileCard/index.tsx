@@ -9,12 +9,14 @@ import { BiEdit, BiSave } from 'react-icons/bi';
 import { HiOutlineDocumentSearch } from 'react-icons/hi';
 import { ImCancelCircle } from 'react-icons/im';
 import { toast } from 'react-toastify';
+import { useSetRecoilState } from 'recoil';
 import useSWR from 'swr';
 
 import AudioFileGridItem from '@/components/AudioFileGridItem';
 import Skeleton from '@/components/Skeleton';
 
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
+import { userNameAndRoleAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
 
 import {
@@ -39,7 +41,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       .get(url, {
         params: {
           page: 0,
-          size: 9,
+          size: 12,
         },
       })
       .then((res) => res.data);
@@ -49,6 +51,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       fetcher
     );
   const cookies = new Cookies();
+  const setUserValue = useSetRecoilState(userNameAndRoleAtom);
   const { push, reload } = useRouter();
   const [editMode, setEditMode] = React.useState(false);
   const [formData, setFormData] = React.useState<profileApiRequestType>({});
@@ -56,6 +59,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     jxios.post('/api/logout').then(() => {
       cookies.remove('refreshToken', { path: '/' });
       jxios.defaults.headers.common['Authorization'] = undefined;
+      setUserValue({
+        username: undefined,
+        role: undefined,
+        profileImage: undefined,
+      });
       push('/').then(() => toast.success('로그아웃 되었습니다.'));
     });
   };
@@ -198,7 +206,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             </div>
           </div>
         </div>
-        <div className='grid w-full grid-cols-3 gap-1 md:gap-2 md:border-t-2'>
+        <div className='grid w-full grid-cols-3 gap-0.5 md:gap-1 md:border-t-2'>
           {userArtworksData &&
             userArtworksData.artworks.map((artwork) => (
               <Link
@@ -214,23 +222,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                     height={artwork.thumbnail.imageHeight}
                     className='aspect-square w-full object-cover'
                   />
-                ) : artwork.thumbnail.mediaType === 'video' ? (
-                  <video
-                    src={
-                      NEXT_PUBLIC_MEDIA_STORAGE_URL +
-                      '/' +
-                      artwork.thumbnail.mediaUrl
-                    }
-                    className='aspect-square w-full object-cover'
-                    autoPlay
-                    loop
-                    muted
-                  />
                 ) : (
                   <AudioFileGridItem className='aspect-square w-full object-cover' />
                 )}
                 {artwork.title && (
-                  <p className='text-md absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 px-3 py-2 text-left font-bold text-white backdrop-blur'>
+                  <p className='md:text-md absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 px-3 py-2 text-left text-sm font-bold text-white backdrop-blur'>
                     {artwork.title}
                   </p>
                 )}
@@ -322,8 +318,35 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               )}
             </div>
           </div>
+          <div className='flex w-full justify-between'>
+            <div className='btn-group'>
+              <button className='btn-primary btn' onClick={handleLogout}>
+                로그아웃
+              </button>
+              <button className='btn-error btn' onClick={handleDeleteMember}>
+                회원탈퇴
+              </button>
+            </div>
+            {editMode ? (
+              <div className='btn-group'>
+                <button
+                  className='btn-warning btn'
+                  onClick={() => setEditMode(false)}
+                >
+                  <ImCancelCircle className='h-6 w-6' />
+                </button>
+                <label className='btn-success btn' htmlFor='submitbutton'>
+                  <BiSave className='h-6 w-6' />
+                </label>
+              </div>
+            ) : (
+              <button className='btn-accent btn' onClick={handleEdit}>
+                <BiEdit className='h-6 w-6 text-slate-600 hover:text-cyan-500' />
+              </button>
+            )}
+          </div>
         </>
-        {editMode && (
+        {editMode ? (
           <form
             onSubmit={handleFormSubmit}
             className='flex flex-col items-center justify-center space-y-3 divide-solid text-center text-black dark:text-gray-100'
@@ -400,34 +423,48 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
             <button id='submitbutton' type='submit' className='hidden' />
           </form>
-        )}
-        <div className='flex w-full justify-between'>
-          <div className='btn-group'>
-            <button className='btn-primary btn' onClick={handleLogout}>
-              로그아웃
-            </button>
-            <button className='btn-error btn' onClick={handleDeleteMember}>
-              회원탈퇴
-            </button>
+        ) : (
+          <div className='grid w-full grid-cols-3 gap-1 md:gap-2'>
+            {userArtworksData &&
+              userArtworksData.artworks.map((artwork) => (
+                <Link
+                  key={artwork.id}
+                  className='group relative'
+                  href={'/artwork/' + artwork.id}
+                >
+                  {artwork.thumbnail.mediaType === 'image' ? (
+                    <Image
+                      src={artwork.thumbnail.mediaUrl}
+                      alt='artwork'
+                      width={artwork.thumbnail.imageWidth}
+                      height={artwork.thumbnail.imageHeight}
+                      className='aspect-square w-full object-cover'
+                    />
+                  ) : artwork.thumbnail.mediaType === 'video' ? (
+                    <video
+                      src={
+                        NEXT_PUBLIC_MEDIA_STORAGE_URL +
+                        '/' +
+                        artwork.thumbnail.mediaUrl
+                      }
+                      className='aspect-square w-full object-cover'
+                      autoPlay
+                      loop
+                      muted
+                    />
+                  ) : (
+                    <AudioFileGridItem className='aspect-square w-full object-cover' />
+                  )}
+                  {artwork.title && (
+                    <p className='text-md absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 px-3 py-2 text-left font-bold text-white backdrop-blur'>
+                      {artwork.title}
+                    </p>
+                  )}
+                </Link>
+              ))}
+            {userArtworkLoading && <Skeleton className='h-full w-2/3' />}
           </div>
-          {editMode ? (
-            <div className='btn-group'>
-              <button
-                className='btn-warning btn'
-                onClick={() => setEditMode(false)}
-              >
-                <ImCancelCircle className='h-6 w-6' />
-              </button>
-              <label className='btn-success btn' htmlFor='submitbutton'>
-                <BiSave className='h-6 w-6' />
-              </label>
-            </div>
-          ) : (
-            <button className='btn-accent btn' onClick={handleEdit}>
-              <BiEdit className='h-6 w-6 text-slate-600 hover:text-cyan-500' />
-            </button>
-          )}
-        </div>
+        )}
       </div>
     );
 };

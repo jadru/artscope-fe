@@ -9,7 +9,8 @@ export const isTokenLoadingAtom = atom<boolean>({
 export const userNameAndRoleAtom = atom<{
   username: string | undefined;
   role: string | undefined;
+  profileImage: string | undefined;
 }>({
   key: 'userNameAndRoleAtom' + v4(),
-  default: { username: undefined, role: undefined },
+  default: { username: undefined, role: undefined, profileImage: undefined },
 });

@@ -128,7 +128,7 @@ export default function Artwork() {
                           )}
                         </div>
                       )}
-                      <div className='absolute h-full w-full bg-black/20 duration-500 group-hover:opacity-0'></div>
+                      <div className='absolute h-full w-full bg-black/10 duration-500 group-hover:opacity-0'></div>
                       {artwork.title && (
                         <p className='absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 px-3 py-2 text-left text-xl font-bold text-white backdrop-blur'>
                           {artwork.title}
@@ -139,14 +139,22 @@ export default function Artwork() {
                       <Link
                         href='/blog/staff-vlog'
                         key={artwork.id + '_1'}
-                        className='group relative flex h-64 cursor-pointer justify-center overflow-hidden bg-base-100 text-center dark:border-slate-600'
+                        className='group relative flex cursor-pointer justify-center overflow-hidden bg-base-100 text-center dark:border-slate-600'
                       >
-                        <div className='relative m-0 flex w-full items-center justify-center bg-white p-0'>
-                          <p className='mr-2 rounded-xl border-2 border-dark px-5 py-4 text-left text-6xl font-light text-dark backdrop-blur'>
-                            staff vlog
-                          </p>
+                        <div className='relative m-0 w-full p-0'>
+                          <Image
+                            src='prod/blog/staff-vlog.jpeg'
+                            alt='staff-vlog-thumbnail'
+                            width={300}
+                            height={300}
+                            className='w-full cursor-zoom-in object-contain duration-500 ease-in-out group-hover:scale-110'
+                          />
                         </div>
                         <div className='absolute h-full w-full duration-500 group-hover:bg-dark/30'></div>
+
+                        <p className='absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 px-3 py-2 text-left text-xl font-bold text-white backdrop-blur'>
+                          staff vlog
+                        </p>
                       </Link>
                     )}
                   </>
