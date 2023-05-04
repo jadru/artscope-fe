@@ -8,6 +8,7 @@ interface Props {
   dark?: boolean;
   fullWidth?: boolean;
   main?: boolean;
+  top?: boolean;
 }
 
 const TabLayout: FunctionComponent<Props> = ({
@@ -18,11 +19,12 @@ const TabLayout: FunctionComponent<Props> = ({
   dark = false,
   fullWidth = false,
   main = false,
+  top = false,
 }) => (
   <div
-    className={`flex h-full min-h-[85vh] w-full flex-col items-center justify-center ${
-      dark ? '' : 'bg-white dark:bg-dark'
-    } ${className} `}
+    className={`flex h-full min-h-[85vh] w-full flex-col ${
+      top ? 'justify-start' : 'justify-center'
+    } items-center ${dark ? '' : 'bg-white dark:bg-dark'} ${className} `}
   >
     <div
       className={`${paddingTop ? 'pt-16' : ''} w-screen ${

@@ -4,9 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Cookies } from 'react-cookie';
-import { AiFillSafetyCertificate, AiOutlineFileImage } from 'react-icons/ai';
+import { AiOutlineFileImage } from 'react-icons/ai';
 import { BiEdit, BiSave } from 'react-icons/bi';
-import { HiOutlineDocumentSearch } from 'react-icons/hi';
 import { ImCancelCircle } from 'react-icons/im';
 import { toast } from 'react-toastify';
 import { useSetRecoilState } from 'recoil';
@@ -15,7 +14,6 @@ import useSWR from 'swr';
 import AudioFileGridItem from '@/components/AudioFileGridItem';
 import Skeleton from '@/components/Skeleton';
 
-import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 import { userNameAndRoleAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
 
@@ -123,59 +121,29 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   if (!editable)
     return (
       <div className='flex w-full flex-col md:border-2'>
-        <div className='relative flex w-full flex-row items-center justify-center space-x-12 p-6 dark:text-gray-100'>
-          <div
-            className={`${
-              profileData.artistStatus === 'REJECTED' ||
-              profileData.artistStatus === 'NONE'
-                ? ''
-                : 'tooltip tooltip-right tooltip-primary indicator'
-            }`}
-            data-tip={
-              (profileData.artistStatus === 'APPROVED' && '아티스트입니다.') ||
-              (profileData.artistStatus === 'PENDING' &&
-                '아티스트 심사중입니다.') ||
-              ''
-            }
-          >
-            <span
-              className={`${
-                profileData.artistStatus === 'REJECTED' ||
-                profileData.artistStatus === 'NONE'
-                  ? ''
-                  : 'badge-secondary badge indicator-item'
-              }`}
-            >
-              {(profileData.artistStatus === 'APPROVED' && (
-                <AiFillSafetyCertificate className='h-4 w-4' />
-              )) ||
-                (profileData.artistStatus === 'PENDING' && (
-                  <HiOutlineDocumentSearch className='h-4 w-4' />
-                ))}
-            </span>
-            <div className='group avatar h-24 w-24'>
-              <div className='mask rounded-full border'>
-                {profileData.picture ? (
-                  <Image
-                    src={profileData.picture}
-                    alt='profile'
-                    width={150}
-                    height={150}
-                    className='object-cover'
-                  />
-                ) : (
-                  <Lottie animationData={ProfileAnimation} className='w-full' />
-                )}
-              </div>
+        <div className='relative flex w-full flex-col items-center justify-center p-6 dark:text-gray-100 md:flex-row md:space-x-12'>
+          <div className='group avatar h-24 w-24'>
+            <div className='mask rounded-full border'>
+              {profileData.picture ? (
+                <Image
+                  src={profileData.picture}
+                  alt='profile'
+                  width={250}
+                  height={250}
+                  className='object-cover'
+                />
+              ) : (
+                <Lottie animationData={ProfileAnimation} className='w-full' />
+              )}
             </div>
           </div>
-          <div className='space-y-1.5 divide-solid text-left text-black dark:text-gray-100'>
-            <p className='truncate text-3xl font-light'>{profileData.name}</p>
-            <p className='text-md truncate font-bold'>
-              {'@' + profileData.username}
-            </p>
+          <div className='mt-3 space-y-1.5 divide-solid text-center text-black dark:text-gray-100 md:mt-0'>
+            <p className='truncate text-3xl font-bold'>{profileData.name}</p>
+            {/* <p className='text-md truncate font-bold'> */}
+            {/*   {'@' + profileData.username} */}
+            {/* </p> */}
             {profileData.introduction && (
-              <p className='text-primary whitespace-pre-wrap text-xl font-light'>
+              <p className='text-primary whitespace-pre-wrap text-left text-xl font-light'>
                 {profileData.introduction}
               </p>
             )}
@@ -184,7 +152,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 {profileData.history}
               </p>
             )}
-            <div className='link space-x-3 font-black'>
+            <div className='link space-x-3 text-left font-black'>
               {profileData.snsUrl && (
                 <Link
                   href={profileData.snsUrl}
@@ -218,18 +186,18 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   <Image
                     src={artwork.thumbnail.mediaUrl}
                     alt='artwork'
-                    width={artwork.thumbnail.imageWidth}
-                    height={artwork.thumbnail.imageHeight}
+                    width={200}
+                    height={200}
                     className='aspect-square w-full object-cover'
                   />
                 ) : (
                   <AudioFileGridItem className='aspect-square w-full object-cover' />
                 )}
-                {artwork.title && (
-                  <p className='md:text-md absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 px-3 py-2 text-left text-sm font-bold text-white backdrop-blur'>
-                    {artwork.title}
-                  </p>
-                )}
+                {/* {artwork.title && ( */}
+                {/*   <p className='md:text-md absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 px-3 py-2 text-left text-sm font-bold text-white backdrop-blur'> */}
+                {/*     {artwork.title} */}
+                {/*   </p> */}
+                {/* )} */}
               </Link>
             ))}
           {userArtworkLoading && <Skeleton className='h-full w-2/3' />}
@@ -266,8 +234,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   <Image
                     src={profileData.picture}
                     alt='profile'
-                    width={150}
-                    height={150}
+                    width={250}
+                    height={250}
                     className='object-cover'
                   />
                 ) : (
@@ -288,7 +256,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               {'@' + profileData.username}
             </p>
             {profileData.introduction && (
-              <p className='text-primary whitespace-pre-wrap text-xl font-light'>
+              <p className='text-primary whitespace-pre-wrap text-left text-xl font-light'>
                 {profileData.introduction}
               </p>
             )}
@@ -297,10 +265,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 {profileData.history}
               </p>
             )}
-            <div className='link space-x-3 font-black'>
+            <div className='link space-x-3 text-left font-black'>
               {profileData.snsUrl && (
                 <Link
                   href={profileData.snsUrl}
+                  className='hover:text-emerald-600'
                   rel='noopener noreferrer'
                   target='_blank'
                 >
@@ -310,6 +279,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               {profileData.websiteUrl && (
                 <Link
                   href={profileData.websiteUrl}
+                  className='hover:text-emerald-600'
                   rel='noopener noreferrer'
                   target='_blank'
                 >
@@ -424,7 +394,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <button id='submitbutton' type='submit' className='hidden' />
           </form>
         ) : (
-          <div className='grid w-full grid-cols-3 gap-1 md:gap-2'>
+          <div className='grid w-full grid-cols-3 gap-1'>
             {userArtworksData &&
               userArtworksData.artworks.map((artwork) => (
                 <Link
@@ -436,30 +406,18 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                     <Image
                       src={artwork.thumbnail.mediaUrl}
                       alt='artwork'
-                      width={artwork.thumbnail.imageWidth}
-                      height={artwork.thumbnail.imageHeight}
+                      width={200}
+                      height={200}
                       className='aspect-square w-full object-cover'
-                    />
-                  ) : artwork.thumbnail.mediaType === 'video' ? (
-                    <video
-                      src={
-                        NEXT_PUBLIC_MEDIA_STORAGE_URL +
-                        '/' +
-                        artwork.thumbnail.mediaUrl
-                      }
-                      className='aspect-square w-full object-cover'
-                      autoPlay
-                      loop
-                      muted
                     />
                   ) : (
                     <AudioFileGridItem className='aspect-square w-full object-cover' />
                   )}
-                  {artwork.title && (
-                    <p className='text-md absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 px-3 py-2 text-left font-bold text-white backdrop-blur'>
-                      {artwork.title}
-                    </p>
-                  )}
+                  {/* {artwork.title && ( */}
+                  {/*   <p className='text-md absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 px-3 py-2 text-left font-bold text-white backdrop-blur'> */}
+                  {/*     {artwork.title} */}
+                  {/*   </p> */}
+                  {/* )} */}
                 </Link>
               ))}
             {userArtworkLoading && <Skeleton className='h-full w-2/3' />}

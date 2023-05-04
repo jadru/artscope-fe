@@ -1,7 +1,9 @@
 import Link from 'next/link';
+import * as React from 'react';
 
 import { getDatabase } from '@/utils/notion';
 
+import Footer from '../../components/Footer';
 import Seo from '../../components/Seo';
 import TabLayout from '../../components/TabLayout';
 import BottomBar from '../../components/TabLayout/BottomBar';
@@ -28,21 +30,36 @@ const Blog = ({ posts }) => {
     <>
       <Seo templateTitle='Blog' />
       <NavBar />
-      <TabLayout>
-        <Title>Artscope Blog</Title>
-        {posts.map((post) => (
-          <Link
-            key={post.id}
-            href={`/blog/${post.id}`}
-            className='relative w-full justify-center overflow-hidden'
-          >
-            <p className='bg-sky-500 py-4 text-3xl font-light hover:bg-sky-700'>
-              {post.properties.title.title[0]?.plain_text}
-            </p>
-            <hr />
-          </Link>
-        ))}
+      <TabLayout top>
+        <div className='breadcrumbs text-sm'>
+          <ul>
+            <li>
+              <Link href='/'>Home</Link>
+            </li>
+            <li>
+              <Link href='#'>Blog</Link>
+            </li>
+          </ul>
+        </div>
+        <Title>Blog</Title>
+        <div className='flex flex-col'>
+          {posts.map((post) => (
+            <Link
+              key={post.id}
+              href={`/blog/${post.id}`}
+              className='group relative w-full justify-center border-b border-b-neutral-600 py-4 px-3'
+            >
+              <p className='text-3xl font-light duration-100 group-hover:font-bold group-hover:underline group-hover:underline-offset-2 group-hover:ease-in'>
+                {post.properties.title.title[0]?.plain_text}
+              </p>
+              <p className='duration-100 group-hover:font-bold group-hover:ease-in'>
+                {new Date(post.created_time).toLocaleDateString('ko-KR')}
+              </p>
+            </Link>
+          ))}
+        </div>
       </TabLayout>
+      <Footer />
       <BottomBar tab='playlist' />
     </>
   );
