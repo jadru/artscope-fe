@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "env-cmd -f .env next dev",
+    "dev": "env-cmd -f .env.local next dev",
     "build:prod": "env-cmd -f .env.production next build",
     "build:dev": "env-cmd -f .env.development next build",
     "start": "next start",
@@ -21,6 +21,7 @@
   "dependencies": {
     "@hocuspocus/provider": "^2.0.4",
     "@hookform/resolvers": "^3.0.0",
+    "@notionhq/client": "^2.2.5",
     "@tiptap/extension-character-count": "^2.0.3",
     "@tiptap/extension-collaboration-cursor": "^2.0.3",
     "@tiptap/extension-color": "^2.0.3",

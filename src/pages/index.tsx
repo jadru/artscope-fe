@@ -68,7 +68,7 @@ export default function Artwork() {
         {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
         {/** @ts-ignore **/}
         {status === 'error' && <p>{error.message}</p>}
-        <div className='from-20% via-60% to-20% relative mb-1.5 flex h-64 touch-none items-center justify-center bg-gradient-to-br from-[#6F38C5] via-[#87A2FB] to-[#ADDDD0] px-0 dark:from-indigo-900 dark:via-cyan-700 dark:to-emerald-600'>
+        <div className='from-20% via-60% to-20% relative mb-1.5 flex h-64 items-center justify-center bg-gradient-to-br from-[#6F38C5] via-[#87A2FB] to-[#ADDDD0] px-0 dark:from-indigo-900 dark:via-cyan-700 dark:to-emerald-600'>
           <Lottie
             animationData={ArtistAnimation}
             className='mr-4 w-[140px] md:w-[240px]'
