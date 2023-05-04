@@ -37,8 +37,8 @@ jobs:
           echo "NOTION_TOKEN=NOTION_TOKEN" >> .env.development
           echo "NOTION_DATABASE_ID=NOTION_DATABASE_ID" >> .env.development
         env:
-           REACT_APP_DOMAIN: ${{ secrets.NOTION_TOKEN }}
-           REACT_APP_DEBUG: ${{ secrets.NOTION_DATABASE_ID }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
 
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
