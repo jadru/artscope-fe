@@ -1,16 +1,19 @@
-import Head from 'next/head';
 import Link from 'next/link';
 import { Fragment } from 'react';
 
 const databaseId = process.env.NOTION_DATABASE_ID;
 import Image from 'next/image';
+import * as React from 'react';
 
 import styles from './post.module.css';
 
+import Footer from '../../components/Footer';
 import Seo from '../../components/Seo';
 import TabLayout from '../../components/TabLayout';
 import BottomBar from '../../components/TabLayout/BottomBar';
 import { NavBar } from '../../components/TabLayout/NavBar';
+import Title from '../../components/Title';
+import { NEXT_PUBLIC_ROOT_URL } from '../../constant/env';
 import { getBlocks, getDatabase, getPage } from '../../utils/notion';
 
 export const Text = ({ text }) => {
@@ -134,9 +137,12 @@ const renderBlock = (block) => {
             width={500}
             height={500}
             className='w-full'
+            unoptimized
           />
           {value.caption && (
-            <figcaption>{value.caption[0]?.plain_text}</figcaption>
+            <figcaption className='font-light text-gray-600'>
+              {value.caption[0]?.plain_text}
+            </figcaption>
           )}
         </figure>
       );
@@ -231,24 +237,40 @@ export default function Post({ page, blocks }) {
   }
   return (
     <div>
-      <Head>
-        <title>{page.properties.title.title[0].plain_text}</title>
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
-
+      <Seo
+        templateTitle={page.properties.title.title[0].plain_text + ' - Blog'}
+        image={
+          NEXT_PUBLIC_ROOT_URL +
+          '/api/og-image?title=' +
+          page.properties.title.title[0].plain_text
+        }
+      />
+      <NavBar />
       <article>
-        <Seo templateTitle='Blog' />
-        <NavBar />
         <TabLayout>
-          <h1 className={styles.name}>
+          <div className='breadcrumbs text-sm'>
+            <ul>
+              <li>
+                <Link href='/'>Home</Link>
+              </li>
+              <li>
+                <Link href='/blog'>Blog</Link>
+              </li>
+              <li>
+                <Text text={page.properties.title.title} />
+              </li>
+            </ul>
+          </div>
+          <Title>
             <Text text={page.properties.title.title} />
-          </h1>
-          <section>
+          </Title>
+          <section className='space-y-1.5'>
             {blocks.map((block) => (
               <Fragment key={block.id}>{renderBlock(block)}</Fragment>
             ))}
           </section>
         </TabLayout>
+        <Footer />
         <BottomBar tab='playlist' />
       </article>
     </div>
@@ -266,6 +288,13 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
   const { id } = context.params;
   const page = await getPage(id);
+
+  if (!page) {
+    return {
+      notFound: true,
+    };
+  }
+
   const blocks = await getBlocks(id);
 
   return {
