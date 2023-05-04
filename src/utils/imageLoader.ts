@@ -8,7 +8,7 @@ const imageLoader = ({ src, width, quality }: ImageLoaderProps) => {
       quality || 75
     }&f=webp`;
   } else {
-    return `${src}?w=${width}&q=${quality || 75}&f=webp`;
+    return `${src}`;
   }
 };
 
