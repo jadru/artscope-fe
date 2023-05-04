@@ -58,8 +58,5 @@ jobs:
           context: .
           push: true
           file: ./Dockerfile.dev
-          build-args: |
-            NOTION_TOKEN=$NOTION_TOKEN
-            NOTION_DATABASE_ID=$NOTION_DATABASE_ID
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
