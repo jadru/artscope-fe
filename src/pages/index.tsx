@@ -136,7 +136,7 @@ export default function Artwork() {
                         </p>
                       )}
                     </Link>
-                    {groupIndex === 0 && index === 1 && (
+                    {groupIndex === 0 && index === 0 && (
                       <Link
                         href='/blog'
                         key={artwork.id + '_1'}
