@@ -15,6 +15,8 @@ env:
   IMAGE_NAME: jadru/artplatform-fe
   DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+  NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+  NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
 
 jobs:
   build:
@@ -30,8 +32,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Generate Environment Variables File for Production
+        run: |
+          echo "NOTION_TOKEN=$NOTION_TOKEN" >> .env.production
+          echo "NOTION_DATABASE_ID=$NOTION_DATABASE_ID" >> .env.production
+
       - name: Setup Docker buildx
-        uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
+        uses: docker/setup-buildx-action@v2
 
       - name: Log into registry ${{ env.REGISTRY }}
         run: echo "$DOCKER_REGISTRY_PASSWORD" | docker login "$REGISTRY" -u "$DOCKER_REGISTRY_USERNAME" --password-stdin
@@ -44,7 +55,7 @@ jobs:
 
       - name: Build and push Docker image
         id: build-and-push
-        uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
+        uses: docker/build-push-action@v4
         with:
           context: .
           push: true
