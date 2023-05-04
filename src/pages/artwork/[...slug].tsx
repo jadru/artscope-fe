@@ -173,27 +173,32 @@ const Slug = ({
                   )}
                 </div>
                 {isEdit && (
-                  <div className='btn-group mt-2'>
-                    <Link
-                      className='btn-accent btn'
-                      href={'/artwork/' + data.id + '/edit'}
-                    >
-                      <AiOutlineEdit className='h-6 w-6' />
-                    </Link>
-                    <button
-                      className='btn-warning btn'
-                      onClick={() => {
-                        confirm('정말 삭제하시겠습니까?') &&
-                          jxios.delete('/api/artworks/' + data.id).then(() => {
-                            router.push('/').then(() => {
-                              toast.success('작품이 삭제되었습니다.');
-                            });
-                          });
-                      }}
-                    >
-                      <AiOutlineDelete className='h-6 w-6' />
-                    </button>
-                  </div>
+                  <>
+                    <p>조회수 : {data.view ? data.view : ''}</p>
+                    <div className='btn-group mt-2'>
+                      <Link
+                        className='btn-accent btn'
+                        href={'/artwork/' + data.id + '/edit'}
+                      >
+                        <AiOutlineEdit className='h-6 w-6' />
+                      </Link>
+                      <button
+                        className='btn-warning btn'
+                        onClick={() => {
+                          confirm('정말 삭제하시겠습니까?') &&
+                            jxios
+                              .delete('/api/artworks/' + data.id)
+                              .then(() => {
+                                router.push('/').then(() => {
+                                  toast.success('작품이 삭제되었습니다.');
+                                });
+                              });
+                        }}
+                      >
+                        <AiOutlineDelete className='h-6 w-6' />
+                      </button>
+                    </div>
+                  </>
                 )}
               </div>
               {profileData && <ProfileCard profileData={profileData} />}
