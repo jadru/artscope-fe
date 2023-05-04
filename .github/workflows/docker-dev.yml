@@ -13,6 +13,8 @@ env:
   IMAGE_NAME: jadru/artplatform-fe
   DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+  NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+  NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
 
 jobs:
   build:
@@ -36,9 +38,6 @@ jobs:
         run: |
           echo "NOTION_TOKEN=$NOTION_TOKEN" >> .env.development
           echo "NOTION_DATABASE_ID=$NOTION_DATABASE_ID" >> .env.development
-        env:
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
 
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
@@ -59,5 +58,8 @@ jobs:
           context: .
           push: true
           file: ./Dockerfile.dev
+          build-args: |
+            NOTION_TOKEN=$NOTION_TOKEN
+            NOTION_DATABASE_ID=$NOTION_DATABASE_ID
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

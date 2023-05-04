@@ -8,9 +8,8 @@ import BottomBar from '../../components/TabLayout/BottomBar';
 import { NavBar } from '../../components/TabLayout/NavBar';
 import Title from '../../components/Title';
 
-const databaseId = process.env.NOTION_DATABASE_ID;
-
 export const getStaticProps = async () => {
+  const databaseId = process.env.NOTION_DATABASE_ID;
   if (!databaseId) {
     throw new Error('Missing NOTION_DATABASE_ID');
   }
