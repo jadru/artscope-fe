@@ -73,25 +73,22 @@ export default function Artwork() {
           columnsCountBreakPoints={{ 400: 1, 768: 2, 1024: 3, 1600: 4 }}
         >
           <Masonry gutter='0.4rem'>
-            <div className='from-20% via-60% to-20% group relative flex h-64 items-center justify-center bg-gradient-to-br from-[#6F38C5] via-[#87A2FB] to-[#ADDDD0] px-0 dark:from-indigo-900 dark:via-cyan-700 dark:to-emerald-600'>
+            <Link
+              href='/exhibition/2023-summer-ks'
+              className='from-20% via-60% to-20% group relative flex h-64 items-center justify-center bg-gradient-to-br from-[#6F38C5] via-[#87A2FB] to-[#ADDDD0] px-0 dark:from-indigo-900 dark:via-cyan-700 dark:to-emerald-600'
+            >
               <Lottie
                 animationData={ArtistAnimation}
-                className='mr-4 w-[140px] duration-200 ease-in-out group-hover:scale-125 md:w-[240px]'
+                className='absolute mr-4 w-[190px] duration-200 ease-in-out group-hover:scale-125'
               />
-              <div className='flex-col space-y-3 py-8 text-gray-100 md:left-24'>
-                <h1>
+              <div className='flex-col space-y-3 py-8 text-center text-gray-100 duration-200 group-hover:font-bold md:left-24'>
+                <p className='text-4xl'>
                   2023 금샘미술관
                   <br /> 전시 작품 공모
-                </h1>
+                </p>
                 <p>2023.04.01 - 05.30</p>
-                <Link
-                  href='/exhibition/2023-summer-ks'
-                  className='btn-outline btn text-gray-100'
-                >
-                  더 알아보기
-                </Link>
               </div>
-            </div>
+            </Link>
             {status === 'success' &&
               data.pages.map((group, groupIndex: number) =>
                 group.artworks.map((artwork: ArtworkType, index: number) => (
