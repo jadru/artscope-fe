@@ -36,7 +36,7 @@ RUN yarn build:dev
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV=production
+ENV NODE_ENV production
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -45,7 +45,7 @@ COPY --from=builder /app/public ./public
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-COPY .env.development .env.production
+COPY --from=builder --chown=nextjs:nodejs .env.development .env.production
 
 USER nextjs
 
