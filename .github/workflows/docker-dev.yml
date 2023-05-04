@@ -34,8 +34,8 @@ jobs:
 
       - name: Generate Environment Variables File for Production
         run: |
-          echo "NOTION_TOKEN=NOTION_TOKEN" >> .env.development
-          echo "NOTION_DATABASE_ID=NOTION_DATABASE_ID" >> .env.development
+          echo "NOTION_TOKEN=$NOTION_TOKEN" >> .env.development
+          echo "NOTION_DATABASE_ID=$NOTION_DATABASE_ID" >> .env.development
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
