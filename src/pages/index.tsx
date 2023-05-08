@@ -74,8 +74,8 @@ export default function Artwork() {
         >
           <Masonry gutter='0.4rem'>
             <Link
-              href='/exhibition/2023-summer-ks'
-              className='from-20% via-60% to-20% group relative flex h-64 items-center justify-center bg-gradient-to-br from-[#6F38C5] via-[#87A2FB] to-[#ADDDD0] px-0 dark:from-indigo-900 dark:via-cyan-700 dark:to-emerald-600'
+              href='/blog/634d09fd-79f8-4807-a517-17ebd1c45054'
+              className='from-20% via-60% to-20% group relative flex h-64 cursor-pointer items-center justify-center bg-gradient-to-br from-[#6F38C5] via-[#87A2FB] to-[#ADDDD0] px-0 dark:from-indigo-900 dark:via-cyan-700 dark:to-emerald-600'
             >
               <Lottie
                 animationData={ArtistAnimation}
@@ -83,10 +83,9 @@ export default function Artwork() {
               />
               <div className='flex-col space-y-3 py-8 text-center text-gray-100 duration-200 group-hover:font-bold md:left-24'>
                 <p className='text-4xl'>
-                  2023 금샘미술관
-                  <br /> 전시 작품 공모
+                  플랫폼 Artscope
+                  <br /> 작품 공모
                 </p>
-                <p>2023.04.01 - 05.30</p>
               </div>
             </Link>
             {status === 'success' &&

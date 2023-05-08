@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
 import ErrorMessageInput from '@/components/ErrorMessageInput';
@@ -48,11 +49,16 @@ const Signup = () => {
   const {
     register,
     handleSubmit,
+    clearErrors,
+    setError,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<loginInputs>({
     resolver: yupResolver(loginSchema),
   });
   const { push } = useRouter();
+  const [emailCheck, setEmailCheck] = React.useState<boolean>(false);
+  const [usernameCheck, setUsernameCheck] = React.useState<boolean>(false);
 
   const onSubmit: SubmitHandler<loginInputs> = (data) =>
     !isSubmitting &&
@@ -61,6 +67,40 @@ const Signup = () => {
     jxios.post('/api/members', data, {}).then(() => {
       push('/login');
     });
+
+  const checkEmailDuplication = () => {
+    const regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
+    if (regex.test(getValues('email'))) {
+      jxios
+        .get(`/api/members/email/${getValues('email')}`)
+        .then(() => {
+          setEmailCheck(true);
+          toast.success('사용 가능한 이메일입니다.');
+          clearErrors('email');
+        })
+        .catch(() => {
+          setEmailCheck(false);
+        });
+    } else {
+      setError('email', {
+        type: 'manual',
+        message: '이메일 형식이 아닙니다.',
+      });
+    }
+  };
+
+  const checkUsernameDuplication = () => {
+    jxios
+      .get(`/api/members/username/${getValues('username')}`)
+      .then(() => {
+        setUsernameCheck(true);
+        toast.success('사용 가능한 아이디입니다.');
+        clearErrors('username');
+      })
+      .catch(() => {
+        setUsernameCheck(false);
+      });
+  };
 
   return (
     <>
@@ -79,9 +119,21 @@ const Signup = () => {
             <input
               type='email'
               placeholder='이메일을 입력해주세요'
-              className='input-bordered input-primary input w-full'
+              readOnly={emailCheck}
+              className={`input-bordered input-primary input w-full ${
+                emailCheck && `bg-gray-200`
+              }`}
               {...register('email')}
             />
+            {!emailCheck && (
+              <button
+                type='button'
+                className='btn mt-1'
+                onClick={checkEmailDuplication}
+              >
+                이메일 체크
+              </button>
+            )}
             <ErrorMessageInput>
               {errors.email ? errors.email.message : ''}
             </ErrorMessageInput>
@@ -107,9 +159,21 @@ const Signup = () => {
             <input
               type='text'
               placeholder='아이디를 입력해주세요'
-              className='input-bordered input-primary input w-full'
+              className={`input-bordered input-primary input w-full ${
+                usernameCheck && `bg-gray-200`
+              }`}
+              readOnly={usernameCheck}
               {...register('username')}
             />
+            {!usernameCheck && (
+              <button
+                type='button'
+                className='btn mt-1'
+                onClick={checkUsernameDuplication}
+              >
+                아이디 체크
+              </button>
+            )}
             <ErrorMessageInput>
               {errors.username ? errors.username.message : ''}
             </ErrorMessageInput>

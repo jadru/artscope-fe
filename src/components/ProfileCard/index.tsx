@@ -209,13 +209,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       <div className='relative flex w-full flex-col items-center justify-center space-y-4 p-6 dark:text-gray-100'>
         <>
           <p className='font-bold text-info'>
-            {(profileData.artistStatus === 'APPROVED' && '아티스트입니다.') ||
-              (profileData.artistStatus === 'PENDING' &&
-                '아티스트 심사중입니다.') ||
-              (profileData.artistStatus === 'REJECTED' &&
-                '아티스트 심사가 거절되었습니다.') ||
+            {(profileData.artistStatus === 'APPROVED' &&
+              '인증된 아티스트입니다.') ||
               (profileData.artistStatus === 'NONE' && (
-                <Link className='btn-secondary btn' href='/artist/info'>
+                <Link className='btn-ghost btn' href='/artist/info'>
                   아티스트 정보 입력
                 </Link>
               ))}
@@ -287,33 +284,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 </Link>
               )}
             </div>
-          </div>
-          <div className='flex w-full justify-between'>
-            <div className='btn-group'>
-              <button className='btn-primary btn' onClick={handleLogout}>
-                로그아웃
-              </button>
-              <button className='btn-error btn' onClick={handleDeleteMember}>
-                회원탈퇴
-              </button>
-            </div>
-            {editMode ? (
-              <div className='btn-group'>
-                <button
-                  className='btn-warning btn'
-                  onClick={() => setEditMode(false)}
-                >
-                  <ImCancelCircle className='h-6 w-6' />
-                </button>
-                <label className='btn-success btn' htmlFor='submitbutton'>
-                  <BiSave className='h-6 w-6' />
-                </label>
-              </div>
-            ) : (
-              <button className='btn-accent btn' onClick={handleEdit}>
-                <BiEdit className='h-6 w-6 text-slate-600 hover:text-cyan-500' />
-              </button>
-            )}
           </div>
         </>
         {editMode ? (
@@ -394,34 +364,63 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <button id='submitbutton' type='submit' className='hidden' />
           </form>
         ) : (
-          <div className='grid w-full grid-cols-3 gap-1'>
-            {userArtworksData &&
-              userArtworksData.artworks.map((artwork) => (
-                <Link
-                  key={artwork.id}
-                  className='group relative'
-                  href={'/artwork/' + artwork.id}
-                >
-                  {artwork.thumbnail.mediaType === 'image' ? (
-                    <Image
-                      src={artwork.thumbnail.mediaUrl}
-                      alt='artwork'
-                      width={200}
-                      height={200}
-                      className='aspect-square w-full object-cover'
-                    />
-                  ) : (
-                    <AudioFileGridItem className='aspect-square w-full object-cover' />
-                  )}
-                  {/* {artwork.title && ( */}
-                  {/*   <p className='text-md absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 px-3 py-2 text-left font-bold text-white backdrop-blur'> */}
-                  {/*     {artwork.title} */}
-                  {/*   </p> */}
-                  {/* )} */}
-                </Link>
-              ))}
-            {userArtworkLoading && <Skeleton className='h-full w-2/3' />}
-          </div>
+          <>
+            <div className='grid w-full grid-cols-3 gap-1'>
+              {userArtworksData &&
+                userArtworksData.artworks.map((artwork) => (
+                  <Link
+                    key={artwork.id}
+                    className='group relative'
+                    href={'/artwork/' + artwork.id}
+                  >
+                    {artwork.thumbnail.mediaType === 'image' ? (
+                      <Image
+                        src={artwork.thumbnail.mediaUrl}
+                        alt='artwork'
+                        width={200}
+                        height={200}
+                        className='aspect-square w-full object-cover'
+                      />
+                    ) : (
+                      <AudioFileGridItem className='aspect-square w-full object-cover' />
+                    )}
+                    {/* {artwork.title && ( */}
+                    {/*   <p className='text-md absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 px-3 py-2 text-left font-bold text-white backdrop-blur'> */}
+                    {/*     {artwork.title} */}
+                    {/*   </p> */}
+                    {/* )} */}
+                  </Link>
+                ))}
+              {userArtworkLoading && <Skeleton className='h-full w-2/3' />}
+            </div>
+            <div className='flex w-full justify-between'>
+              <div className='btn-group'>
+                <button className='btn-primary btn' onClick={handleLogout}>
+                  로그아웃
+                </button>
+                <button className='btn-error btn' onClick={handleDeleteMember}>
+                  회원탈퇴
+                </button>
+              </div>
+              {editMode ? (
+                <div className='btn-group'>
+                  <button
+                    className='btn-warning btn'
+                    onClick={() => setEditMode(false)}
+                  >
+                    <ImCancelCircle className='h-6 w-6' />
+                  </button>
+                  <label className='btn-success btn' htmlFor='submitbutton'>
+                    <BiSave className='h-6 w-6' />
+                  </label>
+                </div>
+              ) : (
+                <button className='btn-accent btn' onClick={handleEdit}>
+                  <BiEdit className='h-6 w-6 text-slate-600 hover:text-cyan-500' />
+                </button>
+              )}
+            </div>
+          </>
         )}
       </div>
     );

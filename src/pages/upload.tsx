@@ -3,7 +3,11 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
-import { AiOutlineCheck, AiOutlineFileImage } from 'react-icons/ai';
+import {
+  AiFillDelete,
+  AiOutlineCheck,
+  AiOutlineFileImage,
+} from 'react-icons/ai';
 import { toast } from 'react-toastify';
 
 import useAuth from '@/hooks/useAuth';
@@ -21,6 +25,8 @@ import {
   UPLOAD_TITLE_MAX_INPUT_LENGTH,
 } from '@/constant/config';
 import jxios from '@/utils/jxios';
+
+import UploadAnimation from '../../public/animation/65316-upload-progress-bar.json';
 
 import { ArtWorkApiRequestType, ArtWorkMediaType } from '@/types';
 
@@ -124,6 +130,41 @@ const Upload = () => {
     }
     await setImgs(imgList);
     await setFileUrls(urlList);
+  };
+
+  const handleFileAdded = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (
+      e.currentTarget.files &&
+      fileUrls.length + e.currentTarget.files?.length > 10
+    ) {
+      toast.warn('10개 이하의 파일까지 업로드할 수 있습니다.');
+      return;
+    }
+    if (e.currentTarget.files?.length === 0) return;
+
+    const files = e.currentTarget.files as FileList;
+    for (let i = 0; i < files.length; i++) {
+      await setImgs((prev) => [...prev, URL.createObjectURL(files[i])]);
+      await setFileUrls((prev) => [
+        ...prev,
+        {
+          mediaType: files[i].type.startsWith('image')
+            ? 'image'
+            : files[i].type.startsWith('video')
+            ? 'video'
+            : 'audio',
+          file: files[i],
+          description: '',
+        },
+      ]);
+    }
+  };
+
+  const handleDeleteFile = async (index: number) => {
+    if (confirm('미디어를 삭제하시겠습니까?')) {
+      await setImgs((prev) => prev.filter((_, i) => i !== index));
+      await setFileUrls((prev) => prev.filter((_, i) => i !== index));
+    }
   };
 
   useEffect(() => {
@@ -306,65 +347,98 @@ const Upload = () => {
             <div className='flex h-full w-full flex-col items-center justify-center pt-12'>
               <p className='mb-8 text-4xl font-bold'>작품 업로드</p>
               <div className='grid w-[302px] grid-cols-3 flex-col items-center justify-center space-y-0 space-x-0'>
-                {fileUrls &&
-                  fileUrls.length > 0 &&
-                  fileUrls.map((file, index) => (
-                    <a
-                      key={Math.random()}
-                      className='relative m-0'
-                      href='#modal-artwork-media'
-                      onClick={() => setIndexFileforModal(index)}
-                    >
-                      {file.mediaType !== 'audio' && (
-                        <button
-                          className={`${
-                            thumbnail === index
-                              ? 'badge-secondary'
-                              : 'badge-primary'
-                          } badge tooltip absolute top-2 left-2 z-40`}
-                          data-tip='썸네일 선택'
-                          onClick={() => setThumbnail(index)}
+                {fileUrls.length > 0 &&
+                  fileUrls.map(
+                    (file, index) =>
+                      fileUrls && (
+                        <div
+                          key={Math.random()}
+                          className='relative m-0'
+                          onClick={() => setIndexFileforModal(index)}
                         >
-                          {thumbnail === index ? (
-                            <AiOutlineCheck />
-                          ) : (
-                            <AiOutlineFileImage />
-                          )}
-                        </button>
-                      )}
-
-                      <div
-                        className={`${
-                          fileUrls[index].description !== ''
-                            ? 'tooltip tooltip-bottom'
-                            : ''
-                        } relative m-0 mt-1 h-24 w-24 p-0`}
-                        data-tip={fileUrls[index].description}
-                      >
-                        {file.mediaType === 'image' ? (
-                          <Image
-                            className='h-auto border object-contain'
-                            src={imgs[index]}
-                            alt={'uploaded image ' + index}
-                            fill
-                          />
-                        ) : file.mediaType === 'video' ? (
-                          <video
-                            className='m-0 h-24 w-24 border object-cover p-0'
-                            src={imgs[index]}
-                          />
-                        ) : (
-                          <div className='m-0 flex h-24 w-24 items-center justify-center border'>
-                            <p className='text-2xl font-extrabold'>
-                              AUDIO
-                              <br />
-                              FILE
-                            </p>
+                          <div
+                            className={`${
+                              fileUrls[index].description !== ''
+                                ? 'tooltip tooltip-bottom'
+                                : ''
+                            } relative m-0 my-0.5 h-24 w-24 p-0`}
+                            data-tip={fileUrls[index].description}
+                          >
+                            {file.mediaType === 'image' ? (
+                              <Image
+                                className='h-auto border object-cover p-0'
+                                src={imgs[index]}
+                                alt={'uploaded image ' + index}
+                                fill
+                              />
+                            ) : file.mediaType === 'video' ? (
+                              <video
+                                className='m-0 h-24 w-24 border object-cover p-0'
+                                src={imgs[index]}
+                              />
+                            ) : (
+                              <div className='m-0 flex h-24 w-24 items-center justify-center border'>
+                                <p className='text-2xl font-extrabold'>
+                                  AUDIO
+                                  <br />
+                                  FILE
+                                </p>
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
-                    </a>
-                  ))}
+                          <a
+                            href='#modal-artwork-media'
+                            className='absolute top-0 left-0 h-full w-full'
+                          />
+                          <div className='absolute top-0 flex h-8 w-full items-center justify-between bg-white/50 px-2'>
+                            {file.mediaType !== 'audio' ? (
+                              <button
+                                className={`${
+                                  thumbnail === index
+                                    ? 'text-secondary'
+                                    : 'text-primary'
+                                } tooltip h-5 w-5`}
+                                data-tip='썸네일 선택'
+                                onClick={() => setThumbnail(index)}
+                              >
+                                {thumbnail === index ? (
+                                  <AiOutlineCheck />
+                                ) : (
+                                  <AiOutlineFileImage />
+                                )}
+                              </button>
+                            ) : (
+                              <div></div>
+                            )}
+                            <button
+                              className='tooltip h-5 w-5'
+                              data-tip='삭제'
+                              onClick={() => handleDeleteFile(index)}
+                            >
+                              <AiFillDelete />
+                            </button>
+                          </div>
+                        </div>
+                      )
+                  )}
+                {fileUrls.length < 10 && (
+                  <>
+                    <input
+                      type='file'
+                      id='add-more'
+                      className='hidden'
+                      accept='image/jpeg, image/png, image/gif, video/mp4, video/mov, video/avi, audio/mp3, audio/sav, audio/ogg'
+                      multiple
+                      onChange={handleFileAdded}
+                    />
+                    <label
+                      className='btn-ghost btn m-0 my-0.5 h-24 w-24 rounded-none bg-gray-700/50 text-3xl'
+                      htmlFor='add-more'
+                    >
+                      +
+                    </label>
+                  </>
+                )}
               </div>
               <p className='my-6 text-sm font-bold text-gray-700 dark:text-neutral-400'>
                 업로드한 미디어를 선텍하면 설명을 추가할 수 있습니다.
@@ -392,7 +466,7 @@ const Upload = () => {
                   type='text'
                   name='tags'
                   className='text-md input-primary input mb-2 w-[302px]'
-                  placeholder='작품 컬렉션 태그 (","로 구분)'
+                  placeholder='태그1, 태그2, 태그3'
                   maxLength={UPLOAD_TITLE_MAX_INPUT_LENGTH}
                 />
                 <div className='form-control mb-2 w-[302px] '>
@@ -426,6 +500,15 @@ const Upload = () => {
           </>
         )}
       </TabLayout>
+      {isUpload && (
+        <div className='fixed top-0 left-0 z-50 flex h-screen w-screen touch-none items-center justify-center bg-white/40 backdrop-blur'>
+          <Lottie
+            animationData={UploadAnimation}
+            className='w-96'
+            loop={false}
+          />
+        </div>
+      )}
       <Seo templateTitle='Upload' />
       <Footer />
       <BottomBar tab='upload' />
