@@ -62,10 +62,14 @@ const Signup = () => {
 
   const onSubmit: SubmitHandler<loginInputs> = (data) =>
     !isSubmitting &&
+    emailCheck &&
+    usernameCheck &&
     delete data.passwordCheck &&
     delete data.agree &&
     jxios.post('/api/members', data, {}).then(() => {
-      push('/login');
+      push('/login').then(() => {
+        toast.success('회원가입이 완료되었습니다.');
+      });
     });
 
   const checkEmailDuplication = () => {
@@ -73,10 +77,15 @@ const Signup = () => {
     if (regex.test(getValues('email'))) {
       jxios
         .get(`/api/members/email/${getValues('email')}`)
-        .then(() => {
-          setEmailCheck(true);
-          toast.success('사용 가능한 이메일입니다.');
-          clearErrors('email');
+        .then((response) => {
+          if (response.status === 200) {
+            setEmailCheck(true);
+            toast.success('사용 가능한 이메일입니다.');
+            clearErrors('email');
+          } else {
+            toast.warn('이미 사용중인 이메일입니다.');
+            setEmailCheck(false);
+          }
         })
         .catch(() => {
           setEmailCheck(false);
@@ -92,10 +101,15 @@ const Signup = () => {
   const checkUsernameDuplication = () => {
     jxios
       .get(`/api/members/username/${getValues('username')}`)
-      .then(() => {
-        setUsernameCheck(true);
-        toast.success('사용 가능한 아이디입니다.');
-        clearErrors('username');
+      .then((response) => {
+        if (response.status === 200) {
+          setUsernameCheck(true);
+          toast.success('사용 가능한 아이디입니다.');
+          clearErrors('username');
+        } else {
+          toast.warn('이미 사용중인 아이디입니다.');
+          setUsernameCheck(false);
+        }
       })
       .catch(() => {
         setUsernameCheck(false);

@@ -1,49 +1,80 @@
 import { Color } from '@tiptap/extension-color';
 import Document from '@tiptap/extension-document';
-import ListItem from '@tiptap/extension-list-item';
+import { Placeholder } from '@tiptap/extension-placeholder';
 import { TextStyle } from '@tiptap/extension-text-style';
 import {
   BubbleMenu,
   EditorContent,
-  FloatingMenu,
+  JSONContent,
   useEditor,
 } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import Lottie from 'lottie-react';
 import { useRouter } from 'next/router';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { NavBar } from '@/components/TabLayout/NavBar';
+import jxios from '@/utils/jxios';
 
-import jxios from '../../utils/jxios';
+import UploadAnimation from '../../../public/animation/65316-upload-progress-bar.json';
 
-import { ArtworkType } from '@/types';
+import { ArtWorkApiRequestType, ArtWorkMediaType, ArtworkType } from '@/types';
+
+const initialArtWork: ArtWorkApiRequestType = {
+  dto: {
+    title: '',
+    description: '',
+    visible: true,
+    tags: [],
+    medias: [],
+    thumbnail: { mediaType: 'image', description: '' },
+  },
+  mediaFiles: [],
+  thumbnailFile: undefined,
+};
 
 const Editor = ({
+  type = 'create',
   data,
-  setEditMode,
-  create = true,
+  resetAfterUpload,
+  fileUrls = [],
+  thumbnail = 0,
 }: {
-  data: ArtworkType;
-  setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
-  create: boolean;
+  type: 'create' | 'edit';
+  data?: ArtworkType;
+  resetAfterUpload?: () => void;
+  fileUrls?: ArtWorkMediaType[];
+  thumbnail?: number;
 }) => {
   const CustomDocument = Document.extend({
-    content: 'heading block*',
+    content: 'heading block* paragraph+',
   });
-  const tagInput = useRef(HTMLInputElement);
+  const tagInput = useRef();
   const router = useRouter();
-
+  const [isUpload, setIsUpload] = useState<boolean>(false);
+  const [artwork, setArtwork] = useState<ArtWorkApiRequestType>(initialArtWork);
+  const [checkVisible, setCheckVisible] = useState<boolean>(true);
   const editor = useEditor({
-    content: !create ? `<h1>${data.title}</h1>${data.description}` : '',
+    content:
+      type != 'create'
+        ? data && `<h1>${data.title}</h1>${data.description}`
+        : null,
     extensions: [
       CustomDocument,
       StarterKit.configure({
         document: false,
       }),
+      Placeholder.configure({
+        placeholder: ({ node }) => {
+          if (node.type.name === 'heading') {
+            return '타이틀을 입력해주세요.';
+          }
+
+          return '작품에 대한 설명을 알려주세요.';
+        },
+      }),
       TextStyle,
       Color,
-      ListItem,
     ],
     editorProps: {
       attributes: {
@@ -58,122 +89,260 @@ const Editor = ({
     }
   }, [editor]);
 
-  const handleEditSaveButton = () => {
-    if (!editor) return;
-    jxios
-      .put('/api/artworks/' + data.id, {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        title: editor.getJSON().content[0].content[0].text,
-        description: editor
-          .getHTML()
-          .substring(editor.getHTML().search('</h1>') + 5),
-        visible: true,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        tags: tagInput.current.value.split(',').map((tag) => tag.trim()),
-      })
-      .then((res) => {
-        if (res.status !== 200) {
-          toast.error('수정에 실패했습니다.');
+  const getVideoCover = (file: File, seekTo = 0.0) => {
+    return new Promise((resolve, reject) => {
+      // load the file to a video player
+      const videoPlayer = document.createElement('video');
+      videoPlayer.setAttribute('src', URL.createObjectURL(file));
+      videoPlayer.load();
+      videoPlayer.addEventListener('error', (ex: ErrorEvent) => {
+        reject('error when loading video file' + ex);
+      });
+      // load metadata of the video to get video duration and dimensions
+      videoPlayer.addEventListener('loadedmetadata', () => {
+        // seek to user defined timestamp (in seconds) if possible
+        if (videoPlayer.duration < seekTo) {
+          reject('video is too short.');
           return;
         }
-        setEditMode(false);
-        router.replace('/artwork/' + data.id);
-        toast.success('수정되었습니다.');
+        // delay seeking or else 'seeked' event won't fire on Safari
+        setTimeout(() => {
+          videoPlayer.currentTime = seekTo;
+        }, 200);
+        // extract video thumbnail once seeking is complete
+        videoPlayer.addEventListener('seeked', () => {
+          // define a canvas to have the same dimension as the video
+          const canvas = document.createElement('canvas');
+          canvas.width = videoPlayer.videoWidth;
+          canvas.height = videoPlayer.videoHeight;
+          // draw the video frame to canvas
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return;
+          ctx.drawImage(videoPlayer, 0, 0, canvas.width, canvas.height);
+          // return the canvas image as a blob
+          ctx.canvas.toBlob(
+            (blob) => {
+              resolve(blob);
+            },
+            'image/jpeg',
+            0.75 /* quality */
+          );
+        });
+      });
+    });
+  };
+
+  const handleSaveButton = () => {
+    if (!editor) return;
+    (type === 'create' && handleCreateSaveButton()) ||
+      (type === 'edit' &&
+        handleEditSaveButton(editor.getJSON(), editor.getHTML()));
+  };
+  const handleEditSaveButton = async (
+    contentJSON?: JSONContent,
+    contentHTML?: string
+  ) => {
+    if (!data || isUpload || !editor) return;
+    const HTML = editor.getHTML();
+    if (HTML.substring(4, HTML.search('</h1>')).length === 0) {
+      toast.warn('타이틀을 입력해주세요.');
+      return;
+    }
+    if (HTML.substring(HTML.search('</h1>') + 5).length < 8) {
+      toast.warn('설명을 입력해주세요.');
+      return;
+    }
+    await setIsUpload(true);
+    contentJSON &&
+      contentHTML &&
+      jxios
+        .put('/api/artworks/' + data.id, {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          title: contentJSON.content[0].content[0].text,
+          description: contentHTML.substring(contentHTML.search('</h1>') + 5),
+          visible: true,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          tags: tagInput.current.value.split(',').map((tag) => tag.trim()),
+        })
+        .then((res) => {
+          if (res.status !== 200) {
+            toast.error('수정에 실패했습니다.');
+            return;
+          }
+          router
+            .replace('/artwork/' + data.id)
+            .then(() => toast.success('수정되었습니다.'));
+        })
+        .finally(() => setIsUpload(false));
+  };
+
+  const handleCreateSaveButton = async () => {
+    if (isUpload || !editor) return;
+    const HTML = editor.getHTML();
+    if (fileUrls.length === 0) {
+      toast.warn('파일을 업로드해주세요.');
+      return;
+    }
+    if (HTML.substring(4, HTML.search('</h1>')).length === 0) {
+      toast.warn('타이틀을 입력해주세요.');
+      return;
+    }
+    if (HTML.substring(HTML.search('</h1>') + 5).length < 8) {
+      toast.warn('설명을 입력해주세요.');
+      return;
+    }
+    if (fileUrls.reduce((acc, cur) => cur.file.size + acc, 0) / 1000000 > 100) {
+      toast.warn('파일 용량이 너무 큽니다.');
+      return;
+    }
+    await setIsUpload(true);
+    const newState = { ...artwork };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    newState.dto.title = HTML.substring(4, HTML.search('</h1>'));
+    newState.dto.description = HTML.substring(HTML.search('</h1>') + 5);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    newState.dto.tags = tagInput.current.value
+      .split(',')
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      .map((tag) => tag.trim());
+    newState.dto.visible = checkVisible;
+
+    const formData = new FormData();
+    if (fileUrls[thumbnail].mediaType === 'video') {
+      const cover = (await getVideoCover(
+        fileUrls[thumbnail].file,
+        1.5
+      )) as Blob;
+      formData.append(
+        'thumbnailFile',
+        new File([cover], 'thumbnail.jpg', { type: 'image/jpeg' })
+      );
+    } else if (fileUrls[thumbnail].mediaType === 'image') {
+      formData.append('thumbnailFile', fileUrls[thumbnail].file);
+    }
+
+    newState.dto.medias = [];
+    await fileUrls.forEach((media) => {
+      formData.append('mediaFiles', media.file);
+      newState.dto.medias.push({
+        mediaType: media.mediaType,
+        description: media.description,
+      });
+    });
+    await formData.append(
+      'dto',
+      new Blob([JSON.stringify(newState.dto)], { type: 'application/json' })
+    );
+    await jxios
+      .post('/api/artworks', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+        },
+      })
+      .then((res) => {
+        setArtwork(initialArtWork);
+        resetAfterUpload && resetAfterUpload();
+        if (res.status === 201) {
+          router
+            .push('/')
+            .then(() => toast.success('작품이 업로드되었습니다.'));
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data);
+      })
+      .finally(() => {
+        setIsUpload(false);
       });
   };
 
   return (
-    <div className='relative flex h-auto min-h-screen flex-col items-center justify-center bg-white dark:bg-dark'>
-      <NavBar className='relative' />
-      <div className='editor mb:pb-0 min-h-[calc(100vh-64px)] w-full max-w-2xl bg-gray-100/70 p-8 shadow dark:bg-black/70 sm:pb-12 md:mb-8 md:rounded-2xl'>
-        {editor && (
-          <BubbleMenu
-            className='bubble-menu'
-            tippyOptions={{ duration: 100 }}
-            editor={editor}
-          >
-            <button
-              onClick={() => editor.chain().focus().toggleBold().run()}
-              className={editor.isActive('bold') ? 'is-active' : ''}
-            >
-              Bold
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleItalic().run()}
-              className={editor.isActive('italic') ? 'is-active' : ''}
-            >
-              Italic
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleStrike().run()}
-              className={editor.isActive('strike') ? 'is-active' : ''}
-            >
-              Strike
-            </button>
-          </BubbleMenu>
-        )}
+    <>
+      <div className='flex w-full items-center justify-end space-x-2 rounded border p-3 md:bottom-10'>
+        <span className='label-text hidden md:visible'>태그 입력</span>
+        <input
+          type='text'
+          className='input-bordered input'
+          placeholder='태그1, 태그2, ...'
+          defaultValue={data ? data.tags : ''}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          ref={tagInput}
+        />
 
+        <button
+          onClick={handleSaveButton}
+          className='btn-primary tooltip tooltip-bottom btn'
+          data-tip='작품을 업로드하면 2023 금샘미술관 전시에 공모됩니다.'
+        >
+          저장하기
+        </button>
+
+        {type === 'create' && (
+          <div className='input-bordered input flex items-center justify-center space-x-1'>
+            <span className='label-text'>공개</span>
+            <input
+              type='checkbox'
+              className='toggle-success toggle'
+              name='visible'
+              onClick={() => setCheckVisible((prev) => !prev)}
+              checked={checkVisible}
+            />
+          </div>
+        )}
+      </div>
+      <div className='editor mt-12 w-full sm:pb-12 md:mb-8'>
         {editor && (
-          <FloatingMenu
-            className='floating-menu'
-            tippyOptions={{ duration: 100 }}
-            editor={editor}
-          >
-            <button
-              onClick={() =>
-                editor.chain().focus().toggleHeading({ level: 1 }).run()
-              }
-              className={
-                editor.isActive('heading', { level: 1 }) ? 'is-active' : ''
-              }
+          <>
+            <BubbleMenu
+              className='bubble-menu'
+              tippyOptions={{ duration: 100 }}
+              editor={editor}
             >
-              H1
-            </button>
-            <button
-              onClick={() =>
-                editor.chain().focus().toggleHeading({ level: 2 }).run()
-              }
-              className={
-                editor.isActive('heading', { level: 2 }) ? 'is-active' : ''
-              }
-            >
-              H2
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleBulletList().run()}
-              className={editor.isActive('bulletList') ? 'is-active' : ''}
-            >
-              Bullet List
-            </button>
-          </FloatingMenu>
+              <button
+                onClick={() => editor.chain().focus().toggleBold().run()}
+                className={editor.isActive('bold') ? 'is-active' : ''}
+              >
+                Bold
+              </button>
+              <button
+                onClick={() => editor.chain().focus().toggleItalic().run()}
+                className={editor.isActive('italic') ? 'is-active' : ''}
+              >
+                Italic
+              </button>
+              <button
+                onClick={() => editor.chain().focus().toggleStrike().run()}
+                className={editor.isActive('strike') ? 'is-active' : ''}
+              >
+                Strike
+              </button>
+            </BubbleMenu>
+          </>
         )}
 
         <EditorContent
           editor={editor}
-          className='h-full w-full pb-12 focus:outline-none active:outline-none'
+          className='h-full w-full border p-3 focus:outline-none active:outline-none'
         />
-        <div className='fixed bottom-0 left-0 flex w-full items-center justify-center md:bottom-10'>
-          <div className='mb-2 items-center justify-center space-x-3 rounded-xl bg-gray-300 p-2 dark:bg-gray-800 md:p-3'>
-            <span className='label-text hidden md:visible'>태그 입력</span>
-            <input
-              type='text'
-              className='input-bordered input'
-              placeholder='태그'
-              defaultValue={data.tags}
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              ref={tagInput}
-            />
-
-            <button onClick={handleEditSaveButton} className='btn-primary btn'>
-              저장하기
-            </button>
-          </div>
-        </div>
       </div>
-    </div>
+
+      {isUpload && (
+        <div className='fixed top-0 left-0 z-50 flex h-screen w-screen touch-none items-center justify-center bg-white/40 backdrop-blur'>
+          <Lottie
+            animationData={UploadAnimation}
+            className='w-96'
+            loop={false}
+          />
+        </div>
+      )}
+    </>
   );
 };
 

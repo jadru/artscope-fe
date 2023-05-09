@@ -74,6 +74,7 @@ export default function Artwork() {
           <Masonry gutter='0.4rem'>
             <Link
               href='/blog/634d09fd-79f8-4807-a517-17ebd1c45054'
+              key='634d09fd-79f8-4807-a517-17ebd1c45054'
               className='from-20% via-60% to-20% group relative flex h-64 cursor-pointer items-center justify-center bg-gradient-to-br from-[#6F38C5] via-[#87A2FB] to-[#ADDDD0] px-0 dark:from-indigo-900 dark:via-cyan-700 dark:to-emerald-600'
             >
               <Lottie

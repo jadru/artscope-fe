@@ -90,18 +90,22 @@ const Slug = ({
     }
   }, [data, isEditMode, isTokenRefreshing]);
 
-  if (!editMode)
-    // this is artwork view mode
-    return (
-      <>
-        <Seo
-          description={data.description}
-          templateTitle={data.title + ' - Artwork'}
-          image={NEXT_PUBLIC_ROOT_URL + '/api/og-image?title=' + data.title}
-        />
-        <NavBar />
-        <TabLayout>
-          {data && (
+  useEffect(() => {
+    if (data && router.asPath === '/artwork/' + data.id) {
+      setEditMode(false);
+    }
+  }, [data, router.asPath]);
+  return (
+    <>
+      <Seo
+        description={data.description}
+        templateTitle={data.title + ' - Artwork'}
+        image={NEXT_PUBLIC_ROOT_URL + '/api/og-image?title=' + data.title}
+      />
+      <NavBar />
+      <TabLayout top>
+        {!editMode ? (
+          data && (
             <div className='block space-y-1.5'>
               <h1 className='my-8 text-center text-4xl font-light'>
                 {data?.title}
@@ -203,20 +207,17 @@ const Slug = ({
               </div>
               {profileData && <ProfileCard profileData={profileData} />}
             </div>
-          )}
-        </TabLayout>
-        <Footer />
-        <BottomBar tab='artwork' />
-      </>
-    );
-  // this is artwork edit mode
-  else
-    return (
-      <>
-        <Seo templateTitle={'편집 모드 ' + data.title + ' - Artwork'} />
-        <Editor data={data} setEditMode={setEditMode} create={false} />
-      </>
-    );
+          )
+        ) : (
+          <div className='w-2xl'>
+            <Editor data={data} type='edit' />
+          </div>
+        )}
+      </TabLayout>
+      <Footer />
+      <BottomBar tab='artwork' />
+    </>
+  );
 };
 
 export default Slug;
