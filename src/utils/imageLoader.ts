@@ -5,7 +5,7 @@ import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 const imageLoader = ({ src, width, quality }: ImageLoaderProps) => {
   if (!src.startsWith('http')) {
     return `${NEXT_PUBLIC_MEDIA_STORAGE_URL}/${src}?w=${width}&q=${
-      quality || 75
+      quality || 80
     }&f=webp`;
   } else {
     return `${src}`;
