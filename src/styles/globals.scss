@@ -102,7 +102,7 @@
 
 .ProseMirror {
   > * + * {
-    margin-top: 0.75em;
+    margin-top: 1em;
   }
 
   ul,
@@ -110,19 +110,18 @@
     list-style-type: disc;
     padding: 0 1rem;
   }
-}
-
-.ProseMirror p.is-editor-empty:first-child::before {
-  color: #adb5bd;
-  content: attr(data-placeholder);
-  float: left;
-  height: 0;
-  pointer-events: none;
+  .is-empty::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: #ced4da;
+    pointer-events: none;
+    height: 0;
+  }
 }
 
 .floating-menu {
   display: flex;
-  background-color: #0d0d0d10;
+  background-color: #ffffff;
   padding: 0.2rem;
   border-radius: 0.5rem;
 
