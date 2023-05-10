@@ -95,8 +95,8 @@ const Upload = () => {
   };
 
   const handleDeleteFile = async (index: number) => {
+    await setIndexFileforModal(0);
     if (confirm('미디어를 삭제하시겠습니까?')) {
-      await setIndexFileforModal(0);
       await setImgs((prev) => prev.filter((_, i) => i !== index));
       await setFileUrls((prev) => prev.filter((_, i) => i !== index));
     }
@@ -120,7 +120,7 @@ const Upload = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <NavBar />
       <TabLayout top>
         <Title>작품 업로드</Title>
@@ -155,7 +155,8 @@ const Upload = () => {
             <div className='modal' id='modal-artwork-media'>
               <div className='modal-box flex flex-col items-center justify-center text-center'>
                 <p className='text-lg'>미디어 설명 추가</p>
-                {fileUrls[indexFileforModal].mediaType === 'image' ? (
+                {indexFileforModal <= fileUrls.length &&
+                fileUrls[indexFileforModal]?.mediaType === 'image' ? (
                   <Image
                     src={imgs[indexFileforModal]}
                     alt='uploaded image'
@@ -175,7 +176,7 @@ const Upload = () => {
                 <input
                   type='text'
                   placeholder='제목, 매체, 사이즈, 제작연도 등'
-                  value={fileUrls[indexFileforModal].description}
+                  value={fileUrls[indexFileforModal]?.description}
                   className='input-bordered input-primary input mt-2 w-[300px]'
                   onChange={(e) => {
                     const newFileUrls = [...fileUrls];
@@ -317,7 +318,7 @@ const Upload = () => {
           {fileUrls.length > 0 && (
             <div>
               <p className='w-full text-sm font-light'>
-                파일 갯수 : {fileUrls.length + 1}
+                파일 갯수 : {fileUrls.length}개
                 <br />
                 파일 용량 :{' '}
                 {(
@@ -326,7 +327,7 @@ const Upload = () => {
                 ).toFixed(2)}
                 MB / <b className='font-bold'>100MB</b>
               </p>
-              <p className='my-6 w-full text-sm font-bold text-gray-700 dark:text-neutral-400'>
+              <p className='my-6 w-full text-sm font-bold text-gray-600 dark:text-neutral-400'>
                 업로드한 미디어를 선택하면 설명을 추가할 수 있습니다.
               </p>
             </div>
@@ -344,7 +345,7 @@ const Upload = () => {
       <Seo templateTitle='Upload' />
       <Footer />
       <BottomBar tab='upload' />
-    </div>
+    </>
   );
 };
 
