@@ -47,7 +47,7 @@ const Editor = ({
   thumbnail?: number;
 }) => {
   const CustomDocument = Document.extend({
-    content: 'heading block* paragraph+',
+    content: 'heading block*',
   });
   const tagInput = useRef();
   const router = useRouter();
@@ -264,40 +264,7 @@ const Editor = ({
 
   return (
     <>
-      <div className='flex w-full items-center justify-end space-x-2 rounded border p-3 md:bottom-10'>
-        <span className='label-text hidden md:visible'>태그 입력</span>
-        <input
-          type='text'
-          className='input-bordered input'
-          placeholder='태그1, 태그2, ...'
-          defaultValue={data ? data.tags : ''}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          ref={tagInput}
-        />
-
-        <button
-          onClick={handleSaveButton}
-          className='btn-primary tooltip tooltip-bottom btn'
-          data-tip='작품을 업로드하면 2023 금샘미술관 전시에 공모됩니다.'
-        >
-          저장하기
-        </button>
-
-        {type === 'create' && (
-          <div className='input-bordered input flex items-center justify-center space-x-1'>
-            <span className='label-text'>공개</span>
-            <input
-              type='checkbox'
-              className='toggle-success toggle'
-              name='visible'
-              onClick={() => setCheckVisible((prev) => !prev)}
-              checked={checkVisible}
-            />
-          </div>
-        )}
-      </div>
-      <div className='editor mt-12 w-full sm:pb-12 md:mb-8'>
+      <div className='editor my-4 w-full'>
         {editor && (
           <>
             <BubbleMenu
@@ -327,14 +294,49 @@ const Editor = ({
           </>
         )}
 
-        <EditorContent
-          editor={editor}
-          className='h-full w-full border p-3 focus:outline-none active:outline-none'
+        <EditorContent editor={editor} className='h-full w-full p-3' />
+        <p className='my-6 w-full text-sm font-bold text-gray-600 dark:text-neutral-400'>
+          타이틀 입력 후 <kbd className='kbd kbd-sm'>Enter</kbd> 시 작품 설명을
+          입력할 수 있습니다. (<code>Markdown</code> 지원)
+        </p>
+      </div>
+      <div className='flex max-w-full flex-col items-stretch space-y-1 rounded-2xl border p-3 md:flex-row md:items-center md:justify-end md:space-y-0 md:space-x-2'>
+        <input
+          type='text'
+          className='input-bordered input'
+          placeholder='태그1, 태그2, ...'
+          defaultValue={data ? data.tags : ''}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          ref={tagInput}
         />
+        <div className='flex flex-row justify-between md:justify-start md:space-x-2'>
+          {type === 'create' ? (
+            <div className='input-bordered input flex flex-row items-center justify-between space-x-1 md:justify-center'>
+              <span className='label-text'>공개</span>
+              <input
+                type='checkbox'
+                className='toggle-success toggle'
+                name='visible'
+                onClick={() => setCheckVisible((prev) => !prev)}
+                checked={checkVisible}
+              />
+            </div>
+          ) : (
+            <div></div>
+          )}
+          <button
+            onClick={handleSaveButton}
+            className='btn-primary tooltip tooltip-bottom btn'
+            data-tip='작품을 업로드하면 2023 금샘미술관 전시에 공모됩니다.'
+          >
+            저장하기
+          </button>
+        </div>
       </div>
 
       {isUpload && (
-        <div className='fixed top-0 left-0 z-50 flex h-screen w-screen touch-none items-center justify-center bg-white/40 backdrop-blur'>
+        <div className='fixed top-0 left-0 z-50 flex h-screen w-screen items-center justify-center bg-white/40 backdrop-blur'>
           <Lottie
             animationData={UploadAnimation}
             className='w-96'

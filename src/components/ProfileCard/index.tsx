@@ -394,14 +394,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               {userArtworkLoading && <Skeleton className='h-full w-2/3' />}
             </div>
             <div className='flex w-full justify-between'>
-              <div className='btn-group'>
-                <button className='btn-primary btn' onClick={handleLogout}>
-                  로그아웃
-                </button>
-                <button className='btn-error btn' onClick={handleDeleteMember}>
-                  회원탈퇴
-                </button>
-              </div>
+              <button className='btn-primary btn' onClick={handleLogout}>
+                로그아웃
+              </button>
+
               {editMode ? (
                 <div className='btn-group'>
                   <button
@@ -420,6 +416,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 </button>
               )}
             </div>
+            <button className='btn-ghost btn' onClick={handleDeleteMember}>
+              회원탈퇴
+            </button>
           </>
         )}
       </div>

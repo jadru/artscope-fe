@@ -22,9 +22,11 @@ const TabLayout: FunctionComponent<Props> = ({
   top = false,
 }) => (
   <div
-    className={`flex h-full min-h-[85vh] w-full flex-col ${
+    className={`flex h-full min-h-[85vh] w-screen flex-col ${
       top ? 'justify-start' : 'justify-center'
-    } items-center ${dark ? '' : 'bg-white dark:bg-dark'} ${className} `}
+    } items-center ${dark ? '' : 'bg-white dark:bg-dark'} ${
+      className ? className : '' + ''
+    } `}
   >
     <div
       className={`${paddingTop ? 'pt-16' : ''} w-screen ${
