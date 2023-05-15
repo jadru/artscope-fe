@@ -393,34 +393,38 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 ))}
               {userArtworkLoading && <Skeleton className='h-full w-2/3' />}
             </div>
-            <div className='flex w-full justify-between'>
+          </>
+        )}
+        <div className='flex w-full justify-between'>
+          {editMode ? (
+            <>
+              <div></div>
+              <div className='btn-group'>
+                <button
+                  className='btn-warning btn'
+                  onClick={() => setEditMode(false)}
+                >
+                  <ImCancelCircle className='h-6 w-6' />
+                </button>
+                <label className='btn-success btn' htmlFor='submitbutton'>
+                  <BiSave className='h-6 w-6' />
+                </label>
+              </div>
+            </>
+          ) : (
+            <>
               <button className='btn-primary btn' onClick={handleLogout}>
                 로그아웃
               </button>
-
-              {editMode ? (
-                <div className='btn-group'>
-                  <button
-                    className='btn-warning btn'
-                    onClick={() => setEditMode(false)}
-                  >
-                    <ImCancelCircle className='h-6 w-6' />
-                  </button>
-                  <label className='btn-success btn' htmlFor='submitbutton'>
-                    <BiSave className='h-6 w-6' />
-                  </label>
-                </div>
-              ) : (
-                <button className='btn-accent btn' onClick={handleEdit}>
-                  <BiEdit className='h-6 w-6 text-slate-600 hover:text-cyan-500' />
-                </button>
-              )}
-            </div>
-            <button className='btn-ghost btn' onClick={handleDeleteMember}>
-              회원탈퇴
-            </button>
-          </>
-        )}
+              <button className='btn-accent btn' onClick={handleEdit}>
+                <BiEdit className='h-6 w-6 text-slate-600 hover:text-cyan-500' />
+              </button>
+            </>
+          )}
+        </div>
+        <button className='btn-ghost btn' onClick={handleDeleteMember}>
+          회원탈퇴
+        </button>
       </div>
     );
 };
