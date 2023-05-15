@@ -96,17 +96,17 @@ export default function Artwork() {
                       <Link
                         href={'/artwork/' + artwork.id}
                         key={artwork.id}
-                        className='group relative flex cursor-pointer justify-center overflow-hidden bg-base-100 text-center dark:border-slate-600'
+                        className='group relative flex h-auto w-full cursor-pointer justify-center overflow-hidden bg-base-100 text-center dark:border-slate-600'
                       >
                         {artwork.thumbnail && (
-                          <div className='relative m-0 w-full p-0'>
+                          <div className='m-0 grid w-full justify-items-stretch p-0'>
                             {artwork.thumbnail.mediaType === 'image' ? (
                               artwork.thumbnail.mediaUrl !== 'string' && (
                                 <Image
                                   src={artwork.thumbnail.mediaUrl}
                                   alt={artwork.title}
-                                  width={410}
-                                  height={410}
+                                  width={400}
+                                  height={400}
                                   placeholder='blur' // 추가
                                   blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==' // 추가
                                   className='w-full cursor-zoom-in object-contain duration-200 ease-in-out group-hover:scale-110'
@@ -145,8 +145,11 @@ export default function Artwork() {
                             <Image
                               src='prod/blog/blog-thumbnail.jpeg'
                               alt='staff-vlog-thumbnail'
-                              width={410}
-                              height={410}
+                              width={400}
+                              height={400}
+                              sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1600px) 33.3vw, 25vw'
+                              placeholder='blur' // 추가
+                              blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==' // 추가
                               className='w-full cursor-zoom-in object-contain duration-200 ease-in-out group-hover:scale-110'
                             />
                           </div>
