@@ -59,6 +59,13 @@ export const NavBar: React.FC<Props> = ({
         {userValue.role ? (
           <>
             <Link
+              href='https://ad21pifdjli.typeform.com/to/kg4KHrj4'
+              target='_blank'
+              className='btn-ghost btn'
+            >
+              피드백
+            </Link>
+            <Link
               href='/upload'
               className='btn-ghost btn-square btn hidden lg:inline-flex'
             >
@@ -96,9 +103,16 @@ export const NavBar: React.FC<Props> = ({
           </>
         ) : (
           <ul className='menu menu-horizontal hidden px-1 lg:inline-block'>
-            <li>
-              <Link href='/login'>로그인</Link>
-            </li>
+            <Link
+              href='https://ad21pifdjli.typeform.com/to/kg4KHrj4'
+              className='btn-ghost btn'
+              target='_blank'
+            >
+              피드백
+            </Link>
+            <Link href='/login' className='btn-ghost btn'>
+              로그인
+            </Link>
           </ul>
         )}
       </div>
