@@ -33,7 +33,7 @@ const Footer: FC<Props> = ({
           </Link>{' '}
           by{' '}
           <Link
-            className='link text-amber-300'
+            className='link text-amber-700 dark:text-amber-300'
             href='https://www.instagram.com/media_xi/'
             target='_blank'
           >
@@ -43,7 +43,9 @@ const Footer: FC<Props> = ({
           <Link
             href='https://art.geumjeong.go.kr'
             target='_blank'
-            className={`link ${dark ? 'text-green-200' : 'text-cyan-500'}`}
+            className={`link ${
+              dark ? 'text-green-200' : 'text-cyan-700 dark:text-cyan-300'
+            }`}
           >
             금샘미술관
           </Link>
