@@ -1,6 +1,6 @@
 import Lottie from 'lottie-react';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import {
   AiFillDelete,
@@ -94,6 +94,14 @@ const Upload = () => {
     }
   };
 
+  const handleLinkAdded = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (fileUrls.length + 1 > 10) {
+      toast.warn('10개 이하의 파일까지 업로드할 수 있습니다.');
+      return;
+    }
+  };
+
   const handleDeleteFile = async (index: number) => {
     await setIndexFileforModal(0);
     if (confirm('미디어를 삭제하시겠습니까?')) {
@@ -126,29 +134,68 @@ const Upload = () => {
         <Title>작품 업로드</Title>
         {fileUrls.length === 0 ? (
           <>
-            <FileUploader
-              handleChange={handleFileSelected}
-              name='file'
-              types={FILETYPES}
-              multiple={true}
-              label='사진과 동영상을 여기에 끌어오세요'
-              hoverTitle='여기에 놓기'
-              onTypeError={() => toast.warn('지원하지 않는 파일 형식입니다')}
-              onMaxSizeError={() => toast.warn('파일 용량이 너무 큽니다')}
-              onMaxFilesError={() => toast.warn('파일 개수가 너무 많습니다')}
-            >
-              <div className='md:border-1 rounded-box flex cursor-pointer flex-col items-center justify-center space-x-3 p-12 text-center hover:bg-gray-200 md:flex-row md:border md:border-fuchsia-900 md:text-left'>
-                <Lottie
-                  loop={true}
-                  animationData={require('../../public/animation/110586-line-art.json')}
-                  className='h-48 w-48'
-                />
-                <p className='text-xl font-medium text-gray-800 dark:text-gray-200'>
-                  작품(사진과 동영상, 음원)을 <br /> 여기에 끌어다 놓으세요{' '}
-                  <br /> <b>업로드하기</b>
+            <div className='rounded-box flex justify-between md:border md:border-fuchsia-900'>
+              <FileUploader
+                handleChange={handleFileSelected}
+                name='file'
+                types={FILETYPES}
+                multiple={true}
+                label='사진과 동영상을 드래그 앤 드랍'
+                hoverTitle='여기에 놓기'
+                onTypeError={() => toast.warn('지원하지 않는 파일 형식입니다')}
+                onMaxSizeError={() => toast.warn('파일 용량이 너무 큽니다')}
+                onMaxFilesError={() => toast.warn('파일 개수가 너무 많습니다')}
+              >
+                <div className='md:border-1 rounded-box flex w-full cursor-pointer flex-col items-center justify-center space-x-3 p-12 text-center hover:bg-gray-200 md:flex-row md:text-left'>
+                  <Lottie
+                    loop={true}
+                    animationData={require('../../public/animation/110586-line-art.json')}
+                    className='h-48 w-48'
+                  />
+                  <p className='w-full text-lg font-medium text-gray-800 dark:text-gray-200'>
+                    사진, 동영상, 음원 <br />
+                    <b>파일을 업로드하기</b>
+                  </p>
+                </div>
+              </FileUploader>
+              <div className='divider divider-horizontal'>OR</div>
+              <label
+                htmlFor='modal-add-link'
+                className='rounded-box flex w-1/2 cursor-pointer items-center justify-center hover:bg-gray-200'
+              >
+                <p className='text-lg font-medium text-gray-800 dark:text-gray-200'>
+                  유튜브, Vimeo, SoundCloud <br />
+                  <b>링크를 업로드하기</b>
                 </p>
+              </label>
+            </div>
+            <input
+              type='checkbox'
+              id='modal-add-link'
+              className='modal-toggle'
+            />
+            <div className='modal'>
+              <div className='modal-box relative'>
+                <label
+                  htmlFor='modal-add-link'
+                  className='btn-sm btn-circle btn absolute right-2 top-2'
+                >
+                  ✕
+                </label>
+                <h3 className='text-lg font-bold'>링크로 작품 미디어 추가</h3>
+                <form className='form-control' onSubmit={handleLinkAdded}>
+                  <input
+                    type='link'
+                    id='link'
+                    placeholder='링크를 입력하세요'
+                    className='input-bordered input w-full'
+                  />
+                  <button className='btn-primary btn mt-3 w-full' type='submit'>
+                    추가
+                  </button>
+                </form>
               </div>
-            </FileUploader>
+            </div>
           </>
         ) : (
           <>

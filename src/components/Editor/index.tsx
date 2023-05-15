@@ -1,3 +1,5 @@
+'use client';
+
 import { Color } from '@tiptap/extension-color';
 import Document from '@tiptap/extension-document';
 import { Placeholder } from '@tiptap/extension-placeholder';
@@ -318,7 +320,7 @@ const Editor = ({
               className='toggle-success toggle'
               name='visible'
               onClick={() => setCheckVisible((prev) => !prev)}
-              checked={checkVisible}
+              defaultChecked={checkVisible}
             />
           </div>
         ) : (

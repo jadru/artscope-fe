@@ -23,7 +23,7 @@ export type ArtWorkApiRequestType = {
   thumbnailFile?: File;
 };
 
-export type MediaType = 'image' | 'video' | 'audio';
+export type MediaType = 'image' | 'video' | 'audio' | 'link';
 
 export type ArtWorkApiResponseType = {
   artworks: ArtworkType[];
