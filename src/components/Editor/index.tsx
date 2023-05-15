@@ -300,7 +300,7 @@ const Editor = ({
           입력할 수 있습니다. (<code>Markdown</code> 지원)
         </p>
       </div>
-      <div className='flex max-w-full flex-col items-stretch space-y-1 rounded-2xl border p-3 md:flex-row md:items-center md:justify-end md:space-y-0 md:space-x-2'>
+      <div className='flex flex-col items-stretch space-y-1 rounded-2xl border p-3 md:flex-row md:items-center md:justify-end md:space-y-0 md:space-x-2'>
         <input
           type='text'
           className='input-bordered input'
@@ -310,29 +310,27 @@ const Editor = ({
           // @ts-ignore
           ref={tagInput}
         />
-        <div className='flex flex-row justify-between md:justify-start md:space-x-2'>
-          {type === 'create' ? (
-            <div className='input-bordered input flex flex-row items-center justify-between space-x-1 md:justify-center'>
-              <span className='label-text'>공개</span>
-              <input
-                type='checkbox'
-                className='toggle-success toggle'
-                name='visible'
-                onClick={() => setCheckVisible((prev) => !prev)}
-                checked={checkVisible}
-              />
-            </div>
-          ) : (
-            <div></div>
-          )}
-          <button
-            onClick={handleSaveButton}
-            className='btn-primary tooltip tooltip-bottom btn'
-            data-tip='작품을 업로드하면 2023 금샘미술관 전시에 공모됩니다.'
-          >
-            저장하기
-          </button>
-        </div>
+        {type === 'create' ? (
+          <div className='input-bordered input flex flex-row items-center justify-between space-x-1'>
+            <span className='label-text'>플랫폼에 작품 공개</span>
+            <input
+              type='checkbox'
+              className='toggle-success toggle'
+              name='visible'
+              onClick={() => setCheckVisible((prev) => !prev)}
+              checked={checkVisible}
+            />
+          </div>
+        ) : (
+          <div></div>
+        )}
+        <button
+          onClick={handleSaveButton}
+          className='btn-primary tooltip tooltip-bottom btn'
+          data-tip='작품을 업로드하면 2023 금샘미술관 전시에 공모됩니다.'
+        >
+          저장하기
+        </button>
       </div>
 
       {isUpload && (
