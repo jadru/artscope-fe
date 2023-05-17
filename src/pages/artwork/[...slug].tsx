@@ -138,6 +138,20 @@ const Slug = ({
                         height={300}
                         sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                       />
+                    ) : artworkMedia.mediaType === 'url' ? (
+                      <iframe
+                        width='100%'
+                        height='330px'
+                        src={
+                          'https://www.youtube.com/embed/' +
+                          artworkMedia.mediaUrl.substring(
+                            artworkMedia.mediaUrl.indexOf('=') + 1
+                          )
+                        }
+                        title='YouTube video player'
+                        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                        allowFullScreen
+                      ></iframe>
                     ) : (
                       <video
                         className='relative h-auto w-full'
@@ -147,10 +161,6 @@ const Slug = ({
                           artworkMedia.mediaUrl
                         }
                         controls
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
                       />
                     )}
                     {artworkMedia.description && (

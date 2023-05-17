@@ -195,8 +195,24 @@ const Editor = ({
       toast.warn('설명을 입력해주세요.');
       return;
     }
-    if (fileUrls.reduce((acc, cur) => cur.file.size + acc, 0) / 1000000 > 100) {
+    let count = 0;
+    fileUrls.map((fileUrl) => {
+      if (fileUrl.mediaType === 'video' || fileUrl.mediaType === 'image') {
+        count += 1;
+      }
+    });
+    if (count === 0) {
+      toast.warn('썸네일을 업로드해주세요.');
+      setIsUpload(false);
+      return;
+    }
+    if (
+      fileUrls.reduce((acc, cur) => (cur.file ? cur.file.size + acc : acc), 0) /
+        1000000 >
+      100
+    ) {
       toast.warn('파일 용량이 너무 큽니다.');
+      setIsUpload(false);
       return;
     }
     await setIsUpload(true);
@@ -217,6 +233,8 @@ const Editor = ({
     const formData = new FormData();
     if (fileUrls[thumbnail].mediaType === 'video') {
       const cover = (await getVideoCover(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         fileUrls[thumbnail].file,
         1.5
       )) as Blob;
@@ -225,12 +243,29 @@ const Editor = ({
         new File([cover], 'thumbnail.jpg', { type: 'image/jpeg' })
       );
     } else if (fileUrls[thumbnail].mediaType === 'image') {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       formData.append('thumbnailFile', fileUrls[thumbnail].file);
+    } else {
+      toast.warn('썸네일을 선택해주세요.');
+      setIsUpload(false);
+      return;
     }
 
     newState.dto.medias = [];
     await fileUrls.forEach((media) => {
-      formData.append('mediaFiles', media.file);
+      media.mediaType === 'url'
+        ? formData.append(
+            'mediaFiles',
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            new File([media.linkUrl], 'mediaFiles', {
+              type: 'text/plain',
+            })
+          )
+        : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          formData.append('mediaFiles', media.file);
       newState.dto.medias.push({
         mediaType: media.mediaType,
         description: media.description,
@@ -253,7 +288,9 @@ const Editor = ({
         if (res.status === 201) {
           router
             .push('/')
-            .then(() => toast.success('작품이 업로드되었습니다.'));
+            .then(
+              () => toast.success('작품이 업로드되었습니다.') && router.reload()
+            );
         }
       })
       .catch((err) => {
