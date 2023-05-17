@@ -1,7 +1,8 @@
 export type ArtWorkMediaType = {
   mediaType: MediaType;
-  file: File;
+  file?: File;
   description: string;
+  linkUrl?: string;
 };
 
 export type ArtWorkApiRequestType = {
@@ -23,7 +24,7 @@ export type ArtWorkApiRequestType = {
   thumbnailFile?: File;
 };
 
-export type MediaType = 'image' | 'video' | 'audio' | 'link';
+export type MediaType = 'image' | 'video' | 'audio' | 'url';
 
 export type ArtWorkApiResponseType = {
   artworks: ArtworkType[];

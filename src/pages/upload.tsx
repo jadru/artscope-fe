@@ -41,6 +41,7 @@ const Upload = () => {
   const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
   const [imgs, setImgs] = useState<string[]>([]);
   const [indexFileforModal, setIndexFileforModal] = useState<number>(0);
+  const [linkInput, setLinkInput] = useState<string>('');
 
   const [thumbnail, setThumbnail] = useState<number>(0);
   const handleFileSelected = async (files: File[]) => {
@@ -100,6 +101,28 @@ const Upload = () => {
       toast.warn('10개 이하의 파일까지 업로드할 수 있습니다.');
       return;
     }
+    const link = e.currentTarget.link.value;
+
+    if (
+      !(
+        link.startsWith('https://www.youtube.com/watch?v=') ||
+        link.startsWith('http://www.youtube.com/watch?v=')
+      )
+    ) {
+      alert('유튜브 링크를 입력해주세요');
+      return;
+    }
+
+    await setFileUrls((prev) => [
+      ...prev,
+      {
+        mediaType: 'url',
+        linkUrl: link,
+        description: '',
+      },
+    ]);
+    await setImgs((prev) => [...prev, link]);
+    await setLinkInput('');
   };
 
   const handleDeleteFile = async (index: number) => {
@@ -133,70 +156,40 @@ const Upload = () => {
       <TabLayout top>
         <Title>작품 업로드</Title>
         {fileUrls.length === 0 ? (
-          <>
-            <div className='rounded-box flex justify-between md:border md:border-fuchsia-900'>
+          <div className='flex flex-col items-center'>
+            <Lottie
+              loop={true}
+              animationData={require('../../public/animation/110586-line-art.json')}
+              className='w-1/3'
+            />
+            <div className='rounded-box grid h-48 w-full grid-cols-2 items-stretch justify-center justify-items-center md:border md:border-fuchsia-900'>
               <FileUploader
                 handleChange={handleFileSelected}
                 name='file'
                 types={FILETYPES}
                 multiple={true}
-                label='사진과 동영상을 드래그 앤 드랍'
-                hoverTitle='여기에 놓기'
                 onTypeError={() => toast.warn('지원하지 않는 파일 형식입니다')}
                 onMaxSizeError={() => toast.warn('파일 용량이 너무 큽니다')}
                 onMaxFilesError={() => toast.warn('파일 개수가 너무 많습니다')}
               >
-                <div className='md:border-1 rounded-box flex w-full cursor-pointer flex-col items-center justify-center space-x-3 p-12 text-center hover:bg-gray-200 md:flex-row md:text-left'>
-                  <Lottie
-                    loop={true}
-                    animationData={require('../../public/animation/110586-line-art.json')}
-                    className='h-48 w-48'
-                  />
-                  <p className='w-full text-lg font-medium text-gray-800 dark:text-gray-200'>
+                <div className='rounded-box flex h-full w-full cursor-pointer items-center justify-center justify-items-stretch hover:bg-gray-200/30'>
+                  <p className='px-0 text-lg text-gray-800 dark:text-gray-200 md:px-12'>
                     사진, 동영상, 음원 <br />
                     <b>파일을 업로드하기</b>
                   </p>
                 </div>
               </FileUploader>
-              <div className='divider divider-horizontal'>OR</div>
+
               <label
                 htmlFor='modal-add-link'
-                className='rounded-box flex w-1/2 cursor-pointer items-center justify-center hover:bg-gray-200'
+                className='rounded-box flex w-full cursor-pointer items-center justify-center hover:bg-gray-200/30'
               >
-                <p className='text-lg font-medium text-gray-800 dark:text-gray-200'>
-                  유튜브, Vimeo, SoundCloud <br />
-                  <b>링크를 업로드하기</b>
+                <p className='text-lg text-gray-800 dark:text-gray-200'>
+                  유튜브 링크를 <br /> <b>업로드하기</b>
                 </p>
               </label>
             </div>
-            <input
-              type='checkbox'
-              id='modal-add-link'
-              className='modal-toggle'
-            />
-            <div className='modal'>
-              <div className='modal-box relative'>
-                <label
-                  htmlFor='modal-add-link'
-                  className='btn-sm btn-circle btn absolute right-2 top-2'
-                >
-                  ✕
-                </label>
-                <h3 className='text-lg font-bold'>링크로 작품 미디어 추가</h3>
-                <form className='form-control' onSubmit={handleLinkAdded}>
-                  <input
-                    type='link'
-                    id='link'
-                    placeholder='링크를 입력하세요'
-                    className='input-bordered input w-full'
-                  />
-                  <button className='btn-primary btn mt-3 w-full' type='submit'>
-                    추가
-                  </button>
-                </form>
-              </div>
-            </div>
-          </>
+          </div>
         ) : (
           <>
             <div className='modal' id='modal-artwork-media'>
@@ -210,6 +203,17 @@ const Upload = () => {
                     width={300}
                     height={300}
                   />
+                ) : fileUrls[indexFileforModal]?.mediaType === 'url' ? (
+                  <iframe
+                    width='100%'
+                    height='300px'
+                    src={
+                      'https://www.youtube.com/embed/' + imgs[indexFileforModal]
+                    }
+                    title='YouTube video player'
+                    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                    allowFullScreen
+                  ></iframe>
                 ) : (
                   <video
                     src={imgs[indexFileforModal]}
@@ -293,7 +297,7 @@ const Upload = () => {
                           className='m-0 h-48 w-48 border object-cover p-0'
                           src={imgs[index]}
                         />
-                      ) : (
+                      ) : file.mediaType === 'audio' ? (
                         <div className='m-0 flex h-48 w-48 items-center justify-center border p-4'>
                           <p className='text-2xl font-extrabold'>
                             AUDIO
@@ -301,13 +305,30 @@ const Upload = () => {
                             FILE
                           </p>
                         </div>
+                      ) : (
+                        <Image
+                          className='h-48 w-48 border object-cover p-0'
+                          src={
+                            imgs[index]
+                              ? 'https://img.youtube.com/vi/' +
+                                imgs[index].substring(
+                                  imgs[index].indexOf('=') + 1
+                                ) +
+                                '/default.jpg'
+                              : imgs[index]
+                          }
+                          alt={'uploaded image ' + index}
+                          width={100}
+                          height={100}
+                        />
                       )}
                       <a
                         href='#modal-artwork-media'
                         className='absolute top-0 left-0 h-full w-full'
                       />
                       <div className='absolute top-0 flex h-8 w-full items-center justify-between bg-white/50 px-2'>
-                        {file.mediaType !== 'audio' ? (
+                        {file.mediaType !== 'audio' &&
+                        file.mediaType !== 'url' ? (
                           <button
                             className={`${
                               thumbnail === index
@@ -352,12 +373,20 @@ const Upload = () => {
                   multiple
                   onChange={handleFileAdded}
                 />
-                <label
-                  className='btn-ghost btn m-0 h-48 w-48 rounded-none bg-gray-700/50 text-3xl'
-                  htmlFor='add-more'
-                >
-                  +
-                </label>
+                <div className='h-48 w-48'>
+                  <label
+                    className='btn m-0 h-24 w-48 rounded-none text-xl'
+                    htmlFor='add-more'
+                  >
+                    업로드
+                  </label>
+                  <label
+                    className='btn m-0 h-24 w-48 rounded-none text-xl'
+                    htmlFor='modal-add-link'
+                  >
+                    링크 추가
+                  </label>
+                </div>
               </>
             )}
           </div>
@@ -369,8 +398,10 @@ const Upload = () => {
                 <br />
                 파일 용량 :{' '}
                 {(
-                  fileUrls.reduce((acc, cur) => cur.file.size + acc, 0) /
-                  1000000
+                  fileUrls.reduce(
+                    (acc, cur) => (cur.file ? cur.file.size + acc : acc),
+                    0
+                  ) / 1000000
                 ).toFixed(2)}
                 MB / <b className='font-bold'>100MB</b>
               </p>
@@ -387,6 +418,31 @@ const Upload = () => {
             resetAfterUpload={resetAfterUpload}
             thumbnail={thumbnail}
           />
+        </div>
+        <input type='checkbox' id='modal-add-link' className='modal-toggle' />
+        <div className='modal'>
+          <div className='modal-box relative'>
+            <label
+              htmlFor='modal-add-link'
+              className='btn-sm btn-circle btn absolute right-2 top-2'
+            >
+              ✕
+            </label>
+            <h3 className='text-lg font-bold'>링크로 작품 미디어 추가</h3>
+            <form className='form-control' onSubmit={handleLinkAdded}>
+              <input
+                type='link'
+                id='link'
+                placeholder='https://www.youtube.com/watch?v=...'
+                className='input-bordered input w-full'
+                value={linkInput}
+                onChange={(e) => setLinkInput(e.target.value)}
+              />
+              <button className='btn-primary btn mt-3 w-full' type='submit'>
+                추가
+              </button>
+            </form>
+          </div>
         </div>
       </TabLayout>
       <Seo templateTitle='Upload' />

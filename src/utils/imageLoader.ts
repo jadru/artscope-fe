@@ -6,7 +6,7 @@ const imageLoader = ({ src, width, quality }: ImageLoaderProps) => {
   if (!src.startsWith('http')) {
     return `${NEXT_PUBLIC_MEDIA_STORAGE_URL}/${src}?w=${width}&q=${
       quality || 80
-    }&f=webp`;
+    }&f=webp&t=inside`;
   } else {
     return `${src}`;
   }
