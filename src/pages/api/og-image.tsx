@@ -1,5 +1,7 @@
 import { ImageResponse, NextRequest } from 'next/server';
 
+import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
+
 export const config = {
   runtime: 'edge',
 };
@@ -33,7 +35,7 @@ export default function handler(request: NextRequest) {
           <img
             tw='w-full overflow-hidden object-cover opacity-30'
             alt=''
-            src={thumbnail}
+            src={NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + thumbnail}
           />
 
           <div
