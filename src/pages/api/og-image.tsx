@@ -10,11 +10,13 @@ export default function handler(request: NextRequest) {
 
     // ?title=<title>
 
-    const hasTitle = searchParams.has('title');
+    const title = searchParams.get('title')?.slice(0, 100);
 
-    const title = hasTitle
-      ? searchParams.get('title')?.slice(0, 100)
-      : 'Artwork';
+    // const username = searchParams.get('username')?.slice(0, 100);
+    //
+    // const name = searchParams.get('name')?.slice(0, 100);
+    //
+    // const profileUrl = searchParams.get('profileUrl')?.slice(0, 100);
 
     return new ImageResponse(
       (
@@ -30,7 +32,7 @@ export default function handler(request: NextRequest) {
           }}
         >
           <h1 tw='truncate p-6 text-center text-8xl font-light text-blue-600'>
-            {title}
+            {title ? title : 'Artwork'}
           </h1>
           <p tw='absolute bottom-8 bg-white text-4xl text-black'>Artscope</p>
         </div>

@@ -101,14 +101,19 @@ const Upload = () => {
       toast.warn('10개 이하의 파일까지 업로드할 수 있습니다.');
       return;
     }
-    const link = e.currentTarget.link.value;
+    let link = e.currentTarget.link.value;
 
     if (
-      !(
-        link.startsWith('https://www.youtube.com/watch?v=') ||
-        link.startsWith('http://www.youtube.com/watch?v=')
-      )
+      link.startsWith('https://www.youtube.com/watch?v=') ||
+      link.startsWith('http://www.youtube.com/watch?v=')
     ) {
+      /* empty */
+    } else if (link.startsWith('https://youtu.be/')) {
+      link = link.replace(
+        'https://youtu.be/',
+        'https://www.youtube.com/watch?v='
+      );
+    } else {
       alert('유튜브 링크를 입력해주세요');
       return;
     }
