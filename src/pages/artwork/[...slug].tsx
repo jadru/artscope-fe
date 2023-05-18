@@ -100,7 +100,13 @@ const Slug = ({
       <Seo
         description={data.description}
         templateTitle={data.title + ' - Artwork'}
-        image={NEXT_PUBLIC_ROOT_URL + '/api/og-image?title=' + data.title}
+        image={
+          NEXT_PUBLIC_ROOT_URL +
+          '/api/og-image?title=' +
+          data.title +
+          '&thumbnail=' +
+          data.thumbnail.mediaUrl
+        }
       />
       <NavBar />
       <TabLayout top>
