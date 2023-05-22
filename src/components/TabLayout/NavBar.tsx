@@ -43,11 +43,9 @@ export const NavBar: React.FC<Props> = ({
 
   return (
     <div
-      className={`navbar fixed z-50 ${
+      className={`navbar min-h-12 z-50 h-12 ${
         !dark ? 'bg-white/70' : 'bg-black/50 text-gray-200'
-      } backdrop-blur-md ${
-        transparent ? 'bg-transparent' : 'dark:bg-dark/70'
-      } ${className}`}
+      } ${transparent ? 'bg-transparent' : 'dark:bg-dark/70'} ${className}`}
     >
       <div className='navbar-start' />
       <div className='navbar-center'>

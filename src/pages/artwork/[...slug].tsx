@@ -4,7 +4,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import {
+  AiFillHeart,
+  AiOutlineDelete,
+  AiOutlineEdit,
+  AiOutlineHeart,
+} from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 import useSWR from 'swr';
@@ -31,6 +36,7 @@ import { ArtworkType, profileApiType } from '@/types';
 export const getServerSideProps: GetServerSideProps<{
   data: ArtworkType;
   isEditMode: boolean;
+  likeStatus: boolean;
 }> = async ({ params }) => {
   if (!params?.slug) {
     return {
@@ -43,6 +49,8 @@ export const getServerSideProps: GetServerSideProps<{
     .then((res) => res);
   const data: ArtworkType = response.data;
 
+  const likeStatus = false;
+
   if (!data) {
     return {
       notFound: true,
@@ -51,12 +59,13 @@ export const getServerSideProps: GetServerSideProps<{
 
   const isEditMode = params.slug[1] === 'edit';
 
-  return { props: { data, isEditMode } };
+  return { props: { data, isEditMode, likeStatus } };
 };
 
 const Slug = ({
   data,
   isEditMode,
+  likeStatus,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const slug = (router.query.slug as string[]) || [];
@@ -66,8 +75,9 @@ const Slug = ({
     slug && data ? '/api/members/' + data?.member : undefined,
     fetcher
   );
+  const [isLike, setIsLike] = useState<boolean>(false);
 
-  const [isEdit, setIsEdit] = useState<boolean>();
+  const [isEdit, setIsEdit] = useState<boolean>(likeStatus);
   // eslint-disable-next-line
   const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -95,6 +105,24 @@ const Slug = ({
       setEditMode(false);
     }
   }, [data, router.asPath]);
+
+  const onLikeButtonClick = async () => {
+    if (!data) return;
+    if (!isTokenRefreshing && jxios.defaults.headers.common.Authorization) {
+      const response = await jxios
+        .post('/api/artworks/' + data.id + '/like')
+        .then((res) => res);
+      if (response.status === 200) {
+        if (response.data.liked) {
+          setIsLike(true);
+        } else {
+          setIsLike(false);
+        }
+      }
+    } else {
+      toast.error('로그인 이후 좋아요가 가능합니다!');
+    }
+  };
   return (
     <>
       <Seo
@@ -180,6 +208,13 @@ const Slug = ({
               <div className='h-8'></div>
 
               <div className='my-4 flex flex-col'>
+                <button onClick={onLikeButtonClick}>
+                  {isLike ? (
+                    <AiFillHeart className='h-8 w-8 text-orange-500' />
+                  ) : (
+                    <AiOutlineHeart className='h-8 w-8' />
+                  )}
+                </button>
                 <div className='text-left'>
                   <p>
                     작성일 :{' '}
