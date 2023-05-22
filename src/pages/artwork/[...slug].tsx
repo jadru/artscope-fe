@@ -224,25 +224,27 @@ const Slug = ({
               <div className='h-8'></div>
 
               <div className='my-4 flex flex-col'>
-                <div className='mb-4 flex items-center'>
-                  <button onClick={onLikeButtonClick}>
-                    {isLike ? (
-                      <AiFillHeart className='h-7 w-7 text-orange-500' />
-                    ) : (
-                      <AiOutlineHeart className='h-7 w-7' />
-                    )}
-                  </button>
-                  <span className='ml-2'>
-                    {(likedMembers.length + (isLike ? 1 : 0) === 0 &&
+                <button
+                  onClick={onLikeButtonClick}
+                  className='mb-4 flex items-center'
+                >
+                  {isLike ? (
+                    <AiFillHeart className='h-7 w-7 text-orange-500' />
+                  ) : (
+                    <AiOutlineHeart className='h-7 w-7' />
+                  )}
+                  <span className='ml-2 font-bold'>
+                    {(data.likes + (isLike ? 1 : 0) === 0 &&
                       '아직 좋아요가 없습니다.') ||
-                      (likedMembers.length + (isLike ? 1 : 0) === 1 &&
+                      (data.likes + (isLike ? 1 : 0) === 1 &&
                         likedMembers[0] + '님이 좋아합니다.') ||
                       likedMembers[0] +
                         '님 외 ' +
-                        (data.likes + (isLike ? 1 : 0)) +
+                        (data.likes - 1 + (isLike ? 1 : 0)) +
                         '명이 좋아합니다.'}
                   </span>
-                </div>
+                </button>
+
                 <div className='text-left'>
                   <p>
                     작성일 :{' '}
