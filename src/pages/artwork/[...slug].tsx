@@ -37,6 +37,7 @@ export const getServerSideProps: GetServerSideProps<{
   data: ArtworkType;
   isEditMode: boolean;
   likeStatus: boolean;
+  likedMembers: string[];
 }> = async ({ params }) => {
   if (!params?.slug) {
     return {
@@ -51,6 +52,13 @@ export const getServerSideProps: GetServerSideProps<{
 
   const likeStatus = false;
 
+  // const likeResponse = await jxios
+  //   .get(NEXT_PUBLIC_API_URL + '/api/artworks/' + id + '/likes')
+  //   .then((res) => res);
+  //
+  // const members: likeMemberApiResponseType = likeResponse.data;
+
+  const temp = ['jadru'];
   if (!data) {
     return {
       notFound: true,
@@ -59,13 +67,21 @@ export const getServerSideProps: GetServerSideProps<{
 
   const isEditMode = params.slug[1] === 'edit';
 
-  return { props: { data, isEditMode, likeStatus } };
+  return {
+    props: {
+      data,
+      isEditMode,
+      likeStatus,
+      likedMembers: temp,
+    },
+  };
 };
 
 const Slug = ({
   data,
   isEditMode,
   likeStatus,
+  likedMembers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const slug = (router.query.slug as string[]) || [];
@@ -208,13 +224,25 @@ const Slug = ({
               <div className='h-8'></div>
 
               <div className='my-4 flex flex-col'>
-                <button onClick={onLikeButtonClick}>
-                  {isLike ? (
-                    <AiFillHeart className='h-8 w-8 text-orange-500' />
-                  ) : (
-                    <AiOutlineHeart className='h-8 w-8' />
-                  )}
-                </button>
+                <div className='mb-4 flex items-center'>
+                  <button onClick={onLikeButtonClick}>
+                    {isLike ? (
+                      <AiFillHeart className='h-7 w-7 text-orange-500' />
+                    ) : (
+                      <AiOutlineHeart className='h-7 w-7' />
+                    )}
+                  </button>
+                  <span className='ml-2'>
+                    {(likedMembers.length + (isLike ? 1 : 0) === 0 &&
+                      '아직 좋아요가 없습니다.') ||
+                      (likedMembers.length + (isLike ? 1 : 0) === 1 &&
+                        likedMembers[0] + '님이 좋아합니다.') ||
+                      likedMembers[0] +
+                        '님 외 ' +
+                        (data.likes + (isLike ? 1 : 0)) +
+                        '명이 좋아합니다.'}
+                  </span>
+                </div>
                 <div className='text-left'>
                   <p>
                     작성일 :{' '}
@@ -229,7 +257,7 @@ const Slug = ({
                 </div>
                 {isEdit && (
                   <>
-                    <p>조회수 : {data.view ? data.view : ''}</p>
+                    <p>조회수 : {data.views}</p>
                     <div className='btn-group mt-2'>
                       <Link
                         className='btn-accent btn'
