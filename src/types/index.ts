@@ -61,7 +61,7 @@ export type ArtworkType = {
   }[];
   createdTime: Date;
   updatedTime: Date | null;
-  view: number;
+  views: number;
 };
 
 export type decodedTokenType = {
