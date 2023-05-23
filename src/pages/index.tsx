@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
 import { ReactElement, useEffect, useRef } from 'react';
-import { AiOutlineHeart } from 'react-icons/ai';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
@@ -76,20 +76,20 @@ export default function Artwork() {
             {(status === 'loading' && <p>불러오는 중</p>) ||
               (status === 'success' &&
                 data.pages.map((group, groupIndex: number) =>
-                  group.artworks.map((artwork: ArtworkType, index: number) => (
+                  group.artworks.map((aw: ArtworkType, index: number) => (
                     <>
                       <Link
-                        href={'/artwork/' + artwork.id}
-                        key={artwork.id}
+                        href={'/artwork/' + aw.artwork.id}
+                        key={aw.artwork.id}
                         className='group relative flex h-auto w-full cursor-pointer justify-center overflow-hidden bg-base-100 text-center dark:border-slate-600'
                       >
-                        {artwork.thumbnail && (
+                        {aw.artwork.thumbnail && (
                           <div className='m-0 grid w-full justify-items-stretch p-0'>
-                            {artwork.thumbnail.mediaType === 'image' ? (
-                              artwork.thumbnail.mediaUrl !== 'string' && (
+                            {aw.artwork.thumbnail.mediaType === 'image' ? (
+                              aw.artwork.thumbnail.mediaUrl !== 'string' && (
                                 <Image
-                                  src={artwork.thumbnail.mediaUrl}
-                                  alt={artwork.title}
+                                  src={aw.artwork.thumbnail.mediaUrl}
+                                  alt={aw.artwork.title}
                                   width={400}
                                   height={400}
                                   placeholder='blur' // 추가
@@ -103,7 +103,7 @@ export default function Artwork() {
                                 src={
                                   NEXT_PUBLIC_MEDIA_STORAGE_URL +
                                   '/' +
-                                  artwork.thumbnail.mediaUrl
+                                  aw.artwork.thumbnail.mediaUrl
                                 }
                                 autoPlay
                                 loop
@@ -114,14 +114,18 @@ export default function Artwork() {
                           </div>
                         )}
                         <div className='absolute h-full w-full bg-black/10 duration-200 group-hover:opacity-0'></div>
-                        {artwork.title && (
+                        {aw.artwork.title && (
                           <div className='absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 px-3 py-2 text-left backdrop-blur'>
                             <div className='flex items-center text-lg font-light text-white'>
-                              {artwork.likes}{' '}
-                              <AiOutlineHeart className='ml-1 inline' />
+                              {aw.artwork.likes}{' '}
+                              {aw.isLike ? (
+                                <AiFillHeart className='ml-1 inline' />
+                              ) : (
+                                <AiOutlineHeart className='ml-1 inline' />
+                              )}
                             </div>
                             <p className='text-xl font-bold text-white'>
-                              {artwork.title}
+                              {aw.artwork.title}
                             </p>
                           </div>
                         )}
@@ -129,7 +133,7 @@ export default function Artwork() {
                       {groupIndex === 0 && index === 5 && (
                         <Link
                           href='/blog'
-                          key={artwork.id + '_1'}
+                          key={aw.artwork.id + '_1'}
                           className='group relative flex cursor-pointer justify-center overflow-hidden bg-base-100 text-center dark:border-slate-600'
                         >
                           <div className='relative m-0 w-full p-0'>
