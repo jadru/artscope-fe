@@ -36,7 +36,6 @@ import { ArtworkType, profileApiType } from '@/types';
 export const getServerSideProps: GetServerSideProps<{
   data: ArtworkType;
   isEditMode: boolean;
-  likeStatus: boolean;
   likedMembers: string[];
 }> = async ({ params }) => {
   if (!params?.slug) {
@@ -49,8 +48,6 @@ export const getServerSideProps: GetServerSideProps<{
     .get(NEXT_PUBLIC_API_URL + '/api/artworks/' + id)
     .then((res) => res);
   const data: ArtworkType = response.data;
-
-  const likeStatus = false;
 
   // const likeResponse = await jxios
   //   .get(NEXT_PUBLIC_API_URL + '/api/artworks/' + id + '/likes')
@@ -71,7 +68,6 @@ export const getServerSideProps: GetServerSideProps<{
     props: {
       data,
       isEditMode,
-      likeStatus,
       likedMembers: temp,
     },
   };
@@ -80,7 +76,6 @@ export const getServerSideProps: GetServerSideProps<{
 const Slug = ({
   data,
   isEditMode,
-  likeStatus,
   likedMembers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
@@ -88,12 +83,12 @@ const Slug = ({
   const isTokenRefreshing = useRecoilValue(isTokenLoadingAtom);
   const fetcher = (url: string) => jxios.get(url).then((res) => res.data);
   const { data: profileData } = useSWR<profileApiType>(
-    slug && data ? '/api/members/' + data?.member : undefined,
+    slug && data ? '/api/members/' + data?.artwork.authorUsername : undefined,
     fetcher
   );
   const [isLike, setIsLike] = useState<boolean>(false);
 
-  const [isEdit, setIsEdit] = useState<boolean>(likeStatus);
+  const [isEdit, setIsEdit] = useState<boolean>(data.isLike);
   // eslint-disable-next-line
   const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -107,7 +102,7 @@ const Slug = ({
       token = token.replace('Bearer ', '');
       const decodedToken: { sub: string; auth: string } = jwt_decode(token);
       if (
-        data.member === decodedToken.sub ||
+        data.artwork.authorUsername === decodedToken.sub ||
         decodedToken.auth.includes('ROLE_ADMIN')
       ) {
         setIsEdit(true);
@@ -117,7 +112,7 @@ const Slug = ({
   }, [data, isEditMode, isTokenRefreshing]);
 
   useEffect(() => {
-    if (data && router.asPath === '/artwork/' + data.id) {
+    if (data && router.asPath === '/artwork/' + data.artwork.id) {
       setEditMode(false);
     }
   }, [data, router.asPath]);
@@ -126,7 +121,7 @@ const Slug = ({
     if (!data) return;
     if (!isTokenRefreshing && jxios.defaults.headers.common.Authorization) {
       const response = await jxios
-        .post('/api/artworks/' + data.id + '/like')
+        .post('/api/artworks/' + data.artwork.id + '/like')
         .then((res) => res);
       if (response.status === 200) {
         if (response.data.liked) {
@@ -142,14 +137,14 @@ const Slug = ({
   return (
     <>
       <Seo
-        description={data.description}
-        templateTitle={data.title + ' - Artwork'}
+        description={data.artwork.description}
+        templateTitle={data.artwork.title + ' - Artwork'}
         image={
           NEXT_PUBLIC_ROOT_URL +
           '/api/og-image?title=' +
-          data.title +
+          data.artwork.title +
           '&thumbnail=' +
-          data.thumbnail.mediaUrl
+          data.artwork.thumbnail.mediaUrl
         }
       />
       <NavBar />
@@ -158,22 +153,22 @@ const Slug = ({
           data && (
             <div className='block space-y-1.5'>
               <h1 className='my-8 text-center text-4xl font-light'>
-                {data?.title}
+                {data.artwork?.title}
               </h1>
               <div className='flex items-center justify-center space-x-1'>
-                {data.tags &&
-                  data.tags.length > 0 &&
-                  data.tags[0] !== '' &&
-                  data.tags.map((tag) => (
+                {data.artwork.tags &&
+                  data.artwork.tags.length > 0 &&
+                  data.artwork.tags[0] !== '' &&
+                  data.artwork.tags.map((tag) => (
                     <span key={tag} className='text-md badge p-2 uppercase'>
                       {tag.replace("'", '')}
                     </span>
                   ))}
               </div>
               <div className='my-12'>
-                <ReadOnlyEditor data={data.description} />
+                <ReadOnlyEditor data={data.artwork.description} />
               </div>
-              {data.artworkMedias.map((artworkMedia) => (
+              {data.artwork.artworkMedias.map((artworkMedia) => (
                 <>
                   <div
                     key={artworkMedia.id}
@@ -234,13 +229,13 @@ const Slug = ({
                     <AiOutlineHeart className='h-7 w-7' />
                   )}
                   <span className='ml-2 font-bold'>
-                    {(data.likes + (isLike ? 1 : 0) === 0 &&
+                    {(data.artwork.likes + (isLike ? 1 : 0) === 0 &&
                       '아직 좋아요가 없습니다.') ||
-                      (data.likes + (isLike ? 1 : 0) === 1 &&
+                      (data.artwork.likes + (isLike ? 1 : 0) === 1 &&
                         likedMembers[0] + '님이 좋아합니다.') ||
                       likedMembers[0] +
                         '님 외 ' +
-                        (data.likes - 1 + (isLike ? 1 : 0)) +
+                        (data.artwork.likes - 1 + (isLike ? 1 : 0)) +
                         '명이 좋아합니다.'}
                   </span>
                 </button>
@@ -248,22 +243,24 @@ const Slug = ({
                 <div className='text-left'>
                   <p>
                     작성일 :{' '}
-                    {new Date(data.createdTime).toLocaleString('ko-KR')}
+                    {new Date(data.artwork.createdTime).toLocaleString('ko-KR')}
                   </p>
-                  {data.updatedTime && (
+                  {data.artwork.updatedTime && (
                     <p>
                       업데이트 :{' '}
-                      {new Date(data.updatedTime).toLocaleString('ko-KR')}
+                      {new Date(data.artwork.updatedTime).toLocaleString(
+                        'ko-KR'
+                      )}
                     </p>
                   )}
                 </div>
                 {isEdit && (
                   <>
-                    <p>조회수 : {data.views}</p>
+                    <p>조회수 : {data.artwork.views}</p>
                     <div className='btn-group mt-2'>
                       <Link
                         className='btn-accent btn'
-                        href={'/artwork/' + data.id + '/edit'}
+                        href={'/artwork/' + data.artwork.id + '/edit'}
                       >
                         <AiOutlineEdit className='h-6 w-6' />
                       </Link>
@@ -272,7 +269,7 @@ const Slug = ({
                         onClick={() => {
                           confirm('정말 삭제하시겠습니까?') &&
                             jxios
-                              .delete('/api/artworks/' + data.id)
+                              .delete('/api/artworks/' + data.artwork.id)
                               .then(() => {
                                 router.push('/').then(() => {
                                   toast.success('작품이 삭제되었습니다.');

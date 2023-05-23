@@ -37,31 +37,35 @@ export type ArtWorkApiResponseType = {
 };
 
 export type ArtworkType = {
-  id: number;
-  title: string;
-  description: string;
-  tags: string[];
-  likes: number;
-  member: string;
-  thumbnail: {
+  artwork: {
     id: number;
-    mediaType: MediaType;
-    mediaUrl: string;
-    imageHeight: number;
-    imageWidth: number;
+    title: string;
     description: string;
+    tags: string[];
+    likes: number;
+    authorUsername: string;
+    authorName: string;
+    thumbnail: {
+      id: number;
+      mediaType: MediaType;
+      mediaUrl: string;
+      imageHeight: number;
+      imageWidth: number;
+      description: string;
+    };
+    artworkMedias: {
+      id: number;
+      mediaType: MediaType;
+      mediaUrl: string;
+      imageHeight: number;
+      imageWidth: number;
+      description: string;
+    }[];
+    createdTime: Date;
+    updatedTime: Date | null;
+    views: number;
   };
-  artworkMedias: {
-    id: number;
-    mediaType: MediaType;
-    mediaUrl: string;
-    imageHeight: number;
-    imageWidth: number;
-    description: string;
-  }[];
-  createdTime: Date;
-  updatedTime: Date | null;
-  views: number;
+  isLike: boolean;
 };
 
 export type decodedTokenType = {
