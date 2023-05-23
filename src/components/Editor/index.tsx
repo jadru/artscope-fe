@@ -59,7 +59,7 @@ const Editor = ({
   const editor = useEditor({
     content:
       type != 'create'
-        ? data && `<h1>${data.title}</h1>${data.description}`
+        ? data && `<h1>${data.artwork.title}</h1>${data.artwork.description}`
         : null,
     extensions: [
       CustomDocument,
@@ -158,7 +158,7 @@ const Editor = ({
     contentJSON &&
       contentHTML &&
       jxios
-        .put('/api/artworks/' + data.id, {
+        .put('/api/artworks/' + data.artwork.id, {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           title: contentJSON.content[0].content[0].text,
@@ -174,7 +174,7 @@ const Editor = ({
             return;
           }
           router
-            .replace('/artwork/' + data.id)
+            .replace('/artwork/' + data.artwork.id)
             .then(() => toast.success('수정되었습니다.'));
         })
         .finally(() => setIsUpload(false));
@@ -344,7 +344,7 @@ const Editor = ({
           type='text'
           className='input-bordered input'
           placeholder='태그1, 태그2, ...'
-          defaultValue={data ? data.tags : ''}
+          defaultValue={data ? data.artwork.tags : ''}
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           ref={tagInput}

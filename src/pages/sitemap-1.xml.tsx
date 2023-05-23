@@ -16,10 +16,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const data: ArtWorkApiResponseType = apiResponse.data;
 
-  const artworks = data.artworks.map((artwork) => ({
-    loc: NEXT_PUBLIC_ROOT_URL + '/artwork/' + artwork.id,
+  const artworks = data.artworks.map((aw) => ({
+    loc: NEXT_PUBLIC_ROOT_URL + '/artwork/' + aw.artwork.id,
     lastmod: new Date(
-      artwork.updatedTime ? artwork.updatedTime : artwork.createdTime
+      aw.artwork.updatedTime ? aw.artwork.updatedTime : aw.artwork.createdTime
     ).toISOString(),
     changeFreq: 'daily',
   }));
