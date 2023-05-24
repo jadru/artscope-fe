@@ -31,12 +31,16 @@ import {
 import { isTokenLoadingAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
 
-import { ArtworkType, profileApiType } from '@/types';
+import {
+  ArtworkType,
+  likeMemberApiResponseType,
+  profileApiType,
+} from '@/types';
 
 export const getServerSideProps: GetServerSideProps<{
   data: ArtworkType;
   isEditMode: boolean;
-  likedMembers: string[];
+  likedMembers: likeMemberApiResponseType;
 }> = async ({ params }) => {
   if (!params?.slug) {
     return {
@@ -49,13 +53,12 @@ export const getServerSideProps: GetServerSideProps<{
     .then((res) => res);
   const data: ArtworkType = response.data;
 
-  // const likeResponse = await jxios
-  //   .get(NEXT_PUBLIC_API_URL + '/api/artworks/' + id + '/likes')
-  //   .then((res) => res);
-  //
-  // const members: likeMemberApiResponseType = likeResponse.data;
+  const likeResponse = await jxios
+    .get(NEXT_PUBLIC_API_URL + '/api/artworks/' + id + '/likes')
+    .then((res) => res);
 
-  const temp = ['jadru'];
+  const likedMembers: likeMemberApiResponseType = likeResponse.data;
+
   if (!data) {
     return {
       notFound: true,
@@ -68,7 +71,7 @@ export const getServerSideProps: GetServerSideProps<{
     props: {
       data,
       isEditMode,
-      likedMembers: temp,
+      likedMembers,
     },
   };
 };
@@ -232,8 +235,8 @@ const Slug = ({
                     {(data.artwork.likes + (isLike ? 1 : 0) === 0 &&
                       '아직 좋아요가 없습니다.') ||
                       (data.artwork.likes + (isLike ? 1 : 0) === 1 &&
-                        likedMembers[0] + '님이 좋아합니다.') ||
-                      likedMembers[0] +
+                        likedMembers.memberUsernames[0] + '님이 좋아합니다.') ||
+                      likedMembers.memberUsernames[0] +
                         '님 외 ' +
                         (data.artwork.likes - 1 + (isLike ? 1 : 0)) +
                         '명이 좋아합니다.'}
