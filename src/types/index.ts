@@ -27,7 +27,7 @@ export type ArtWorkApiRequestType = {
 export type MediaType = 'image' | 'video' | 'audio' | 'url';
 
 export type ArtWorkApiResponseType = {
-  artworks: ArtworkType[];
+  artworks: DetailedArtworkType[];
   pageInfo: {
     page: number;
     size: number;
@@ -37,35 +37,37 @@ export type ArtWorkApiResponseType = {
 };
 
 export type ArtworkType = {
-  artwork: {
-    id: number;
-    title: string;
-    description: string;
-    tags: string[];
-    likes: number;
-    authorUsername: string;
-    authorName: string;
-    thumbnail: {
-      id: number;
-      mediaType: MediaType;
-      mediaUrl: string;
-      imageHeight: number;
-      imageWidth: number;
-      description: string;
-    };
-    artworkMedias: {
-      id: number;
-      mediaType: MediaType;
-      mediaUrl: string;
-      imageHeight: number;
-      imageWidth: number;
-      description: string;
-    }[];
-    createdTime: Date;
-    updatedTime: Date | null;
-    views: number;
-  };
+  artwork: DetailedArtworkType;
   isLike: boolean;
+};
+
+export type DetailedArtworkType = {
+  id: number;
+  title: string;
+  description: string;
+  tags: string[];
+  likes: number;
+  authorUsername: string;
+  authorName: string;
+  thumbnail: {
+    id: number;
+    mediaType: MediaType;
+    mediaUrl: string;
+    imageHeight: number;
+    imageWidth: number;
+    description: string;
+  };
+  artworkMedias: {
+    id: number;
+    mediaType: MediaType;
+    mediaUrl: string;
+    imageHeight: number;
+    imageWidth: number;
+    description: string;
+  }[];
+  createdTime: Date;
+  updatedTime: Date | null;
+  views: number;
 };
 
 export type decodedTokenType = {

@@ -176,15 +176,15 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         </div>
         <div className='grid w-full grid-cols-3 gap-0.5 md:gap-1 md:border-t-2'>
           {userArtworksData &&
-            userArtworksData.artworks.map((aw) => (
+            userArtworksData.artworks.map((artwork) => (
               <Link
-                key={aw.artwork.id}
+                key={artwork.id}
                 className='group relative'
-                href={'/artwork/' + aw.artwork.id}
+                href={'/artwork/' + artwork.id}
               >
-                {aw.artwork.thumbnail.mediaType === 'image' ? (
+                {artwork.thumbnail.mediaType === 'image' ? (
                   <Image
-                    src={aw.artwork.thumbnail.mediaUrl}
+                    src={artwork.thumbnail.mediaUrl}
                     alt='artwork'
                     width={200}
                     height={200}
@@ -367,15 +367,15 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           <>
             <div className='grid w-full grid-cols-3 gap-1'>
               {userArtworksData &&
-                userArtworksData.artworks.map((aw) => (
+                userArtworksData.artworks.map((artwork) => (
                   <Link
-                    key={aw.artwork.id}
+                    key={artwork.id}
                     className='group relative'
-                    href={'/artwork/' + aw.artwork.id}
+                    href={'/artwork/' + artwork.id}
                   >
-                    {aw.artwork.thumbnail.mediaType === 'image' ? (
+                    {artwork.thumbnail.mediaType === 'image' ? (
                       <Image
-                        src={aw.artwork.thumbnail.mediaUrl}
+                        src={artwork.thumbnail.mediaUrl}
                         alt='artwork'
                         width={200}
                         height={200}
