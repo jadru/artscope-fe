@@ -183,6 +183,8 @@ const Editor = ({
   const handleCreateSaveButton = async () => {
     if (isUpload || !editor) return;
     const HTML = editor.getHTML();
+    const JSON = editor.getJSON();
+
     if (fileUrls.length === 0) {
       toast.warn('파일을 업로드해주세요.');
       return;
@@ -219,7 +221,10 @@ const Editor = ({
     const newState = { ...artwork };
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    newState.dto.title = HTML.substring(4, HTML.search('</h1>'));
+    newState.dto.title = JSON.content[0].content.reduce(
+      (acc, cur) => acc + cur.text,
+      ''
+    );
     newState.dto.description = HTML.substring(HTML.search('</h1>') + 5);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
