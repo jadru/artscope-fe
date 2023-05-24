@@ -5,8 +5,9 @@ import Document from '@tiptap/extension-document';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { TextStyle } from '@tiptap/extension-text-style';
 import {
-  BubbleMenu,
+  BubbleMenu as BubbleMenuComponent,
   EditorContent,
+  isTextSelection,
   JSONContent,
   useEditor,
 } from '@tiptap/react';
@@ -311,10 +312,19 @@ const Editor = ({
       <div className='editor my-4 w-full'>
         {editor && (
           <>
-            <BubbleMenu
+            <BubbleMenuComponent
               className='bubble-menu'
               tippyOptions={{ duration: 100 }}
               editor={editor}
+              shouldShow={(props) => {
+                return !(
+                  props.editor.isActive('heading', { level: 1 }) ||
+                  props.view.hasFocus() ||
+                  (!props.state.doc.textBetween(props.from, props.to).length &&
+                    isTextSelection(props.state.selection)) ||
+                  props.state.selection.empty
+                );
+              }}
             >
               <button
                 onClick={() => editor.chain().focus().toggleBold().run()}
@@ -334,7 +344,7 @@ const Editor = ({
               >
                 Strike
               </button>
-            </BubbleMenu>
+            </BubbleMenuComponent>
           </>
         )}
 
