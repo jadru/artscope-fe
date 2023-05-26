@@ -27,7 +27,7 @@ export type ArtWorkApiRequestType = {
 export type MediaType = 'image' | 'video' | 'audio' | 'url';
 
 export type ArtWorkApiResponseType = {
-  artworks: DetailedArtworkType[];
+  artworks: ArtworkType[];
   pageInfo: {
     page: number;
     size: number;
