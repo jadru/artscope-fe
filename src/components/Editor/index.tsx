@@ -145,6 +145,7 @@ const Editor = ({
       (type === 'edit' &&
         handleEditSaveButton(editor.getJSON(), editor.getHTML()));
   };
+  editor && editor.commands.unsetColor();
   const handleEditSaveButton = async (
     contentJSON?: JSONContent,
     contentHTML?: string
