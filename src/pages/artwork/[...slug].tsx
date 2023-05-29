@@ -3,7 +3,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   AiFillHeart,
   AiOutlineDelete,
@@ -84,6 +84,7 @@ const Slug = ({
   const router = useRouter();
   const slug = (router.query.slug as string[]) || [];
   const isTokenRefreshing = useRecoilValue(isTokenLoadingAtom);
+  const likeButtonTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const usernameAndrole = useRecoilValue(userNameAndRoleAtom);
   const fetcher = (url: string) => jxios.get(url).then((res) => res.data);
   const { data: profileData } = useSWR<profileApiType>(
@@ -124,16 +125,16 @@ const Slug = ({
   const onLikeButtonClick = async () => {
     if (!data) return;
     if (!isTokenRefreshing && jxios.defaults.headers.common.Authorization) {
-      const response = await jxios
-        .post('/api/artworks/' + data.artwork.id + '/like')
-        .then((res) => res);
-      if (response.status === 200) {
-        if (response.data.liked) {
-          setIsLike(true);
-        } else {
-          setIsLike(false);
+      likeButtonTimeoutRef.current &&
+        clearTimeout(likeButtonTimeoutRef.current);
+      setIsLike((prev) => !prev);
+      likeButtonTimeoutRef.current = setTimeout(async () => {
+        try {
+          await jxios.post('/api/artworks/' + data.artwork.id + '/like');
+        } catch (error) {
+          /* empty */
         }
-      }
+      }, 1000);
     } else {
       toast.error('로그인 이후 좋아요가 가능합니다!');
     }
