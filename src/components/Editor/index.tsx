@@ -2,6 +2,7 @@
 
 import { Color } from '@tiptap/extension-color';
 import Document from '@tiptap/extension-document';
+import { Heading } from '@tiptap/extension-heading';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { TextStyle } from '@tiptap/extension-text-style';
 import {
@@ -78,6 +79,9 @@ const Editor = ({
       }),
       TextStyle,
       Color,
+      Heading.configure({
+        levels: [1, 2, 3],
+      }),
     ],
     editorProps: {
       attributes: {

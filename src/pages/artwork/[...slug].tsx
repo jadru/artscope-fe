@@ -28,7 +28,7 @@ import {
   NEXT_PUBLIC_MEDIA_STORAGE_URL,
   NEXT_PUBLIC_ROOT_URL,
 } from '@/constant/env';
-import { isTokenLoadingAtom } from '@/states/atom';
+import { isTokenLoadingAtom, userNameAndRoleAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
 
 import {
@@ -84,6 +84,7 @@ const Slug = ({
   const router = useRouter();
   const slug = (router.query.slug as string[]) || [];
   const isTokenRefreshing = useRecoilValue(isTokenLoadingAtom);
+  const usernameAndrole = useRecoilValue(userNameAndRoleAtom);
   const fetcher = (url: string) => jxios.get(url).then((res) => res.data);
   const { data: profileData } = useSWR<profileApiType>(
     slug && data ? '/api/members/' + data?.artwork.authorUsername : undefined,
@@ -232,10 +233,14 @@ const Slug = ({
                     <AiOutlineHeart className='h-7 w-7' />
                   )}
                   <span className='ml-2 font-bold'>
-                    {(data.artwork.likes + (isLike ? 1 : 0) === 0 &&
+                    {(data.artwork.likes + (isLike ? 1 : 0) <= 0 &&
                       '아직 좋아요가 없습니다.') ||
                       (data.artwork.likes + (isLike ? 1 : 0) === 1 &&
-                        likedMembers.memberUsernames[0] + '님이 좋아합니다.') ||
+                        (likedMembers.memberUsernames[0]
+                          ? likedMembers.memberUsernames[0]
+                          : isLike
+                          ? usernameAndrole.username
+                          : 'user') + '님이 좋아합니다.') ||
                       likedMembers.memberUsernames[0] +
                         '님 외 ' +
                         (data.artwork.likes - 1 + (isLike ? 1 : 0)) +
