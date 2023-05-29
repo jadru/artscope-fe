@@ -143,7 +143,7 @@ const Slug = ({
     <>
       <Seo
         description={data.artwork.description}
-        templateTitle={data.artwork.title + ' - Artwork'}
+        templateTitle={`${data.artwork.title} - ${data.artwork.authorName} 작품`}
         image={
           NEXT_PUBLIC_ROOT_URL +
           '/api/og-image?title=' +
@@ -151,6 +151,7 @@ const Slug = ({
           '&thumbnail=' +
           data.artwork.thumbnail.mediaUrl
         }
+        tag={`${data.artwork.authorName}, ${data.artwork.tags.toString()}`}
       />
       <NavBar />
       <TabLayout top>

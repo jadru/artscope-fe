@@ -5,8 +5,8 @@ import { NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 
 // !STARTERCONF Change these default meta
 const defaultMeta = {
-  title: 'Artscope, 새로운 예술 플랫폼',
-  siteName: 'Artscope',
+  title: '아트스코프 Artscope - 새로운 예술 플랫폼',
+  siteName: '아트스코프 Artscope',
   description:
     '예술가의 작품소개와 전시공모를 위한 예술 네트워크 플랫폼 Artscope',
   url: NEXT_PUBLIC_ROOT_URL,
@@ -26,6 +26,7 @@ type SeoProps = {
   image?: string;
   description?: string;
   themeColor?: string;
+  tag?: string;
 } & Partial<typeof defaultMeta>;
 
 export default function Seo(props: SeoProps) {
@@ -54,7 +55,7 @@ export default function Seo(props: SeoProps) {
       <meta name='robots' content={meta.robots} />
       <meta
         name='keywords'
-        content='Artscope, 예술, 전시, 공모전, 예술가, 작품, 전시회, 전시공모, 예술공모, 전시공모전, 예술포트폴리오'
+        content={`${meta.tag}, 아트스코프, Artscope, 예술, 전시, 공모전, 예술가, 작품, 전시회, 전시공모, 예술공모, 전시공모전, 예술포트폴리오`}
       />
       <meta content={meta.description} name='description' />
       <meta property='og:url' content={`${meta.url}${router.asPath}`} />
