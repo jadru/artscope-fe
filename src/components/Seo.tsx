@@ -5,10 +5,10 @@ import { NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 
 // !STARTERCONF Change these default meta
 const defaultMeta = {
-  title: 'Artscope, 새로운 예술 플랫폼',
-  siteName: 'Artscope',
+  title: '아트스코프 Artscope - 새로운 예술 플랫폼',
+  siteName: '아트스코프 Artscope',
   description:
-    '시각언어와 예술, 작품들의 공간적 만남과 변화를 온라인 공간을 통해 연결 하고자 하는 콘텐츠 전용 플랫폼입니다. 개방적 플랫폼을 통해 변화와 혁신들을 직접 눈으로 살펴볼 수 있는 계기를 마련하고자 합니다. 누구나 자신의 고유한 작업을 직접 포스팅하고 테마와 스토리를 공유할 수 있는 공간이기도 하며 또한 작업의 피드백을 공유해 볼 수도 있습니다. 이곳에서 지니게 되는 각각의 스토리를 통해 콘텐츠와 지역, 공간과 작가들의 감정과 색감이 상호 연결되어 반응을 이루게 됩니다. 온라인과 오프 공간에서 다양한 프로그램과 기획을 통해 동시에 열리게 되는 플랫폼 artscope 가 생명력 있는 시선을 발견하고자 하는 많은 사람들에게 특색 있는 공간이 되기를 기대합니다.',
+    '예술가의 작품소개와 전시공모를 위한 예술 네트워크 플랫폼 Artscope',
   url: NEXT_PUBLIC_ROOT_URL,
   type: 'website',
   robots: 'follow, index',
@@ -26,6 +26,7 @@ type SeoProps = {
   image?: string;
   description?: string;
   themeColor?: string;
+  tag?: string;
 } & Partial<typeof defaultMeta>;
 
 export default function Seo(props: SeoProps) {
@@ -52,6 +53,10 @@ export default function Seo(props: SeoProps) {
     <Head>
       <title>{meta.title}</title>
       <meta name='robots' content={meta.robots} />
+      <meta
+        name='keywords'
+        content={`${meta.tag}, 아트스코프, Artscope, 예술, 전시, 공모전, 예술가, 작품, 전시회, 전시공모, 예술공모, 전시공모전, 예술포트폴리오`}
+      />
       <meta content={meta.description} name='description' />
       <meta property='og:url' content={`${meta.url}${router.asPath}`} />
       <link rel='canonical' href={`${meta.url}${router.asPath}`} />

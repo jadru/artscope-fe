@@ -43,11 +43,9 @@ export const NavBar: React.FC<Props> = ({
 
   return (
     <div
-      className={`navbar fixed z-50 ${
-        !dark ? 'bg-white/70' : 'bg-black/50 text-gray-200'
-      } backdrop-blur-md ${
-        transparent ? 'bg-transparent' : 'dark:bg-dark/70'
-      } ${className}`}
+      className={`navbar min-h-12 fixed z-50 h-12 backdrop-blur ${
+        !dark ? 'bg-white/80' : 'bg-black/50 text-gray-200'
+      } ${transparent ? 'bg-transparent' : 'dark:bg-dark/70'} ${className}`}
     >
       <div className='navbar-start' />
       <div className='navbar-center'>
@@ -67,9 +65,10 @@ export const NavBar: React.FC<Props> = ({
             </Link>
             <Link
               href='/upload'
-              className='btn-ghost btn-square btn hidden lg:inline-flex'
+              className='btn-ghost btn hidden lg:inline-flex'
             >
-              <IoCloudUploadSharp className='inline-block h-5 w-5 stroke-current' />
+              업로드
+              <IoCloudUploadSharp className='ml-2 inline-block h-5 w-5 stroke-current' />
             </Link>
             <div className='dropdown-end dropdown hidden lg:inline-block'>
               <label tabIndex={0} className='btn-ghost btn-circle avatar btn'>
@@ -88,7 +87,7 @@ export const NavBar: React.FC<Props> = ({
               </label>
               <ul
                 tabIndex={0}
-                className='dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow'
+                className='dropdown-content menu rounded-box menu-compact w-52 bg-base-100 p-2 shadow'
               >
                 <li>
                   <Link className='justify-between' href='/profile'>

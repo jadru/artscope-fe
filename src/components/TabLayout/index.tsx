@@ -28,10 +28,11 @@ const TabLayout: FunctionComponent<Props> = ({
       className ? className : '' + ''
     } `}
   >
+    <div className='h-[48px]'></div>
     <div
-      className={`${paddingTop ? 'pt-16' : ''} w-screen ${
-        !main && 'px-2 md:px-3'
-      } ${fullWidth ? '' : 'max-w-4xl'} ${classNameChild}`}
+      className={`${paddingTop ? '' : ''} w-screen ${!main && 'px-2 md:px-3'} ${
+        fullWidth ? '' : 'max-w-4xl'
+      } ${classNameChild}`}
     >
       {children}
     </div>

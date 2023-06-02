@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
 import { ReactElement, useEffect, useRef } from 'react';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
@@ -16,9 +17,9 @@ import { NavBar } from '@/components/TabLayout/NavBar';
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
-import { ArtworkType } from '@/types';
+import ArtistAnimation from '../../public/animation/141993-spin-sobky-like-siri.json';
 
-import ArtistAnimation from '~/animation/141993-spin-sobky-like-siri.json';
+import { ArtworkType } from '@/types';
 
 const OFFSET = 12;
 
@@ -62,7 +63,7 @@ export default function Artwork() {
     <>
       <Seo templateTitle='Artwork' />
       <NavBar title='ArtPlatform' />
-      <TabLayout classNameChild='mt-2' fullWidth top>
+      <TabLayout classNameChild='' fullWidth top>
         <ResponsiveMasonry
           columnsCountBreakPoints={{
             400: 1,
@@ -71,40 +72,24 @@ export default function Artwork() {
             1600: 4,
           }}
         >
-          <Masonry gutter='0.4rem'>
-            <Link
-              href='/blog/634d09fd-79f8-4807-a517-17ebd1c45054'
-              key='634d09fd-79f8-4807-a517-17ebd1c45054'
-              className='from-20% via-60% to-20% group relative flex h-64 cursor-pointer items-center justify-center bg-gradient-to-br from-[#6F38C5] via-[#87A2FB] to-[#ADDDD0] px-0 dark:from-indigo-900 dark:via-cyan-700 dark:to-emerald-600'
-            >
-              <Lottie
-                animationData={ArtistAnimation}
-                className='absolute mr-4 w-[190px] duration-200 ease-in-out group-hover:scale-125'
-              />
-              <div className='flex-col space-y-3 py-8 text-center text-gray-100 duration-200 group-hover:font-bold md:left-24'>
-                <p className='text-4xl'>
-                  플랫폼 Artscope
-                  <br /> 작품 공모
-                </p>
-              </div>
-            </Link>
+          <Masonry gutter='0.3rem'>
             {(status === 'loading' && <p>불러오는 중</p>) ||
               (status === 'success' &&
                 data.pages.map((group, groupIndex: number) =>
-                  group.artworks.map((artwork: ArtworkType, index: number) => (
+                  group.artworks.map((aw: ArtworkType, index: number) => (
                     <>
                       <Link
-                        href={'/artwork/' + artwork.id}
-                        key={artwork.id}
+                        href={'/artwork/' + aw.artwork.id}
+                        key={aw.artwork.id}
                         className='group relative flex h-auto w-full cursor-pointer justify-center overflow-hidden bg-base-100 text-center dark:border-slate-600'
                       >
-                        {artwork.thumbnail && (
+                        {aw.artwork.thumbnail && (
                           <div className='m-0 grid w-full justify-items-stretch p-0'>
-                            {artwork.thumbnail.mediaType === 'image' ? (
-                              artwork.thumbnail.mediaUrl !== 'string' && (
+                            {aw.artwork.thumbnail.mediaType === 'image' ? (
+                              aw.artwork.thumbnail.mediaUrl !== 'string' && (
                                 <Image
-                                  src={artwork.thumbnail.mediaUrl}
-                                  alt={artwork.title}
+                                  src={aw.artwork.thumbnail.mediaUrl}
+                                  alt={aw.artwork.title}
                                   width={400}
                                   height={400}
                                   placeholder='blur' // 추가
@@ -118,7 +103,7 @@ export default function Artwork() {
                                 src={
                                   NEXT_PUBLIC_MEDIA_STORAGE_URL +
                                   '/' +
-                                  artwork.thumbnail.mediaUrl
+                                  aw.artwork.thumbnail.mediaUrl
                                 }
                                 autoPlay
                                 loop
@@ -129,16 +114,26 @@ export default function Artwork() {
                           </div>
                         )}
                         <div className='absolute h-full w-full bg-black/10 duration-200 group-hover:opacity-0'></div>
-                        {artwork.title && (
-                          <p className='absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 px-3 py-2 text-left text-xl font-bold text-white backdrop-blur'>
-                            {artwork.title}
-                          </p>
+                        {aw.artwork.title && (
+                          <div className='absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 px-3 py-2 text-left backdrop-blur'>
+                            <div className='flex items-center text-lg font-light text-white'>
+                              {aw.artwork.likes}{' '}
+                              {aw.isLike ? (
+                                <AiFillHeart className='ml-1 inline' />
+                              ) : (
+                                <AiOutlineHeart className='ml-1 inline' />
+                              )}
+                            </div>
+                            <p className='text-xl font-bold text-white'>
+                              {aw.artwork.title}
+                            </p>
+                          </div>
                         )}
                       </Link>
                       {groupIndex === 0 && index === 5 && (
                         <Link
                           href='/blog'
-                          key={artwork.id + '_1'}
+                          key={aw.artwork.id + '_1'}
                           className='group relative flex cursor-pointer justify-center overflow-hidden bg-base-100 text-center dark:border-slate-600'
                         >
                           <div className='relative m-0 w-full p-0'>
@@ -154,6 +149,24 @@ export default function Artwork() {
                             />
                           </div>
                           <div className='absolute h-full w-full duration-200 group-hover:bg-dark/10'></div>
+                        </Link>
+                      )}
+                      {groupIndex === 0 && index === 10 && (
+                        <Link
+                          href='/blog/634d09fd-79f8-4807-a517-17ebd1c45054'
+                          key='634d09fd-79f8-4807-a517-17ebd1c45054'
+                          className='from-20% via-60% to-20% group relative flex h-64 cursor-pointer items-center justify-center bg-gradient-to-br from-[#6F38C5] via-[#87A2FB] to-[#ADDDD0] px-0 dark:from-indigo-900 dark:via-cyan-700 dark:to-emerald-600'
+                        >
+                          <Lottie
+                            animationData={ArtistAnimation}
+                            className='absolute mr-4 w-[190px] duration-200 ease-in-out group-hover:scale-125'
+                          />
+                          <div className='flex-col space-y-3 py-8 text-center text-gray-100 duration-200 group-hover:font-bold md:left-24'>
+                            <p className='text-4xl'>
+                              플랫폼 Artscope
+                              <br /> 작품 공모
+                            </p>
+                          </div>
                         </Link>
                       )}
                     </>
