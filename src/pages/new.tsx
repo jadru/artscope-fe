@@ -73,7 +73,7 @@ export default function Artwork() {
             1600: 4,
           }}
         >
-          <Masonry gutter='0.3rem'>
+          <Masonry gutter='0.5rem'>
             {(status === 'loading' && <p>불러오는 중</p>) ||
               (status === 'success' &&
                 data.pages.map((group, groupIndex: number) =>
@@ -82,7 +82,7 @@ export default function Artwork() {
                       <Link
                         href={'/artwork/' + aw.artwork.id}
                         key={aw.artwork.id}
-                        className='group relative flex h-auto w-full cursor-pointer justify-center overflow-hidden bg-base-100 text-center dark:border-slate-600'
+                        className='group relative flex h-auto w-full cursor-pointer flex-col justify-center overflow-hidden border-2 border-transparent bg-base-100 text-center focus:border-black'
                       >
                         {aw.artwork.thumbnail && (
                           <div className='m-0 grid w-full justify-items-stretch p-0'>
@@ -95,7 +95,7 @@ export default function Artwork() {
                                   height={400}
                                   placeholder='blur' // 추가
                                   blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==' // 추가
-                                  className='w-full cursor-zoom-in object-contain duration-200 ease-in-out group-hover:scale-110'
+                                  className='w-full cursor-pointer object-contain'
                                 />
                               )
                             ) : (
@@ -114,10 +114,14 @@ export default function Artwork() {
                             )}
                           </div>
                         )}
-                        <div className='absolute h-full w-full bg-black/10 duration-200 group-hover:opacity-0'></div>
                         {aw.artwork.title && (
-                          <div className='absolute bottom-2 left-2 mr-2 rounded-md bg-dark/40 px-3 py-2 text-left backdrop-blur'>
-                            <div className='flex items-center text-lg font-light text-white'>
+                          <div className='bottom-2 left-2 mr-2 rounded-md px-3 py-2 text-left'>
+                            <p className='text-xl font-bold group-hover:underline'>
+                              {aw.artwork.title}
+                              <br />
+                              {aw.artwork.authorName}
+                            </p>
+                            <div className='flex items-center text-lg font-light'>
                               {aw.artwork.likes}{' '}
                               {aw.isLike ? (
                                 <AiFillHeart className='ml-1 inline' />
@@ -125,9 +129,6 @@ export default function Artwork() {
                                 <AiOutlineHeart className='ml-1 inline' />
                               )}
                             </div>
-                            <p className='text-xl font-bold text-white'>
-                              {aw.artwork.title}
-                            </p>
                           </div>
                         )}
                       </Link>
@@ -146,7 +147,7 @@ export default function Artwork() {
                               sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1600px) 33.3vw, 25vw'
                               placeholder='blur' // 추가
                               blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==' // 추가
-                              className='w-full cursor-zoom-in object-contain duration-200 ease-in-out group-hover:scale-110'
+                              className='w-full object-contain duration-200 ease-in-out'
                             />
                           </div>
                           <div className='absolute h-full w-full duration-200 group-hover:bg-dark/10'></div>

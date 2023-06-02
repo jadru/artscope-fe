@@ -91,7 +91,10 @@ const Slug = ({
     slug && data ? '/api/members/' + data?.artwork.authorUsername : undefined,
     fetcher
   );
+
   const [isLike, setIsLike] = useState<boolean>(false);
+  const [isFirstLike, setFirstLike] = useState<boolean>(false);
+  const [likeCount, setLikeCount] = useState<number>(data.artwork.likes);
 
   const [isEdit, setIsEdit] = useState<boolean>(data.isLike);
   // eslint-disable-next-line
@@ -122,6 +125,33 @@ const Slug = ({
     }
   }, [data, router.asPath]);
 
+  useEffect(() => {
+    // calculate like count
+    if (isFirstLike) {
+      if (isLike) {
+        setLikeCount(() => data.artwork.likes);
+      } else {
+        setLikeCount(() => data.artwork.likes - 1);
+      }
+    } else {
+      if (isLike) {
+        setLikeCount(() => data.artwork.likes + 1);
+      } else {
+        setLikeCount(() => data.artwork.likes);
+      }
+    }
+  }, [isLike, isFirstLike, setLikeCount, data.artwork.likes]);
+
+  useEffect(() => {
+    jxios.defaults.headers.common.Authorization &&
+      jxios
+        .get('/api/artworks/' + data.artwork.id + '/member/likes')
+        .then((res) => {
+          setIsLike(res.data);
+          setFirstLike(res.data);
+        });
+  }, [data.artwork.id]);
+
   const onLikeButtonClick = async () => {
     if (!data) return;
     if (!isTokenRefreshing && jxios.defaults.headers.common.Authorization) {
@@ -130,7 +160,15 @@ const Slug = ({
       setIsLike((prev) => !prev);
       likeButtonTimeoutRef.current = setTimeout(async () => {
         try {
-          await jxios.post('/api/artworks/' + data.artwork.id + '/like');
+          await jxios
+            .post('/api/artworks/' + data.artwork.id + '/like')
+            .then((response) => {
+              if (response.status === 200) {
+                setIsLike(true);
+              } else if (response.status === 204) {
+                setIsLike(false);
+              }
+            });
         } catch (error) {
           /* empty */
         }
@@ -235,9 +273,8 @@ const Slug = ({
                     <AiOutlineHeart className='h-7 w-7' />
                   )}
                   <span className='ml-2 font-bold'>
-                    {(data.artwork.likes + (isLike ? 1 : 0) <= 0 &&
-                      '아직 좋아요가 없습니다.') ||
-                      (data.artwork.likes + (isLike ? 1 : 0) === 1 &&
+                    {(likeCount <= 0 && '아직 좋아요가 없습니다.') ||
+                      (likeCount === 1 &&
                         (likedMembers.memberUsernames[0]
                           ? likedMembers.memberUsernames[0]
                           : isLike
@@ -245,7 +282,7 @@ const Slug = ({
                           : 'user') + '님이 좋아합니다.') ||
                       likedMembers.memberUsernames[0] +
                         '님 외 ' +
-                        (data.artwork.likes - 1 + (isLike ? 1 : 0)) +
+                        (likeCount - 1) +
                         '명이 좋아합니다.'}
                   </span>
                 </button>
