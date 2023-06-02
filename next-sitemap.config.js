@@ -42,5 +42,6 @@ module.exports = {
     '/util/**',
     '/_next/**',
     '/upload',
+    '/new',
   ],
 };

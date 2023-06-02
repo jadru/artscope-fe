@@ -99,21 +99,26 @@ const Signup = () => {
   };
 
   const checkUsernameDuplication = () => {
-    jxios
-      .get(`/api/members/username/${getValues('username')}`)
-      .then((response) => {
-        if (response.status === 200) {
-          setUsernameCheck(true);
-          toast.success('사용 가능한 아이디입니다.');
-          clearErrors('username');
-        } else {
-          toast.warn('이미 사용중인 아이디입니다.');
+    const regex = new RegExp('^[a-zA-Z0-9]{4,12}$');
+    if (regex.test(getValues('username'))) {
+      jxios
+        .get(`/api/members/username/${getValues('username')}`)
+        .then((response) => {
+          if (response.status === 200) {
+            setUsernameCheck(true);
+            toast.success('사용 가능한 아이디입니다.');
+            clearErrors('username');
+          } else {
+            toast.warn('이미 사용중인 아이디입니다.');
+            setUsernameCheck(false);
+          }
+        })
+        .catch(() => {
           setUsernameCheck(false);
-        }
-      })
-      .catch(() => {
-        setUsernameCheck(false);
-      });
+        });
+    } else {
+      toast.warn('아이디는 영문, 숫자 4~12자리로 입력해주세요.');
+    }
   };
 
   return (
