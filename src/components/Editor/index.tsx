@@ -2,11 +2,13 @@
 
 import { Color } from '@tiptap/extension-color';
 import Document from '@tiptap/extension-document';
+import { Heading } from '@tiptap/extension-heading';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { TextStyle } from '@tiptap/extension-text-style';
 import {
-  BubbleMenu,
+  BubbleMenu as BubbleMenuComponent,
   EditorContent,
+  isTextSelection,
   JSONContent,
   useEditor,
 } from '@tiptap/react';
@@ -59,7 +61,7 @@ const Editor = ({
   const editor = useEditor({
     content:
       type != 'create'
-        ? data && `<h1>${data.title}</h1>${data.description}`
+        ? data && `<h1>${data.artwork.title}</h1>${data.artwork.description}`
         : null,
     extensions: [
       CustomDocument,
@@ -77,6 +79,9 @@ const Editor = ({
       }),
       TextStyle,
       Color,
+      Heading.configure({
+        levels: [1, 2, 3],
+      }),
     ],
     editorProps: {
       attributes: {
@@ -140,6 +145,7 @@ const Editor = ({
       (type === 'edit' &&
         handleEditSaveButton(editor.getJSON(), editor.getHTML()));
   };
+  editor && editor.commands.unsetColor();
   const handleEditSaveButton = async (
     contentJSON?: JSONContent,
     contentHTML?: string
@@ -158,7 +164,7 @@ const Editor = ({
     contentJSON &&
       contentHTML &&
       jxios
-        .put('/api/artworks/' + data.id, {
+        .put('/api/artworks/' + data.artwork.id, {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           title: contentJSON.content[0].content[0].text,
@@ -174,7 +180,7 @@ const Editor = ({
             return;
           }
           router
-            .replace('/artwork/' + data.id)
+            .replace('/artwork/' + data.artwork.id)
             .then(() => toast.success('수정되었습니다.'));
         })
         .finally(() => setIsUpload(false));
@@ -183,6 +189,8 @@ const Editor = ({
   const handleCreateSaveButton = async () => {
     if (isUpload || !editor) return;
     const HTML = editor.getHTML();
+    const JSON = editor.getJSON();
+
     if (fileUrls.length === 0) {
       toast.warn('파일을 업로드해주세요.');
       return;
@@ -219,7 +227,10 @@ const Editor = ({
     const newState = { ...artwork };
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    newState.dto.title = HTML.substring(4, HTML.search('</h1>'));
+    newState.dto.title = JSON.content[0].content.reduce(
+      (acc, cur) => acc + cur.text,
+      ''
+    );
     newState.dto.description = HTML.substring(HTML.search('</h1>') + 5);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -306,10 +317,19 @@ const Editor = ({
       <div className='editor my-4 w-full'>
         {editor && (
           <>
-            <BubbleMenu
+            <BubbleMenuComponent
               className='bubble-menu'
               tippyOptions={{ duration: 100 }}
               editor={editor}
+              shouldShow={(props) => {
+                return !(
+                  props.editor.isActive('heading', { level: 1 }) ||
+                  props.view.hasFocus() ||
+                  (!props.state.doc.textBetween(props.from, props.to).length &&
+                    isTextSelection(props.state.selection)) ||
+                  props.state.selection.empty
+                );
+              }}
             >
               <button
                 onClick={() => editor.chain().focus().toggleBold().run()}
@@ -329,7 +349,7 @@ const Editor = ({
               >
                 Strike
               </button>
-            </BubbleMenu>
+            </BubbleMenuComponent>
           </>
         )}
 
@@ -344,7 +364,7 @@ const Editor = ({
           type='text'
           className='input-bordered input'
           placeholder='태그1, 태그2, ...'
-          defaultValue={data ? data.tags : ''}
+          defaultValue={data ? data.artwork.tags : ''}
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           ref={tagInput}

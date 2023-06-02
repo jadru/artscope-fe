@@ -1,4 +1,3 @@
-import { Color } from '@tiptap/extension-color';
 import ListItem from '@tiptap/extension-list-item';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { EditorContent, useEditor } from '@tiptap/react';
@@ -8,7 +7,7 @@ import React from 'react';
 const ReadOnlyEditor = ({ data }: { data: string }) => {
   const editor = useEditor({
     content: `${data}`,
-    extensions: [StarterKit, TextStyle, Color, ListItem],
+    extensions: [StarterKit, TextStyle, ListItem],
     editorProps: {
       attributes: {
         class: 'editor__content',

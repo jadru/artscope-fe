@@ -1,5 +1,7 @@
 import { ImageResponse, NextRequest } from 'next/server';
 
+import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
+
 export const config = {
   runtime: 'edge',
 };
@@ -8,38 +10,54 @@ export default function handler(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    // ?title=<title>
-
     const title = searchParams.get('title')?.slice(0, 100);
 
-    // const username = searchParams.get('username')?.slice(0, 100);
-    //
-    // const name = searchParams.get('name')?.slice(0, 100);
-    //
-    // const profileUrl = searchParams.get('profileUrl')?.slice(0, 100);
+    const thumbnail = searchParams.get('thumbnail')?.slice(0, 100);
 
     return new ImageResponse(
       (
         <div
           style={{
+            display: 'flex',
             height: '100%',
             width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: 'white',
+            flexDirection: 'column',
+            backgroundImage: 'linear-gradient(to bottom, #dbf4ff, #fff1f1)',
+            fontSize: 65,
+            letterSpacing: -2,
+            fontWeight: 700,
+            textAlign: 'center',
           }}
         >
-          <h1 tw='truncate p-6 text-center text-8xl font-light text-blue-600'>
-            {title ? title : 'Artwork'}
-          </h1>
-          <p tw='absolute bottom-8 bg-white text-4xl text-black'>Artscope</p>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            tw='w-full overflow-hidden object-cover opacity-30'
+            alt=''
+            src={NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + thumbnail}
+          />
+
+          <div
+            style={{
+              backgroundImage:
+                'linear-gradient(90deg, rgb(121, 40, 202), rgb(255, 0, 128))',
+              backgroundClip: 'text',
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              '-webkit-background-clip': 'text',
+              color: 'transparent',
+              padding: '18px',
+              position: 'absolute',
+            }}
+          >
+            {title}
+          </div>
         </div>
       ),
       {
         width: 1200,
-        height: 600,
+        height: 630,
       }
     );
     // eslint-disable-next-line

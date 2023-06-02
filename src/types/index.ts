@@ -36,12 +36,29 @@ export type ArtWorkApiResponseType = {
   };
 };
 
+export type ArtWorkApiByMember = {
+  artworks: DetailedArtworkType[];
+  pageInfo: {
+    page: number;
+    size: number;
+    totalPages: number;
+    totalElements: number;
+  };
+};
+
 export type ArtworkType = {
+  artwork: DetailedArtworkType;
+  isLike: boolean;
+};
+
+export type DetailedArtworkType = {
   id: number;
   title: string;
   description: string;
   tags: string[];
-  member: string;
+  likes: number;
+  authorUsername: string;
+  authorName: string;
   thumbnail: {
     id: number;
     mediaType: MediaType;
@@ -60,7 +77,7 @@ export type ArtworkType = {
   }[];
   createdTime: Date;
   updatedTime: Date | null;
-  view: number;
+  views: number;
 };
 
 export type decodedTokenType = {
@@ -100,4 +117,25 @@ export type profileApiRequestType = {
   name?: string;
   snsUrl?: string;
   websiteUrl?: string;
+};
+
+export type likeMemberApiResponseType = {
+  memberUsernames: string[];
+  likes: number;
+  pageInfo: {
+    page: number;
+    size: number;
+    totalPages: number;
+    totalElements: number;
+  };
+};
+
+export type likeArtworksByMemberApiResponseType = {
+  dtos: { artworkId: number; likedTime: Date }[];
+  pageInfo: {
+    page: number;
+    size: number;
+    totalPages: number;
+    totalElements: number;
+  };
 };
