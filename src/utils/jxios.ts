@@ -40,6 +40,7 @@ Jaxios.interceptors.response.use(
     const cookies = new Cookies();
     if (response && response.status) {
       switch (response.status || config.sent) {
+        case 400:
         case 401:
         case 403:
           if (cookies.get('refreshToken')) {
@@ -47,14 +48,9 @@ Jaxios.interceptors.response.use(
             await getRefreshToken();
             return axios(config);
           } else {
-            if (response.data.message)
-              toast.error(`
-              ${response.data.message}
-                ${
-                  response.data.detail !== null
-                    ? ' : ' + response.data.detail
-                    : ''
-                }`);
+            if (response.data.message && response.data.detail)
+              toast.error(`${response.data.message} : ${response.data.detail}`);
+            else toast.error(response.data);
             return Promise.reject(err);
           }
         case 502:
