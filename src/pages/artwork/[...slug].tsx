@@ -172,7 +172,7 @@ const Slug = ({
         } catch (error) {
           /* empty */
         }
-      }, 1000);
+      }, 100);
     } else {
       toast.error('로그인 이후 좋아요가 가능합니다!');
     }
