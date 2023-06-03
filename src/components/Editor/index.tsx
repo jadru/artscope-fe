@@ -365,6 +365,16 @@ const Editor = ({
           className='input-bordered input'
           placeholder='태그1, 태그2, ...'
           defaultValue={data ? data.artwork.tags : ''}
+          onKeyUp={(e) => {
+            if (e.key.match(/[{}[\]/?.;:|)*~`!^\-_+┼<>@#$%&'"\\(=]/gi)) {
+              // tag change event value change
+              if (tagInput?.current) {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                tagInput.current.value = e.currentTarget.value.slice(0, -1);
+              }
+            }
+          }}
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           ref={tagInput}

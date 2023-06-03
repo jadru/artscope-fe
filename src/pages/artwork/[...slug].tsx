@@ -147,8 +147,8 @@ const Slug = ({
       jxios
         .get('/api/artworks/' + data.artwork.id + '/member/likes')
         .then((res) => {
-          setIsLike(res.data);
-          setFirstLike(res.data);
+          setIsLike(Boolean(res.data));
+          setFirstLike(Boolean(res.data));
         });
   }, [data.artwork.id]);
 
@@ -180,7 +180,7 @@ const Slug = ({
   return (
     <>
       <Seo
-        description={data.artwork.description}
+        description={data.artwork.description.substring(0, 120)}
         templateTitle={`${data.artwork.title} - ${data.artwork.authorName} 작품`}
         image={
           NEXT_PUBLIC_ROOT_URL +
@@ -229,8 +229,7 @@ const Slug = ({
                       />
                     ) : artworkMedia.mediaType === 'url' ? (
                       <iframe
-                        width='100%'
-                        height='330px'
+                        className='aspect-video w-full'
                         src={
                           'https://www.youtube.com/embed/' +
                           artworkMedia.mediaUrl.substring(

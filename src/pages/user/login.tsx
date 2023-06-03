@@ -78,7 +78,7 @@ const Login = () => {
               profileImage: res.data.picture || undefined,
             });
             if (res.data.artistStatus === 'NONE') {
-              push('/artist/info').then(() =>
+              push('/user/input-info').then(() =>
                 toast.info('작가 정보를 입력해주세요.')
               );
             } else {
@@ -95,8 +95,8 @@ const Login = () => {
 
   return (
     <>
-      <Seo templateTitle='Login' />
-      <NavBar title='ArtPlatform' />
+      <Seo templateTitle='로그인' />
+      <NavBar />
       <TabLayout>
         <Title>로그인</Title>
         <form
@@ -135,7 +135,10 @@ const Login = () => {
             <button className='btn-primary btn-block btn mt-4' type='submit'>
               로그인
             </button>
-            <Link className='btn-primary btn-block btn mt-2' href='/signup'>
+            <Link
+              className='btn-primary btn-block btn mt-2'
+              href='/user/signup'
+            >
               회원가입
             </Link>
             <Link

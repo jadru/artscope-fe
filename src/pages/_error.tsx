@@ -8,7 +8,7 @@ import Seo from '@/components/Seo';
 export default function NotFoundPage() {
   return (
     <div className=''>
-      <Seo templateTitle='Not Found' />
+      <Seo templateTitle='Not:Found' />
 
       <main>
         <section className='bg-white dark:bg-dark'>

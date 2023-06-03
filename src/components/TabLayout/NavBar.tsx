@@ -19,6 +19,25 @@ interface Props {
   transparent?: boolean;
 }
 
+const Menus = [
+  {
+    label: '작품',
+    href: '/artwork',
+  },
+  {
+    label: '작가',
+    href: '/artists',
+  },
+  {
+    label: '전시',
+    href: '/exhibitions',
+  },
+  {
+    label: '커뮤니티',
+    href: '/community',
+  },
+];
+
 export const NavBar: React.FC<Props> = ({
   className,
   dark = false,
@@ -27,7 +46,7 @@ export const NavBar: React.FC<Props> = ({
   useAuth();
   const [userValue, setUserValue] = useRecoilState(userNameAndRoleAtom);
   const cookies = new Cookies();
-  const { push } = useRouter();
+  const { push, asPath } = useRouter();
   const handleLogout = () => {
     jxios.post('/api/logout').then(() => {
       cookies.remove('refreshToken', { path: '/' });
@@ -43,26 +62,34 @@ export const NavBar: React.FC<Props> = ({
 
   return (
     <div
-      className={`navbar min-h-12 fixed z-50 h-12 backdrop-blur ${
-        !dark ? 'bg-white/80' : 'bg-black/50 text-gray-200'
+      className={`min-h-14 navbar fixed z-50 h-24 flex-col border-b md:h-14 md:flex-row ${
+        !dark ? 'bg-white' : 'bg-black text-gray-200'
       } ${transparent ? 'bg-transparent' : 'dark:bg-dark/70'} ${className}`}
     >
-      <div className='navbar-start' />
-      <div className='navbar-center'>
-        <Link className='btn-ghost btn text-xl font-bold normal-case' href='/'>
+      <div className='navbar-start w-full md:w-1/2'>
+        <Link
+          className='btn-ghost btn px-2 text-left text-2xl font-bold normal-case'
+          href='/'
+        >
           Artscope
         </Link>
+      </div>
+      <div className='navbar-center w-full space-x-2.5 px-2 md:w-auto'>
+        {Menus.map((menu) => (
+          <Link
+            href={menu.href}
+            key={menu.label}
+            className={`link text-2xl font-bold ${
+              asPath.startsWith(menu.href) ? 'underline' : 'no-underline'
+            } hover:underline`}
+          >
+            {menu.label}
+          </Link>
+        ))}
       </div>
       <div className='navbar-end space-x-2'>
         {userValue.role ? (
           <>
-            <Link
-              href='https://ad21pifdjli.typeform.com/to/kg4KHrj4'
-              target='_blank'
-              className='btn-ghost btn'
-            >
-              피드백
-            </Link>
             <Link
               href='/upload'
               className='btn-ghost btn hidden lg:inline-flex'
@@ -90,7 +117,10 @@ export const NavBar: React.FC<Props> = ({
                 className='dropdown-content menu rounded-box menu-compact w-52 bg-base-100 p-2 shadow'
               >
                 <li>
-                  <Link className='justify-between' href='/profile'>
+                  <Link
+                    className='justify-between'
+                    href={`/profile/${userValue.username}`}
+                  >
                     프로필
                   </Link>
                 </li>
@@ -102,14 +132,7 @@ export const NavBar: React.FC<Props> = ({
           </>
         ) : (
           <ul className='menu menu-horizontal hidden px-1 lg:inline-block'>
-            <Link
-              href='https://ad21pifdjli.typeform.com/to/kg4KHrj4'
-              className='btn-ghost btn'
-              target='_blank'
-            >
-              피드백
-            </Link>
-            <Link href='/login' className='btn-ghost btn'>
+            <Link href='/user/login' className='btn-ghost btn'>
               로그인
             </Link>
           </ul>

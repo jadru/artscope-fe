@@ -28,7 +28,7 @@ export const getStaticProps = async () => {
 const Blog = ({ posts }) => {
   return (
     <>
-      <Seo templateTitle='Blog' />
+      <Seo templateTitle='블로그' />
       <NavBar />
       <TabLayout top>
         <div className='breadcrumbs text-sm'>

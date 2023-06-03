@@ -55,7 +55,7 @@ const useAuth = () => {
           })
           .catch(() => {
             cookies.remove('refreshToken');
-            router.push('/login');
+            router.push('/user/login');
           })
           .finally(() => setIsTokenRefreshing(false));
       }
@@ -64,7 +64,7 @@ const useAuth = () => {
           !jxios.defaults.headers.common['Authorization'] &&
           !cookies.get('refreshToken')
         ) {
-          await router.push('/login');
+          await router.push('/user/login');
         }
       }
     }

@@ -48,8 +48,10 @@ Jaxios.interceptors.response.use(
             await getRefreshToken();
             return axios(config);
           } else {
-            if (response.data.message && response.data.detail)
-              toast.error(`${response.data.message} : ${response.data.detail}`);
+            if (response.data.message)
+              toast.error(
+                `${response.data.message} ${response.data.detail || ''}`
+              );
             else toast.error(response.data);
             return Promise.reject(err);
           }

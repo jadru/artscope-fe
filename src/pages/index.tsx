@@ -63,7 +63,7 @@ export default function Artwork() {
   return (
     <>
       <Seo templateTitle='작품 목록' />
-      <NavBar title='ArtPlatform' />
+      <NavBar className='border-b-0' />
       <TabLayout classNameChild='' fullWidth top>
         <ResponsiveMasonry
           columnsCountBreakPoints={{

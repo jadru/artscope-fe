@@ -66,10 +66,16 @@ const Signup = () => {
     usernameCheck &&
     delete data.passwordCheck &&
     delete data.agree &&
-    jxios.post('/api/members', data, {}).then(() => {
-      push('/login').then(() => {
-        toast.success('회원가입이 완료되었습니다.');
-      });
+    jxios.post('/api/members', data).then(() => {
+      jxios
+        .post('/api/mail', {
+          email: data.email,
+        })
+        .then(() => {
+          push('/user/email-verification').then(() =>
+            toast.success(data.email + '로 보낸 이메일 인증을 완료해주세요.')
+          );
+        });
     });
 
   const checkEmailDuplication = () => {
@@ -123,8 +129,8 @@ const Signup = () => {
 
   return (
     <>
-      <Seo templateTitle='Signup' />
-      <NavBar title='ArtPlatform' />
+      <Seo templateTitle='회원가입' />
+      <NavBar />
       <TabLayout>
         <Title>회원가입</Title>
         <form
