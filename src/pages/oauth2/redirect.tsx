@@ -49,7 +49,7 @@ const RedirectOAuth2 = () => {
                 profileImage: res.data.picture || undefined,
               });
               if (res.data.artistStatus === 'NONE') {
-                push('/profile/info').then(() =>
+                push('/user/input-info').then(() =>
                   toast.info('작가 정보를 입력해주세요.')
                 );
               } else {
