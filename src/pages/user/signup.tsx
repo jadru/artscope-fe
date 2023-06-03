@@ -68,8 +68,8 @@ const Signup = () => {
     delete data.agree &&
     jxios.post('/api/members', data).then(() => {
       jxios
-        .post('/api/mail', {
-          email: data.email,
+        .post('/api/mail/authenticate', '', {
+          params: { email: data.email },
         })
         .then(() => {
           push('/user/email-verification').then(() =>
