@@ -450,7 +450,7 @@ const Upload = () => {
           </div>
         </div>
       </TabLayout>
-      <Seo templateTitle='Upload' />
+      <Seo templateTitle='작품 업로드' />
       <Footer />
       <BottomBar tab='upload' />
     </>

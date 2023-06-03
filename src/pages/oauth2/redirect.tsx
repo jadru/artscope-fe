@@ -49,7 +49,7 @@ const RedirectOAuth2 = () => {
                 profileImage: res.data.picture || undefined,
               });
               if (res.data.artistStatus === 'NONE') {
-                push('/artist/info').then(() =>
+                push('/profile/info').then(() =>
                   toast.info('작가 정보를 입력해주세요.')
                 );
               } else {
@@ -62,12 +62,12 @@ const RedirectOAuth2 = () => {
         })
         .catch(() => {
           cookies.remove('refreshToken', { path: '/' });
-          push('/login');
+          push('/user/login');
         });
     }
   }, [push, query.token, setUserInfo]);
 
-  return <Seo templateTitle='Google Login'></Seo>;
+  return <Seo templateTitle='구글 로그인'></Seo>;
 };
 
 export default RedirectOAuth2;

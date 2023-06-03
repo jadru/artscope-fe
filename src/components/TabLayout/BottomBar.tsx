@@ -3,7 +3,9 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Cookies } from 'react-cookie';
 import { AiFillHome } from 'react-icons/ai';
 import { BsFillBrushFill, BsFillPersonFill } from 'react-icons/bs';
+import { useRecoilValue } from 'recoil';
 
+import { userNameAndRoleAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
 
 type Props = {
@@ -17,6 +19,7 @@ const BottomBar: FunctionComponent<Props> = ({
   noSpace = false,
 }) => {
   const [isArtist, setIsArtist] = useState(false);
+  const userValue = useRecoilValue(userNameAndRoleAtom);
   const cookies = new Cookies();
   useEffect(() => {
     if (
@@ -53,7 +56,7 @@ const BottomBar: FunctionComponent<Props> = ({
               className={`${tab === 'login' ? 'text-blue-600' : ''} ${
                 dark ? 'bg-transparent md:rounded-r-2xl' : ''
               }`}
-              href='/login'
+              href='/user/login'
             >
               <BsFillPersonFill className='h-5 w-5' />
               <span className='btm-nav-label'>로그인</span>
@@ -75,7 +78,7 @@ const BottomBar: FunctionComponent<Props> = ({
               className={`${tab === 'profile' ? 'text-blue-600' : ''} ${
                 dark ? 'bg-transparent md:rounded-r-2xl' : ''
               }`}
-              href='/profile'
+              href={`/profile/${userValue.username}`}
             >
               <BsFillPersonFill className='h-5 w-5' />
               <span className='btm-nav-label'>프로필</span>
