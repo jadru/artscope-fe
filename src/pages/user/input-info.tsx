@@ -12,14 +12,9 @@ import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 import Title from '@/components/Title';
 
-import jxios from '@/utils/jxios';
+import { profile } from '@/api';
 
-interface ArtistForm {
-  introduction: string;
-  history: string;
-  snsUrl: string;
-  websiteUrl: string;
-}
+import { ArtistForm } from '@/types/artist';
 
 const artistSchema = yup.object().shape({
   introduction: yup.string().required('아티스트 소개를 입력해주세요.'),
@@ -43,10 +38,10 @@ const ArtistInfo = () => {
 
   const onArtistInfoSubmit = (data: ArtistForm) => {
     !isSubmitting &&
-      jxios
-        .post('/api/members/artist', data)
+      profile
+        .input(data)
         .then(() => {
-          push('/profile').then(() =>
+          push('/').then(() =>
             toast.success('아티스트 정보가 입력되었습니다.')
           );
         })

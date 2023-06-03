@@ -13,7 +13,7 @@ import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 
-import { artworkList } from '@/api/artwork';
+import { artwork } from '@/api/artwork';
 
 import { ArtworkType } from '@/types';
 
@@ -24,7 +24,7 @@ export default function Artwork() {
   const { data, isFetchingNextPage, fetchNextPage, status } = useInfiniteQuery(
     ['artworkList'],
     async ({ pageParam = 0 }) => {
-      return await artworkList(
+      return await artwork.list(
         {
           size: OFFSET,
           page: pageParam,
