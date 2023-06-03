@@ -14,6 +14,8 @@ export default function handler(request: NextRequest) {
 
     const thumbnail = searchParams.get('thumbnail')?.slice(0, 100);
 
+    const name = searchParams.get('name')?.slice(0, 15);
+
     return new ImageResponse(
       (
         <div
@@ -29,31 +31,28 @@ export default function handler(request: NextRequest) {
             letterSpacing: -2,
             fontWeight: 700,
             textAlign: 'center',
+            wordBreak: 'keep-all',
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            tw='w-full overflow-hidden object-cover opacity-30'
+            tw='absolute top-0 h-full min-w-full min-h-full overflow-hidden object-cover opacity-30'
             alt=''
             src={
-              NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + thumbnail + '?w=800&f=webp'
+              NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + thumbnail + '?w=600&f=webp'
             }
           />
 
-          <div
-            style={{
-              color: 'black',
-              padding: '18px',
-              position: 'absolute',
-            }}
-          >
-            {title}
-          </div>
+          <p tw='m-0 p-4'>{title}</p>
+          <p tw='text-5xl m-0'>{name}</p>
+          <p tw='absolute bottom-0 text-4xl px-6 py-3 bg-black/50 rounded-3xl text-white'>
+            Artscope
+          </p>
         </div>
       ),
       {
-        width: 1200,
-        height: 630,
+        width: 800,
+        height: 800,
       }
     );
     // eslint-disable-next-line
