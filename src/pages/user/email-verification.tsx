@@ -16,10 +16,7 @@ const EmailVerificationPage = () => {
           <br />
           이메일 검증
         </Title>
-        <p className='text-center'>
-          이메일 앱을 열어 이메일을 확인해주세요. <br /> 이메일이 오지 않는다면
-          5분 후 다시 회원가입을 해주세요.
-        </p>
+        <p className='text-center'>이메일 앱을 열어 이메일을 확인해주세요.</p>
       </TabLayout>
       <BottomBar tab='profile' />
       <Footer />

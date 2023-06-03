@@ -61,20 +61,75 @@ export const NavBar: React.FC<Props> = ({
   };
 
   return (
-    <div
-      className={`min-h-14 navbar fixed z-50 h-24 flex-col backdrop-blur-xl dark:bg-dark/90 md:h-14 md:flex-row ${
-        !dark ? 'bg-white/80' : 'bg-black/90 text-gray-200 dark:bg-black/90'
-      } ${transparent ? 'bg-transparent' : ''} ${className}`}
-    >
-      <div className='navbar-start w-full md:w-1/2'>
-        <Link
-          className='btn-ghost btn px-2 text-left text-2xl font-bold normal-case'
-          href='/'
-        >
-          Artscope
-        </Link>
+    <>
+      <div
+        className={`min-h-14 navbar z-50 h-14 bg-white/80 backdrop-blur-xl dark:bg-dark/80 lg:fixed ${className}`}
+      >
+        <div className='navbar-start w-full md:w-1/2'>
+          <Link
+            className='btn-ghost btn px-2 text-left text-2xl font-bold normal-case'
+            href='/'
+          >
+            Artscope
+          </Link>
+        </div>
+        <div className='navbar-end space-x-2'>
+          {userValue.role ? (
+            <>
+              <Link
+                href='/upload'
+                className='btn-ghost btn hidden lg:inline-flex'
+              >
+                업로드
+                <IoCloudUploadSharp className='ml-2 inline-block h-5 w-5 stroke-current' />
+              </Link>
+              <div className='dropdown-end dropdown hidden lg:inline-block'>
+                <label tabIndex={0} className='btn-ghost btn-circle avatar btn'>
+                  <div className='w-10 rounded-full'>
+                    {userValue.profileImage ? (
+                      <Image
+                        src={userValue.profileImage}
+                        width='40'
+                        height='40'
+                        alt='profile image'
+                      />
+                    ) : (
+                      <IoPersonCircleOutline className='h-10 w-10 rounded-full' />
+                    )}
+                  </div>
+                </label>
+                <ul
+                  tabIndex={0}
+                  className='dropdown-content menu rounded-box menu-compact w-52 bg-base-100 p-2 shadow'
+                >
+                  <li>
+                    <Link
+                      className='justify-between'
+                      href={`/profile/${userValue.username}`}
+                    >
+                      프로필
+                    </Link>
+                  </li>
+                  <li>
+                    <button onClick={handleLogout}>로그아웃</button>
+                  </li>
+                </ul>
+              </div>
+            </>
+          ) : (
+            <ul className='menu menu-horizontal hidden px-1 lg:inline-block'>
+              <Link href='/user/login' className='btn-ghost btn'>
+                로그인
+              </Link>
+            </ul>
+          )}
+        </div>
       </div>
-      <div className='navbar-center w-full space-x-2.5 px-2 md:w-auto'>
+      <div
+        className={`min-h-14 navbar sticky top-0 z-50 flex h-12 w-full items-center justify-start space-x-2.5 px-4 backdrop-blur-xl dark:bg-dark/90 lg:fixed lg:left-1/2 lg:w-auto lg:translate-x-[-50%] lg:bg-transparent lg:backdrop-blur-none ${
+          !dark ? 'bg-white/80' : 'bg-black/90 text-gray-200 dark:bg-black/90'
+        } ${transparent ? 'bg-transparent' : ''} ${className}`}
+      >
         {Menus.map((menu) => (
           <Link
             href={menu.href}
@@ -87,57 +142,6 @@ export const NavBar: React.FC<Props> = ({
           </Link>
         ))}
       </div>
-      <div className='navbar-end space-x-2'>
-        {userValue.role ? (
-          <>
-            <Link
-              href='/upload'
-              className='btn-ghost btn hidden lg:inline-flex'
-            >
-              업로드
-              <IoCloudUploadSharp className='ml-2 inline-block h-5 w-5 stroke-current' />
-            </Link>
-            <div className='dropdown-end dropdown hidden lg:inline-block'>
-              <label tabIndex={0} className='btn-ghost btn-circle avatar btn'>
-                <div className='w-10 rounded-full'>
-                  {userValue.profileImage ? (
-                    <Image
-                      src={userValue.profileImage}
-                      width='40'
-                      height='40'
-                      alt='profile image'
-                    />
-                  ) : (
-                    <IoPersonCircleOutline className='h-10 w-10 rounded-full' />
-                  )}
-                </div>
-              </label>
-              <ul
-                tabIndex={0}
-                className='dropdown-content menu rounded-box menu-compact w-52 bg-base-100 p-2 shadow'
-              >
-                <li>
-                  <Link
-                    className='justify-between'
-                    href={`/profile/${userValue.username}`}
-                  >
-                    프로필
-                  </Link>
-                </li>
-                <li>
-                  <button onClick={handleLogout}>로그아웃</button>
-                </li>
-              </ul>
-            </div>
-          </>
-        ) : (
-          <ul className='menu menu-horizontal hidden px-1 lg:inline-block'>
-            <Link href='/user/login' className='btn-ghost btn'>
-              로그인
-            </Link>
-          </ul>
-        )}
-      </div>
-    </div>
+    </>
   );
 };

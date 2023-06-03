@@ -63,7 +63,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         }}
       />
       <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
+        <div className='bg-white dark:bg-dark'>
+          <Component {...pageProps} />
+        </div>
       </QueryClientProvider>
     </RecoilRoot>
   );
