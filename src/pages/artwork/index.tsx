@@ -69,7 +69,7 @@ export default function Artwork() {
                     <Link
                       href={'/artwork/' + aw.artwork.id}
                       key={aw.artwork.id}
-                      className='group relative flex h-auto w-full cursor-pointer flex-col justify-center overflow-hidden border-2 border-transparent bg-base-100 text-center focus:border-black'
+                      className='group relative flex h-auto w-full cursor-pointer flex-col justify-center overflow-hidden border-2 border-transparent bg-base-100 text-center focus:border-black dark:bg-transparent'
                     >
                       {aw.artwork.thumbnail && (
                         <div className='m-0 grid w-full justify-items-stretch p-0'>
