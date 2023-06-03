@@ -35,18 +35,14 @@ export default function handler(request: NextRequest) {
           <img
             tw='w-full overflow-hidden object-cover opacity-30'
             alt=''
-            src={NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + thumbnail}
+            src={
+              NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + thumbnail + '?w=800&f=webp'
+            }
           />
 
           <div
             style={{
-              backgroundImage:
-                'linear-gradient(90deg, rgb(121, 40, 202), rgb(255, 0, 128))',
-              backgroundClip: 'text',
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              '-webkit-background-clip': 'text',
-              color: 'transparent',
+              color: 'black',
               padding: '18px',
               position: 'absolute',
             }}

@@ -11,9 +11,8 @@ import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 
-import { NEXT_PUBLIC_API_URL } from '@/constant/env';
+import { profile } from '@/api';
 import { isTokenLoadingAtom, userNameAndRoleAtom } from '@/states/atom';
-import jxios from '@/utils/jxios';
 
 import { generalProfileApiType } from '@/types';
 
@@ -21,9 +20,7 @@ export const getServerSideProps: GetServerSideProps<{
   data: generalProfileApiType;
 }> = async ({ params }) => {
   if (!params?.slug) return { notFound: true };
-  const { data, status } = await jxios.get(
-    `${NEXT_PUBLIC_API_URL}/api/members/${params.slug[0]}`
-  );
+  const { data, status } = await profile.get(params.slug as string);
   if (!data || status === 400) return { notFound: true };
   return { props: { data } };
 };
