@@ -62,9 +62,9 @@ export const NavBar: React.FC<Props> = ({
 
   return (
     <div
-      className={`min-h-14 navbar fixed z-50 h-24 flex-col border-b md:h-14 md:flex-row ${
-        !dark ? 'bg-white' : 'bg-black text-gray-200'
-      } ${transparent ? 'bg-transparent' : 'dark:bg-dark/70'} ${className}`}
+      className={`min-h-14 navbar fixed z-50 h-24 flex-col border-b backdrop-blur-xl dark:bg-dark/90 md:h-14 md:flex-row ${
+        !dark ? 'bg-white/80' : 'bg-black/90 text-gray-200 dark:bg-black/90'
+      } ${transparent ? 'bg-transparent' : ''} ${className}`}
     >
       <div className='navbar-start w-full md:w-1/2'>
         <Link

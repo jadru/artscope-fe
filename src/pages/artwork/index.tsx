@@ -24,13 +24,12 @@ export default function Artwork() {
   const { data, isFetchingNextPage, fetchNextPage, status } = useInfiniteQuery(
     ['artworkList'],
     async ({ pageParam = 0 }) => {
-      return await artwork.list(
-        {
+      return await artwork
+        .list({
           size: OFFSET,
           page: pageParam,
-        },
-        { withCredentials: true }
-      );
+        })
+        .then((res) => res.data);
     },
     {
       getNextPageParam: (lastPage) =>
@@ -81,7 +80,7 @@ export default function Artwork() {
                             height={400}
                             placeholder='blur' // 추가
                             blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==' // 추가
-                            className='h-[100vw] w-full cursor-pointer object-cover md:h-[50vw] lg:h-[33vw] xl:h-[25vw] 2xl:h-[20vw]'
+                            className='h-[60vw] w-full cursor-pointer object-cover md:h-[30vw] lg:h-[23vw] xl:h-[15vw] 2xl:h-[10vw]'
                           />
                         </div>
                       )}
