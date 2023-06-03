@@ -101,7 +101,16 @@ export default function Seo(props: SeoProps) {
       ))}
       <meta name='msapplication-TileColor' content={meta.themeColor} />
       <meta name='msapplication-config' content='/favicon/browserconfig.xml' />
-      <meta name='theme-color' content={meta.themeColor} />
+      <meta
+        name='theme-color'
+        content='#FFFFFF'
+        media='(prefers-color-scheme: light)'
+      />
+      <meta
+        name='theme-color'
+        content='#222222'
+        media='(prefers-color-scheme: dark)'
+      />
     </Head>
   );
 }
