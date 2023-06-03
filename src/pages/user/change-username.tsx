@@ -17,6 +17,7 @@ import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 import Title from '@/components/Title';
 
+import { auth } from '@/api';
 import { userNameAndRoleAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
 
@@ -49,18 +50,12 @@ const ChangeUsernamePage = () => {
   });
 
   const onSubmit = (data: usernameChangeInputs) => {
-    jxios.get('/api/members/username/' + data.newUsername).then((res) => {
+    auth.username(data.newUsername).then((res) => {
       if (res.status === 400) {
         toast.warn(res.data);
       } else if (res.status === 200) {
-        jxios
-          .put(
-            '/api/members/' + firstUsernameValue.username + '/username',
-            null,
-            {
-              params: { newUsername: data.newUsername },
-            }
-          )
+        auth
+          .changeusername(firstUsernameValue.username, data.newUsername)
           .then((res) => {
             if (res.data.success === false) {
               toast.error(res.data.message);

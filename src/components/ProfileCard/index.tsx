@@ -78,6 +78,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       jxios.delete('/api/members/' + profileData?.username).then(() => {
         cookies.remove('refreshToken', { path: '/' });
         jxios.defaults.headers.common['Authorization'] = undefined;
+        setUserValue({
+          username: undefined,
+          role: undefined,
+          profileImage: undefined,
+        });
         push('/').then(() => toast.success('회원 탈퇴 되었습니다.'));
       });
     } else {

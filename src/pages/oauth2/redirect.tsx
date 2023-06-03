@@ -7,6 +7,7 @@ import { useSetRecoilState } from 'recoil';
 
 import Seo from '@/components/Seo';
 
+import { auth } from '@/api';
 import { userNameAndRoleAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
 
@@ -16,13 +17,8 @@ const RedirectOAuth2 = () => {
   useEffect(() => {
     if (query.token) {
       const cookies = new Cookies();
-      jxios
-        .post('/api/refresh', query.token, {
-          data: cookies.get('refreshToken'),
-          headers: {
-            'Content-Type': 'text/plain',
-          },
-        })
+      auth
+        .refresh(cookies)
         .then(async (res) => {
           const { accessToken, refreshToken } = res.data;
           jxios.defaults.headers.common[

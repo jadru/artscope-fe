@@ -14,7 +14,7 @@ import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 import Title from '@/components/Title';
 
-import jxios from '@/utils/jxios';
+import { auth } from '@/api';
 
 const loginSchema = yup.object().shape({
   username: yup.string().required('아이디를 입력하세요.'),
@@ -37,7 +37,7 @@ const loginSchema = yup.object().shape({
     .required('약관에 동의해주세요.'),
 });
 
-interface loginInputs {
+export interface SignupInputs {
   username: string;
   password: string;
   email: string;
@@ -53,36 +53,32 @@ const Signup = () => {
     setError,
     getValues,
     formState: { errors, isSubmitting },
-  } = useForm<loginInputs>({
+  } = useForm<SignupInputs>({
     resolver: yupResolver(loginSchema),
   });
   const { push } = useRouter();
   const [emailCheck, setEmailCheck] = React.useState<boolean>(false);
   const [usernameCheck, setUsernameCheck] = React.useState<boolean>(false);
 
-  const onSubmit: SubmitHandler<loginInputs> = (data) =>
+  const onSubmit: SubmitHandler<SignupInputs> = (data) =>
     !isSubmitting &&
     emailCheck &&
     usernameCheck &&
     delete data.passwordCheck &&
     delete data.agree &&
-    jxios.post('/api/members', data).then(() => {
-      jxios
-        .post('/api/mail/authenticate', '', {
-          params: { email: data.email },
-        })
-        .then(() => {
-          push('/user/email-verification').then(() =>
-            toast.success(data.email + '로 보낸 이메일 인증을 완료해주세요.')
-          );
-        });
+    auth.signup(data).then(() => {
+      auth.emailcheck(data.email).then(() => {
+        push('/user/email-verification').then(() =>
+          toast.success(data.email + '로 보낸 이메일 인증을 완료해주세요.')
+        );
+      });
     });
 
   const checkEmailDuplication = () => {
     const regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
     if (regex.test(getValues('email'))) {
-      jxios
-        .get(`/api/members/email/${getValues('email')}`)
+      auth
+        .checkemail(getValues('email'))
         .then((response) => {
           if (response.status === 200) {
             setEmailCheck(true);
@@ -107,8 +103,8 @@ const Signup = () => {
   const checkUsernameDuplication = () => {
     const regex = new RegExp('^[a-zA-Z0-9]{4,12}$');
     if (regex.test(getValues('username'))) {
-      jxios
-        .get(`/api/members/username/${getValues('username')}`)
+      auth
+        .username(getValues('username'))
         .then((response) => {
           if (response.status === 200) {
             setUsernameCheck(true);
