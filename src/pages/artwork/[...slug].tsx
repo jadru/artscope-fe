@@ -187,7 +187,9 @@ const Slug = ({
           '/api/og-image?title=' +
           data.artwork.title +
           '&thumbnail=' +
-          data.artwork.thumbnail.mediaUrl
+          data.artwork.thumbnail.mediaUrl +
+          '&name=' +
+          data.artwork.authorName
         }
         tag={`${data.artwork.authorName}, ${data.artwork.tags.toString()}`}
       />
