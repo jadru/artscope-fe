@@ -10,7 +10,7 @@ export default function handler(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const title = searchParams.get('title')?.slice(0, 100);
+    const title = searchParams.get('title')?.slice(0, 27);
 
     const thumbnail = searchParams.get('thumbnail')?.slice(0, 100);
 
@@ -23,31 +23,28 @@ export default function handler(request: NextRequest) {
             display: 'flex',
             height: '100%',
             width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
             flexDirection: 'column',
-            backgroundImage: 'linear-gradient(to bottom, #dbf4ff, #fff1f1)',
+            backgroundColor: '#FFF',
             fontSize: 65,
-            letterSpacing: -2,
+            lineHeight: 1.02,
+            letterSpacing: 0,
             fontWeight: 700,
-            textAlign: 'center',
+            textAlign: 'left',
+            alignItems: 'center',
             wordBreak: 'keep-all',
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            tw='absolute top-0 h-full min-w-full min-h-full overflow-hidden object-cover opacity-30'
+            tw='absolute bottom-12 w-5/6 max-h-full max-w-full overflow-hidden object-contain rounded-3xl border-4'
             alt=''
             src={
               NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + thumbnail + '?w=600&f=webp'
             }
           />
 
-          <p tw='m-0 p-4'>{title}</p>
-          <p tw='text-5xl m-0'>{name}</p>
-          <p tw='absolute bottom-0 text-4xl px-6 py-3 bg-black/50 rounded-3xl text-white'>
-            Artscope
-          </p>
+          <p tw='top-0 m-0 px-16 pt-12 pb-6 w-full'>{title}</p>
+          <p tw='px-16 text-5xl m-0 w-full'>{name}</p>
         </div>
       ),
       {
