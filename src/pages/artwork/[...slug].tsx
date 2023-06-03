@@ -12,7 +12,6 @@ import {
 } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
-import useSWR from 'swr';
 
 import Editor from '@/components/Editor';
 import ReadOnlyEditor from '@/components/Editor/ReadOnlyEditor';
@@ -23,8 +22,8 @@ import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 
+import { artwork, profile } from '@/api';
 import {
-  NEXT_PUBLIC_API_URL,
   NEXT_PUBLIC_MEDIA_STORAGE_URL,
   NEXT_PUBLIC_ROOT_URL,
 } from '@/constant/env';
@@ -41,6 +40,7 @@ export const getServerSideProps: GetServerSideProps<{
   data: ArtworkType;
   isEditMode: boolean;
   likedMembers: likeMemberApiResponseType;
+  profileData: profileApiType;
 }> = async ({ params }) => {
   if (!params?.slug) {
     return {
@@ -48,15 +48,14 @@ export const getServerSideProps: GetServerSideProps<{
     };
   }
   const id = params.slug[0];
-  const response = await jxios
-    .get(NEXT_PUBLIC_API_URL + '/api/artworks/' + id)
-    .then((res) => res);
+  const response = await artwork.detail(id).then((res) => res);
   const data: ArtworkType = response.data;
 
-  const likeResponse = await jxios
-    .get(NEXT_PUBLIC_API_URL + '/api/artworks/' + id + '/likes')
-    .then((res) => res);
+  const likeResponse = await artwork.likeMembers(id).then((res) => res);
 
+  const profileData = await profile
+    .get(data.artwork.authorUsername)
+    .then((res) => res.data);
   const likedMembers: likeMemberApiResponseType = likeResponse.data;
 
   if (!data) {
@@ -72,6 +71,7 @@ export const getServerSideProps: GetServerSideProps<{
       data,
       isEditMode,
       likedMembers,
+      profileData,
     },
   };
 };
@@ -80,24 +80,19 @@ const Slug = ({
   data,
   isEditMode,
   likedMembers,
+  profileData,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const slug = (router.query.slug as string[]) || [];
   const isTokenRefreshing = useRecoilValue(isTokenLoadingAtom);
   const likeButtonTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const usernameAndrole = useRecoilValue(userNameAndRoleAtom);
-  const fetcher = (url: string) => jxios.get(url).then((res) => res.data);
-  const { data: profileData } = useSWR<profileApiType>(
-    slug && data ? '/api/members/' + data?.artwork.authorUsername : undefined,
-    fetcher
-  );
 
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isFirstLike, setFirstLike] = useState<boolean>(false);
   const [likeCount, setLikeCount] = useState<number>(data.artwork.likes);
 
-  const [isEdit, setIsEdit] = useState<boolean>(data.isLike);
-  // eslint-disable-next-line
+  const [isEdit, setIsEdit] = useState<boolean>(slug[1] === 'edit');
   const [editMode, setEditMode] = useState<boolean>(false);
 
   useEffect(() => {
@@ -144,12 +139,10 @@ const Slug = ({
 
   useEffect(() => {
     jxios.defaults.headers.common.Authorization &&
-      jxios
-        .get('/api/artworks/' + data.artwork.id + '/member/likes')
-        .then((res) => {
-          setIsLike(Boolean(res.data));
-          setFirstLike(Boolean(res.data));
-        });
+      artwork.isLike(data.artwork.id).then((res) => {
+        setIsLike(Boolean(res.data));
+        setFirstLike(Boolean(res.data));
+      });
   }, [data.artwork.id]);
 
   const onLikeButtonClick = async () => {
@@ -160,15 +153,13 @@ const Slug = ({
       setIsLike((prev) => !prev);
       likeButtonTimeoutRef.current = setTimeout(async () => {
         try {
-          await jxios
-            .post('/api/artworks/' + data.artwork.id + '/like')
-            .then((response) => {
-              if (response.status === 200) {
-                setIsLike(true);
-              } else if (response.status === 204) {
-                setIsLike(false);
-              }
-            });
+          await artwork.like(data.artwork.id).then((response) => {
+            if (response.status === 200) {
+              setIsLike(true);
+            } else if (response.status === 204) {
+              setIsLike(false);
+            }
+          });
         } catch (error) {
           /* empty */
         }
@@ -277,7 +268,10 @@ const Slug = ({
                     {(likeCount <= 0 && '아직 좋아요가 없습니다.') ||
                       (likeCount === 1 &&
                         (likedMembers.memberUsernames[0]
-                          ? likedMembers.memberUsernames[0]
+                          ? likedMembers.memberUsernames[0] ===
+                            usernameAndrole.username
+                            ? likedMembers.memberUsernames[1]
+                            : likedMembers.memberUsernames[0]
                           : isLike
                           ? usernameAndrole.username
                           : 'user') + '님이 좋아합니다.') ||
@@ -316,13 +310,11 @@ const Slug = ({
                         className='btn-warning btn'
                         onClick={() => {
                           confirm('정말 삭제하시겠습니까?') &&
-                            jxios
-                              .delete('/api/artworks/' + data.artwork.id)
-                              .then(() => {
-                                router.push('/').then(() => {
-                                  toast.success('작품이 삭제되었습니다.');
-                                });
+                            artwork.delete(data.artwork.id).then(() => {
+                              router.push('/').then(() => {
+                                toast.success('작품이 삭제되었습니다.');
                               });
+                            });
                         }}
                       >
                         <AiOutlineDelete className='h-6 w-6' />

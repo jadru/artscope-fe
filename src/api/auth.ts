@@ -1,5 +1,6 @@
 import { Cookies } from 'react-cookie';
 
+import { SignupInputs } from '@/pages/user/signup';
 import jxios from '@/utils/jxios';
 
 const refreshToken = async (cookies: Cookies) =>
@@ -18,8 +19,33 @@ const validateEmail = async (code: string) =>
     params: { code },
   });
 
+const checkUsername = (username: string) =>
+  jxios.get('/api/members/username/' + username);
+
+const checkEmail = (email: string) => jxios.get('/api/members/email/' + email);
+
+const changeNewUsername = (
+  currentUsername: string | undefined,
+  newUsername: string
+) =>
+  jxios.put('/api/members/' + currentUsername + '/username', null, {
+    params: { newUsername },
+  });
+
+const signup = (data: SignupInputs) => jxios.post('/api/members', data);
+
+const emailCheck = (email: string) =>
+  jxios.post('/api/mail/authenticate', null, {
+    params: { email },
+  });
+
 export const auth = {
   refresh: refreshToken,
   login: loginWithIDPW,
   email: validateEmail,
+  username: checkUsername,
+  changeusername: changeNewUsername,
+  signup,
+  emailcheck: emailCheck,
+  checkemail: checkEmail,
 };

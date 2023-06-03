@@ -20,6 +20,7 @@ import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 import Title from '@/components/Title';
 
+import { auth, profile } from '@/api';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import { userNameAndRoleAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
@@ -53,8 +54,8 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<loginInputs> = async (data) =>
     !isSubmitting &&
-    (await jxios
-      .post('/api/login', data)
+    (await auth
+      .login(data)
       .then(async (res) => {
         const { accessToken, refreshToken } = res.data;
         const decodedAccessToken: { exp: number; sub: string; auth: string } =
@@ -69,8 +70,8 @@ const Login = () => {
           'Authorization'
         ] = `Bearer ${accessToken}`;
 
-        await jxios
-          .get('/api/members/profile')
+        await profile
+          .my()
           .then(async (res) => {
             await setUserInfo({
               username: decodedAccessToken.sub,

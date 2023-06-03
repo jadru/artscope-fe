@@ -62,7 +62,7 @@ export const NavBar: React.FC<Props> = ({
 
   return (
     <div
-      className={`min-h-14 navbar fixed z-50 h-24 flex-col border-b backdrop-blur-xl dark:bg-dark/90 md:h-14 md:flex-row ${
+      className={`min-h-14 navbar fixed z-50 h-24 flex-col backdrop-blur-xl dark:bg-dark/90 md:h-14 md:flex-row ${
         !dark ? 'bg-white/80' : 'bg-black/90 text-gray-200 dark:bg-black/90'
       } ${transparent ? 'bg-transparent' : ''} ${className}`}
     >
