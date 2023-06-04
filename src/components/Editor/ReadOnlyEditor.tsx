@@ -6,7 +6,10 @@ import React from 'react';
 
 const ReadOnlyEditor = ({ data }: { data: string }) => {
   const editor = useEditor({
-    content: `${data}`,
+    content: `${data
+      .replace('h1', 'h2')
+      .replace('h2', 'h3')
+      .replace('h3', 'h4')}`,
     extensions: [StarterKit, TextStyle, ListItem],
     editorProps: {
       attributes: {

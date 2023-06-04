@@ -18,6 +18,8 @@ const likeMembers = (id: string) =>
 const likeMembersAndArtworks = (id: number) =>
   jxios.get(`/api/artworks/${id}/member/likes`);
 const likeArtwork = (id: number) => jxios.post(`/api/artworks/${id}/like`);
+const artworkSearch = (keyword: string, page?: ArtworkListParams) =>
+  jxios.get(`/api/artworks/search`, { params: { keyword, ...page } });
 export const artwork = {
   list: artworkList,
   delete: artworkDelete,
@@ -25,4 +27,5 @@ export const artwork = {
   likeMembers: likeMembers,
   isLike: likeMembersAndArtworks,
   like: likeArtwork,
+  search: artworkSearch,
 };
