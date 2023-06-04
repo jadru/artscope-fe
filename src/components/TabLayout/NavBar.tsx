@@ -21,20 +21,24 @@ interface Props {
 
 const Menus = [
   {
-    label: '작품',
-    href: '/artwork',
+    label: '검색',
+    href: '/search',
   },
+  // {
+  //   label: '작가',
+  //   href: '/artists',
+  // },
+  // {
+  //   label: '전시',
+  //   href: '/exhibitions',
+  // },
+  // {
+  //   label: '커뮤니티',
+  //   href: '/community',
+  // },
   {
-    label: '작가',
-    href: '/artists',
-  },
-  {
-    label: '전시',
-    href: '/exhibitions',
-  },
-  {
-    label: '커뮤니티',
-    href: '/community',
+    label: '블로그',
+    href: '/blog',
   },
 ];
 
@@ -63,11 +67,11 @@ export const NavBar: React.FC<Props> = ({
   return (
     <>
       <div
-        className={`min-h-14 navbar z-50 h-14 bg-white/80 backdrop-blur-xl dark:bg-dark/80 lg:fixed ${className}`}
+        className={`navbar min-h-12 z-50 h-12 overflow-y-visible bg-white/80 pb-0 backdrop-blur-xl lg:min-h-16 dark:bg-dark/80 lg:fixed lg:h-16 lg:pb-2 ${className}`}
       >
-        <div className='navbar-start w-full md:w-1/2'>
+        <div className='navbar-start w-full items-center md:w-1/2'>
           <Link
-            className='btn-ghost btn px-2 text-left text-2xl font-bold normal-case'
+            className='link px-2 text-left text-2xl font-bold normal-case no-underline hover:underline'
             href='/'
           >
             Artscope
