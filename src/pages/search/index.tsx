@@ -28,7 +28,6 @@ const SearchPage = () => {
     fetchNextPage,
     remove,
     status,
-    hasPreviousPage,
     fetchPreviousPage,
   } = useInfiniteQuery(
     ['searchList'],
@@ -42,7 +41,7 @@ const SearchPage = () => {
     },
     {
       getNextPageParam: (lastPage) =>
-        lastPage.pageInfo.page <= lastPage.pageInfo.totalPages
+        lastPage.pageInfo.page + 1 <= lastPage.pageInfo.totalPages
           ? lastPage.pageInfo.page + 1
           : undefined,
       getPreviousPageParam: (firstPage) =>
@@ -74,9 +73,9 @@ const SearchPage = () => {
     if (e.key.match('Enter')) callApi();
   };
 
-  const callApi = () => {
-    remove();
-    hasPreviousPage && fetchPreviousPage();
+  const callApi = async () => {
+    await remove();
+    await fetchPreviousPage();
   };
 
   return (
@@ -92,7 +91,7 @@ const SearchPage = () => {
                 id='keyword'
                 type='text'
                 placeholder='작품명, 작가명 등'
-                className='join-item input'
+                className='input join-item'
                 onKeyDown={handleSearchInput}
               />
             </div>
