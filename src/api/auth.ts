@@ -1,11 +1,9 @@
-import { Cookies } from 'react-cookie';
-
 import { SignupInputs } from '@/pages/user/signup';
 import jxios from '@/utils/jxios';
 
-const refreshToken = async (cookies: Cookies) =>
-  jxios.post('/api/refresh', cookies.get('refreshToken'), {
-    data: cookies.get('refreshToken'),
+const refreshToken = async (refreshToken: string) =>
+  jxios.post('/api/refresh', refreshToken, {
+    data: refreshToken,
     headers: {
       'Content-Type': 'text/plain',
     },

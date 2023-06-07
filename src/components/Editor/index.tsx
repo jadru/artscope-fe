@@ -363,7 +363,7 @@ const Editor = ({
         >
           {isUpload ? (
             <>
-              <span className='loading loading-spinner'></span>업로드중
+              <span className='loading loading-spinner'></span> 업로딩
             </>
           ) : (
             '저장하기'

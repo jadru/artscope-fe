@@ -60,19 +60,20 @@ const Signup = () => {
   const [emailCheck, setEmailCheck] = React.useState<boolean>(false);
   const [usernameCheck, setUsernameCheck] = React.useState<boolean>(false);
 
-  const onSubmit: SubmitHandler<SignupInputs> = (data) =>
-    !isSubmitting &&
-    emailCheck &&
-    usernameCheck &&
-    delete data.passwordCheck &&
-    delete data.agree &&
-    auth.signup(data).then(() => {
-      auth.emailcheck(data.email).then(() => {
-        push('/user/email-verification').then(() =>
-          toast.success(data.email + '로 보낸 이메일 인증을 완료해주세요.')
-        );
+  const onSubmit: SubmitHandler<SignupInputs> = async (data) => {
+    if (!isSubmitting && emailCheck && usernameCheck) {
+      delete data.passwordCheck;
+      delete data.agree;
+      clearErrors();
+      await auth.signup(data).then(async () => {
+        await auth.emailcheck(data.email).then(async () => {
+          await push('/user/email-verification').then(() =>
+            toast.success(data.email + '로 보낸 이메일 인증을 완료해주세요.')
+          );
+        });
       });
-    });
+    }
+  };
 
   const checkEmailDuplication = () => {
     const regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
@@ -257,8 +258,18 @@ const Signup = () => {
               {errors.agree ? errors.agree.message : ''}
             </ErrorMessageInput>
           </div>
-          <button className='btn-primary btn-wide btn mt-4' type='submit'>
-            회원가입
+          <button
+            className='btn-primary btn-wide btn mt-4'
+            type='submit'
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <span className='loading loading-spinner'></span> 업로딩
+              </>
+            ) : (
+              '회원가입'
+            )}
           </button>
         </form>
       </TabLayout>

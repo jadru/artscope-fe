@@ -18,7 +18,7 @@ const RedirectOAuth2 = () => {
     if (query.token) {
       const cookies = new Cookies();
       auth
-        .refresh(cookies)
+        .refresh(query.token as string)
         .then(async (res) => {
           const { accessToken, refreshToken } = res.data;
           jxios.defaults.headers.common[
