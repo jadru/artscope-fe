@@ -14,8 +14,8 @@ import TabLayout from '@/components/TabLayout';
 import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 
+import { artwork } from '@/api';
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
-import jxios from '@/utils/jxios';
 
 import ArtistAnimation from '../../public/animation/141993-spin-sobky-like-siri.json';
 
@@ -28,18 +28,16 @@ export default function Artwork() {
   const { data, isFetchingNextPage, fetchNextPage, status } = useInfiniteQuery(
     ['artworkList'],
     async ({ pageParam = 0 }) => {
-      const response = await jxios.get('/api/artworks', {
-        params: {
+      return await artwork
+        .list({
           size: OFFSET,
           page: pageParam,
-        },
-        withCredentials: true,
-      });
-      return response.data;
+        })
+        .then((res) => res.data);
     },
     {
       getNextPageParam: (lastPage) =>
-        lastPage.pageInfo.page <= lastPage.pageInfo.totalPages
+        lastPage.pageInfo.page < lastPage.pageInfo.totalPages
           ? lastPage.pageInfo.page + 1
           : undefined,
     }
@@ -51,7 +49,9 @@ export default function Artwork() {
       if (!data) return;
 
       const pageLastIdx = data.pages.length - 1;
-      const isLast = data?.pages[pageLastIdx].isLast;
+      const isLast =
+        data?.pages[pageLastIdx].pageInfo.totalPages ==
+        data?.pages[pageLastIdx].pageInfo.page;
 
       if (!isLast && inView) fetchNextPage();
     }, [inView]);
@@ -61,8 +61,8 @@ export default function Artwork() {
 
   return (
     <>
-      <Seo templateTitle='Artwork' />
-      <NavBar title='ArtPlatform' />
+      <Seo templateTitle='작품 목록' />
+      <NavBar className='border-b-0' />
       <TabLayout classNameChild='' fullWidth top>
         <ResponsiveMasonry
           columnsCountBreakPoints={{
@@ -155,7 +155,7 @@ export default function Artwork() {
                         <Link
                           href='/blog/634d09fd-79f8-4807-a517-17ebd1c45054'
                           key='634d09fd-79f8-4807-a517-17ebd1c45054'
-                          className='from-20% via-60% to-20% group relative flex h-64 cursor-pointer items-center justify-center bg-gradient-to-br from-[#6F38C5] via-[#87A2FB] to-[#ADDDD0] px-0 dark:from-indigo-900 dark:via-cyan-700 dark:to-emerald-600'
+                          className='group relative flex h-64 cursor-pointer items-center justify-center bg-gradient-to-br from-[#6F38C5] from-20% via-[#87A2FB] via-60% to-[#ADDDD0] to-20% px-0 dark:from-indigo-900 dark:via-cyan-700 dark:to-emerald-600'
                         >
                           <Lottie
                             animationData={ArtistAnimation}

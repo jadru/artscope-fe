@@ -19,6 +19,8 @@ const nextConfig = {
     minimumCacheTTL: 60,
   },
 
+  compress: true,
+
   reactStrictMode: false,
   swcMinify: true,
   output: 'standalone',
@@ -28,7 +30,7 @@ const nextConfig = {
   },
 
   // SVGR
-  webpack(config, { isServer }) {
+  webpack(config, { isServer, webpack }) {
     config.module.rules.push(
       {
         test: /\.svg$/i,

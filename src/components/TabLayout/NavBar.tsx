@@ -19,6 +19,29 @@ interface Props {
   transparent?: boolean;
 }
 
+const Menus = [
+  {
+    label: '검색',
+    href: '/search',
+  },
+  // {
+  //   label: '작가',
+  //   href: '/artists',
+  // },
+  // {
+  //   label: '전시',
+  //   href: '/exhibitions',
+  // },
+  // {
+  //   label: '커뮤니티',
+  //   href: '/community',
+  // },
+  {
+    label: '블로그',
+    href: '/blog',
+  },
+];
+
 export const NavBar: React.FC<Props> = ({
   className,
   dark = false,
@@ -27,7 +50,7 @@ export const NavBar: React.FC<Props> = ({
   useAuth();
   const [userValue, setUserValue] = useRecoilState(userNameAndRoleAtom);
   const cookies = new Cookies();
-  const { push } = useRouter();
+  const { push, asPath } = useRouter();
   const handleLogout = () => {
     jxios.post('/api/logout').then(() => {
       cookies.remove('refreshToken', { path: '/' });
@@ -42,79 +65,87 @@ export const NavBar: React.FC<Props> = ({
   };
 
   return (
-    <div
-      className={`navbar min-h-12 fixed z-50 h-12 backdrop-blur ${
-        !dark ? 'bg-white/80' : 'bg-black/50 text-gray-200'
-      } ${transparent ? 'bg-transparent' : 'dark:bg-dark/70'} ${className}`}
-    >
-      <div className='navbar-start' />
-      <div className='navbar-center'>
-        <Link className='btn-ghost btn text-xl font-bold normal-case' href='/'>
-          Artscope
-        </Link>
-      </div>
-      <div className='navbar-end space-x-2'>
-        {userValue.role ? (
-          <>
-            <Link
-              href='https://ad21pifdjli.typeform.com/to/kg4KHrj4'
-              target='_blank'
-              className='btn-ghost btn'
-            >
-              피드백
-            </Link>
-            <Link
-              href='/upload'
-              className='btn-ghost btn hidden lg:inline-flex'
-            >
-              업로드
-              <IoCloudUploadSharp className='ml-2 inline-block h-5 w-5 stroke-current' />
-            </Link>
-            <div className='dropdown-end dropdown hidden lg:inline-block'>
-              <label tabIndex={0} className='btn-ghost btn-circle avatar btn'>
-                <div className='w-10 rounded-full'>
-                  {userValue.profileImage ? (
-                    <Image
-                      src={userValue.profileImage}
-                      width='40'
-                      height='40'
-                      alt='profile image'
-                    />
-                  ) : (
-                    <IoPersonCircleOutline className='h-10 w-10 rounded-full' />
-                  )}
-                </div>
-              </label>
-              <ul
-                tabIndex={0}
-                className='dropdown-content menu rounded-box menu-compact w-52 bg-base-100 p-2 shadow'
+    <>
+      <div
+        className={`navbar min-h-12 z-50 h-12 overflow-y-visible bg-white/80 pb-0 backdrop-blur-xl lg:min-h-16 dark:bg-dark/80 lg:fixed lg:h-16 lg:pb-2 ${className}`}
+      >
+        <div className='navbar-start w-full items-center md:w-1/2'>
+          <Link
+            className='link px-2 text-left text-2xl font-bold normal-case no-underline hover:underline'
+            href='/'
+          >
+            Artscope
+          </Link>
+        </div>
+        <div className='navbar-end space-x-2'>
+          {userValue.role ? (
+            <>
+              <Link
+                href='/upload'
+                className='btn-ghost btn hidden lg:inline-flex'
               >
-                <li>
-                  <Link className='justify-between' href='/profile'>
-                    프로필
-                  </Link>
-                </li>
-                <li>
-                  <button onClick={handleLogout}>로그아웃</button>
-                </li>
-              </ul>
-            </div>
-          </>
-        ) : (
-          <ul className='menu menu-horizontal hidden px-1 lg:inline-block'>
-            <Link
-              href='https://ad21pifdjli.typeform.com/to/kg4KHrj4'
-              className='btn-ghost btn'
-              target='_blank'
-            >
-              피드백
-            </Link>
-            <Link href='/login' className='btn-ghost btn'>
-              로그인
-            </Link>
-          </ul>
-        )}
+                업로드
+                <IoCloudUploadSharp className='ml-2 inline-block h-5 w-5 stroke-current' />
+              </Link>
+              <div className='dropdown-end dropdown hidden lg:inline-block'>
+                <label tabIndex={0} className='btn-ghost btn-circle avatar btn'>
+                  <div className='w-10 rounded-full'>
+                    {userValue.profileImage ? (
+                      <Image
+                        src={userValue.profileImage}
+                        width='40'
+                        height='40'
+                        alt='profile image'
+                      />
+                    ) : (
+                      <IoPersonCircleOutline className='h-10 w-10 rounded-full' />
+                    )}
+                  </div>
+                </label>
+                <ul
+                  tabIndex={0}
+                  className='dropdown-content menu rounded-box menu-compact w-52 bg-base-100 p-2 shadow'
+                >
+                  <li>
+                    <Link
+                      className='justify-between'
+                      href={`/profile/${userValue.username}`}
+                    >
+                      프로필
+                    </Link>
+                  </li>
+                  <li>
+                    <button onClick={handleLogout}>로그아웃</button>
+                  </li>
+                </ul>
+              </div>
+            </>
+          ) : (
+            <ul className='menu menu-horizontal hidden px-1 lg:inline-block'>
+              <Link href='/user/login' className='btn-ghost btn'>
+                로그인
+              </Link>
+            </ul>
+          )}
+        </div>
       </div>
-    </div>
+      <div
+        className={`min-h-14 navbar sticky top-0 z-50 flex h-12 w-full items-center justify-start space-x-2.5 px-4 backdrop-blur-xl dark:bg-dark/90 lg:fixed lg:left-1/2 lg:w-auto lg:translate-x-[-50%] lg:bg-transparent lg:backdrop-blur-none ${
+          !dark ? 'bg-white/80' : 'bg-black/90 text-gray-200 dark:bg-black/90'
+        } ${transparent ? 'bg-transparent' : ''} ${className}`}
+      >
+        {Menus.map((menu) => (
+          <Link
+            href={menu.href}
+            key={menu.label}
+            className={`link text-2xl font-bold ${
+              asPath.startsWith(menu.href) ? 'underline' : 'no-underline'
+            } hover:underline`}
+          >
+            {menu.label}
+          </Link>
+        ))}
+      </div>
+    </>
   );
 };

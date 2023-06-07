@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  @apply bg-white dark:bg-dark;
+}
 @layer base {
   .h0 {
     @apply font-primary text-3xl font-bold md:text-5xl;

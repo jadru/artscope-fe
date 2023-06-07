@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FC } from 'react';
+import React, { FC } from 'react';
 
 interface Props {
   dark?: boolean;
@@ -48,6 +48,14 @@ const Footer: FC<Props> = ({
             }`}
           >
             금샘미술관
+          </Link>{' '}
+          &{' '}
+          <Link
+            href='https://ad21pifdjli.typeform.com/to/kg4KHrj4'
+            target='_blank'
+            className='link'
+          >
+            피드백
           </Link>
         </p>
       </div>

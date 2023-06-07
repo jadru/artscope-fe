@@ -92,23 +92,28 @@ export type profileApiType = {
   email: string;
   picture: string;
   oauthProvider: null | 'google' | 'naver';
-  activated: boolean;
-  artistStatus: artistStatusType;
+  artistStatus: 'NONE' | 'PENDING' | 'APPROVED' | 'REJECTED';
   snsUrl: string;
   websiteUrl: string;
   introduction: string;
   history: string;
-  authrities: roleType[];
+  authrities: ('ROLE_GUEST' | 'ROLE_USER' | 'ROLE_ARTIST' | 'ROLE_ADMIN')[];
   createdTime: Date;
   updatedTime: Date | null;
 };
 
-export type artistStatusType = 'NONE' | 'PENDING' | 'APPROVED' | 'REJECTED';
-export type roleType =
-  | 'ROLE_GUEST'
-  | 'ROLE_USER'
-  | 'ROLE_ARTIST'
-  | 'ROLE_ADMIN';
+export type generalProfileApiType = {
+  artistStatus: 'NONE' | 'PENDING' | 'APPROVED' | 'REJECTED';
+  createdTime: Date;
+  email: string;
+  history: string;
+  introduction: string;
+  name: string;
+  picture: string;
+  snsUrl: string;
+  username: string;
+  websiteUrl: string;
+};
 
 export type profileApiRequestType = {
   email?: string;
