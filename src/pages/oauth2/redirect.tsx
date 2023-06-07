@@ -7,6 +7,7 @@ import { useSetRecoilState } from 'recoil';
 
 import Seo from '@/components/Seo';
 
+import { auth } from '@/api';
 import { userNameAndRoleAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
 
@@ -16,13 +17,8 @@ const RedirectOAuth2 = () => {
   useEffect(() => {
     if (query.token) {
       const cookies = new Cookies();
-      jxios
-        .post('/api/refresh', query.token, {
-          data: cookies.get('refreshToken'),
-          headers: {
-            'Content-Type': 'text/plain',
-          },
-        })
+      auth
+        .refresh(query.token as string)
         .then(async (res) => {
           const { accessToken, refreshToken } = res.data;
           jxios.defaults.headers.common[
@@ -49,7 +45,7 @@ const RedirectOAuth2 = () => {
                 profileImage: res.data.picture || undefined,
               });
               if (res.data.artistStatus === 'NONE') {
-                push('/artist/info').then(() =>
+                push('/user/input-info').then(() =>
                   toast.info('작가 정보를 입력해주세요.')
                 );
               } else {
@@ -62,12 +58,12 @@ const RedirectOAuth2 = () => {
         })
         .catch(() => {
           cookies.remove('refreshToken', { path: '/' });
-          push('/login');
+          push('/user/login');
         });
     }
   }, [push, query.token, setUserInfo]);
 
-  return <Seo templateTitle='Google Login'></Seo>;
+  return <Seo templateTitle='구글 로그인'></Seo>;
 };
 
 export default RedirectOAuth2;

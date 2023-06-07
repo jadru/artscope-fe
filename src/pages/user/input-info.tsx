@@ -12,14 +12,9 @@ import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 import Title from '@/components/Title';
 
-import jxios from '@/utils/jxios';
+import { profile } from '@/api';
 
-interface ArtistForm {
-  introduction: string;
-  history: string;
-  snsUrl: string;
-  websiteUrl: string;
-}
+import { ArtistForm } from '@/types/artist';
 
 const artistSchema = yup.object().shape({
   introduction: yup.string().required('아티스트 소개를 입력해주세요.'),
@@ -43,10 +38,10 @@ const ArtistInfo = () => {
 
   const onArtistInfoSubmit = (data: ArtistForm) => {
     !isSubmitting &&
-      jxios
-        .post('/api/members/artist', data)
+      profile
+        .input(data)
         .then(() => {
-          push('/profile').then(() =>
+          push('/').then(() =>
             toast.success('아티스트 정보가 입력되었습니다.')
           );
         })
@@ -71,7 +66,7 @@ const ArtistInfo = () => {
             </label>
             <input
               type='text'
-              placeholder='아티스트 소개를 입력해주세요'
+              placeholder='OO에서 활동하는 OO 아티스트입니다.'
               className='input-bordered input w-full'
               {...register('introduction')}
             />
@@ -84,7 +79,7 @@ const ArtistInfo = () => {
               <span className='label-text'>활동 정보</span>
             </label>
             <textarea
-              placeholder='활동 정보를 입력해주세요'
+              placeholder='OO전시 참여, OO상 수상 등'
               className='textarea-bordered textarea w-full'
               {...register('history')}
             />
@@ -98,7 +93,7 @@ const ArtistInfo = () => {
             </label>
             <input
               type='url'
-              placeholder='SNS 주소를 입력해주세요'
+              placeholder='https://www.instagram.com/...'
               className='input-bordered input w-full'
               {...register('snsUrl')}
             />
@@ -112,7 +107,7 @@ const ArtistInfo = () => {
             </label>
             <input
               type='url'
-              placeholder='웹사이트 주소를 입력해주세요'
+              placeholder='https://www.example.com'
               className='input-bordered input w-full'
               {...register('websiteUrl')}
             />
@@ -121,7 +116,7 @@ const ArtistInfo = () => {
             </ErrorMessageInput>
           </div>
           <button type='submit' className='btn-primary btn-block btn mt-4'>
-            아티스트 승인 제출
+            아티스트 정보 저장
           </button>
         </form>
       </TabLayout>

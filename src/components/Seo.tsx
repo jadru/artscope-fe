@@ -57,13 +57,19 @@ export default function Seo(props: SeoProps) {
         name='keywords'
         content={`${meta.tag}, 아트스코프, Artscope, 예술, 전시, 공모전, 예술가, 작품, 전시회, 전시공모, 예술공모, 전시공모전, 예술포트폴리오`}
       />
-      <meta content={meta.description} name='description' />
+      <meta
+        content={meta.description.replace(/(<([^>]+)>)/gi, '')}
+        name='description'
+      />
       <meta property='og:url' content={`${meta.url}${router.asPath}`} />
       <link rel='canonical' href={`${meta.url}${router.asPath}`} />
       {/* Open Graph */}
       <meta property='og:type' content={meta.type} />
       <meta property='og:site_name' content={meta.siteName} />
-      <meta property='og:description' content={meta.description} />
+      <meta
+        property='og:description'
+        content={meta.description.replace(/(<([^>]+)>)/gi, '')}
+      />
       <meta property='og:title' content={meta.title} />
       <meta name='image' property='og:image' content={meta.image} />
       {/* Twitter */}
@@ -71,7 +77,10 @@ export default function Seo(props: SeoProps) {
       {/* // !STARTERCONF Remove or change to your handle */}
       {/* <meta name='twitter:site' content='@th_clarence' /> */}
       <meta name='twitter:title' content={meta.title} />
-      <meta name='twitter:description' content={meta.description} />
+      <meta
+        name='twitter:description'
+        content={meta.description.replace(/(<([^>]+)>)/gi, '')}
+      />
       <meta name='twitter:image' content={meta.image} />
       {meta.date && (
         <>
@@ -92,7 +101,16 @@ export default function Seo(props: SeoProps) {
       ))}
       <meta name='msapplication-TileColor' content={meta.themeColor} />
       <meta name='msapplication-config' content='/favicon/browserconfig.xml' />
-      <meta name='theme-color' content={meta.themeColor} />
+      <meta
+        name='theme-color'
+        content='#FFFFFF'
+        media='(prefers-color-scheme: light)'
+      />
+      <meta
+        name='theme-color'
+        content='#222222'
+        media='(prefers-color-scheme: dark)'
+      />
     </Head>
   );
 }

@@ -20,6 +20,7 @@ import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 import Title from '@/components/Title';
 
+import { auth, profile } from '@/api';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import { userNameAndRoleAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
@@ -53,8 +54,8 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<loginInputs> = async (data) =>
     !isSubmitting &&
-    (await jxios
-      .post('/api/login', data)
+    (await auth
+      .login(data)
       .then(async (res) => {
         const { accessToken, refreshToken } = res.data;
         const decodedAccessToken: { exp: number; sub: string; auth: string } =
@@ -69,8 +70,8 @@ const Login = () => {
           'Authorization'
         ] = `Bearer ${accessToken}`;
 
-        await jxios
-          .get('/api/members/profile')
+        await profile
+          .my()
           .then(async (res) => {
             await setUserInfo({
               username: decodedAccessToken.sub,
@@ -78,7 +79,7 @@ const Login = () => {
               profileImage: res.data.picture || undefined,
             });
             if (res.data.artistStatus === 'NONE') {
-              push('/artist/info').then(() =>
+              push('/user/input-info').then(() =>
                 toast.info('작가 정보를 입력해주세요.')
               );
             } else {
@@ -95,8 +96,8 @@ const Login = () => {
 
   return (
     <>
-      <Seo templateTitle='Login' />
-      <NavBar title='ArtPlatform' />
+      <Seo templateTitle='로그인' />
+      <NavBar />
       <TabLayout>
         <Title>로그인</Title>
         <form
@@ -135,7 +136,10 @@ const Login = () => {
             <button className='btn-primary btn-block btn mt-4' type='submit'>
               로그인
             </button>
-            <Link className='btn-primary btn-block btn mt-2' href='/signup'>
+            <Link
+              className='btn-primary btn-block btn mt-2'
+              href='/user/signup'
+            >
               회원가입
             </Link>
             <Link

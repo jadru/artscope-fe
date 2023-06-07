@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { Cookies } from 'react-cookie';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
+import { auth } from '@/api';
 import { artistAuthRequired } from '@/constant/auth';
 import { isTokenLoadingAtom, userNameAndRoleAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
@@ -21,13 +22,8 @@ const useAuth = () => {
         cookies.get('refreshToken')
       ) {
         await setIsTokenRefreshing(true);
-        await jxios
-          .post('/api/refresh', cookies.get('refreshToken'), {
-            data: cookies.get('refreshToken'),
-            headers: {
-              'Content-Type': 'text/plain',
-            },
-          })
+        auth
+          .refresh(cookies.get('refreshToken'))
           .then(async (res) => {
             const { accessToken, refreshToken } = res.data;
             jxios.defaults.headers.common[
@@ -55,7 +51,7 @@ const useAuth = () => {
           })
           .catch(() => {
             cookies.remove('refreshToken');
-            router.push('/login');
+            router.push('/user/login');
           })
           .finally(() => setIsTokenRefreshing(false));
       }
@@ -64,7 +60,7 @@ const useAuth = () => {
           !jxios.defaults.headers.common['Authorization'] &&
           !cookies.get('refreshToken')
         ) {
-          await router.push('/login');
+          await router.push('/user/login');
         }
       }
     }

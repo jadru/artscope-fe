@@ -14,7 +14,7 @@ import BottomBar from '@/components/TabLayout/BottomBar';
 import { NavBar } from '@/components/TabLayout/NavBar';
 import Title from '@/components/Title';
 
-import jxios from '@/utils/jxios';
+import { auth } from '@/api';
 
 const loginSchema = yup.object().shape({
   username: yup.string().required('아이디를 입력하세요.'),
@@ -37,7 +37,7 @@ const loginSchema = yup.object().shape({
     .required('약관에 동의해주세요.'),
 });
 
-interface loginInputs {
+export interface SignupInputs {
   username: string;
   password: string;
   email: string;
@@ -53,30 +53,33 @@ const Signup = () => {
     setError,
     getValues,
     formState: { errors, isSubmitting },
-  } = useForm<loginInputs>({
+  } = useForm<SignupInputs>({
     resolver: yupResolver(loginSchema),
   });
   const { push } = useRouter();
   const [emailCheck, setEmailCheck] = React.useState<boolean>(false);
   const [usernameCheck, setUsernameCheck] = React.useState<boolean>(false);
 
-  const onSubmit: SubmitHandler<loginInputs> = (data) =>
-    !isSubmitting &&
-    emailCheck &&
-    usernameCheck &&
-    delete data.passwordCheck &&
-    delete data.agree &&
-    jxios.post('/api/members', data, {}).then(() => {
-      push('/login').then(() => {
-        toast.success('회원가입이 완료되었습니다.');
+  const onSubmit: SubmitHandler<SignupInputs> = async (data) => {
+    if (!isSubmitting && emailCheck && usernameCheck) {
+      delete data.passwordCheck;
+      delete data.agree;
+      clearErrors();
+      await auth.signup(data).then(async () => {
+        await auth.emailcheck(data.email).then(async () => {
+          await push('/user/email-verification').then(() =>
+            toast.success(data.email + '로 보낸 이메일 인증을 완료해주세요.')
+          );
+        });
       });
-    });
+    }
+  };
 
   const checkEmailDuplication = () => {
     const regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
     if (regex.test(getValues('email'))) {
-      jxios
-        .get(`/api/members/email/${getValues('email')}`)
+      auth
+        .checkemail(getValues('email'))
         .then((response) => {
           if (response.status === 200) {
             setEmailCheck(true);
@@ -99,27 +102,32 @@ const Signup = () => {
   };
 
   const checkUsernameDuplication = () => {
-    jxios
-      .get(`/api/members/username/${getValues('username')}`)
-      .then((response) => {
-        if (response.status === 200) {
-          setUsernameCheck(true);
-          toast.success('사용 가능한 아이디입니다.');
-          clearErrors('username');
-        } else {
-          toast.warn('이미 사용중인 아이디입니다.');
+    const regex = new RegExp('^[a-zA-Z0-9]{4,12}$');
+    if (regex.test(getValues('username'))) {
+      auth
+        .username(getValues('username'))
+        .then((response) => {
+          if (response.status === 200) {
+            setUsernameCheck(true);
+            toast.success('사용 가능한 아이디입니다.');
+            clearErrors('username');
+          } else {
+            toast.warn('이미 사용중인 아이디입니다.');
+            setUsernameCheck(false);
+          }
+        })
+        .catch(() => {
           setUsernameCheck(false);
-        }
-      })
-      .catch(() => {
-        setUsernameCheck(false);
-      });
+        });
+    } else {
+      toast.warn('아이디는 영문, 숫자 4~12자리로 입력해주세요.');
+    }
   };
 
   return (
     <>
-      <Seo templateTitle='Signup' />
-      <NavBar title='ArtPlatform' />
+      <Seo templateTitle='회원가입' />
+      <NavBar />
       <TabLayout>
         <Title>회원가입</Title>
         <form
@@ -250,8 +258,18 @@ const Signup = () => {
               {errors.agree ? errors.agree.message : ''}
             </ErrorMessageInput>
           </div>
-          <button className='btn-primary btn-wide btn mt-4' type='submit'>
-            회원가입
+          <button
+            className='btn-primary btn-wide btn mt-4'
+            type='submit'
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <span className='loading loading-spinner'></span> 업로딩
+              </>
+            ) : (
+              '회원가입'
+            )}
           </button>
         </form>
       </TabLayout>

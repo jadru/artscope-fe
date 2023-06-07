@@ -10,9 +10,11 @@ export default function handler(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const title = searchParams.get('title')?.slice(0, 100);
+    const title = searchParams.get('title')?.slice(0, 27);
 
     const thumbnail = searchParams.get('thumbnail')?.slice(0, 100);
+
+    const name = searchParams.get('name')?.slice(0, 15);
 
     return new ImageResponse(
       (
@@ -21,43 +23,33 @@ export default function handler(request: NextRequest) {
             display: 'flex',
             height: '100%',
             width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
             flexDirection: 'column',
-            backgroundImage: 'linear-gradient(to bottom, #dbf4ff, #fff1f1)',
+            backgroundColor: '#FFF',
             fontSize: 65,
-            letterSpacing: -2,
+            lineHeight: 1.02,
+            letterSpacing: 0,
             fontWeight: 700,
-            textAlign: 'center',
+            textAlign: 'left',
+            alignItems: 'center',
+            wordBreak: 'keep-all',
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            tw='w-full overflow-hidden object-cover opacity-30'
+            tw='absolute bottom-12 w-5/6 max-h-full max-w-full overflow-hidden object-contain rounded-3xl border-4'
             alt=''
-            src={NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + thumbnail}
+            src={
+              NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + thumbnail + '?w=600&f=webp'
+            }
           />
 
-          <div
-            style={{
-              backgroundImage:
-                'linear-gradient(90deg, rgb(121, 40, 202), rgb(255, 0, 128))',
-              backgroundClip: 'text',
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              '-webkit-background-clip': 'text',
-              color: 'transparent',
-              padding: '18px',
-              position: 'absolute',
-            }}
-          >
-            {title}
-          </div>
+          <p tw='top-0 m-0 px-16 pt-12 pb-6 w-full'>{title}</p>
+          <p tw='px-16 text-5xl m-0 w-full'>{name}</p>
         </div>
       ),
       {
-        width: 1200,
-        height: 630,
+        width: 800,
+        height: 800,
       }
     );
     // eslint-disable-next-line

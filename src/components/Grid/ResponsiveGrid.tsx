@@ -1,11 +1,7 @@
-import React, { FunctionComponent } from 'react';
+import React, { ReactNode } from 'react';
 
-type Props = {
-  children: React.ReactNode;
-};
-
-const ResponsiveGrid: FunctionComponent<Props> = ({ children }) => (
-  <div className='-z-50 grid max-w-4xl gap-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+const ResponsiveGrid: React.FC<{ children: ReactNode }> = ({ children }) => (
+  <div className='grid grid-cols-1 gap-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'>
     {children}
   </div>
 );
