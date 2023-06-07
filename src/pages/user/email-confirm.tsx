@@ -13,7 +13,7 @@ import { auth } from '@/api';
 
 const EmailConfirmPage = () => {
   const router = useRouter();
-  const [valid, setValid] = useState<boolean>(false);
+  const [valid, setValid] = useState<boolean>(true);
   useEffect(() => {
     if (router.query.code) {
       auth
@@ -53,7 +53,7 @@ const EmailConfirmPage = () => {
               <br />
               이메일이 확인에 문제가 생겼습니다.
             </Title>
-            <p className='text-center'>30분 후에 다시 회원가입을 해주세요</p>
+            <p className='text-center'>나중에 다시 회원가입을 해주세요</p>
             <Link href='/user/signup' className='btn-primary btn'>
               회원가입
             </Link>

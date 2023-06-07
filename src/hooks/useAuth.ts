@@ -23,7 +23,7 @@ const useAuth = () => {
       ) {
         await setIsTokenRefreshing(true);
         auth
-          .refresh(cookies)
+          .refresh(cookies.get('refreshToken'))
           .then(async (res) => {
             const { accessToken, refreshToken } = res.data;
             jxios.defaults.headers.common[

@@ -84,23 +84,17 @@ const SearchPage = () => {
       <NavBar />
       <TabLayout fullWidth top>
         <Title>검색</Title>
-        <div className='join mb-2 flex'>
-          <div>
-            <div>
-              <input
-                id='keyword'
-                type='text'
-                placeholder='작품명, 작가명 등'
-                className='input join-item'
-                onKeyDown={handleSearchInput}
-              />
-            </div>
-          </div>
-          <div className='join-item'>
-            <button className='join-item btn' onClick={callApi}>
-              검색
-            </button>
-          </div>
+        <div className='join mb-2'>
+          <input
+            id='keyword'
+            type='text'
+            placeholder='작품명, 작가명 등'
+            className='input join-item'
+            onKeyDown={handleSearchInput}
+          />
+          <button className='join-item btn rounded-r-full' onClick={callApi}>
+            검색
+          </button>
         </div>
         <ResponsiveGrid>
           {status === 'success' &&
