@@ -247,7 +247,7 @@ export default function Post({ page, blocks }) {
       />
       <NavBar />
       <article>
-        <TabLayout>
+        <TabLayout top>
           <div className='breadcrumbs text-sm'>
             <ul>
               <li>
