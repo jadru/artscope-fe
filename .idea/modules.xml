@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/art-platform-frontend.iml" filepath="$PROJECT_DIR$/.idea/art-platform-frontend.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../megabrain-apps/.idea/megabrain-apps.iml" filepath="$PROJECT_DIR$/../megabrain-apps/.idea/megabrain-apps.iml" />
     </modules>
   </component>
 </project>

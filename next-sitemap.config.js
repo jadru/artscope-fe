@@ -9,8 +9,8 @@ module.exports = {
   siteUrl: process.env.NEXT_PUBLIC_ROOT_URL,
 
   generateRobotsTxt: true,
-  sitemapSize: 7000, // sitemap별 최대 크기 (최대 크기가 넘어갈 경우 복수개의 sitemap으로 분리됨)
-  changefreq: 'daily', // 페이지 주소 변경 빈도 (검색엔진에 제공됨) - always, daily, hourly, monthly, never, weekly, yearly 중 택 1
+  sitemapSize: 5000, // sitemap별 최대 크기 (최대 크기가 넘어갈 경우 복수개의 sitemap으로 분리됨)
+  changefreq: 'weekly', // 페이지 주소 변경 빈도 (검색엔진에 제공됨) - always, daily, hourly, monthly, never, weekly, yearly 중 택 1
   priority: 1,
   robotsTxtOptions: {
     additionalSitemaps: [`${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap-1.xml`],
@@ -20,10 +20,10 @@ module.exports = {
         allow: '/',
         disallow: [
           '/404',
-          '/oauth2/**',
-          '/user/*',
           '/admin/**',
-          '/util/**',
+          '/oauth2/**',
+          '/user/**',
+          '/api/**',
           '/_next/**',
           '/upload',
         ],
@@ -32,10 +32,10 @@ module.exports = {
   },
   exclude: [
     '/404',
-    '/oauth2/**',
-    '/user/*',
     '/admin/**',
-    '/util/**',
+    '/oauth2/**',
+    '/user/**',
+    '/api/**',
     '/_next/**',
     '/upload',
   ],

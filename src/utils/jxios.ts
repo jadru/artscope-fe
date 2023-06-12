@@ -41,6 +41,14 @@ Jaxios.interceptors.response.use(
     if (response && response.status) {
       switch (response.status || config.sent) {
         case 400:
+          toast.error(`
+              ${response.data.message}
+                ${
+                  response.data.detail !== null
+                    ? ' : ' + response.data.detail
+                    : ''
+                }`);
+          return Promise.reject(err);
         case 401:
         case 403:
           if (cookies.get('refreshToken')) {

@@ -18,7 +18,7 @@ import { ArtistForm } from '@/types/artist';
 
 const artistSchema = yup.object().shape({
   introduction: yup.string().required('아티스트 소개를 입력해주세요.'),
-  history: yup.string(),
+  history: yup.string().required('활동 정보를 입력해주세요.'),
   snsUrl: yup
     .string()
     .url('URL을 입력해주세요')
