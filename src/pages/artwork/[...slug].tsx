@@ -312,6 +312,7 @@ const Slug = ({
                           confirm('정말 삭제하시겠습니까?') &&
                             artwork.delete(data.artwork.id).then(() => {
                               router.push('/').then(() => {
+                                router.reload();
                                 toast.success('작품이 삭제되었습니다.');
                               });
                             });

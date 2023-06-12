@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { ReactElement, useEffect, useRef } from 'react';
+import React, { ReactElement, useEffect, useLayoutEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 
@@ -20,6 +20,7 @@ const OFFSET = 12;
 
 const SearchPage = () => {
   const bottom = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [searchKeyword, setSearchKeyword] = React.useState('');
   const {
     data,
@@ -48,6 +49,12 @@ const SearchPage = () => {
         firstPage.pageInfo.page !== 0 ? 0 : undefined,
     }
   );
+
+  useLayoutEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   const ObservationComponent = (): ReactElement => {
     const [ref, inView] = useInView();
@@ -88,7 +95,8 @@ const SearchPage = () => {
           <input
             id='keyword'
             type='text'
-            placeholder='작품명, 작가명 등'
+            ref={inputRef}
+            placeholder='작품명, 설명, 작가, 태그'
             className='input join-item'
             onKeyDown={handleSearchInput}
           />
@@ -96,6 +104,11 @@ const SearchPage = () => {
             검색
           </button>
         </div>
+        <p>
+          {searchKeyword !== '' &&
+            data &&
+            data.pages[0].pageInfo.totalElements + '개의 검색결과가 있습니다.'}
+        </p>
         <ResponsiveGrid>
           {status === 'success' &&
             !isFetchingPreviousPage &&
