@@ -104,7 +104,7 @@ export const NavBar: React.FC<Props> = ({
                 </label>
                 <ul
                   tabIndex={0}
-                  className='dropdown-content menu rounded-box menu-compact w-52 bg-base-100 p-2 shadow'
+                  className='menu-compact dropdown-content menu rounded-box w-52 bg-base-100 p-2 shadow'
                 >
                   <li>
                     <Link
