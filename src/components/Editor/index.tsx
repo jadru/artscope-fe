@@ -170,7 +170,7 @@ const Editor = ({
           }
           router
             .replace('/artwork/' + data.artwork.id)
-            .then(() => toast.success('수정되었습니다.'));
+            .then(() => toast.success('수정되었습니다.') && router.reload());
         })
         .finally(() => setIsUpload(false));
   };
