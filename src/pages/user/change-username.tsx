@@ -61,7 +61,7 @@ const ChangeUsernamePage = () => {
               toast.error(res.data.message);
               return;
             }
-            push('/login').then(() => {
+            push('/user/login').then(() => {
               cookies.remove('refreshToken', { path: '/' });
               jxios.defaults.headers.common['Authorization'] = undefined;
               setUserValue({
