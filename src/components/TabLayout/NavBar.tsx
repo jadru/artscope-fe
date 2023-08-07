@@ -9,6 +9,8 @@ import { useRecoilState } from 'recoil';
 
 import useAuth from '@/hooks/useAuth';
 
+import DarkLogo from '@/assets/images/logo-dark.svg';
+import LightLogo from '@/assets/images/logo-light.svg';
 import { userNameAndRoleAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
 
@@ -74,7 +76,8 @@ export const NavBar: React.FC<Props> = ({
             className='link px-2 text-left text-2xl font-bold normal-case no-underline hover:underline'
             href='/'
           >
-            Artscope
+            <LightLogo className='w-24 dark:hidden' />
+            <DarkLogo className='hidden w-14 dark:inline' />
           </Link>
         </div>
         <div className='navbar-end space-x-2'>
