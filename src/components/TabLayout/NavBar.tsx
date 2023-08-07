@@ -74,7 +74,7 @@ export const NavBar: React.FC<Props> = ({
             className='link px-2 text-left text-2xl font-bold normal-case no-underline hover:underline'
             href='/'
           >
-            Artscope
+            <p>Artscope</p>
           </Link>
         </div>
         <div className='navbar-end space-x-2'>
