@@ -47,7 +47,7 @@ const Blog = ({ posts }) => {
             <Link
               key={post.id}
               href={`/blog/${post.id}`}
-              className='group relative w-full justify-center border-b border-b-neutral-600 py-4 px-3'
+              className='group relative w-full justify-center border-b border-b-neutral-600 px-3 py-4'
             >
               <p className='text-3xl font-light duration-100 group-hover:font-bold group-hover:underline group-hover:underline-offset-2 group-hover:ease-in'>
                 {post.properties.title.title[0]?.plain_text}
