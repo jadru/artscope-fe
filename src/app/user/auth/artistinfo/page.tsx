@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
@@ -67,7 +67,7 @@ const ArtistInfo = () => {
             <input
               type='text'
               placeholder='OO에서 활동하는 OO 아티스트입니다.'
-              className='input-bordered input w-full'
+              className='input input-bordered w-full'
               {...register('introduction')}
             />
             <ErrorMessageInput>
@@ -80,7 +80,7 @@ const ArtistInfo = () => {
             </label>
             <textarea
               placeholder='OO전시 참여, OO상 수상 등'
-              className='textarea-bordered textarea w-full'
+              className='textarea textarea-bordered w-full'
               {...register('history')}
             />
             <ErrorMessageInput>
@@ -94,7 +94,7 @@ const ArtistInfo = () => {
             <input
               type='url'
               placeholder='https://www.instagram.com/...'
-              className='input-bordered input w-full'
+              className='input input-bordered w-full'
               {...register('snsUrl')}
             />
             <ErrorMessageInput>
@@ -108,14 +108,14 @@ const ArtistInfo = () => {
             <input
               type='url'
               placeholder='https://www.example.com'
-              className='input-bordered input w-full'
+              className='input input-bordered w-full'
               {...register('websiteUrl')}
             />
             <ErrorMessageInput>
               {errors.websiteUrl ? errors.websiteUrl.message : ''}
             </ErrorMessageInput>
           </div>
-          <button type='submit' className='btn-primary btn-block btn mt-4'>
+          <button type='submit' className='btn btn-primary btn-block mt-4'>
             아티스트 정보 저장
           </button>
         </form>

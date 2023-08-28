@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import Footer from '@/components/Footer';
@@ -12,12 +12,12 @@ import Title from '@/components/Title';
 import { auth } from '@/api';
 
 const EmailConfirmPage = () => {
-  const router = useRouter();
+  const params = useParams();
   const [valid, setValid] = useState<boolean>(true);
   useEffect(() => {
-    if (router.query.code) {
+    if (params.code) {
       auth
-        .email(router.query.code as string)
+        .email(params.code as string)
         .then(() => {
           setValid(true);
         })
@@ -25,7 +25,7 @@ const EmailConfirmPage = () => {
           setValid(false);
         });
     }
-  }, [router.query.code]);
+  }, [params.code]);
 
   return (
     <>
@@ -42,7 +42,7 @@ const EmailConfirmPage = () => {
             <p className='text-center'>
               이메일이 확인되었습니다. <br /> 이제 로그인을 해주세요.
             </p>
-            <Link href='/user/login' className='btn-primary btn'>
+            <Link href='/user/auth/login' className='btn btn-primary'>
               로그인
             </Link>
           </>
@@ -54,7 +54,7 @@ const EmailConfirmPage = () => {
               이메일이 확인에 문제가 생겼습니다.
             </Title>
             <p className='text-center'>나중에 다시 회원가입을 해주세요</p>
-            <Link href='/user/signup' className='btn-primary btn'>
+            <Link href='/user/auth/signup' className='btn btn-primary'>
               회원가입
             </Link>
           </>

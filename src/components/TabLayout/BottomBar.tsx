@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Cookies } from 'react-cookie';
@@ -56,7 +58,7 @@ const BottomBar: FunctionComponent<Props> = ({
               className={`${tab === 'login' ? 'text-blue-600' : ''} ${
                 dark ? 'bg-transparent md:rounded-r-2xl' : ''
               }`}
-              href='/user/login'
+              href='/user/auth/login'
             >
               <BsFillPersonFill className='h-5 w-5' />
               <span className='btm-nav-label'>로그인</span>

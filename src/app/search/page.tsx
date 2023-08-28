@@ -1,8 +1,10 @@
+'use client';
+
+import { useInfiniteQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { ReactElement, useEffect, useLayoutEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useInfiniteQuery } from 'react-query';
 
 import Footer from '@/components/Footer';
 import ResponsiveGrid from '@/components/Grid/ResponsiveGrid';
@@ -100,7 +102,7 @@ const SearchPage = () => {
             className='input join-item'
             onKeyDown={handleSearchInput}
           />
-          <button className='join-item btn rounded-r-full' onClick={callApi}>
+          <button className='btn join-item rounded-r-full' onClick={callApi}>
             검색
           </button>
         </div>

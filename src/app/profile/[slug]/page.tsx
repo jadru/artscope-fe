@@ -1,5 +1,7 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import React from 'react';
+'use client';
+
+import { useParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import useAuth from '@/hooks/useAuth';
@@ -14,22 +16,25 @@ import { NavBar } from '@/components/TabLayout/NavBar';
 import { profile } from '@/api';
 import { isTokenLoadingAtom, userNameAndRoleAtom } from '@/states/atom';
 
-import { generalProfileApiType } from '@/types';
+import { profileApiType } from '@/types';
 
-export const getServerSideProps: GetServerSideProps<{
-  data: generalProfileApiType;
-}> = async ({ params }) => {
-  if (!params?.slug) return { notFound: true };
-  const { data, status } = await profile.get(params.slug as string);
-  if (!data || status === 400) return { notFound: true };
-  return { props: { data } };
-};
-const Slug = ({
-  data: profileData,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+async function getProfile(slug: string) {
+  const { data } = await profile.get(slug);
+  return data;
+}
+const Page = () => {
+  const params = useParams();
+  const [profileData, setProfileData] = useState<profileApiType | null>(null);
   useAuth();
   const isTokenLoading = useRecoilValue(isTokenLoadingAtom);
   const usernameAndRole = useRecoilValue(userNameAndRoleAtom);
+
+  useEffect(() => {
+    !profileData &&
+      getProfile(params.slug[0]).then((res) => {
+        setProfileData(res);
+      });
+  }, [profileData, params.slug]);
 
   return (
     <>
@@ -52,4 +57,4 @@ const Slug = ({
   );
 };
 
-export default Slug;
+export default Page;

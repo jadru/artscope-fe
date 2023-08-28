@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 import Footer from '@/components/Footer';
 import Seo from '@/components/Seo';
@@ -9,7 +8,6 @@ import { NavBar } from '@/components/TabLayout/NavBar';
 import Title from '@/components/Title';
 
 const RedirectOAuth2 = () => {
-  const { query } = useRouter();
   return (
     <>
       <Seo templateTitle='구글 로그인 실패'></Seo>
@@ -20,10 +18,7 @@ const RedirectOAuth2 = () => {
           <br />
           구글 로그인이 실패되었습니다.
         </Title>
-        <p className='text-center'>
-          {query.error ? query.error : '다시 구글 로그인을 해주세요.'}
-        </p>
-        <Link href='/user/login' className='btn-primary btn'>
+        <Link href='/user/auth/login' className='btn btn-primary'>
           로그인
         </Link>
       </TabLayout>

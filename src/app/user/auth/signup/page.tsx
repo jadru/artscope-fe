@@ -1,6 +1,8 @@
+'use client';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -45,7 +47,7 @@ export interface SignupInputs {
   name: string;
   agree?: boolean;
 }
-const Signup = () => {
+const Page = () => {
   const {
     register,
     handleSubmit,
@@ -54,7 +56,7 @@ const Signup = () => {
     getValues,
     formState: { errors, isSubmitting },
   } = useForm<SignupInputs>({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver<SignupInputs>(loginSchema),
   });
   const { push } = useRouter();
   const [emailCheck, setEmailCheck] = React.useState<boolean>(false);
@@ -67,9 +69,8 @@ const Signup = () => {
       clearErrors();
       await auth.signup(data).then(async () => {
         await auth.emailcheck(data.email).then(async () => {
-          await push('/user/email-verification').then(() =>
-            toast.success(data.email + '로 보낸 이메일 인증을 완료해주세요.')
-          );
+          push('/user/email/verification');
+          toast.success(data.email + '로 보낸 이메일 인증을 완료해주세요.');
         });
       });
     }
@@ -142,7 +143,7 @@ const Signup = () => {
               type='email'
               placeholder='이메일을 입력해주세요'
               readOnly={emailCheck}
-              className={`input-bordered input-primary input w-full ${
+              className={`input input-bordered input-primary w-full ${
                 emailCheck && `bg-gray-200`
               }`}
               {...register('email')}
@@ -167,7 +168,7 @@ const Signup = () => {
             <input
               type='text'
               placeholder='작가명을 입력해주세요'
-              className='input-bordered input-primary input w-full'
+              className='input input-bordered input-primary w-full'
               {...register('name')}
             />
             <ErrorMessageInput>
@@ -181,7 +182,7 @@ const Signup = () => {
             <input
               type='text'
               placeholder='아이디를 입력해주세요'
-              className={`input-bordered input-primary input w-full ${
+              className={`input input-bordered input-primary w-full ${
                 usernameCheck && `bg-gray-200`
               }`}
               readOnly={usernameCheck}
@@ -207,7 +208,7 @@ const Signup = () => {
             <input
               type='password'
               placeholder='비밀번호를 입력해주세요'
-              className='input-bordered input-primary input w-full'
+              className='input input-bordered input-primary w-full'
               {...register('password')}
             />
             <ErrorMessageInput>
@@ -221,7 +222,7 @@ const Signup = () => {
             <input
               type='password'
               placeholder='비밀번호를 한번 더 입력해주세요'
-              className='input-bordered input-primary input w-full'
+              className='input input-bordered input-primary w-full'
               {...register('passwordCheck')}
             />
             <ErrorMessageInput>
@@ -259,7 +260,7 @@ const Signup = () => {
             </ErrorMessageInput>
           </div>
           <button
-            className='btn-primary btn-wide btn mt-4'
+            className='btn btn-primary btn-wide mt-4'
             type='submit'
             disabled={isSubmitting}
           >
@@ -279,4 +280,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Page;

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import { Cookies } from 'react-cookie';
 import { IoCloudUploadSharp, IoPersonCircleOutline } from 'react-icons/io5';
@@ -50,7 +50,8 @@ export const NavBar: React.FC<Props> = ({
   useAuth();
   const [userValue, setUserValue] = useRecoilState(userNameAndRoleAtom);
   const cookies = new Cookies();
-  const { push, asPath } = useRouter();
+  const { push } = useRouter();
+  const asPath = usePathname();
   const handleLogout = () => {
     jxios.post('/api/logout').then(() => {
       cookies.remove('refreshToken', { path: '/' });
@@ -60,7 +61,8 @@ export const NavBar: React.FC<Props> = ({
         role: undefined,
         profileImage: undefined,
       });
-      push('/').then(() => toast.success('로그아웃 되었습니다.'));
+      push('/');
+      toast.success('로그아웃 되었습니다.');
     });
   };
 
@@ -82,13 +84,13 @@ export const NavBar: React.FC<Props> = ({
             <>
               <Link
                 href='/upload'
-                className='btn-ghost btn hidden lg:inline-flex'
+                className='btn btn-ghost hidden lg:inline-flex'
               >
                 업로드
                 <IoCloudUploadSharp className='ml-2 inline-block h-5 w-5 stroke-current' />
               </Link>
-              <div className='dropdown-end dropdown hidden lg:inline-block'>
-                <label tabIndex={0} className='btn-ghost btn-circle avatar btn'>
+              <div className='dropdown dropdown-end hidden lg:inline-block'>
+                <label tabIndex={0} className='avatar btn btn-circle btn-ghost'>
                   <div className='w-10 rounded-full'>
                     {userValue.profileImage ? (
                       <Image
@@ -104,7 +106,7 @@ export const NavBar: React.FC<Props> = ({
                 </label>
                 <ul
                   tabIndex={0}
-                  className='menu-compact dropdown-content menu rounded-box w-52 bg-base-100 p-2 shadow'
+                  className='menu-compact menu dropdown-content rounded-box w-52 bg-base-100 p-2 shadow'
                 >
                   <li>
                     <Link
@@ -122,7 +124,7 @@ export const NavBar: React.FC<Props> = ({
             </>
           ) : (
             <ul className='menu menu-horizontal hidden px-1 lg:inline-block'>
-              <Link href='/user/login' className='btn-ghost btn'>
+              <Link href='/user/auth/login' className='btn btn-ghost'>
                 로그인
               </Link>
             </ul>

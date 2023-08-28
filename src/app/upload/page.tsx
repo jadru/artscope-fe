@@ -1,3 +1,5 @@
+'use client';
+
 import Lottie from 'lottie-react';
 import Image from 'next/image';
 import React, { FormEvent, useEffect, useState } from 'react';
@@ -36,7 +38,7 @@ const FILETYPES = [
   'OGG',
 ];
 
-const Upload = () => {
+const Page = () => {
   useAuth();
   const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
   const [imgs, setImgs] = useState<string[]>([]);
@@ -233,7 +235,7 @@ const Upload = () => {
                   type='text'
                   placeholder='제목, 매체, 사이즈, 제작연도 등'
                   value={fileUrls[indexFileforModal]?.description}
-                  className='input-bordered input-primary input mt-2 w-[300px]'
+                  className='input input-bordered input-primary mt-2 w-[300px]'
                   onChange={(e) => {
                     const newFileUrls = [...fileUrls];
                     newFileUrls[indexFileforModal].description = e.target.value;
@@ -252,7 +254,7 @@ const Upload = () => {
                 <div className='modal-action'>
                   {indexFileforModal > 0 && (
                     <button
-                      className='btn-ghost btn'
+                      className='btn btn-ghost'
                       onClick={() =>
                         setIndexFileforModal((prevState) => prevState - 1)
                       }
@@ -265,7 +267,7 @@ const Upload = () => {
                   </a>
                   {indexFileforModal < fileUrls.length - 1 && (
                     <button
-                      className='btn-ghost btn'
+                      className='btn btn-ghost'
                       onClick={() =>
                         setIndexFileforModal((prevState) => prevState + 1)
                       }
@@ -429,7 +431,7 @@ const Upload = () => {
           <div className='modal-box relative'>
             <label
               htmlFor='modal-add-link'
-              className='btn-sm btn-circle btn absolute right-2 top-2'
+              className='btn btn-circle btn-sm absolute right-2 top-2'
             >
               ✕
             </label>
@@ -439,11 +441,11 @@ const Upload = () => {
                 type='link'
                 id='link'
                 placeholder='https://www.youtube.com/watch?v=...'
-                className='input-bordered input w-full'
+                className='input input-bordered w-full'
                 value={linkInput}
                 onChange={(e) => setLinkInput(e.target.value)}
               />
-              <button className='btn-primary btn mt-3 w-full' type='submit'>
+              <button className='btn btn-primary mt-3 w-full' type='submit'>
                 추가
               </button>
             </form>
@@ -457,4 +459,4 @@ const Upload = () => {
   );
 };
 
-export default Upload;
+export default Page;

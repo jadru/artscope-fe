@@ -1,7 +1,7 @@
 import Lottie from 'lottie-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { Cookies } from 'react-cookie';
 import { AiOutlineFileImage } from 'react-icons/ai';
@@ -53,7 +53,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
   const cookies = new Cookies();
   const setUserValue = useSetRecoilState(userNameAndRoleAtom);
-  const { push, reload } = useRouter();
+  const { push, refresh } = useRouter();
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState<profileApiRequestType>({});
   const handleLogout = () => {
@@ -65,7 +65,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         role: undefined,
         profileImage: undefined,
       });
-      push('/').then(() => toast.success('로그아웃 되었습니다.'));
+      push('/');
+      toast.success('로그아웃 되었습니다.');
     });
   };
 
@@ -83,7 +84,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           role: undefined,
           profileImage: undefined,
         });
-        push('/').then(() => toast.success('회원 탈퇴 되었습니다.'));
+        push('/');
+        toast.success('회원 탈퇴 되었습니다.');
       });
     } else {
       return;
@@ -102,7 +104,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       })
       .then(() => {
         toast.success('프로필 사진이 변경되었습니다.');
-        reload();
+        refresh();
       });
   };
 
@@ -111,7 +113,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     jxios
       .put('/api/members/' + profileData?.username, formData)
       .then(async () => {
-        await reload();
+        await refresh();
         await toast.success('프로필 정보가 변경되었습니다.');
       });
   };
@@ -301,19 +303,22 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               </label>
               <input
                 id='name'
-                className='input-bordered input w-full truncate font-light'
+                className='input input-bordered w-full truncate font-light'
                 defaultValue={profileData.name}
                 onChange={handleFormChange}
               />
             </div>
             <Link
-              href='/user/change-username'
-              className='btn-outline btn w-full'
+              href='/user/auth/changeusername'
+              className='btn btn-outline w-full'
             >
               @{profileData.username} 아이디 변경
             </Link>
             {profileData.artistStatus === 'NONE' ? (
-              <Link className='btn-primary btn w-full' href='/user/input-info'>
+              <Link
+                className='btn btn-primary w-full'
+                href='/user/auth/artistinfo'
+              >
                 아티스트 정보 입력
               </Link>
             ) : (
@@ -324,7 +329,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   </label>
                   <input
                     id='introduction'
-                    className='text-primary text-md input-bordered input w-full whitespace-pre-wrap text-center font-light'
+                    className='text-primary text-md input input-bordered w-full whitespace-pre-wrap text-center font-light'
                     defaultValue={profileData.introduction}
                     placeholder='00에서 00하게 활동하는 00 아티스트입니다.'
                     onChange={handleFormChange}
@@ -336,7 +341,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   </label>
                   <textarea
                     id='history'
-                    className='input-bordered input w-full text-left'
+                    className='input input-bordered w-full text-left'
                     defaultValue={profileData.history}
                     onChange={handleFormChange}
                     placeholder={'ex)\n2021. 1. 1. ~ 2021. 1. 31. 개인전\n'}
@@ -349,7 +354,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   </label>
                   <input
                     id='snsUrl'
-                    className='input-bordered input w-full truncate text-center font-light'
+                    className='input input-bordered w-full truncate text-center font-light'
                     defaultValue={profileData.snsUrl}
                     placeholder='https://instagram.com/username'
                     onChange={handleFormChange}
@@ -363,7 +368,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   </label>
                   <input
                     id='websiteUrl'
-                    className='input-bordered input w-full truncate text-center font-light'
+                    className='input input-bordered w-full truncate text-center font-light'
                     placeholder='https://example.com'
                     defaultValue={profileData.websiteUrl}
                     onChange={handleFormChange}
@@ -412,23 +417,23 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               <div></div>
               <div className='btn-group'>
                 <button
-                  className='btn-warning btn'
+                  className='btn btn-warning'
                   onClick={() => setEditMode(false)}
                 >
                   <ImCancelCircle className='mr-1 h-6 w-6' />
                   취소
                 </button>
-                <label className='btn-success btn' htmlFor='submitbutton'>
+                <label className='btn btn-success' htmlFor='submitbutton'>
                   <BiSave className='mr-1 h-6 w-6' /> 저장
                 </label>
               </div>
             </>
           ) : (
             <>
-              <button className='btn-primary btn' onClick={handleLogout}>
+              <button className='btn btn-primary' onClick={handleLogout}>
                 로그아웃
               </button>
-              <button className='btn-accent btn' onClick={handleEdit}>
+              <button className='btn btn-accent' onClick={handleEdit}>
                 <BiEdit className='mr-1 h-6 w-6 hover:text-cyan-500' />
                 수정
               </button>
@@ -437,7 +442,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         </div>
         {editMode && (
           <>
-            <button className='btn-ghost btn' onClick={handleDeleteMember}>
+            <button className='btn btn-ghost' onClick={handleDeleteMember}>
               회원탈퇴
             </button>
           </>

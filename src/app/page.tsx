@@ -1,11 +1,12 @@
-import Lottie from 'lottie-react';
+'use client';
+
+import { useInfiniteQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
 import { ReactElement, useEffect, useRef } from 'react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useInView } from 'react-intersection-observer';
-import { useInfiniteQuery } from 'react-query';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 import Footer from '@/components/Footer';
@@ -16,8 +17,6 @@ import { NavBar } from '@/components/TabLayout/NavBar';
 
 import { artwork } from '@/api';
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
-
-import ArtistAnimation from '../../public/animation/141993-spin-sobky-like-siri.json';
 
 import { ArtworkType } from '@/types';
 
@@ -75,8 +74,8 @@ export default function Artwork() {
           <Masonry gutter='0.3rem'>
             {(status === 'loading' && <p>불러오는 중</p>) ||
               (status === 'success' &&
-                data.pages.map((group, groupIndex: number) =>
-                  group.artworks.map((aw: ArtworkType, index: number) => (
+                data.pages.map((group) =>
+                  group.artworks.map((aw: ArtworkType) => (
                     <>
                       <Link
                         href={'/artwork/' + aw.artwork.id}
@@ -130,45 +129,6 @@ export default function Artwork() {
                           </div>
                         )}
                       </Link>
-                      {groupIndex === 0 && index === 5 && (
-                        <Link
-                          href='/blog'
-                          key={aw.artwork.id + '_1'}
-                          className='group relative flex cursor-pointer justify-center overflow-hidden bg-base-100 text-center dark:border-slate-600'
-                        >
-                          <div className='relative m-0 w-full p-0'>
-                            <Image
-                              src='prod/blog/blog-thumbnail.jpeg'
-                              alt='staff-vlog-thumbnail'
-                              width={400}
-                              height={400}
-                              sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1600px) 33.3vw, 25vw'
-                              placeholder='blur' // 추가
-                              blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==' // 추가
-                              className='w-full cursor-zoom-in object-contain duration-200 ease-in-out group-hover:scale-110'
-                            />
-                          </div>
-                          <div className='absolute h-full w-full duration-200 group-hover:bg-dark/10'></div>
-                        </Link>
-                      )}
-                      {groupIndex === 0 && index === 10 && (
-                        <Link
-                          href='/blog/634d09fd-79f8-4807-a517-17ebd1c45054'
-                          key='634d09fd-79f8-4807-a517-17ebd1c45054'
-                          className='group relative flex h-64 cursor-pointer items-center justify-center bg-gradient-to-br from-[#6F38C5] from-20% via-[#87A2FB] via-60% to-[#ADDDD0] to-20% px-0 dark:from-indigo-900 dark:via-cyan-700 dark:to-emerald-600'
-                        >
-                          <Lottie
-                            animationData={ArtistAnimation}
-                            className='absolute mr-4 w-[190px] duration-200 ease-in-out group-hover:scale-125'
-                          />
-                          <div className='flex-col space-y-3 py-8 text-center text-gray-100 duration-200 group-hover:font-bold md:left-24'>
-                            <p className='text-4xl'>
-                              플랫폼 Artscope
-                              <br /> 작품 공모
-                            </p>
-                          </div>
-                        </Link>
-                      )}
                     </>
                   ))
                 ))}
