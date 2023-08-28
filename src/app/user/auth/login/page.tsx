@@ -1,7 +1,9 @@
+'use client';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import jwt_decode from 'jwt-decode';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useMemo } from 'react';
 import { Cookies } from 'react-cookie';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -34,7 +36,7 @@ interface loginInputs {
   username: string;
   password: string;
 }
-const Login = () => {
+const Page = () => {
   useAuth();
   const {
     register,
@@ -45,12 +47,14 @@ const Login = () => {
   });
   const setUserInfo = useSetRecoilState(userNameAndRoleAtom);
   const cookies = useMemo(() => new Cookies(), []);
-  const { push, asPath } = useRouter();
+  const { push } = useRouter();
+  const pathname = usePathname();
   useEffect(() => {
     if (jxios.defaults.headers.common['Authorization']) {
-      push('/').then(() => toast.info('이미 로그인 되어있습니다.'));
+      push('/');
+      toast.info('이미 로그인 되어있습니다.');
     }
-  }, [cookies, push, asPath]);
+  }, [cookies, push, pathname]);
 
   const onSubmit: SubmitHandler<loginInputs> = async (data) =>
     !isSubmitting &&
@@ -73,21 +77,22 @@ const Login = () => {
         await profile
           .my()
           .then(async (res) => {
-            await setUserInfo({
+            setUserInfo({
               username: decodedAccessToken.sub,
               role: decodedAccessToken.auth,
               profileImage: res.data.picture || undefined,
             });
             if (res.data.artistStatus === 'NONE') {
-              push('/user/input-info').then(() =>
-                toast.info('작가 정보를 입력해주세요.')
-              );
+              push('/user/auth/artistinfo');
+              toast.info('작가 정보를 입력해주세요.');
             } else {
-              push('/').then(() => toast.success('로그인이 완료되었습니다.'));
+              push('/');
+              toast.success('로그인이 완료되었습니다.');
             }
           })
           .catch(() => {
-            push('/').then(() => toast.success('로그인이 완료되었습니다.'));
+            push('/');
+            toast.success('로그인이 완료되었습니다.');
           });
       })
       .catch((err) => {
@@ -112,7 +117,7 @@ const Login = () => {
               <input
                 type='text'
                 placeholder='아이디를 입력해주세요'
-                className='input-bordered input-primary input w-full'
+                className='input input-bordered input-primary w-full'
                 {...register('username')}
               />
               <ErrorMessageInput>
@@ -126,25 +131,25 @@ const Login = () => {
               <input
                 type='password'
                 placeholder='비밀번호를 입력해주세요'
-                className='input-bordered input-primary input w-full'
+                className='input input-bordered input-primary w-full'
                 {...register('password')}
               />
               <ErrorMessageInput>
                 {errors.password ? errors.password.message : ''}
               </ErrorMessageInput>
             </div>
-            <button className='btn-primary btn-block btn mt-4' type='submit'>
+            <button className='btn btn-primary btn-block mt-4' type='submit'>
               로그인
             </button>
             <Link
-              className='btn-primary btn-block btn mt-2'
-              href='/user/signup'
+              className='btn btn-primary btn-block mt-2'
+              href='/user/auth/signup'
             >
               회원가입
             </Link>
             <Link
               href={NEXT_PUBLIC_API_URL + '/oauth2/authorization/google'}
-              className='btn-secondary btn-block btn mt-2'
+              className='btn btn-secondary btn-block mt-2'
             >
               <AiOutlineGoogle /> &nbsp;구글로 로그인
             </Link>
@@ -177,4 +182,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Page;

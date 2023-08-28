@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { Cookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
@@ -22,7 +22,7 @@ import { userNameAndRoleAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
 
 const usernameChangeSchema = yup.object().shape({
-  username: yup.string(),
+  username: yup.string().required('현재 아이디를 입력해주세요.'),
   newUsername: yup
     .string()
     .matches(
@@ -31,10 +31,10 @@ const usernameChangeSchema = yup.object().shape({
     )
     .required('새로운 아이디를 입력해주세요.'),
 });
-interface usernameChangeInputs {
+type usernameChangeInputs = {
   username: string;
   newUsername: string;
-}
+};
 const ChangeUsernamePage = () => {
   useAuth();
   const cookies = useMemo(() => new Cookies(), []);
@@ -61,23 +61,19 @@ const ChangeUsernamePage = () => {
               toast.error(res.data.message);
               return;
             }
-            push('/user/login').then(() => {
-              cookies.remove('refreshToken', { path: '/' });
-              jxios.defaults.headers.common['Authorization'] = undefined;
-              setUserValue({
-                username: undefined,
-                role: undefined,
-                profileImage: undefined,
-              });
-              toast.success(
-                '아이디가 변경되었습니다. ' +
-                  data.newUsername +
-                  '아이디로 로그인을 다시 해주세요'
-              );
+            push('/user/auth/login');
+            cookies.remove('refreshToken', { path: '/' });
+            jxios.defaults.headers.common['Authorization'] = undefined;
+            setUserValue({
+              username: undefined,
+              role: undefined,
+              profileImage: undefined,
             });
-          })
-          .catch((err) => {
-            toast.error(err.response.data);
+            toast.success(
+              '아이디가 변경되었습니다. ' +
+                data.newUsername +
+                '아이디로 로그인을 다시 해주세요'
+            );
           });
       }
     });
@@ -97,7 +93,7 @@ const ChangeUsernamePage = () => {
               <input
                 type='text'
                 value={firstUsernameValue.username}
-                className='input-bordered input'
+                className='input input-bordered'
                 disabled={true}
                 {...register('username')}
               />
@@ -109,7 +105,7 @@ const ChangeUsernamePage = () => {
               <input
                 type='text'
                 placeholder='아이디를 입력해주세요'
-                className='input-bordered input'
+                className='input input-bordered'
                 {...register('newUsername')}
               />
               <ErrorMessageInput>
@@ -120,7 +116,7 @@ const ChangeUsernamePage = () => {
           <div className='flex justify-end'>
             <button
               type='submit'
-              className='btn-primary btn'
+              className='btn btn-primary'
               disabled={isSubmitting}
             >
               {isSubmitting ? '변경 중...' : '변경'}

@@ -1,8 +1,9 @@
+'use client';
+
 import jwt_decode from 'jwt-decode';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   AiFillHeart,
@@ -36,64 +37,60 @@ import {
   profileApiType,
 } from '@/types';
 
-export const getServerSideProps: GetServerSideProps<{
-  data: ArtworkType;
-  isEditMode: boolean;
-  likedMembers: likeMemberApiResponseType;
-  profileData: profileApiType;
-}> = async ({ params }) => {
-  if (!params?.slug) {
-    return {
-      notFound: true,
-    };
-  }
-  const id = params.slug[0];
-  const response = await artwork.detail(id).then((res) => res);
-  const data: ArtworkType = response.data;
-
-  const likeResponse = await artwork.likeMembers(id).then((res) => res);
-
-  const profileData = await profile
-    .get(data.artwork.authorUsername)
-    .then((res) => res.data);
-  const likedMembers: likeMemberApiResponseType = likeResponse.data;
-
-  if (!data) {
-    return {
-      notFound: true,
-    };
-  }
+const Page = () => {
+  const params = useParams();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const isEditMode = params.slug[1] === 'edit';
 
-  return {
-    props: {
-      data,
-      isEditMode,
-      likedMembers,
-      profileData,
-    },
-  };
-};
-
-const Slug = ({
-  data,
-  isEditMode,
-  likedMembers,
-  profileData,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const router = useRouter();
-  const slug = (router.query.slug as string[]) || [];
   const isTokenRefreshing = useRecoilValue(isTokenLoadingAtom);
   const likeButtonTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const usernameAndrole = useRecoilValue(userNameAndRoleAtom);
 
+  const [data, setData] = useState<ArtworkType | null>(null);
+  const [likedMembers, setLikedMembers] =
+    useState<likeMemberApiResponseType | null>(null);
+  const [profileData, setProfileData] = useState<profileApiType | null>(null);
+
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isFirstLike, setFirstLike] = useState<boolean>(false);
-  const [likeCount, setLikeCount] = useState<number>(data.artwork.likes);
+  const [likeCount, setLikeCount] = useState<number>(0);
 
-  const [isEdit, setIsEdit] = useState<boolean>(slug[1] === 'edit');
+  const [isEdit, setIsEdit] = useState<boolean>(params.slug[1] === 'edit');
   const [editMode, setEditMode] = useState<boolean>(false);
+
+  const [isDataLoading, setIsDataLoading] = useState<boolean>(true);
+  const [isLikedMembersLoading, setIsLikedMembersLoading] =
+    useState<boolean>(true);
+  const [isProfileDataLoading, setIsProfileDataLoading] =
+    useState<boolean>(true);
+
+  useEffect(() => {
+    isDataLoading &&
+      artwork.detail(params.slug[0]).then((res) => {
+        setData(res.data);
+        setIsDataLoading(false);
+      });
+    isLikedMembersLoading &&
+      artwork.likeMembers(params.slug[0]).then((res) => {
+        setLikedMembers(res.data);
+        setIsLikedMembersLoading(false);
+      });
+    isProfileDataLoading &&
+      !isDataLoading &&
+      data &&
+      profile.get(data.artwork.authorUsername).then((res) => {
+        setProfileData(res.data);
+        setIsProfileDataLoading(false);
+      });
+  }, [
+    data,
+    isDataLoading,
+    isLikedMembersLoading,
+    isProfileDataLoading,
+    params.slug,
+  ]);
 
   useEffect(() => {
     if (
@@ -115,13 +112,14 @@ const Slug = ({
   }, [data, isEditMode, isTokenRefreshing]);
 
   useEffect(() => {
-    if (data && router.asPath === '/artwork/' + data.artwork.id) {
+    if (data && pathname === '/artwork/' + data.artwork.id) {
       setEditMode(false);
     }
-  }, [data, router.asPath]);
+  }, [data, pathname]);
 
   useEffect(() => {
     // calculate like count
+    if (!data) return;
     if (isFirstLike) {
       if (isLike) {
         setLikeCount(() => data.artwork.likes);
@@ -135,15 +133,16 @@ const Slug = ({
         setLikeCount(() => data.artwork.likes);
       }
     }
-  }, [isLike, isFirstLike, setLikeCount, data.artwork.likes]);
+  }, [isLike, isFirstLike, setLikeCount, data?.artwork.likes, data]);
 
   useEffect(() => {
+    if (!data) return;
     jxios.defaults.headers.common.Authorization &&
       artwork.isLike(data.artwork.id).then((res) => {
         setIsLike(Boolean(res.data));
         setFirstLike(Boolean(res.data));
       });
-  }, [data.artwork.id]);
+  }, [data?.artwork.id, data]);
 
   const onLikeButtonClick = async () => {
     if (!data) return;
@@ -170,20 +169,22 @@ const Slug = ({
   };
   return (
     <>
-      <Seo
-        description={data.artwork.description.substring(0, 120)}
-        templateTitle={`${data.artwork.title} - ${data.artwork.authorName} 작품`}
-        image={
-          NEXT_PUBLIC_ROOT_URL +
-          '/api/og-image?title=' +
-          data.artwork.title +
-          '&thumbnail=' +
-          data.artwork.thumbnail.mediaUrl +
-          '&name=' +
-          data.artwork.authorName
-        }
-        tag={`${data.artwork.authorName}, ${data.artwork.tags.toString()}`}
-      />
+      {data && (
+        <Seo
+          description={data?.artwork.description.substring(0, 120)}
+          templateTitle={`${data.artwork.title} - ${data.artwork.authorName} 작품`}
+          image={
+            NEXT_PUBLIC_ROOT_URL +
+            '/api/og-image?title=' +
+            data.artwork.title +
+            '&thumbnail=' +
+            data.artwork.thumbnail.mediaUrl +
+            '&name=' +
+            data.artwork.authorName
+          }
+          tag={`${data.artwork.authorName}, ${data.artwork.tags.toString()}`}
+        />
+      )}
       <NavBar />
       <TabLayout top>
         {!editMode ? (
@@ -254,82 +255,85 @@ const Slug = ({
               ))}
               <div className='h-8'></div>
 
-              <div className='my-4 flex flex-col'>
-                <button
-                  onClick={onLikeButtonClick}
-                  className='mb-4 flex items-center'
-                >
-                  {isLike ? (
-                    <AiFillHeart className='h-7 w-7 text-orange-500' />
-                  ) : (
-                    <AiOutlineHeart className='h-7 w-7' />
-                  )}
-                  <span className='ml-2 font-bold'>
-                    {(likeCount <= 0 && '아직 좋아요가 없습니다.') ||
-                      (likeCount === 1 &&
-                        (likedMembers.memberUsernames[0]
-                          ? likedMembers.memberUsernames[0] ===
-                            usernameAndrole.username
-                            ? likedMembers.memberUsernames[1]
-                            : likedMembers.memberUsernames[0]
-                          : isLike
-                          ? usernameAndrole.username
-                          : 'user') + '님이 좋아합니다.') ||
-                      likedMembers.memberUsernames[0] +
-                        '님 외 ' +
-                        (likeCount - 1) +
-                        '명이 좋아합니다.'}
-                  </span>
-                </button>
+              {likedMembers && (
+                <div className='my-4 flex flex-col'>
+                  <button
+                    onClick={onLikeButtonClick}
+                    className='mb-4 flex items-center'
+                  >
+                    {isLike ? (
+                      <AiFillHeart className='h-7 w-7 text-orange-500' />
+                    ) : (
+                      <AiOutlineHeart className='h-7 w-7' />
+                    )}
+                    <span className='ml-2 font-bold'>
+                      {(likeCount <= 0 && '아직 좋아요가 없습니다.') ||
+                        (likeCount === 1 &&
+                          (likedMembers.memberUsernames[0]
+                            ? likedMembers.memberUsernames[0] ===
+                              usernameAndrole.username
+                              ? likedMembers.memberUsernames[1]
+                              : likedMembers.memberUsernames[0]
+                            : isLike
+                            ? usernameAndrole.username
+                            : 'user') + '님이 좋아합니다.') ||
+                        likedMembers.memberUsernames[0] +
+                          '님 외 ' +
+                          (likeCount - 1) +
+                          '명이 좋아합니다.'}
+                    </span>
+                  </button>
 
-                <div className='text-left'>
-                  <p>
-                    작성일 :{' '}
-                    {new Date(data.artwork.createdTime).toLocaleString('ko-KR')}
-                  </p>
-                  {data.artwork.updatedTime && (
+                  <div className='text-left'>
                     <p>
-                      업데이트 :{' '}
-                      {new Date(data.artwork.updatedTime).toLocaleString(
+                      작성일 :{' '}
+                      {new Date(data.artwork.createdTime).toLocaleString(
                         'ko-KR'
                       )}
                     </p>
-                  )}
-                </div>
-                {isEdit && (
-                  <>
-                    <p>조회수 : {data.artwork.views}</p>
-                    <div className='btn-group mt-2'>
-                      <Link
-                        className='btn-accent btn'
-                        href={'/artwork/' + data.artwork.id + '/edit'}
-                      >
-                        <AiOutlineEdit className='h-6 w-6' />
-                      </Link>
-                      <button
-                        className='btn-warning btn'
-                        onClick={() => {
-                          confirm('정말 삭제하시겠습니까?') &&
-                            artwork.delete(data.artwork.id).then(() => {
-                              router.push('/').then(() => {
-                                router.reload();
+                    {data.artwork.updatedTime && (
+                      <p>
+                        업데이트 :{' '}
+                        {new Date(data.artwork.updatedTime).toLocaleString(
+                          'ko-KR'
+                        )}
+                      </p>
+                    )}
+                  </div>
+                  {isEdit && (
+                    <>
+                      <p>조회수 : {data.artwork.views}</p>
+                      <div className='btn-group mt-2'>
+                        <Link
+                          className='btn btn-accent'
+                          href={'/artwork/' + data.artwork.id + '/edit'}
+                        >
+                          <AiOutlineEdit className='h-6 w-6' />
+                        </Link>
+                        <button
+                          className='btn btn-warning'
+                          onClick={() => {
+                            confirm('정말 삭제하시겠습니까?') &&
+                              artwork.delete(data.artwork.id).then(() => {
+                                router.push('/');
+                                router.refresh();
                                 toast.success('작품이 삭제되었습니다.');
                               });
-                            });
-                        }}
-                      >
-                        <AiOutlineDelete className='h-6 w-6' />
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
+                          }}
+                        >
+                          <AiOutlineDelete className='h-6 w-6' />
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
               {profileData && <ProfileCard profileData={profileData} />}
             </div>
           )
         ) : (
           <div className='w-2xl'>
-            <Editor data={data} type='edit' />
+            {data && <Editor data={data} type='edit' />}
           </div>
         )}
       </TabLayout>
@@ -339,4 +343,4 @@ const Slug = ({
   );
 };
 
-export default Slug;
+export default Page;

@@ -1,5 +1,7 @@
+'use client';
+
 import jwt_decode from 'jwt-decode';
-import { useRouter } from 'next/router';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Cookies } from 'react-cookie';
 import { toast } from 'react-toastify';
@@ -12,13 +14,14 @@ import { userNameAndRoleAtom } from '@/states/atom';
 import jxios from '@/utils/jxios';
 
 const RedirectOAuth2 = () => {
-  const { push, query } = useRouter();
+  const { push } = useRouter();
+  const params = useParams();
   const setUserInfo = useSetRecoilState(userNameAndRoleAtom);
   useEffect(() => {
-    if (query.token) {
+    if (params.token) {
       const cookies = new Cookies();
       auth
-        .refresh(query.token as string)
+        .refresh(params.token as string)
         .then(async (res) => {
           const { accessToken, refreshToken } = res.data;
           jxios.defaults.headers.common[
@@ -45,23 +48,24 @@ const RedirectOAuth2 = () => {
                 profileImage: res.data.picture || undefined,
               });
               if (res.data.artistStatus === 'NONE') {
-                push('/user/input-info').then(() =>
-                  toast.info('작가 정보를 입력해주세요.')
-                );
+                push('/user/auth/artistinfo');
+                toast.info('작가 정보를 입력해주세요.');
               } else {
-                push('/').then(() => toast.success('로그인이 완료되었습니다.'));
+                push('/');
+                toast.success('로그인이 완료되었습니다.');
               }
             })
             .catch(() => {
-              push('/').then(() => toast.success('로그인이 완료되었습니다.'));
+              push('/');
+              toast.success('로그인이 완료되었습니다.');
             });
         })
         .catch(() => {
           cookies.remove('refreshToken', { path: '/' });
-          push('/user/login');
+          push('/user/auth/login');
         });
     }
-  }, [push, query.token, setUserInfo]);
+  }, [push, params, setUserInfo]);
 
   return <Seo templateTitle='구글 로그인'></Seo>;
 };

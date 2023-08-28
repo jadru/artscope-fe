@@ -1,5 +1,7 @@
+'use client';
+
 import jwt_decode from 'jwt-decode';
-import { useRouter } from 'next/router';
+import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo } from 'react';
 import { Cookies } from 'react-cookie';
 import { useRecoilState, useSetRecoilState } from 'recoil';
@@ -14,9 +16,10 @@ const useAuth = () => {
     useRecoilState(isTokenLoadingAtom);
   const setUserInfo = useSetRecoilState(userNameAndRoleAtom);
   const router = useRouter();
+  const asPath = usePathname();
   const cookies = useMemo(() => new Cookies(), []);
   const refresh = useCallback(async () => {
-    if (!isTokenRefreshing && !router.asPath.startsWith('/oauth2/redirect')) {
+    if (!isTokenRefreshing && !asPath.startsWith('/oauth2/redirect')) {
       if (
         !jxios.defaults.headers.common['Authorization'] &&
         cookies.get('refreshToken')
@@ -51,20 +54,27 @@ const useAuth = () => {
           })
           .catch(() => {
             cookies.remove('refreshToken');
-            router.push('/user/login');
+            router.push('/user/auth/login');
           })
           .finally(() => setIsTokenRefreshing(false));
       }
-      if (artistAuthRequired.includes(router.asPath)) {
+      if (artistAuthRequired.includes(asPath)) {
         if (
           !jxios.defaults.headers.common['Authorization'] &&
           !cookies.get('refreshToken')
         ) {
-          await router.push('/user/login');
+          await router.push('/user/auth/login');
         }
       }
     }
-  }, [isTokenRefreshing, router, cookies, setIsTokenRefreshing, setUserInfo]);
+  }, [
+    isTokenRefreshing,
+    asPath,
+    cookies,
+    setIsTokenRefreshing,
+    setUserInfo,
+    router,
+  ]);
   useEffect(() => {
     refresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps

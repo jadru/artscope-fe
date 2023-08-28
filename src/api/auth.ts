@@ -1,4 +1,4 @@
-import { SignupInputs } from '@/pages/user/signup';
+import { SignupInputs } from '@/app/user/auth/signup/page';
 import jxios from '@/utils/jxios';
 
 const refreshToken = async (refreshToken: string) =>
