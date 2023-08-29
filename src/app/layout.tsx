@@ -4,7 +4,9 @@ import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import '../styles/globals.scss';
+import 'react-toastify/dist/ReactToastify.css';
 
+import NavBar from '@/app/Navbar';
 import { Providers } from '@/app/providers';
 import { GA_TRACKING_ID } from '@/constant/env';
 
@@ -26,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='ko'>
+    <html lang='ko' className='light'>
       <body>
         <ToastContainer limit={2} hideProgressBar />
         <Script
@@ -47,7 +49,7 @@ export default function RootLayout({
           `,
           }}
         />
-
+        <NavBar />
         <Providers>{children}</Providers>
       </body>
     </html>

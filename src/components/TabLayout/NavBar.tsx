@@ -69,7 +69,7 @@ export const NavBar: React.FC<Props> = ({
   return (
     <>
       <div
-        className={`navbar min-h-12 z-50 h-12 overflow-y-visible bg-white/80 pb-0 backdrop-blur-xl lg:min-h-16 dark:bg-dark/80 lg:fixed lg:h-16 lg:pb-2 ${className}`}
+        className={`dark:bg-dark/80 navbar min-h-12 z-50 h-12 overflow-y-visible bg-white/80 pb-0 backdrop-blur-xl lg:min-h-16 lg:fixed lg:h-16 lg:pb-2 ${className} hidden`}
       >
         <div className='navbar-start w-full items-center md:w-1/2'>
           <Link
@@ -132,7 +132,7 @@ export const NavBar: React.FC<Props> = ({
         </div>
       </div>
       <div
-        className={`min-h-14 navbar sticky top-0 z-50 flex h-12 w-full items-center justify-start space-x-2.5 px-4 backdrop-blur-xl dark:bg-dark/90 lg:fixed lg:left-1/2 lg:w-auto lg:translate-x-[-50%] lg:bg-transparent lg:backdrop-blur-none ${
+        className={`min-h-14 dark:bg-dark/90 navbar sticky top-0 z-50 flex hidden h-12 w-full items-center justify-start space-x-2.5 px-4 backdrop-blur-xl lg:fixed lg:left-1/2 lg:w-auto lg:translate-x-[-50%] lg:bg-transparent lg:backdrop-blur-none ${
           !dark ? 'bg-white/80' : 'bg-black/90 text-gray-200 dark:bg-black/90'
         } ${transparent ? 'bg-transparent' : ''} ${className}`}
       >
