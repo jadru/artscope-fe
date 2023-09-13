@@ -102,7 +102,7 @@ export default function NavBar() {
                     push('/feedback');
                     break;
                   case 'logout':
-                    push('/logout');
+                    push('/user/signout');
                     break;
                 }
               }}

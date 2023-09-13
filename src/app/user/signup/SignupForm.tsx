@@ -10,8 +10,8 @@ import { toast } from 'react-toastify';
 
 import ErrorMessageInput from '@/components/ErrorMessageInput';
 
-import { nativeAuth } from '@/api';
 import signupSchema, { SignupInputs } from '@/app/user/signup/signupSchema';
+import jxios from '@/utils/jxios';
 
 const SignupForm = () => {
   const {
@@ -32,15 +32,22 @@ const SignupForm = () => {
   const [usernameCheck, setUsernameCheck] = React.useState<boolean>(false);
 
   const onSubmit: SubmitHandler<SignupInputs> = async (data) => {
+    if (isSubmitting) return;
+    if (!emailCheck) toast.warn('이메일이 중복됩니다.');
+    if (!usernameCheck) toast.warn('아이디가 중복됩니다.');
     if (!isSubmitting && emailCheck && usernameCheck) {
       delete data.passwordCheck;
       delete data.agree;
       clearErrors();
-      await nativeAuth.signup(data).then(async () => {
-        await nativeAuth.validateEmail(data.email).then(async () => {
-          push('/user/email/verification');
-          toast.success(data.email + '로 보낸 이메일 인증을 완료해주세요.');
-        });
+      await jxios.post('/api/members', data).then(async () => {
+        await jxios
+          .post('/api/mail/authenticate', undefined, {
+            params: { email: data.email },
+          })
+          .then(async () => {
+            push('/user/email/verification');
+            toast.success(data.email + '로 보낸 이메일 인증을 완료해주세요.');
+          });
       });
     }
   };
@@ -48,19 +55,21 @@ const SignupForm = () => {
   const checkEmailDuplication = () => {
     const regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
     if (regex.test(getValues('email'))) {
-      nativeAuth.check
-        .email(getValues('email'))
+      jxios
+        .get('/api/members/email/' + getValues('email'))
         .then((response) => {
           if (response.status === 200) {
             setEmailCheck(true);
             toast.success('사용 가능한 이메일입니다.');
             clearErrors('email');
-          } else {
-            toast.warn('이미 사용중인 이메일입니다.');
-            setEmailCheck(false);
           }
         })
         .catch(() => {
+          setError('email', {
+            type: 'manual',
+            message: '이미 사용중인 이메일입니다.',
+          });
+          toast.warn('이미 사용중인 이메일입니다.');
           setEmailCheck(false);
         });
     } else {
@@ -74,19 +83,21 @@ const SignupForm = () => {
   const checkUsernameDuplication = () => {
     const regex = new RegExp('^[a-zA-Z0-9]{4,12}$');
     if (regex.test(getValues('username'))) {
-      nativeAuth.check
-        .username(getValues('username'))
+      jxios
+        .get('/api/members/username/' + getValues('username'))
         .then((response) => {
           if (response.status === 200) {
             setUsernameCheck(true);
             toast.success('사용 가능한 아이디입니다.');
             clearErrors('username');
-          } else {
-            toast.warn('이미 사용중인 아이디입니다.');
-            setUsernameCheck(false);
           }
         })
         .catch(() => {
+          setError('username', {
+            type: 'manual',
+            message: '이미 사용중인 아이디입니다.',
+          });
+          toast.warn('이미 사용중인 아이디입니다.');
           setUsernameCheck(false);
         });
     } else {
