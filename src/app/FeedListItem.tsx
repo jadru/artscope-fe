@@ -1,0 +1,112 @@
+import { Button, Card, User } from '@nextui-org/react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { AiFillHeart, AiFillMessage, AiFillStar } from 'react-icons/ai';
+import { toast } from 'react-toastify';
+
+import { feedItemType } from '@/types';
+
+export default function FeedListItem({ feed }: { feed: feedItemType }) {
+  const { push } = useRouter();
+  const [readMore, setReadMore] = useState<boolean>(false);
+  return (
+    <div className='flex flex-row justify-between border-x border-t p-4 pb-2 transition-colors'>
+      <div className='w-full flex-col text-left'>
+        <div
+          className='cursor-pointer'
+          onClick={(e) => {
+            e.stopPropagation();
+            push(`/profile/${feed.authorUsername}`);
+          }}
+        >
+          <User
+            name={feed.authorName}
+            description={
+              '@' +
+              feed.authorUsername +
+              (feed.authorDescription ? ' - ' + feed.authorDescription : '')
+            }
+            avatarProps={{
+              src: feed.authorProfileImageUrl
+                ? feed.authorProfileImageUrl
+                : undefined,
+            }}
+            className='p-1 hover:underline'
+          />
+        </div>
+        <div className='flex flex-col justify-start px-1.5 py-3'>
+          <div className='text flex w-full flex-col gap-1'>
+            <h4 className='w-full overflow-x-hidden text-xl font-semibold leading-none text-default-600'>
+              {feed.title}
+            </h4>
+            <h5
+              className={`${
+                !readMore && feed.content.length > 130
+                  ? 'cursor-pointer hover:underline'
+                  : ''
+              } w-full overflow-x-hidden text-medium tracking-tight text-default-400`}
+              onClick={() => {
+                if (!readMore && feed.content.length > 130) setReadMore(true);
+              }}
+            >
+              {!readMore && feed.content.length > 130
+                ? feed.content.slice(0, 130) + '... 더보기'
+                : feed.content}
+            </h5>
+          </div>
+        </div>
+        <div className='gap-1'>
+          <Button
+            startContent={<AiFillHeart className='h-5 w-5' />}
+            variant='light'
+            className='text-md text-gray-500 hover:text-red-500'
+            onClick={(e) => {
+              e.stopPropagation();
+              toast('좋아요 누름');
+            }}
+          >
+            {feed.likes}
+          </Button>
+          <Button
+            startContent={<AiFillMessage className='h-5 w-5' />}
+            variant='light'
+            className='text-md text-gray-500 hover:text-blue-500'
+            onClick={(e) => {
+              e.stopPropagation();
+              toast('댓글 누름');
+            }}
+          >
+            {feed.likes}
+          </Button>
+          <Button
+            startContent={<AiFillStar className='h-5 w-5' />}
+            variant='light'
+            className='text-md text-gray-500 hover:text-green-500'
+            onClick={(e) => {
+              e.stopPropagation();
+              toast('저장 누름');
+            }}
+          >
+            {feed.likes}
+          </Button>
+        </div>
+      </div>
+      {feed.thumbnailUrl && (
+        <Card
+          isFooterBlurred
+          radius='lg'
+          className='h-max min-w-max border-none'
+        >
+          <Image
+            alt='Woman listing to music'
+            className='object-cover'
+            height={200}
+            src={feed.thumbnailUrl}
+            width={200}
+          />
+        </Card>
+      )}
+    </div>
+  );
+}
