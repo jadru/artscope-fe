@@ -80,12 +80,6 @@ export type DetailedArtworkType = {
   views: number;
 };
 
-export type decodedTokenType = {
-  sub: string;
-  exp: number;
-  auth: string;
-};
-
 export type profileApiType = {
   username: string;
   name: string;
@@ -97,7 +91,7 @@ export type profileApiType = {
   websiteUrl: string;
   introduction: string;
   history: string;
-  authrities: ('ROLE_GUEST' | 'ROLE_USER' | 'ROLE_ARTIST' | 'ROLE_ADMIN')[];
+  authrities: roleType;
   createdTime: Date;
   updatedTime: Date | null;
 };
@@ -143,4 +137,80 @@ export type likeArtworksByMemberApiResponseType = {
     totalPages: number;
     totalElements: number;
   };
+};
+
+export type decodedAccessTokenType = {
+  sub: string;
+  exp: number;
+  auth: string;
+};
+
+export type decodedRefreshTokenType = {
+  sub: string;
+  exp: number;
+  type: 'refresh';
+};
+
+export type roleType = (
+  | 'ROLE_GUEST'
+  | 'ROLE_USER'
+  | 'ROLE_ARTIST'
+  | 'ROLE_ADMIN'
+)[];
+
+export type feedApiResponseType = {
+  feedItems: feedItemType[];
+  pageInfo: pageInfoType;
+  hasNext: boolean;
+};
+
+export type feedItemType = {
+  id: number;
+  title: string;
+  content: string;
+  type: contentType;
+  thumbnailUrl: string | null;
+  mediaUrls: string | null;
+  authorUsername: string;
+  authorName: string;
+  authorDescription: string | null;
+  authorProfileImageUrl: string | null;
+  tags: string[] | null;
+  categoryId: string;
+  views: number;
+  likes: number;
+  comments: number;
+  createdTime: Date;
+  updatedTime: Date | null;
+};
+
+type pageInfoType = {
+  page: number;
+  size: number;
+  totalPages: number;
+  totalElements: number;
+};
+
+export type contentType =
+  | 'post'
+  | 'artwork'
+  | 'artist'
+  | 'notice'
+  | 'event'
+  | 'faq'
+  | 'qna'
+  | 'review'
+  | 'etc';
+
+export interface ArtistForm {
+  introduction: string;
+  history: string;
+  snsUrl: string;
+  websiteUrl: string | undefined;
+}
+
+export type ArtworkListParams = {
+  page: number;
+  size: number;
+  sortDirection?: 'ASC' | 'DESC';
 };
