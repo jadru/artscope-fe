@@ -23,7 +23,7 @@ export const userStore = create<UserStoreType>((set) => ({
     profilePicture: undefined,
     email: undefined,
     oauthProvider: undefined,
-    role: ['ROLE_GUEST'],
+    role: [],
   },
   setUser: (user) => set({ user }),
 }));
