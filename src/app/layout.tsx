@@ -50,7 +50,11 @@ export default function RootLayout({
           }}
         />
         <NavBar />
-        <Providers>{children}</Providers>
+        <Providers>
+          <div className='container mx-auto min-h-screen max-w-[1024px]'>
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   );

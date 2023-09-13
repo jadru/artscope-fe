@@ -2,19 +2,16 @@
 
 import { NextUIProvider } from '@nextui-org/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
-import React from 'react';
-import { RecoilRoot } from 'recoil';
+import React, { useState } from 'react';
+
+import useToken from '@/hooks/useToken';
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const [client] = React.useState(new QueryClient());
+  useToken();
+  const [queryClient] = useState(new QueryClient());
   return (
-    <NextUIProvider>
-      <QueryClientProvider client={client}>
-        <ReactQueryStreamedHydration>
-          <RecoilRoot>{children}</RecoilRoot>
-        </ReactQueryStreamedHydration>
-      </QueryClientProvider>
-    </NextUIProvider>
+    <QueryClientProvider client={queryClient}>
+      <NextUIProvider>{children}</NextUIProvider>
+    </QueryClientProvider>
   );
 }

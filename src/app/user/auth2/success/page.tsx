@@ -1,71 +1,58 @@
 'use client';
 
-import jwt_decode from 'jwt-decode';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Cookies } from 'react-cookie';
 import { toast } from 'react-toastify';
-import { useSetRecoilState } from 'recoil';
 
 import Seo from '@/components/Seo';
 
-import { auth } from '@/api';
-import { userNameAndRoleAtom } from '@/states/atom';
+import { userStore } from '@/states';
 import jxios from '@/utils/jxios';
 
 const RedirectOAuth2 = () => {
   const { push } = useRouter();
-  const params = useParams();
-  const setUserInfo = useSetRecoilState(userNameAndRoleAtom);
+  const cookies = useMemo(() => new Cookies(), []);
+  const { token } = useParams();
+  const { setUser } = userStore();
   useEffect(() => {
-    if (params.token) {
-      const cookies = new Cookies();
-      auth
-        .refresh(params.token as string)
-        .then(async (res) => {
-          const { accessToken, refreshToken } = res.data;
-          jxios.defaults.headers.common[
-            'Authorization'
-          ] = `Bearer ${accessToken}`;
-          const decodedRefreshToken: { exp: number } = jwt_decode(refreshToken);
-          const decodedAccessToken: {
-            exp: number;
-            sub: string;
-            auth: string;
-          } = jwt_decode(accessToken);
-
-          cookies.remove('refreshToken');
-          cookies.set('refreshToken', refreshToken, {
-            expires: new Date(decodedRefreshToken.exp * 1000),
+    if (token) {
+      jxios
+        .post('/api/refresh', token as string, {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        })
+        .then((ress) => {
+          jxios.defaults.headers.common['Authorization'] =
+            'Bearer ' + ress.data.accessToken;
+          cookies.set('refreshToken', ress.data.refreshToken, {
             path: '/',
+            httpOnly: true,
+            sameSite: 'strict',
           });
-          await jxios
-            .get('/api/members/profile')
-            .then(async (res) => {
-              await setUserInfo({
-                username: decodedAccessToken.sub,
-                role: decodedAccessToken.auth,
-                profileImage: res.data.picture || undefined,
-              });
-              if (res.data.artistStatus === 'NONE') {
-                push('/user/auth/artistinfo');
-                toast.info('작가 정보를 입력해주세요.');
-              } else {
-                push('/');
-                toast.success('로그인이 완료되었습니다.');
-              }
-            })
-            .catch(() => {
+          jxios.get('/api/members/profile').then((res) => {
+            setUser({
+              username: res.data.username,
+              name: res.data.name,
+              profilePicture: res.data.profilePicture,
+              email: res.data.email,
+              role: res.data.role,
+            });
+
+            if (res.data.artistStatus === 'NONE') {
+              push('/user/signup/artist');
+              toast.info('회원가입을 해주세요.');
+            } else {
               push('/');
               toast.success('로그인이 완료되었습니다.');
-            });
-        })
-        .catch(() => {
-          cookies.remove('refreshToken', { path: '/' });
-          push('/user/auth/login');
+            }
+          });
         });
+    } else {
+      push('/');
     }
-  }, [push, params, setUserInfo]);
+  }, [cookies, push, token, setUser]);
 
   return <Seo templateTitle='구글 로그인'></Seo>;
 };

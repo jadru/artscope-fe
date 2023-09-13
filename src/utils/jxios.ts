@@ -3,6 +3,8 @@ import jwt_decode from 'jwt-decode';
 import { Cookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 
+import { userStore } from '@/states';
+
 const Jaxios = axios.create({
   withCredentials: true,
   headers: {
@@ -11,7 +13,9 @@ const Jaxios = axios.create({
 });
 
 const getRefreshToken = async () => {
+  const { setUser } = userStore();
   const cookies = new Cookies();
+
   axios
     .post('/api/refresh', cookies.get('refreshToken'), {
       data: cookies.get('refreshToken'),
@@ -27,6 +31,17 @@ const getRefreshToken = async () => {
       cookies.set('refreshToken', refreshToken, {
         expires: new Date(decodedRefreshToken.exp * 1000),
         path: '/',
+      });
+      Jaxios.get('/api/members/profile').then((resProfile) => {
+        const { data } = resProfile;
+        setUser({
+          username: data.username,
+          role: data.authrities,
+          name: data.name,
+          profilePicture: data.picture,
+          email: data.email,
+          oauthProvider: data.oauthProvider,
+        });
       });
     })
     .catch(() => {
