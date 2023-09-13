@@ -1,0 +1,19 @@
+'use client';
+
+import FeedListItem from '@/app/FeedListItem';
+
+import { feedItemType } from '@/types';
+
+export type TabType = 'feed' | 'post' | 'artwork' | 'exhibition';
+
+export default function FeedList({ data }: { data: feedItemType[] }) {
+  return (
+    <>
+      <div className='flex flex-col'>
+        {data.map((feed) => (
+          <FeedListItem feed={feed} key={feed.id} />
+        ))}
+      </div>
+    </>
+  );
+}
