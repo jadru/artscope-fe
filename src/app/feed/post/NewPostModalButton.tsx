@@ -11,53 +11,40 @@ import {
   ModalFooter,
   ModalHeader,
   ScrollShadow,
-  Select,
-  SelectItem,
   useDisclosure,
 } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import Image from 'next/image';
-import React, { Dispatch, useState } from 'react';
+import React, { useState } from 'react';
 import {
   AiFillCloseCircle,
   AiOutlineClose,
-  AiOutlineExpandAlt,
-  AiOutlineEye,
-  AiOutlineEyeInvisible,
-  AiOutlineFullscreenExit,
   AiOutlinePlus,
 } from 'react-icons/ai';
 import { FaHashtag } from 'react-icons/fa';
 import TextareaAutoSize from 'react-textarea-autosize';
 import { toast } from 'react-toastify';
 
+import TopicTypeCheckBox, {
+  TopicType,
+} from '@/app/feed/post/TopicTypeCheckBox';
 import UserInfo from '@/app/UserInfo';
 import jxios from '@/utils/jxios';
 
 type Props = {
-  title?: string;
   placeholder: string;
   submitBtnText: string;
 };
-
-type TopicType = 'post' | 'artwork' | 'exhibition';
-type PublicType = 'public' | 'private';
 
 type ImageType = {
   id: number;
   url: string;
 };
 
-export default function NewPostModal({
-  title,
-  placeholder,
-  submitBtnText,
-}: Props) {
+export default function NewPostModal({ placeholder, submitBtnText }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { refetch } = useInfiniteQuery(['feed']);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [postType, setPostType] = useState<TopicType>('post');
-  const [publicType, setPublicType] = useState<PublicType>('public');
+  const [postType, setPostType] = useState<TopicType>('default');
   const [imageCount] = useState<ImageType[]>([
     {
       id: 1,
@@ -112,35 +99,14 @@ export default function NewPostModal({
         hideCloseButton
         isOpen={isOpen}
         onClose={onClose}
-        size={isExpanded ? 'full' : 'lg'}
-        className={'transition-all' + (isExpanded ? 'duration-300' : '')}
+        size='xl'
+        className='transition-all'
       >
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className='flex flex-row items-center justify-between gap-1'>
-                <button
-                  onClick={() => {
-                    setIsExpanded(!isExpanded);
-                  }}
-                >
-                  {isExpanded ? (
-                    <AiOutlineFullscreenExit className='h-6 w-6 text-lg hover:text-blue-600' />
-                  ) : (
-                    <AiOutlineExpandAlt className='h-6 w-6 text-lg hover:text-blue-600' />
-                  )}
-                </button>
-                <p className='text-center'>
-                  {title
-                    ? title
-                    : `새 ${
-                        postType === 'post'
-                          ? '포스트'
-                          : postType === 'artwork'
-                          ? '작품'
-                          : '전시'
-                      } 작성하기`}
-                </p>
+                <p className='text-center'>새 포스트 작성하기</p>
                 <button onClick={onClose}>
                   <AiOutlineClose className='h-6 w-6 hover:text-blue-600' />
                 </button>
@@ -150,18 +116,14 @@ export default function NewPostModal({
                 <div className='w-full overflow-y-scroll'>
                   <div className='flex flex-row gap-2'>
                     <UserInfo />
-                    <PublicTypeCheckBox
-                      publicType={publicType}
-                      setPublicType={setPublicType}
-                    />
                   </div>
                   <ScrollShadow className='max-h-max'>
                     <TextareaAutoSize
                       defaultValue={postContent}
                       autoFocus
                       placeholder={placeholder}
-                      minRows={isExpanded ? undefined : 2}
-                      maxRows={isExpanded ? undefined : 10}
+                      minRows={4}
+                      maxRows={10}
                       className='min-h-12 mt-1 w-full resize-none !border-0 px-0 text-lg focus:border-none focus:shadow-none focus:shadow-transparent focus:ring-0'
                       onChange={(e) => {
                         setPostContent(e.currentTarget.value);
@@ -253,7 +215,7 @@ export default function NewPostModal({
               </ModalBody>
               <Divider />
               <ModalFooter className='flex-col justify-around sm:flex-row'>
-                <PostTypeCheckBox
+                <TopicTypeCheckBox
                   postType={postType}
                   setPostType={setPostType}
                 />
@@ -273,66 +235,3 @@ export default function NewPostModal({
     </>
   );
 }
-
-const PostTypeSelectItems = [
-  { label: '포스트', value: 'post' },
-  { label: '작품', value: 'artwork' },
-  { label: '전시회', value: 'exhibition' },
-];
-
-const PublicTypeSelectItems = [
-  { label: '전체 공개', value: 'public', icon: <AiOutlineEye /> },
-  { label: '나만 보기', value: 'private', icon: <AiOutlineEyeInvisible /> },
-];
-
-const PostTypeCheckBox = ({
-  setPostType,
-}: {
-  postType: TopicType;
-  setPostType: Dispatch<TopicType>;
-}) => (
-  <Select
-    labelPlacement='outside'
-    color='secondary'
-    disallowEmptySelection
-    defaultSelectedKeys={['post']}
-    description='토픽 선택'
-    className='mb-1.5 w-[200px]'
-    onChange={(e) => {
-      setPostType(e.target.value as TopicType);
-    }}
-  >
-    {PostTypeSelectItems.map((item) => (
-      <SelectItem key={item.value}>{item.label}</SelectItem>
-    ))}
-  </Select>
-);
-
-const PublicTypeCheckBox = ({
-  setPublicType,
-  publicType,
-}: {
-  publicType: PublicType;
-  setPublicType: Dispatch<PublicType>;
-}) => (
-  <Select
-    labelPlacement='outside'
-    size='sm'
-    color='primary'
-    disallowEmptySelection
-    startContent={
-      publicType === 'public' ? <AiOutlineEye /> : <AiOutlineEyeInvisible />
-    }
-    defaultSelectedKeys={['public']}
-    className='mb-1.5 w-[130px]'
-    onChange={(e) => {
-      setPublicType(e.target.value as PublicType);
-    }}
-  >
-    {PublicTypeSelectItems.map((item) => (
-      <SelectItem key={item.value} startContent={item.icon}>
-        {item.label}
-      </SelectItem>
-    ))}
-  </Select>
-);

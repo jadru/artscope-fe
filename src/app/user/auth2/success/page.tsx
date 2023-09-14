@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import { Cookies } from 'react-cookie';
 import { toast } from 'react-toastify';
@@ -13,7 +13,8 @@ import jxios from '@/utils/jxios';
 const RedirectOAuth2 = () => {
   const { push } = useRouter();
   const cookies = useMemo(() => new Cookies(), []);
-  const { token } = useParams();
+  const searchParams = useSearchParams();
+  const token = searchParams.get('token');
   const { setUser } = userStore();
   useEffect(() => {
     if (token) {
