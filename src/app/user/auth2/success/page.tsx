@@ -29,8 +29,6 @@ const RedirectOAuth2 = () => {
             'Bearer ' + ress.data.accessToken;
           cookies.set('refreshToken', ress.data.refreshToken, {
             path: '/',
-            httpOnly: true,
-            sameSite: 'strict',
           });
           jxios.get('/api/members/profile').then((res) => {
             setUser({
@@ -41,13 +39,8 @@ const RedirectOAuth2 = () => {
               role: res.data.role,
             });
 
-            if (res.data.artistStatus === 'NONE') {
-              push('/user/signup/artist');
-              toast.info('회원가입을 해주세요.');
-            } else {
-              push('/');
-              toast.success('로그인이 완료되었습니다.');
-            }
+            push('/');
+            toast.success('로그인이 완료되었습니다.');
           });
         });
     } else {
