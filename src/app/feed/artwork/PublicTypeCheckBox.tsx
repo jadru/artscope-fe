@@ -1,3 +1,5 @@
+'use client';
+
 import { Select, SelectItem } from '@nextui-org/react';
 import React, { Dispatch, ReactElement } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
