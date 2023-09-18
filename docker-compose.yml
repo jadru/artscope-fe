@@ -6,7 +6,7 @@ services:
     container_name: artplatform-fe
     build:
       context: .
-      dockerfile: Dockerfile.production
+      dockerfile: Dockerfile.prod
     volumes:
       - ".:/app"
     ports:
