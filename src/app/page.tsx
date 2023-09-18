@@ -1,24 +1,28 @@
 'use client';
 
 import { Tab, Tabs } from '@nextui-org/react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 import Artwork from '@/app/feed/artwork';
 import Feed from '@/app/feed/post';
-import { TabType } from '@/app/FeedList';
+import { TabType } from '@/app/feed/post/FeedList';
 
 export default function Page() {
-  const [tab, setTab] = useState<TabType>('feed');
-
+  const searchParams = useSearchParams();
+  const [tab, setTab] = useState<TabType>(searchParams.get('tab') as TabType);
+  const { push } = useRouter();
   return (
     <>
-      <div className='container mx-auto flex flex-col items-center justify-center border-y'>
+      <div className='container mx-auto flex flex-col items-center justify-center'>
         <div className='container max-w-screen-md'>
           <Tabs
             variant='solid'
-            defaultValue={tab}
+            selectedKey={tab}
+            fullWidth
             onSelectionChange={(e) => {
               setTab(e as TabType);
+              push('?tab=' + e);
             }}
             className='mb-1.5'
           >

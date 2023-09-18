@@ -14,6 +14,8 @@ type user = {
 type UserStoreType = {
   user: user;
   setUser: (user: user) => void;
+  isLoading: boolean;
+  setIsLoading: (isLoading: boolean) => void;
 };
 
 export const userStore = create<UserStoreType>((set) => ({
@@ -26,4 +28,6 @@ export const userStore = create<UserStoreType>((set) => ({
     role: [],
   },
   setUser: (user) => set({ user }),
+  isLoading: true,
+  setIsLoading: (isLoading) => set({ isLoading }),
 }));
