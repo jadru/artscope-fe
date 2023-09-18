@@ -1,5 +1,6 @@
 'use client';
 
+import { Card } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
@@ -71,34 +72,28 @@ export default function Index() {
         <ResponsiveGrid>
           {data.pages.map((group) =>
             group.artworks.map((aw: ArtworkType) => (
-              <>
+              <Card key={aw.artwork.id}>
                 <Link
                   href={'/artwork/' + aw.artwork.id}
-                  key={aw.artwork.id}
-                  className='bg-base-100 group relative flex h-auto w-full cursor-pointer justify-center overflow-hidden text-center dark:border-slate-600'
+                  className='bg-base-100 group relative flex h-full w-full cursor-pointer justify-center overflow-hidden text-center'
                 >
-                  <div className='m-0 grid w-full justify-items-stretch p-0'>
-                    <Image
-                      src={aw.artwork.thumbnail.mediaUrl}
-                      alt={aw.artwork.title}
-                      width={400}
-                      height={400}
-                      placeholder='blur' // 추가
-                      blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==' // 추가
-                      className='w-full cursor-zoom-in object-contain duration-200 ease-in-out group-hover:scale-110'
-                    />
-                  </div>
+                  <Image
+                    src={aw.artwork.thumbnail.mediaUrl}
+                    alt={aw.artwork.title}
+                    width={200}
+                    height={200}
+                    placeholder='blur' // 추가
+                    blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==' // 추가
+                    className='w-full object-cover duration-75 group-hover:opacity-70'
+                  />
 
-                  <div className='absolute h-full w-full bg-black/10 duration-200 group-hover:opacity-0'></div>
-                  {aw.artwork.title && (
-                    <div className='bg-dark/40 absolute bottom-2 left-2 mr-2 rounded-md px-3 py-2 text-left backdrop-blur'>
-                      <p className='text-xl font-bold text-white'>
-                        {aw.artwork.title}
-                      </p>
-                    </div>
-                  )}
+                  <div className='absolute bottom-0 left-0 m-0 w-full bg-white p-2 duration-75 group-hover:bg-orange-50'>
+                    <p className='text-light text-md truncate text-left font-serif group-hover:text-gray-700'>
+                      {aw.artwork.title} - {aw.artwork.authorName}
+                    </p>
+                  </div>
                 </Link>
-              </>
+              </Card>
             ))
           )}
           <div ref={bottom} className='mb-1 h-1'>

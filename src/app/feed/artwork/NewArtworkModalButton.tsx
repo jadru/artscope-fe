@@ -297,6 +297,8 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
         })
         .finally(() => {
           setIsUpload(false);
+          refetch();
+          onClose();
         });
     } catch (err) {
       setIsUpload(false);
@@ -416,7 +418,6 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
                         className='m-1 ml-5 h-6 max-h-6 w-24 rounded-full !border-0 bg-transparent p-2 focus:border-none focus:shadow-none focus:shadow-transparent focus:ring-0'
                         placeholder='태그 추가'
                         onKeyDown={(e) => {
-                          e.preventDefault();
                           if (
                             (e.key === 'Enter' ||
                               e.key == ' ' ||

@@ -1,6 +1,6 @@
 'use client';
 
-import FeedListItem from '@/app/FeedListItem';
+import FeedListItem from '@/app/feed/post/FeedListItem';
 
 import { feedItemType } from '@/types';
 

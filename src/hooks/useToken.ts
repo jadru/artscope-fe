@@ -5,12 +5,18 @@ import { userStore } from '@/states';
 import jxios from '@/utils/jxios';
 
 export default function useToken() {
-  const { setUser } = userStore();
+  const { setUser, setIsLoading } = userStore();
   const cookies = useMemo(() => new Cookies(), []);
   useEffect(() => {
-    if (jxios.defaults.headers.common['Authorization']) return;
+    if (jxios.defaults.headers.common['Authorization']) {
+      setIsLoading(false);
+      return;
+    }
     const refreshToken = cookies.get('refreshToken');
-    if (!refreshToken) return;
+    if (!refreshToken) {
+      setIsLoading(false);
+      return;
+    }
     jxios
       .post('/api/refresh', refreshToken, {
         headers: { 'Content-Type': 'text/plain' },
@@ -35,6 +41,23 @@ export default function useToken() {
             oauthProvider: data.oauthProvider,
           });
         });
+      })
+      .catch((err) => {
+        if (
+          err.response.status === 400 ||
+          err.response.status === 401 ||
+          err.response.status === 403
+        ) {
+          cookies.remove('refreshToken');
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-  }, [cookies, setUser]);
+
+    return () => {
+      setIsLoading(false);
+      cookies.remove('refreshToken');
+    };
+  }, [cookies, setUser, setIsLoading]);
 }

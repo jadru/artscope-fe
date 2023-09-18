@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { Nanum_Myeongjo, Noto_Sans_KR } from 'next/font/google';
 import Script from 'next/script';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -9,6 +10,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import NavBar from '@/app/Navbar';
 import { Providers } from '@/app/providers';
 import { GA_TRACKING_ID } from '@/constant/env';
+import { cls } from '@/utils';
+
+const nanum_Myeongjo = Nanum_Myeongjo({
+  preload: false,
+  weight: ['400', '700'],
+  variable: '--nanum-myeongjo',
+});
+
+const noto_Sans_KR = Noto_Sans_KR({
+  preload: false,
+  weight: ['100', '400', '700', '900'],
+  variable: '--noto-sans-kr',
+});
 
 export const metadata: Metadata = {
   title: 'Artscope',
@@ -29,7 +43,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='ko' className='light'>
-      <body>
+      <body className={cls(nanum_Myeongjo.className, noto_Sans_KR.className)}>
         <ToastContainer limit={2} hideProgressBar />
         <Script
           strategy='afterInteractive'
