@@ -11,8 +11,15 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
   const { push } = useRouter();
   const [readMore, setReadMore] = useState<boolean>(false);
   return (
-    <div className='flex flex-row justify-between border-x border-t p-4 pb-2 transition-colors'>
-      <div className='w-full flex-col text-left'>
+    <div
+      className={`flex flex-row justify-between border-x border-t p-4 pb-2 transition-colors ${
+        feed.type === 'artwork' ? 'cursor-pointer hover:bg-gray-100' : ''
+      }`}
+      onClick={() => {
+        if (feed.type === 'artwork') push(`/artwork/${feed.id}`);
+      }}
+    >
+      <div className='w-full flex-col justify-between text-left'>
         <div
           className='cursor-pointer'
           onClick={(e) => {
@@ -37,7 +44,7 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
         </div>
         <div className='flex flex-col justify-start px-1.5 py-3'>
           <div className='text flex w-full flex-col gap-1'>
-            <h4 className='w-full overflow-x-hidden text-xl font-semibold leading-none text-default-600'>
+            <h4 className='w-full overflow-x-hidden text-xl font-semibold text-default-600'>
               {feed.title}
             </h4>
             <h5
@@ -56,7 +63,7 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
             </h5>
           </div>
         </div>
-        <div className='gap-1'>
+        <div className='gap-1 self-end'>
           <Button
             startContent={<AiFillHeart className='h-5 w-5' />}
             variant='light'
