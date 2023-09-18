@@ -9,7 +9,7 @@ export default function UserInfo() {
   return (
     <User
       name={user.name}
-      description={`@${user.username}`}
+      description={`@${user.username?.slice(0, 12)}`}
       avatarProps={{
         src: user.profilePicture,
         color: 'secondary',

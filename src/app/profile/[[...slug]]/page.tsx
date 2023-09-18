@@ -16,5 +16,11 @@ export default async function ProfilePage({
   params: { slug: string[] };
 }) {
   const data: profileApiType = await fetchProfile(params.slug[0]);
-  return <div>{data.username}</div>;
+  return (
+    <div className='text-md w-full bg-orange-50 py-4 font-serif'>
+      <h1 className='text-md text-center font-light '>{data.name}</h1>
+      <h3 className='text-4xl font-semibold'>{data.introduction}</h3>
+      {data.history}
+    </div>
+  );
 }

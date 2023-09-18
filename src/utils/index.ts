@@ -6,3 +6,7 @@ export const objectToParams = (obj: { [key: string]: string | number }) => {
       .join('&')
   );
 };
+
+export const cls = (...classnames: string[]) => {
+  return classnames.join(' ');
+};

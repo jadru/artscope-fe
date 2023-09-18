@@ -11,7 +11,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        primary: [...fontFamily.sans],
+        primary: ['var(--noto-sans-kr)', ...fontFamily.sans],
+        serif: ['var(--nanum-myeongjo)', ...fontFamily.serif],
       },
       keyframes: {
         flicker: {
@@ -43,8 +44,8 @@ module.exports = {
   darkMode: 'class',
   plugins: [
     nextui({
+      prefix: 'nextui',
       addCommonColors: true,
-
       themes: {
         light: {
           colors: {},
@@ -55,7 +56,4 @@ module.exports = {
       },
     }),
   ],
-  daisyui: {
-    themes: ['emerald', 'dark'],
-  },
 };

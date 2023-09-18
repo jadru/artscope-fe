@@ -19,7 +19,7 @@ import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import { userStore } from '@/states';
 
 export default function NavBar() {
-  const { user } = userStore();
+  const { user, isLoading } = userStore();
   const { push } = useRouter();
   return (
     <Navbar>
@@ -45,81 +45,82 @@ export default function NavBar() {
         {/*   </Link> */}
         {/* </NavbarItem> */}
       </NavbarContent>
-      {!user.username ? (
-        <NavbarContent justify='end'>
-          <NavbarItem>
-            <LoginModal
-              btnText='로그인 / 회원가입'
-              title='구글로 로그인 / 회원가입'
-              description={
-                <>
-                  <p>아티스트 커뮤니티에 참여하세요</p>
-                  <p>
-                    창의력이 핵심인 <b>아티스트</b>들의 커뮤니티에 함께하세요.
-                    전국의 다양한 예술가들과 네트워크를 구축하고 함께 일하며
-                    성장하세요.
-                  </p>
-                  <p>
-                    포트폴리오를 만드세요. 예술가들의 포트폴리오를 쉽게 만들 수
-                    있게 도와줍니다.
-                  </p>
-                  <p>
-                    좋은 <b>전시 기획자</b>를 만나보세요. 전시에 참여하고 싶은
-                    예술가들을 쉽게 찾을 수 있습니다.
-                  </p>
-                </>
-              }
-              link={NEXT_PUBLIC_API_URL + '/oauth2/authorization/google'}
-            />
-          </NavbarItem>
-        </NavbarContent>
-      ) : (
-        <NavbarContent as='div' justify='end'>
-          <Dropdown placement='bottom-end'>
-            <DropdownTrigger>
-              <Avatar
-                isBordered
-                as='button'
-                color='secondary'
-                className='transition-transform'
-                name={user.name}
-                size='sm'
-                src={user.profilePicture}
-              />
-            </DropdownTrigger>
-            <DropdownMenu
-              aria-label='Profile Actions'
-              variant='flat'
-              onAction={(key) => {
-                switch (key) {
-                  case 'profile':
-                    push('/profile/' + user.username);
-                    break;
-                  case 'settings':
-                    push('/settings');
-                    break;
-                  case 'feedback':
-                    push('/feedback');
-                    break;
-                  case 'logout':
-                    push('/user/signout');
-                    break;
+      {!isLoading &&
+        (!user.username ? (
+          <NavbarContent justify='end'>
+            <NavbarItem>
+              <LoginModal
+                btnText='로그인 / 회원가입'
+                title='구글로 로그인 / 회원가입'
+                description={
+                  <>
+                    <p>아티스트 커뮤니티에 참여하세요</p>
+                    <p>
+                      창의력이 핵심인 <b>아티스트</b>들의 커뮤니티에 함께하세요.
+                      전국의 다양한 예술가들과 네트워크를 구축하고 함께 일하며
+                      성장하세요.
+                    </p>
+                    <p>
+                      포트폴리오를 만드세요. 예술가들의 포트폴리오를 쉽게 만들
+                      수 있게 도와줍니다.
+                    </p>
+                    <p>
+                      좋은 <b>전시 기획자</b>를 만나보세요. 전시에 참여하고 싶은
+                      예술가들을 쉽게 찾을 수 있습니다.
+                    </p>
+                  </>
                 }
-              }}
-            >
-              <DropdownItem key='profile' className='h-14 gap-1'>
-                <p className='text-lg font-semibold'>{user.name}</p>
-                <p className='font-semibold'>@{user.username}</p>
-              </DropdownItem>
-              <DropdownItem key='settings'>설정</DropdownItem>
-              <DropdownItem key='feedback'>피드백</DropdownItem>
-              <DropdownItem key='logout' color='danger'>
-                로그아웃
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </NavbarContent>
-      )}
+                link={NEXT_PUBLIC_API_URL + '/oauth2/authorization/google'}
+              />
+            </NavbarItem>
+          </NavbarContent>
+        ) : (
+          <NavbarContent as='div' justify='end'>
+            <Dropdown placement='bottom-end'>
+              <DropdownTrigger>
+                <Avatar
+                  isBordered
+                  as='button'
+                  color='secondary'
+                  className='transition-transform'
+                  name={user.name}
+                  size='sm'
+                  src={user.profilePicture}
+                />
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label='Profile Actions'
+                variant='flat'
+                onAction={(key) => {
+                  switch (key) {
+                    case 'profile':
+                      push('/profile/' + user.username);
+                      break;
+                    case 'settings':
+                      push('/settings');
+                      break;
+                    case 'feedback':
+                      push('/feedback');
+                      break;
+                    case 'logout':
+                      push('/user/signout');
+                      break;
+                  }
+                }}
+              >
+                <DropdownItem key='profile' className='h-14 gap-1'>
+                  <p className='text-lg font-semibold'>{user.name}</p>
+                  <p className='font-semibold'>@{user.username}</p>
+                </DropdownItem>
+                <DropdownItem key='settings'>설정</DropdownItem>
+                <DropdownItem key='feedback'>피드백</DropdownItem>
+                <DropdownItem key='logout' color='danger'>
+                  로그아웃
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </NavbarContent>
+        ))}
     </Navbar>
   );
 }
