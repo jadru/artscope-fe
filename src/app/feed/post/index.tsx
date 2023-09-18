@@ -5,8 +5,8 @@ import axios from 'axios';
 import { ReactElement, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
+import FeedList from '@/app/feed/post/FeedList';
 import NewPostModal from '@/app/feed/post/NewPostModalButton';
-import FeedList from '@/app/FeedList';
 import UserInfo from '@/app/UserInfo';
 import { userStore } from '@/states';
 

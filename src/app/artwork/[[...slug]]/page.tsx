@@ -16,5 +16,22 @@ export default async function ProfilePage({
   params: { slug: string[] };
 }) {
   const data: ArtworkType = await fetchArtwork(params.slug[0]);
-  return <div>{data.artwork.authorUsername}</div>;
+  return (
+    <>
+      <h1 className='my-6 text-center font-serif font-light'>
+        {data.artwork.title}
+      </h1>
+      <h2 className='mx-24 my-6 text-left font-bold'>
+        {data.artwork.description}
+      </h2>
+      <div className='flex flex-col items-center justify-center'>
+        {data.artwork.artworkMedias.map((media) => (
+          <>
+            {media.mediaType + ' | ' + media.mediaUrl}
+            <br />
+          </>
+        ))}
+      </div>
+    </>
+  );
 }
