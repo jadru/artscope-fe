@@ -65,4 +65,5 @@ jobs:
           name: 'MINOR'
           value: ${{ env.NEW_MINOR_VERSION }}
           repository: ${{ secrets.REPO }}
+          org: true
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
