@@ -21,13 +21,7 @@ const nextConfig = {
 
   compress: true,
 
-  reactStrictMode: false,
-  swcMinify: true,
   output: 'standalone',
-
-  future: {
-    webpack5: true,
-  },
 
   // SVGR
   webpack(config, { isServer, webpack }) {

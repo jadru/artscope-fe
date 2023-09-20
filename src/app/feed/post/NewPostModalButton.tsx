@@ -53,7 +53,6 @@ export default function NewPostModal({ placeholder, submitBtnText }: Props) {
   ]);
   const [tagCount, setTagCount] = useState<string[]>([]);
   const [postContent, setPostContent] = useState<string>('');
-  const [postTitle, setPostTitle] = useState<string>('');
   const handleAddTag = (tag: string) => {
     if (tag === '') return;
     tagCount.length === 0
@@ -71,12 +70,11 @@ export default function NewPostModal({ placeholder, submitBtnText }: Props) {
     onClose();
     await jxios
       .post('/api/post', {
-        title: postTitle !== '' ? postTitle : postContent.slice(0, 10),
+        title: postContent.slice(0, 10),
         content: postContent,
       })
       .then(() => toast.success('작성되었습니다.'));
     setPostContent('');
-    setPostTitle('');
     await refetch();
   };
 
@@ -88,11 +86,7 @@ export default function NewPostModal({ placeholder, submitBtnText }: Props) {
           onOpen();
         }}
       >
-        {postContent.length === 0
-          ? placeholder
-          : postTitle.length === 0
-          ? postContent
-          : postTitle}
+        {postContent.length === 0 ? placeholder : postContent}
       </button>
       <Modal
         backdrop='blur'

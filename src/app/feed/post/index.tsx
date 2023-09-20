@@ -16,10 +16,10 @@ export default function Index() {
   const bottom = useRef(null);
   const { user } = userStore();
   const LIMIT = 10;
-  const { data, isSuccess, fetchNextPage } = useInfiniteQuery(
+  const { data, fetchNextPage } = useInfiniteQuery(
     ['feed'],
-    ({ pageParam = 0 }) =>
-      axios
+    async ({ pageParam = 0 }) =>
+      await axios
         .post('/api/feed', undefined, {
           params: {
             page: pageParam,
@@ -47,6 +47,7 @@ export default function Index() {
 
     return <div ref={ref} />;
   };
+
   return (
     <>
       {user.username && (
@@ -58,7 +59,7 @@ export default function Index() {
           />
         </div>
       )}
-      {isSuccess &&
+      {data &&
         data.pages.map((page) => {
           return <FeedList data={page.feedItems} key={page.pageInfo.page} />;
         })}

@@ -21,7 +21,7 @@ export default function Index() {
   const LIMIT = 10;
   const { user } = userStore();
   const { data, isSuccess, fetchNextPage } = useInfiniteQuery(
-    ['artwork-list'],
+    ['artwork'],
     ({ pageParam = 0 }) =>
       axios
         .get('/api/artworks', {

@@ -18,7 +18,6 @@ import {
 } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import {
   AiFillCloseCircle,
@@ -69,7 +68,6 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
   const [postContent, setPostContent] = useState<string>('');
   const [postTitle, setPostTitle] = useState<string>('');
 
-  const router = useRouter();
   const handleAddTag = (tag: string) => {
     if (tag === '') return;
     tagCount.length === 0
@@ -196,13 +194,13 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
     if (isUpload) return;
     try {
       if (fileUrls.length === 0) {
-        Error('파일을 업로드해주세요.');
+        return { error: '파일을 업로드해주세요.' };
       }
       if (postTitle.length === 0) {
-        Error('타이틀을 입력해주세요.');
+        return { error: '제목을 입력해주세요.' };
       }
       if (postContent.length === 0) {
-        Error('설명을 입력해주세요.');
+        return { error: '내용을 입력해주세요.' };
       }
       let count = 0;
       fileUrls.map((fileUrl) => {
@@ -212,7 +210,7 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
       });
       if (count === 0) {
         setIsUpload(false);
-        Error('썸네일을 업로드해주세요.');
+        return { error: '이미지나 동영상을 업로드해주세요.' };
       }
       if (
         fileUrls.reduce(
@@ -223,7 +221,7 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
         100
       ) {
         setIsUpload(false);
-        Error('파일 용량이 너무 큽니다.');
+        return { error: '파일 용량이 너무 큽니다.' };
       }
       setIsUpload(true);
       const newState = { ...initialArtWork };
@@ -288,21 +286,18 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
         .then((res) => {
           resetAfterUpload && resetAfterUpload();
           if (res.status === 201) {
-            router.push('/');
-            toast.success('작품이 업로드되었습니다.') && refetch();
+            toast.success('작품이 업로드되었습니다.');
+            refetch();
+            onClose();
           }
         })
         .catch((err) => {
           toast.error(err.response.data);
-        })
-        .finally(() => {
-          setIsUpload(false);
-          refetch();
-          onClose();
         });
     } catch (err) {
+      toast.error((err as string) || '작품 업로드에 실패했습니다.');
+    } finally {
       setIsUpload(false);
-      toast.error('작품 업로드에 실패했습니다.');
     }
   };
 
