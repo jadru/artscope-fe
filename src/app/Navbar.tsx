@@ -12,7 +12,7 @@ import {
   NavbarItem,
 } from '@nextui-org/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import LoginModal from '@/app/LoginModalButton';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
@@ -21,6 +21,7 @@ import { userStore } from '@/states';
 export default function NavBar() {
   const { user, isLoading } = userStore();
   const { push } = useRouter();
+  const pathname = usePathname();
   return (
     <Navbar>
       <NavbarBrand>
@@ -33,17 +34,36 @@ export default function NavBar() {
         </Link>
       </NavbarBrand>
       <NavbarContent className='hidden gap-4 sm:flex' justify='center'>
-        {/* <NavbarItem> */}
-        {/*   <Link color='foreground' href='#'> */}
-        {/*     소개 */}
-        {/*   </Link> */}
-        {/* </NavbarItem> */}
-        {/* <NavbarItem> */}
-        {/*   /!* <Link href='#' aria-current='page'> *!/ */}
-        {/*   <Link color='foreground' href='#'> */}
-        {/*     작가 */}
-        {/*   </Link> */}
-        {/* </NavbarItem> */}
+        <NavbarItem isActive={pathname === '/'}>
+          <Link color='foreground' href='/'>
+            피드
+          </Link>
+        </NavbarItem>
+        <NavbarItem isActive={pathname.startsWith('/artworks')}>
+          <Link color='foreground' href='/artworks'>
+            작품
+          </Link>
+        </NavbarItem>
+        <NavbarItem isActive={pathname.startsWith('/exhibitions')}>
+          <Link color='foreground' href='/exhibitions'>
+            전시
+          </Link>
+        </NavbarItem>
+        <NavbarItem isActive={pathname.startsWith('/artists')}>
+          <Link color='foreground' href='/artists'>
+            작가
+          </Link>
+        </NavbarItem>
+        <NavbarItem isActive={pathname.startsWith('/spaces')}>
+          <Link color='foreground' href='/spaces'>
+            장소
+          </Link>
+        </NavbarItem>
+        <NavbarItem isActive={pathname.startsWith('/magazine')}>
+          <Link color='foreground' href='/magazine'>
+            매거진
+          </Link>
+        </NavbarItem>
       </NavbarContent>
       {!isLoading &&
         (!user.username ? (

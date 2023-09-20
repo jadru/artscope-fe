@@ -12,7 +12,7 @@ import { userStore } from '@/states';
 
 import { feedApiResponseType } from '@/types';
 
-export default function Index() {
+export default function Feeds() {
   const bottom = useRef(null);
   const { user } = userStore();
   const LIMIT = 10;
@@ -45,7 +45,7 @@ export default function Index() {
       if (!isLast && inView) fetchNextPage();
     }, [inView]);
 
-    return <div ref={ref} />;
+    return <div ref={ref} className='mb-1 h-1' />;
   };
 
   return (
@@ -63,7 +63,7 @@ export default function Index() {
         data.pages.map((page) => {
           return <FeedList data={page.feedItems} key={page.pageInfo.page} />;
         })}
-      <div ref={bottom} className='mb-1 h-1'>
+      <div ref={bottom}>
         <FeedObservationComponent />
       </div>
     </>

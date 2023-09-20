@@ -32,7 +32,7 @@ import { toast } from 'react-toastify';
 
 import PublicTypeCheckBox, {
   PublicType,
-} from '@/app/feed/artwork/PublicTypeCheckBox';
+} from '@/app/artworks/PublicTypeCheckBox';
 import UserInfo from '@/app/UserInfo';
 import jxios from '@/utils/jxios';
 
@@ -58,7 +58,7 @@ const initialArtWork: ArtWorkApiRequestType = {
 
 export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { refetch } = useInfiniteQuery(['artwork']);
+  const { refetch } = useInfiniteQuery(['artworks']);
   const [isExpanded, setIsExpanded] = useState(false);
   const [publicType, setPublicType] = useState<PublicType>('public');
   const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
