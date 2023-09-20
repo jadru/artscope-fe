@@ -1,21 +1,32 @@
 'use client';
 
 import { NextUIProvider } from '@nextui-org/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
 import React from 'react';
+import { toast } from 'react-toastify';
 
 import useToken from '@/hooks/useToken';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   useToken();
-  const [queryClient] = React.useState(new QueryClient());
+  const [queryClient] = React.useState(
+    new QueryClient({
+      queryCache: new QueryCache({
+        onError: (error) =>
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          toast.error(`Something went wrong: ${error.message || error}`),
+      }),
+    })
+  );
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryStreamedHydration>
-        <NextUIProvider>{children}</NextUIProvider>
-      </ReactQueryStreamedHydration>
+      <NextUIProvider>{children}</NextUIProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

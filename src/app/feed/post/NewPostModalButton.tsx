@@ -45,6 +45,7 @@ export default function NewPostModal({ placeholder, submitBtnText }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { refetch } = useInfiniteQuery(['feed']);
   const [postType, setPostType] = useState<TopicType>('default');
+  const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [imageCount] = useState<ImageType[]>([
     {
       id: 1,
@@ -62,20 +63,26 @@ export default function NewPostModal({ placeholder, submitBtnText }: Props) {
       : '';
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (postContent.length < 10) {
       toast('10자 이상 입력해주세요.');
       return;
     }
+    setIsSubmit(true);
     onClose();
-    await jxios
+    jxios
       .post('/api/post', {
         title: postContent.slice(0, 10),
         content: postContent,
       })
-      .then(() => toast.success('작성되었습니다.'));
+      .then(() => {
+        toast.success('작성되었습니다.');
+        refetch();
+      })
+      .finally(() => {
+        setIsSubmit(false);
+      });
     setPostContent('');
-    await refetch();
   };
 
   return (
@@ -217,6 +224,8 @@ export default function NewPostModal({ placeholder, submitBtnText }: Props) {
                   color='secondary'
                   variant='flat'
                   onPress={handleSubmit}
+                  isLoading={isSubmit}
+                  disabled={isSubmit}
                   fullWidth
                 >
                   {submitBtnText}
