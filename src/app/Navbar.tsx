@@ -59,6 +59,11 @@ export default function NavBar() {
             장소
           </Link>
         </NavbarItem>
+        <NavbarItem isActive={pathname.startsWith('/news')}>
+          <Link color='foreground' href='/news'>
+            뉴스
+          </Link>
+        </NavbarItem>
         <NavbarItem isActive={pathname.startsWith('/magazine')}>
           <Link color='foreground' href='/magazine'>
             매거진

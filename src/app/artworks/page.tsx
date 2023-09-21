@@ -85,12 +85,12 @@ export default function Page() {
                       height={200}
                       placeholder='blur' // 추가
                       blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==' // 추가
-                      className='w-full object-cover duration-75 group-hover:opacity-70'
+                      className='w-full object-cover duration-75'
                     />
 
-                    <div className='absolute bottom-0 left-0 m-0 w-full bg-white p-2 duration-75 group-hover:bg-orange-50'>
-                      <p className='text-light text-md truncate text-left font-serif group-hover:text-gray-700'>
-                        {aw.artwork.title} - {aw.artwork.authorName}
+                    <div className='absolute bottom-1 left-0 mx-1 w-[calc(100%-0.5rem)] rounded-xl bg-black/50 p-2 opacity-0 backdrop-blur transition duration-75 group-hover:opacity-100'>
+                      <p className='text-light text-md truncate text-center font-serif text-white'>
+                        {aw.artwork.title}
                       </p>
                     </div>
                   </Link>
