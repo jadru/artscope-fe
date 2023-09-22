@@ -54,16 +54,15 @@ jobs:
           file: ./Dockerfile.dev
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
+          
       - name: Autoincrement a new minor version
         run: |
           echo "NEW_MINOR_VERSION=$((${{ secrets.MINOR }}+1))" >> $GITHUB_ENV
-
+          
       - name: Update Minor version
         uses: hmanzur/actions-set-secret@v2.0.0
         with:
           name: 'MINOR'
           value: ${{ env.NEW_MINOR_VERSION }}
           repository: ${{ secrets.REPO }}
-          org: true
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
