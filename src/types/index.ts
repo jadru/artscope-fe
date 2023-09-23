@@ -160,8 +160,8 @@ export type roleType = (
 
 export type feedApiResponseType = {
   feedItems: feedItemType[];
-  pageInfo: pageInfoType;
   hasNext: boolean;
+  nextPage: number;
 };
 
 export type feedItemType = {
@@ -184,6 +184,7 @@ export type feedItemType = {
   updatedTime: Date | null;
 };
 
+// eslint-disable-next-line unused-imports/no-unused-vars
 type pageInfoType = {
   page: number;
   size: number;
