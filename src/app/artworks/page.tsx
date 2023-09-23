@@ -55,7 +55,7 @@ export default function Page() {
       if (!isLast && inView) fetchNextPage();
     }, [inView]);
 
-    return <div ref={ref} />;
+    return <div ref={ref} className='mb-1 h-1' />;
   };
   return (
     <div className='container mx-auto flex flex-col items-center justify-center'>
@@ -85,7 +85,7 @@ export default function Page() {
                       height={200}
                       placeholder='blur' // 추가
                       blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==' // 추가
-                      className='w-full object-cover duration-75'
+                      className='h-full w-full object-cover duration-75'
                     />
 
                     <div className='absolute bottom-1 left-0 mx-1 w-[calc(100%-0.5rem)] rounded-xl bg-black/50 p-2 opacity-0 backdrop-blur transition duration-75 group-hover:opacity-100'>
@@ -97,7 +97,7 @@ export default function Page() {
                 </Card>
               ))
             )}
-            <div ref={bottom} className='mb-1 h-1'>
+            <div ref={bottom}>
               <ObservationComponent />
             </div>
           </ResponsiveGrid>

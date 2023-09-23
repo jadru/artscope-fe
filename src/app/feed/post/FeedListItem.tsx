@@ -12,7 +12,7 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
   const [readMore, setReadMore] = useState<boolean>(false);
   return (
     <div
-      className={`border-x border-t p-4 pb-2 transition-colors ${
+      className={`my-1.5 rounded-2xl bg-white p-4 pb-2 outline outline-1 outline-blue-100 drop-shadow-md transition-colors ${
         feed.type === 'artwork' ? 'cursor-pointer hover:bg-gray-100' : ''
       }`}
       onClick={() => {
@@ -45,15 +45,17 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
           </div>
           <div className='flex flex-col justify-start px-1.5 py-3'>
             <div className='text flex w-full flex-col gap-1'>
-              <h4 className='w-full text-xl font-semibold text-default-600'>
-                {feed.title}
-              </h4>
+              {feed.title && (
+                <h4 className='w-full text-xl font-semibold text-default-600'>
+                  {feed.title}
+                </h4>
+              )}
               <h5
                 className={`${
                   !readMore && feed.content.length > 130
                     ? 'cursor-pointer hover:underline'
                     : ''
-                } w-full overflow-x-hidden text-medium tracking-tight text-default-400`}
+                } w-full overflow-x-hidden text-medium tracking-tight text-default-800`}
                 onClick={() => {
                   if (!readMore && feed.content.length > 130) setReadMore(true);
                 }}
