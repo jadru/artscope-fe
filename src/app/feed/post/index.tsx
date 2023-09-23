@@ -28,8 +28,8 @@ export default function Feeds() {
         })
         .then((res) => res.data as feedApiResponseType),
     {
-      getNextPageParam: (lastPage) => {
-        return lastPage.hasNext ? lastPage.pageInfo.page + 1 : null;
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.hasNext ? allPages.length : null;
       },
     }
   );
@@ -60,10 +60,10 @@ export default function Feeds() {
         </div>
       )}
       {data &&
-        data.pages.map((page) => {
-          return <FeedList data={page.feedItems} key={page.pageInfo.page} />;
+        data.pages.map((page, index) => {
+          return <FeedList data={page.feedItems} key={'feed-' + index} />;
         })}
-      <div ref={bottom}>
+      <div ref={bottom} className='mb-8'>
         <FeedObservationComponent />
       </div>
     </>
