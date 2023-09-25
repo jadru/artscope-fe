@@ -2,19 +2,21 @@
 
 import { User } from '@nextui-org/react';
 
-import { userStore } from '@/states';
+import useUser from '@/hooks/useUser';
 
 export default function UserInfo() {
-  const { user } = userStore();
+  const user = useUser();
   return (
-    <User
-      name={user.name}
-      description={`@${user.username?.slice(0, 12)}`}
-      avatarProps={{
-        src: user.profilePicture,
-        color: 'secondary',
-      }}
-      className='p-1'
-    />
+    user && (
+      <User
+        name={user.name}
+        description={`@${user.username?.slice(0, 12)}`}
+        avatarProps={{
+          src: user.picture || '',
+          color: 'secondary',
+        }}
+        className='p-1'
+      />
+    )
   );
 }

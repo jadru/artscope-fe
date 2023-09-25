@@ -63,8 +63,8 @@ export default function RootLayout({
           `,
           }}
         />
-        <NavBar />
         <Providers>
+          <NavBar />
           <div className='container mx-auto min-h-screen max-w-[1024px]'>
             {children}
           </div>

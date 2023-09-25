@@ -1,20 +1,23 @@
 import { useEffect, useMemo } from 'react';
 import { Cookies } from 'react-cookie';
 
-import { userStore } from '@/states';
+import useUser from '@/hooks/useUser';
+
+import { saveUserOnCookie } from '@/utils/auth';
 import jxios from '@/utils/jxios';
 
 export default function useToken() {
-  const { setUser, setIsLoading } = userStore();
   const cookies = useMemo(() => new Cookies(), []);
+  const user = useUser();
   useEffect(() => {
     if (jxios.defaults.headers.common['Authorization']) {
-      setIsLoading(false);
       return;
     }
     const refreshToken = cookies.get('refreshToken');
+    if (user) {
+      return;
+    }
     if (!refreshToken) {
-      setIsLoading(false);
       return;
     }
     jxios
@@ -22,7 +25,7 @@ export default function useToken() {
         headers: { 'Content-Type': 'text/plain' },
       })
       .then((res) => {
-        const { accessToken, refreshToken } = res.data;
+        const { accessToken, refreshToken, expiresIn } = res.data;
         jxios.defaults.headers.common[
           'Authorization'
         ] = `Bearer ${accessToken}`;
@@ -31,15 +34,7 @@ export default function useToken() {
           path: '/',
         });
         jxios.get('/api/members/profile').then((resProfile) => {
-          const { data } = resProfile;
-          setUser({
-            username: data.username,
-            role: data.authrities,
-            name: data.name,
-            profilePicture: data.picture,
-            email: data.email,
-            oauthProvider: data.oauthProvider,
-          });
+          saveUserOnCookie(resProfile.data, cookies, expiresIn as number);
         });
       })
       .catch((err) => {
@@ -50,14 +45,10 @@ export default function useToken() {
         ) {
           cookies.remove('refreshToken');
         }
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
 
     return () => {
-      setIsLoading(false);
       cookies.remove('refreshToken');
     };
-  }, [cookies, setUser, setIsLoading]);
+  }, [cookies, user]);
 }

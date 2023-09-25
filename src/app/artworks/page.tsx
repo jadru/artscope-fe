@@ -5,19 +5,20 @@ import axios from 'axios';
 import { ReactElement, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
+import useUser from '@/hooks/useUser';
+
 import ResponsiveGrid from '@/components/ResponsiveGrid';
 
 import ArtworkItem from '@/app/artworks/ArtworkItem';
 import NewArtworkModal from '@/app/artworks/NewArtworkModalButton';
 import UserInfo from '@/app/UserInfo';
-import { userStore } from '@/states';
 
 import { ArtWorkApiResponseType, ArtworkType } from '@/types';
 
 export default function Page() {
   const bottom = useRef(null);
+  const user = useUser();
   const LIMIT = 10;
-  const { user } = userStore();
   const fetchArtworks = async ({ pageParam = 0 }) =>
     await axios
       .get('/api/artworks', {
@@ -60,7 +61,7 @@ export default function Page() {
   return (
     <div className='container mx-auto flex flex-col items-center justify-center'>
       <div className='container max-w-screen-md'>
-        {user.username && (
+        {user && user.username && (
           <div className='flex flex-row justify-start gap-2 space-y-1 p-3'>
             <UserInfo />
             <NewArtworkModal

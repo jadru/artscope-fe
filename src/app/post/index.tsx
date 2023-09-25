@@ -5,16 +5,17 @@ import axios from 'axios';
 import { ReactElement, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import FeedList from '@/app/feed/post/FeedList';
-import NewPostModal from '@/app/feed/post/NewPostModalButton';
+import useUser from '@/hooks/useUser';
+
+import FeedList from '@/app/post/FeedList';
+import NewPostModal from '@/app/post/NewPostModalButton';
 import UserInfo from '@/app/UserInfo';
-import { userStore } from '@/states';
 
 import { feedApiResponseType } from '@/types';
 
 export default function Feeds() {
   const bottom = useRef(null);
-  const { user } = userStore();
+  const user = useUser();
   const fetchFeeds = async ({ pageParam = 0 }) =>
     await axios
       .post('/api/feed', undefined, {
@@ -53,7 +54,7 @@ export default function Feeds() {
 
   return (
     <>
-      {user.username && (
+      {user && user.username && (
         <div className='flex flex-row justify-start gap-2 space-y-1 p-3'>
           <UserInfo />
           <NewPostModal

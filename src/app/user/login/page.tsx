@@ -14,8 +14,10 @@ import * as yup from 'yup';
 import Title from '@/components/Title';
 
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
-import { userStore } from '@/states';
+import { saveUserOnCookie } from '@/utils/auth';
 import jxios from '@/utils/jxios';
+
+import { profileApiType } from '@/types';
 
 const loginSchema = yup.object().shape({
   username: yup.string().required('아이디를 입력하세요.'),
@@ -34,14 +36,13 @@ const Login = () => {
     resolver: yupResolver(loginSchema),
   });
   const { push } = useRouter();
-  const { setUser } = userStore();
   const [pwInputVisible, setPwInputVisible] = useState(false);
   const togglePwInputVisible = () => setPwInputVisible(!pwInputVisible);
   const cookies = new Cookies();
   const onSubmit: SubmitHandler<loginInputs> = async (loginData) =>
     !isSubmitting &&
     (await jxios.post('/api/login', loginData).then(async (res) => {
-      const { accessToken, refreshToken } = res.data;
+      const { accessToken, refreshToken, expiresIn } = res.data;
       if (res.status === 200 && accessToken) {
         cookies.set('refreshToken', refreshToken, {
           path: '/',
@@ -49,27 +50,15 @@ const Login = () => {
         jxios.defaults.headers.common[
           'Authorization'
         ] = `Bearer ${accessToken}`;
-        await handleUserData();
+        await jxios.get('/api/members/profile').then((res) => {
+          saveUserOnCookie(res.data as profileApiType, cookies, expiresIn);
+        });
         toast.success('로그인 되었습니다.');
         push('/');
       } else {
         toast.error(res.data);
       }
     }));
-
-  const handleUserData = async () => {
-    await jxios.get('/api/members/profile').then((res) => {
-      const { data } = res;
-      setUser({
-        username: data.username,
-        role: data.authrities,
-        name: data.name,
-        profilePicture: data.picture,
-        email: data.email,
-        oauthProvider: data.oauthProvider,
-      });
-    });
-  };
 
   return (
     <>
