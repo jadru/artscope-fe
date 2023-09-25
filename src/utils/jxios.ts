@@ -3,7 +3,9 @@ import jwt_decode from 'jwt-decode';
 import { Cookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 
-import { userStore } from '@/states';
+import { saveUserOnCookie } from './auth';
+
+import { profileApiType } from '@/types';
 
 const Jaxios = axios.create({
   withCredentials: true,
@@ -13,7 +15,6 @@ const Jaxios = axios.create({
 });
 
 const getRefreshToken = async () => {
-  const { setUser } = userStore();
   const cookies = new Cookies();
 
   axios
@@ -24,7 +25,7 @@ const getRefreshToken = async () => {
       },
     })
     .then((res) => {
-      const { accessToken, refreshToken } = res.data;
+      const { accessToken, refreshToken, expiresIn } = res.data;
       Jaxios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
       const decodedRefreshToken: { exp: number } = jwt_decode(refreshToken);
       cookies.remove('refreshToken');
@@ -33,15 +34,8 @@ const getRefreshToken = async () => {
         path: '/',
       });
       Jaxios.get('/api/members/profile').then((resProfile) => {
-        const { data } = resProfile;
-        setUser({
-          username: data.username,
-          role: data.authrities,
-          name: data.name,
-          profilePicture: data.picture,
-          email: data.email,
-          oauthProvider: data.oauthProvider,
-        });
+        const { data } = resProfile as { data: profileApiType };
+        saveUserOnCookie(data, cookies, expiresIn as number);
       });
     })
     .catch(() => {

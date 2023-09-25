@@ -7,15 +7,16 @@ import { toast } from 'react-toastify';
 
 import Seo from '@/components/Seo';
 
-import { userStore } from '@/states';
+import { saveUserOnCookie } from '@/utils/auth';
 import jxios from '@/utils/jxios';
+
+import { profileApiType } from '@/types';
 
 const RedirectOAuth2 = () => {
   const { push } = useRouter();
   const cookies = useMemo(() => new Cookies(), []);
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
-  const { setUser } = userStore();
   useEffect(() => {
     if (token) {
       jxios
@@ -31,14 +32,11 @@ const RedirectOAuth2 = () => {
             path: '/',
           });
           jxios.get('/api/members/profile').then((res) => {
-            setUser({
-              username: res.data.username,
-              name: res.data.name,
-              profilePicture: res.data.profilePicture,
-              email: res.data.email,
-              role: res.data.role,
-            });
-
+            saveUserOnCookie(
+              res.data as profileApiType,
+              cookies,
+              ress.data.expiresIn as number
+            );
             push('/');
             toast.success('로그인이 완료되었습니다.');
           });
@@ -46,7 +44,7 @@ const RedirectOAuth2 = () => {
     } else {
       push('/');
     }
-  }, [cookies, push, token, setUser]);
+  }, [cookies, push, token]);
 
   return <Seo templateTitle='구글 로그인'></Seo>;
 };
