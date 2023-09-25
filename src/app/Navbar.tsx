@@ -6,13 +6,17 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  Link,
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
+  NavbarMenu,
+  NavbarMenuItem,
+  NavbarMenuToggle,
 } from '@nextui-org/react';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import LoginModal from '@/app/LoginModalButton';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
@@ -20,60 +24,92 @@ import { userStore } from '@/states';
 
 export default function NavBar() {
   const { user, isLoading } = userStore();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { push } = useRouter();
   const pathname = usePathname();
+
+  const menuItems = [
+    {
+      name: '피드',
+      url: '/',
+    },
+    {
+      name: '작품',
+      url: '/artworks',
+    },
+    {
+      name: '전시',
+      url: '/exhibitions',
+    },
+    // {
+    //   name: '작가',
+    //   url: '/artists',
+    // },
+    // {
+    //   name: '장소',
+    //   url: '/spaces',
+    // },
+    // {
+    //   name: '뉴스',
+    //   url: '/news',
+    // },
+    // {
+    //   name: '매거진',
+    //   url: '/magazine',
+    // },
+  ];
+
   return (
-    <Navbar>
-      <NavbarBrand>
-        <Link
-          href='/'
-          className='box-border flex flex-grow basis-0 flex-row flex-nowrap items-center justify-start whitespace-nowrap bg-transparent text-medium no-underline'
-        >
-          <Logo />
-          <p className='font-bold text-inherit'>Artscope</p>
-        </Link>
-      </NavbarBrand>
+    <Navbar
+      onMenuOpenChange={setIsMobileMenuOpen}
+      motionProps={{
+        animate: {
+          x: 100,
+        },
+        transition: { delay: 1 },
+      }}
+    >
+      <NavbarContent>
+        <NavbarMenuToggle
+          aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+          className='sm:hidden'
+        />
+        <NavbarBrand>
+          <Link
+            href='/'
+            className='box-border flex flex-grow basis-0 flex-row flex-nowrap items-center justify-start whitespace-nowrap bg-transparent text-medium no-underline'
+          >
+            <Logo />
+            <p className='font-bold text-inherit'>Artscope</p>
+          </Link>
+        </NavbarBrand>
+      </NavbarContent>
       <NavbarContent className='hidden gap-4 sm:flex' justify='center'>
-        <NavbarItem isActive={pathname === '/'}>
-          <Link color='foreground' href='/'>
-            피드
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive={pathname.startsWith('/artworks')}>
-          <Link color='foreground' href='/artworks'>
-            작품
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive={pathname.startsWith('/exhibitions')}>
-          <Link color='foreground' href='/exhibitions'>
-            전시
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive={pathname.startsWith('/artists')}>
-          <Link color='foreground' href='/artists'>
-            작가
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive={pathname.startsWith('/spaces')}>
-          <Link color='foreground' href='/spaces'>
-            장소
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive={pathname.startsWith('/news')}>
-          <Link color='foreground' href='/news'>
-            뉴스
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive={pathname.startsWith('/magazine')}>
-          <Link color='foreground' href='/magazine'>
-            매거진
-          </Link>
-        </NavbarItem>
+        {menuItems.map((item, index) => (
+          <NavbarMenuItem key={`${item.name}-${index}`}>
+            <Link
+              color={
+                index === 0
+                  ? pathname === '/'
+                    ? 'primary'
+                    : 'foreground'
+                  : pathname.startsWith(item.url)
+                  ? 'primary'
+                  : 'foreground'
+              }
+              className='w-full'
+              href={item.url}
+              size='lg'
+            >
+              {item.name}
+            </Link>
+          </NavbarMenuItem>
+        ))}
       </NavbarContent>
       {!isLoading &&
         (!user.username ? (
           <NavbarContent justify='end'>
-            <NavbarItem>
+            <NavbarItem className='hidden md:inline'>
               <LoginModal
                 btnText='로그인 / 회원가입'
                 title='구글로 로그인 / 회원가입'
@@ -146,6 +182,51 @@ export default function NavBar() {
             </Dropdown>
           </NavbarContent>
         ))}
+      <NavbarMenu>
+        <LoginModal
+          btnText='로그인 / 회원가입'
+          title='구글로 로그인 / 회원가입'
+          description={
+            <>
+              <p>아티스트 커뮤니티에 참여하세요</p>
+              <p>
+                창의력이 핵심인 <b>아티스트</b>들의 커뮤니티에 함께하세요.
+                전국의 다양한 예술가들과 네트워크를 구축하고 함께 일하며
+                성장하세요.
+              </p>
+              <p>
+                포트폴리오를 만드세요. 예술가들의 포트폴리오를 쉽게 만들 수 있게
+                도와줍니다.
+              </p>
+              <p>
+                좋은 <b>전시 기획자</b>를 만나보세요. 전시에 참여하고 싶은
+                예술가들을 쉽게 찾을 수 있습니다.
+              </p>
+            </>
+          }
+          link={NEXT_PUBLIC_API_URL + '/oauth2/authorization/google'}
+        />
+        {menuItems.map((item, index) => (
+          <NavbarMenuItem key={`${item.name}-${index}`}>
+            <Link
+              color={
+                index === 0
+                  ? pathname === '/'
+                    ? 'primary'
+                    : 'foreground'
+                  : pathname.startsWith(item.url)
+                  ? 'primary'
+                  : 'foreground'
+              }
+              className='w-full'
+              href={item.url}
+              size='lg'
+            >
+              {item.name}
+            </Link>
+          </NavbarMenuItem>
+        ))}
+      </NavbarMenu>
     </Navbar>
   );
 }

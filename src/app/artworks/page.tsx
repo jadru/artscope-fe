@@ -1,15 +1,13 @@
 'use client';
 
-import { Card } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import Image from 'next/image';
-import Link from 'next/link';
 import { ReactElement, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import ResponsiveGrid from '@/components/ResponsiveGrid';
 
+import ArtworkItem from '@/app/artworks/ArtworkItem';
 import NewArtworkModal from '@/app/artworks/NewArtworkModalButton';
 import UserInfo from '@/app/UserInfo';
 import { userStore } from '@/states';
@@ -20,18 +18,20 @@ export default function Page() {
   const bottom = useRef(null);
   const LIMIT = 10;
   const { user } = userStore();
+  const fetchArtworks = async ({ pageParam = 0 }) =>
+    await axios
+      .get('/api/artworks', {
+        params: {
+          page: pageParam,
+          size: LIMIT,
+          sortDirection: 'DESC',
+        },
+      })
+      .then((res) => res.data as ArtWorkApiResponseType);
+
   const { data, isSuccess, fetchNextPage } = useInfiniteQuery(
     ['artworks'],
-    ({ pageParam = 0 }) =>
-      axios
-        .get('/api/artworks', {
-          params: {
-            page: pageParam,
-            size: LIMIT,
-            sortDirection: 'DESC',
-          },
-        })
-        .then((res) => res.data as ArtWorkApiResponseType),
+    ({ pageParam = 0 }) => fetchArtworks({ pageParam }),
     {
       getNextPageParam: (lastPage) => {
         return lastPage.pageInfo.totalPages - lastPage.pageInfo.page > 0
@@ -73,28 +73,7 @@ export default function Page() {
           <ResponsiveGrid>
             {data.pages.map((group) =>
               group.artworks.map((aw: ArtworkType) => (
-                <Card key={aw.artwork.id}>
-                  <Link
-                    href={'/artwork/' + aw.artwork.id}
-                    className='bg-base-100 group relative flex h-full w-full cursor-pointer justify-center overflow-hidden text-center'
-                  >
-                    <Image
-                      src={aw.artwork.thumbnail.mediaUrl}
-                      alt={aw.artwork.title}
-                      width={200}
-                      height={200}
-                      placeholder='blur' // 추가
-                      blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==' // 추가
-                      className='h-full w-full object-cover duration-75'
-                    />
-
-                    <div className='absolute bottom-1 left-0 mx-1 w-[calc(100%-0.5rem)] rounded-xl bg-black/50 p-2 opacity-0 backdrop-blur transition duration-75 group-hover:opacity-100'>
-                      <p className='text-light text-md truncate text-center font-serif text-white'>
-                        {aw.artwork.title}
-                      </p>
-                    </div>
-                  </Link>
-                </Card>
+                <ArtworkItem artwork={aw} key={aw.artwork.id} />
               ))
             )}
             <div ref={bottom}>

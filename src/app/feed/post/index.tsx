@@ -15,18 +15,21 @@ import { feedApiResponseType } from '@/types';
 export default function Feeds() {
   const bottom = useRef(null);
   const { user } = userStore();
+  const fetchFeeds = async ({ pageParam = 0 }) =>
+    await axios
+      .post('/api/feed', undefined, {
+        params: {
+          page: pageParam,
+          size: LIMIT,
+        },
+      })
+      .then((res) => {
+        return res.data as feedApiResponseType;
+      });
   const LIMIT = 10;
   const { data, fetchNextPage } = useInfiniteQuery(
     ['feed'],
-    async ({ pageParam = 0 }) =>
-      await axios
-        .post('/api/feed', undefined, {
-          params: {
-            page: pageParam,
-            size: LIMIT,
-          },
-        })
-        .then((res) => res.data as feedApiResponseType),
+    async ({ pageParam = 0 }) => await fetchFeeds({ pageParam }),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.hasNext ? allPages.length : null;
