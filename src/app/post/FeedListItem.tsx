@@ -12,7 +12,7 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
   const [readMore, setReadMore] = useState<boolean>(false);
   return (
     <div
-      className={`mx-2 my-1.5 rounded-2xl bg-white p-4 pb-2 outline outline-1 outline-default-200 drop-shadow-md transition-colors md:mx-0 ${
+      className={`border border-1 border-default-200 bg-white p-4 pb-2 transition-colors md:mx-0 ${
         feed.type === 'artwork' ? 'cursor-pointer hover:bg-gray-100' : ''
       }`}
       onClick={() => {

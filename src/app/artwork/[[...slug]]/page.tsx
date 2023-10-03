@@ -22,11 +22,11 @@ export default async function ProfilePage({
 }) {
   const data: ArtworkType = await fetchArtwork(params.slug[0]);
   return (
-    <div className='my-10 space-y-4'>
-      <h1 className='text-center font-serif text-5xl font-light'>
-        {data.artwork.title}
+    <div className='space-y-4'>
+      <h1 className='mx-2 text-left font-serif text-4xl font-bold'>
+        {data.artwork.title} - {data.artwork.authorName} 작가
       </h1>
-      <h2 className='text-md mx-24 text-left font-bold'>
+      <h2 className='text-md mx-2 text-left font-light'>
         {data.artwork.description}
       </h2>
       <div className='flex flex-col items-center justify-center'>

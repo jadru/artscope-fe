@@ -20,10 +20,10 @@ import { useState } from 'react';
 
 import useUser from '@/hooks/useUser';
 
-import LoginModal from '@/app/LoginModalButton';
+import LoginModal from '@/app/(feed)/LoginModalButton';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 
-export default function NavBar() {
+export default function NavBar({ theme }: { theme: 'light' | 'dark' }) {
   const user = useUser();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { push } = useRouter();
@@ -38,10 +38,10 @@ export default function NavBar() {
       name: '작품',
       url: '/artworks',
     },
-    {
-      name: '전시',
-      url: '/exhibitions',
-    },
+    // {
+    //   name: '전시',
+    //   url: '/exhibitions',
+    // },
     // {
     //   name: '작가',
     //   url: '/artists',
@@ -69,6 +69,11 @@ export default function NavBar() {
         },
         transition: { delay: 1 },
       }}
+      className={`${
+        theme === 'light'
+          ? 'bg-white text-default-900'
+          : 'bg-default-900 text-white'
+      }`}
     >
       <NavbarContent>
         <NavbarMenuToggle
