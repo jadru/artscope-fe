@@ -7,7 +7,6 @@ import { ToastContainer } from 'react-toastify';
 import '../styles/globals.scss';
 import 'react-toastify/dist/ReactToastify.css';
 
-import NavBar from '@/app/Navbar';
 import { Providers } from '@/app/providers';
 import { GA_TRACKING_ID } from '@/constant/env';
 import { cls } from '@/utils';
@@ -16,12 +15,14 @@ const nanum_Myeongjo = Nanum_Myeongjo({
   preload: false,
   weight: ['400', '700'],
   variable: '--nanum-myeongjo',
+  display: 'swap',
 });
 
 const noto_Sans_KR = Noto_Sans_KR({
   preload: false,
   weight: ['100', '400', '700', '900'],
   variable: '--noto-sans-kr',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -31,6 +32,15 @@ export const metadata: Metadata = {
   other: {
     'apple-mobile-web-app-capable': 'yes',
     'mobile-web-app-capable': 'yes',
+  },
+  icons: {
+    icon: '/icon.png',
+    shortcut: '/shortcut-icon.png',
+    apple: '/apple-icon.png',
+    other: {
+      rel: 'apple-touch-icon-precomposed',
+      url: '/apple-touch-icon-precomposed.png',
+    },
   },
 };
 
@@ -63,12 +73,7 @@ export default function RootLayout({
           `,
           }}
         />
-        <Providers>
-          <NavBar />
-          <div className='container mx-auto min-h-screen max-w-[1024px]'>
-            {children}
-          </div>
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
