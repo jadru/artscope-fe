@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { Nanum_Myeongjo, Noto_Sans_KR } from 'next/font/google';
+import { Noto_Sans_KR } from 'next/font/google';
 import Script from 'next/script';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -11,35 +11,35 @@ import { Providers } from '@/app/providers';
 import { GA_TRACKING_ID } from '@/constant/env';
 import { cls } from '@/utils';
 
-const nanum_Myeongjo = Nanum_Myeongjo({
-  preload: false,
-  weight: ['400', '700'],
-  variable: '--nanum-myeongjo',
-  display: 'swap',
-});
-
 const noto_Sans_KR = Noto_Sans_KR({
-  preload: false,
   weight: ['100', '400', '700', '900'],
   variable: '--noto-sans-kr',
+  subsets: ['latin'],
   display: 'swap',
 });
 
+// const nanum_Myeongjo = Nanum_Myeongjo({
+//   preload: false,
+//   weight: ['400'],
+//   variable: '--nanum-myeongjo',
+// });
+
 export const metadata: Metadata = {
-  title: 'Artscope',
-  description: 'Welcome to Next.js',
+  title: '아트스코프 Artscope - 새로운 예술 플랫폼',
+  applicationName: '아트스코프 Artscope',
+  description: '예술가와 기획자를 위한 새로운 예술 네트워크 플랫폼 Artscope',
   viewport: 'width=device-width, initial-scale=1.0',
   other: {
     'apple-mobile-web-app-capable': 'yes',
     'mobile-web-app-capable': 'yes',
   },
   icons: {
-    icon: '/icon.png',
-    shortcut: '/shortcut-icon.png',
-    apple: '/apple-icon.png',
+    icon: '/favicon/favicon-32x32.png',
+    shortcut: '/favicon/favicon.ico',
+    apple: '/favicon/apple-touch-icon.png',
     other: {
       rel: 'apple-touch-icon-precomposed',
-      url: '/apple-touch-icon-precomposed.png',
+      url: '/favicon/android-chrome-192x192.png',
     },
   },
 };
@@ -53,7 +53,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='ko' className='light'>
-      <body className={cls(nanum_Myeongjo.className, noto_Sans_KR.className)}>
+      <body className={cls(noto_Sans_KR.className)}>
         <ToastContainer limit={2} hideProgressBar />
         <Script
           strategy='afterInteractive'

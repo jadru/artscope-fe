@@ -22,7 +22,7 @@
   "dependencies": {
     "@hocuspocus/provider": "^2.0.4",
     "@hookform/resolvers": "^3.0.0",
-    "@nextui-org/react": "^2.0.22",
+    "@nextui-org/react": "^2.1.13",
     "@tanstack/react-query": "^4.32.6",
     "@tanstack/react-query-next-experimental": "^5.0.0-alpha.80",
     "axios": "^1.5.0",
@@ -33,6 +33,9 @@
     "lodash": "^4.17.21",
     "lottie-react": "^2.4.0",
     "next": "^13.4.1",
+    "open-graph": "^0.2.6",
+    "open-graph-scraper": "^6.2.2",
+    "opengraph-react": "^1.3.12",
     "react": "^18.2.0",
     "react-cookie": "^6.1.1",
     "react-dom": "^18.2.0",
@@ -49,7 +52,7 @@
     "use-dehydrated-state": "^0.1.0",
     "uuid": "^9.0.0",
     "yup": "^1.0.2",
-    "zustand": "^4.4.1"
+    "zustand": "^4.4.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.3.0",

@@ -12,6 +12,8 @@ import { toast } from 'react-toastify';
 
 import useToken from '@/hooks/useToken';
 
+import NavBar from '@/app/(feed)/Navbar';
+
 export function Providers({ children }: { children: React.ReactNode }) {
   useToken();
   const [queryClient] = React.useState(
@@ -26,7 +28,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
   return (
     <QueryClientProvider client={queryClient}>
-      <NextUIProvider>{children}</NextUIProvider>
+      <NextUIProvider>
+        <NavBar theme='light' />
+        <div className='container mx-auto min-h-screen max-w-[1024px]'>
+          {children}
+        </div>
+      </NextUIProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

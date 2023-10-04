@@ -55,7 +55,7 @@ export default function Feeds() {
   return (
     <>
       {user && user.username && (
-        <div className='flex flex-row justify-start gap-2 space-y-1 border border border-default-200 p-3'>
+        <div className='flex flex-row justify-start gap-2 space-y-1 border-x border-b border-default-200 p-3'>
           <UserInfo />
           <NewPostModal
             submitBtnText='작성'

@@ -47,6 +47,10 @@ const nextConfig = {
     if (!isServer) {
       config.resolve.fallback = {
         fs: false,
+        net: false,
+        tls: false,
+        path: false,
+        dns: false,
       };
     }
     return config;

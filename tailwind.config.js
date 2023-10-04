@@ -12,8 +12,6 @@ module.exports = {
     extend: {
       fontFamily: {
         primary: ['var(--noto-sans-kr)', ...fontFamily.sans],
-        sans: ['var(--noto-sans-kr)', ...fontFamily.sans],
-        serif: ['var(--nanum-myeongjo)', ...fontFamily.serif],
       },
       keyframes: {
         flicker: {

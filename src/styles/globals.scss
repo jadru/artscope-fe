@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html {
-  @apply bg-white dark:bg-dark;
+  @apply dark:bg-dark bg-white;
 }
 @layer base {
   .h0 {
@@ -145,4 +145,13 @@ html {
 
 *:focus {
   outline: none;
+}
+
+a {
+  color: steelblue;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+    color: #2d5186;
+  }
 }

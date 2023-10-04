@@ -22,13 +22,30 @@ export default async function ProfilePage({
 }) {
   const data: ArtworkType = await fetchArtwork(params.slug[0]);
   return (
-    <div className='space-y-4'>
-      <h1 className='mx-2 text-left font-serif text-4xl font-bold'>
-        {data.artwork.title} - {data.artwork.authorName} 작가
+    <div className='my-4 space-y-3'>
+      <h1 className='mx-2 text-left font-serif text-4xl'>
+        {data.artwork.title}
       </h1>
-      <h2 className='text-md mx-2 text-left font-light'>
+      {data.artwork.tags.length > 0 && (
+        <div className='mx-2 flex gap-1'>
+          {data.artwork.tags.map(
+            (value) =>
+              value !== '' && (
+                <div
+                  className='text-bold rounded-full bg-default-100 px-2 pb-1 pt-0.5 text-sm text-default-700'
+                  key={value}
+                >
+                  {value}
+                </div>
+              )
+          )}
+        </div>
+      )}
+      <div className='h-0.5 bg-default-100'></div>
+      <h2 className='mx-2 text-left text-xl font-normal'>
         {data.artwork.description}
       </h2>
+
       <div className='flex flex-col items-center justify-center'>
         {data.artwork.artworkMedias.map((media, mediaIndex) => (
           <>
@@ -63,6 +80,9 @@ export default async function ProfilePage({
           </>
         ))}
       </div>
+
+      <div className='h-0.5 bg-default-100'></div>
+      <div>{data.artwork.authorName}</div>
     </div>
   );
 }
