@@ -1,5 +1,5 @@
-import { Button, Card, User } from '@nextui-org/react';
-import Image from 'next/image';
+import { Button, User } from '@nextui-org/react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { AiFillHeart, AiFillMessage, AiFillStar } from 'react-icons/ai';
@@ -10,9 +10,46 @@ import { feedItemType } from '@/types';
 export default function FeedListItem({ feed }: { feed: feedItemType }) {
   const { push } = useRouter();
   const [readMore, setReadMore] = useState<boolean>(false);
+
+  const extractLinks = (
+    text: string
+  ): { type: 'text' | 'link'; value: string }[] => {
+    const linkRegex = /(https:\/\/\S+)/g;
+    const matches = text.match(linkRegex);
+
+    if (!matches) {
+      return [{ type: 'text', value: text }];
+    }
+
+    const result: { type: 'text' | 'link'; value: string }[] = [];
+
+    let lastIndex = 0;
+    for (const match of matches) {
+      const startIndex = text.indexOf(match, lastIndex);
+      if (startIndex > lastIndex) {
+        // 링크 이전의 텍스트를 배열에 추가
+        const textBeforeLink = text.substring(lastIndex, startIndex);
+        result.push({ type: 'text', value: textBeforeLink });
+      }
+
+      // 링크를 배열에 추가
+      result.push({ type: 'link', value: decodeURI(match) });
+
+      lastIndex = startIndex + match.length;
+    }
+
+    // 마지막 링크 이후의 텍스트를 배열에 추가
+    if (lastIndex < text.length) {
+      const textAfterLink = text.substring(lastIndex);
+      result.push({ type: 'text', value: textAfterLink });
+    }
+
+    return result;
+  };
+
   return (
     <div
-      className={`border border-1 border-default-200 bg-white p-4 pb-2 transition-colors md:mx-0 ${
+      className={`border-x border-b border-default-200 bg-white p-4 pb-2 transition-colors md:mx-0 ${
         feed.type === 'artwork' ? 'cursor-pointer hover:bg-gray-100' : ''
       }`}
       onClick={() => {
@@ -62,26 +99,31 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
               >
                 {!readMore && feed.content.length > 130
                   ? feed.content.slice(0, 130) + '... 더보기'
-                  : feed.content}
+                  : extractLinks(feed.content).map((item, index) => {
+                      if (item.type === 'text') {
+                        return (
+                          <span key={index} className='text-default-800'>
+                            {item.value}
+                          </span>
+                        );
+                      } else {
+                        return (
+                          <Link
+                            key={item.value}
+                            href={item.value}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            className='text-blue-500 hover:underline'
+                          >
+                            {item.value}
+                          </Link>
+                        );
+                      }
+                    })}
               </h5>
             </div>
           </div>
         </div>
-        {feed.thumbnailUrl && (
-          <Card
-            isFooterBlurred
-            radius='lg'
-            className='h-max w-full max-w-none border-none md:max-w-fit'
-          >
-            <Image
-              alt='Woman listing to music'
-              className='w-full object-cover'
-              height={200}
-              src={feed.thumbnailUrl}
-              width={200}
-            />
-          </Card>
-        )}
       </div>
       <div className='w-full justify-evenly gap-1 self-start md:w-auto md:justify-items-start'>
         <Button

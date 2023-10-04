@@ -3,21 +3,26 @@ import { Cookies } from 'react-cookie';
 
 import useUser from '@/hooks/useUser';
 
+import { useIsLoading } from '@/states';
 import { saveUserOnCookie } from '@/utils/auth';
 import jxios from '@/utils/jxios';
 
 export default function useToken() {
   const cookies = useMemo(() => new Cookies(), []);
   const user = useUser();
+  const refreshToken = cookies.get('refreshToken');
+  const { setLoadingStop } = useIsLoading();
   useEffect(() => {
     if (jxios.defaults.headers.common['Authorization']) {
+      setLoadingStop();
       return;
     }
-    const refreshToken = cookies.get('refreshToken');
     if (user) {
+      setLoadingStop();
       return;
     }
     if (!refreshToken) {
+      setLoadingStop();
       return;
     }
     jxios
@@ -45,10 +50,13 @@ export default function useToken() {
         ) {
           cookies.remove('refreshToken');
         }
+      })
+      .finally(() => {
+        setLoadingStop();
       });
-
     return () => {
       cookies.remove('refreshToken');
+      setLoadingStop();
     };
-  }, [cookies, user]);
+  }, [cookies, refreshToken, setLoadingStop, user]);
 }

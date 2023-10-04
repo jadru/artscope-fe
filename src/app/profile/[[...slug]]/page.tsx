@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
@@ -20,30 +21,35 @@ export default async function ProfilePage({
 }) {
   const data: profileApiType = await fetchProfile(params.slug[0]);
   return (
-    <div className='text-md flex w-full flex-col items-center justify-center py-4 text-center font-serif'>
-      <>
-        <Image
-          src={data.picture || '/images/default-profile.png'}
-          alt='profile picture'
-          className='rounded-full'
-          width={100}
-          height={100}
-        />
-        <h1 className='text-md text-center font-light'>{data.name}</h1>
-        <h2 className='mb-4 text-center text-sm font-bold'>{data.username}</h2>
+    <div className='my-10 space-y-3 font-serif'>
+      <div className='w-full'>
+        <div className='flex w-full justify-between'>
+          <div className='space-y-4'>
+            <h1 className='text-4xl'>{data.name}</h1>
+            <h2 className='mb-4 text-xl'>
+              {data.introduction || 'ㅇㅇㅇ의 소개입니다.'}
+            </h2>
+          </div>
+          <Image
+            src={data.picture || '/images/default-profile.png'}
+            alt='profile picture'
+            className='rounded-3xl drop-shadow-xl'
+            width={160}
+            height={160}
+          />
+        </div>
         <h3 className='text-xl font-normal'>
-          {data.introduction || 'ㅇㅇㅇ의 소개입니다.'}
           {data.history || 'ㅇㅇㅇ의 경력입니다.'}
-          {data.websiteUrl || 'https://www.artscope.kr/'}
-          {data.snsUrl || 'https://www.artscope.kr/'}
         </h3>
-        {data.email}
-        {data.artistStatus}
-        {String(data.authrities)}
-        {data.createdTime}
-        {data.updatedTime}
-        {data.oauthProvider}
-      </>
+        <div className='flex flex-col'>
+          <Link href={data.websiteUrl || 'https://www.artscope.kr/'}>
+            Website
+          </Link>
+          <Link href={data.snsUrl || 'https://www.artscope.kr/'}>
+            Social Network
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

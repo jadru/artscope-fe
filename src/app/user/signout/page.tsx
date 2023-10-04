@@ -9,14 +9,15 @@ import jxios from '@/utils/jxios';
 
 const SignoutPage = () => {
   const cookies = useMemo(() => new Cookies(), []);
-  const { push } = useRouter();
+  const { push, refresh } = useRouter();
   useEffect(() => {
     jxios.post('/api/logout');
     cookies.remove('refreshToken');
     cookies.remove('user');
     push('/');
     toast.success('로그아웃 되었습니다.');
-  }, [cookies, push]);
+    refresh();
+  }, [refresh, cookies, push]);
   return <></>;
 };
 
