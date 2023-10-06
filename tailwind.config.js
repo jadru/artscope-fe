@@ -9,6 +9,16 @@ module.exports = {
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
+    fontSize: {
+      sm: '0.7rem',
+      base: '0.9rem',
+      lg: '1rem',
+      xl: '1.125rem',
+      '2xl': '1.25rem',
+      '3xl': '1.563rem',
+      '4xl': '2.953rem',
+      '5xl': '3.441rem',
+    },
     extend: {
       fontFamily: {
         primary: ['var(--noto-sans-kr)', ...fontFamily.sans],

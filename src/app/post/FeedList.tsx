@@ -1,3 +1,4 @@
+import {} from '@toss/react';
 import React, { useEffect, useState } from 'react';
 
 import ArtworkItemforFeed from '@/app/post/ArtworkItemforFeed';
@@ -40,31 +41,34 @@ export default function FeedList({ data }: FeedListProps) {
   }, [data, setFeeds]);
 
   return (
-    <div className='flex flex-col'>
-      {feeds.map((feed, index) =>
-        Array.isArray(feed) ? (
-          <div
-            className={`mx-2 my-1 grid ${
-              feed.length === 1
-                ? 'grid-cols-1'
-                : feed.length % 2 === 0
-                ? 'grid-cols-2'
-                : feed.length % 3 === 0
-                ? 'grid-cols-2'
-                : 'grid-cols-3'
-            } gap-1 md:mx-0`}
-            key={index}
-          >
-            {feed.map((feedItem, index) => (
-              <ArtworkItemforFeed feed={feedItem} key={'artwork-' + index} />
-            ))}
-          </div>
-        ) : (
-          <div key={feed.id}>
-            <FeedListItem feed={feed} />
-          </div>
-        )
-      )}
+    <div className='flex flex-col border-b'>
+      {feeds.map((feed, index) => (
+        <>
+          {Array.isArray(feed) ? (
+            <div
+              className={`mx-2 my-1 grid ${
+                feed.length === 1
+                  ? 'grid-cols-1'
+                  : feed.length % 2 === 0
+                  ? 'grid-cols-2'
+                  : feed.length % 3 === 0
+                  ? 'grid-cols-2'
+                  : 'grid-cols-3'
+              } gap-1 md:mx-0`}
+              key={index}
+            >
+              {feed.map((feedItem, index) => (
+                <ArtworkItemforFeed feed={feedItem} key={'artwork-' + index} />
+              ))}
+            </div>
+          ) : (
+            <div key={feed.id}>
+              <FeedListItem feed={feed} />
+            </div>
+          )}
+          <hr />
+        </>
+      ))}
     </div>
   );
 }

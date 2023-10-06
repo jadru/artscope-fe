@@ -1,9 +1,10 @@
 import { Cookies } from 'react-cookie';
 
-import { profileApiType } from '@/types';
+import { profileApiType, roleType } from '@/types';
 
 export type userCookieType = {
   username: string;
+  role: roleType;
   name: string;
   email: string;
   picture: string;

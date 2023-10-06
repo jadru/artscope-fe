@@ -21,6 +21,13 @@ import { toast } from 'react-toastify';
 import { TopicType } from '@/app/post/TopicTypeCheckBox';
 import UserInfo from '@/app/UserInfo';
 import jxios from '@/utils/jxios';
+import {
+  DebounceClick,
+  useCallbackOnce,
+  useDebounce,
+  useTimeout,
+} from '@toss/react';
+import { delay } from '@toss/utils';
 
 type Props = {
   placeholder: string;
@@ -50,30 +57,28 @@ export default function NewPostModal({ placeholder, submitBtnText }: Props) {
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleSubmit = useCallback(
-    debounce(() => {
-      if (postContent.length < 10) {
-        toast('10자 이상 입력해주세요.');
-        return;
-      }
-      setIsSubmit(true);
-      onClose();
-      jxios
-        .post('/api/post', {
-          title: postContent.slice(0, 10),
-          content: postContent,
-        })
-        .then(() => {
-          toast.success('작성되었습니다.');
-          refetch();
-        })
-        .finally(() => {
-          setIsSubmit(false);
-        });
-      setPostContent('');
-    }, 500),
-    [onClose, postContent, refetch]
-  );
+  const handleSubmit = useDebounce(() => {
+    if (postContent.length < 10) {
+      toast('10자 이상 입력해주세요.');
+      return;
+    }
+    setIsSubmit(true);
+    onClose();
+    jxios
+      .post('/api/post', {
+        title: '',
+        content: postContent,
+      })
+      .then(async () => {
+        toast.success('작성되었습니다.');
+        await delay(500);
+        await refetch();
+      })
+      .finally(() => {
+        setIsSubmit(false);
+      });
+    setPostContent('');
+  }, 500);
 
   return (
     <>

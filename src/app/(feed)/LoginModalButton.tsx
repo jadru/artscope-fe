@@ -36,7 +36,12 @@ export default function LoginModal({
   };
   return (
     <>
-      <Button onPress={onOpen} color='primary'>
+      <Button
+        onPress={onOpen}
+        variant='flat'
+        color='primary'
+        className='text-[0.8rem]'
+      >
         {btnText}
       </Button>
       <Modal backdrop='blur' isOpen={isOpen} onClose={onClose}>

@@ -18,7 +18,7 @@ import {
 } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AiFillCloseCircle,
   AiOutlineClose,
@@ -67,6 +67,33 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
   const [tagCount, setTagCount] = useState<string[]>([]);
   const [postContent, setPostContent] = useState<string>('');
   const [postTitle, setPostTitle] = useState<string>('');
+
+  const regExp = /[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/ ]/gim;
+
+  const preventGoBack = () => {
+    history.pushState(null, '', location.href);
+  };
+
+  useEffect(() => {
+    history.pushState(null, '', location.href);
+    window.addEventListener('popstate', preventGoBack);
+
+    return () => {
+      window.removeEventListener('popstate', preventGoBack);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (
+      isOpen &&
+      (fileUrls.length !== 0 ||
+        postContent.length !== 0 ||
+        postTitle.length !== 0 ||
+        tagCount.length !== 0)
+    ) {
+      preventGoBack();
+    }
+  }, [imgs, isOpen, postContent, postTitle, publicType, tagCount, fileUrls]);
 
   const handleAddTag = (tag: string) => {
     if (tag === '') return;
@@ -420,10 +447,16 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
                             !e.nativeEvent.isComposing
                           ) {
                             handleAddTag(
-                              e.currentTarget.value.replace(/ /g, '')
+                              e.currentTarget.value.replace(regExp, '')
                             );
                             e.currentTarget.value = '';
                           }
+                        }}
+                        onChange={(e) => {
+                          e.currentTarget.value = e.currentTarget.value.replace(
+                            regExp,
+                            ''
+                          );
                         }}
                       />
                     </div>
