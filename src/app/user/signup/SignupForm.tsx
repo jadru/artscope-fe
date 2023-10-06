@@ -134,7 +134,7 @@ const SignupForm = () => {
         type='text'
         label='아이디'
         variant='bordered'
-        placeholder='username'
+        placeholder='gil-dong-hong'
         onFocusChange={(isFocused) => {
           if (
             !isFocused &&
@@ -152,7 +152,7 @@ const SignupForm = () => {
         type='password'
         label='비밀번호'
         variant='bordered'
-        placeholder='password'
+        placeholder='****'
         errorMessage={errors.password?.message}
         isInvalid={!!errors.password}
         {...register('password')}
@@ -161,7 +161,7 @@ const SignupForm = () => {
         type='password'
         label='비밀번호 확인'
         variant='bordered'
-        placeholder='password'
+        placeholder='****'
         errorMessage={errors.passwordCheck?.message}
         isInvalid={!!errors.passwordCheck}
         {...register('passwordCheck')}

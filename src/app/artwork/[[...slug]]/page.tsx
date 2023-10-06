@@ -5,10 +5,18 @@ import {
   NEXT_PUBLIC_MEDIA_STORAGE_URL,
 } from '@/constant/env';
 
-import { ArtworkType } from '@/types';
+import { ArtworkType, profileApiResponseType } from '@/types';
 
 const fetchArtwork = async (id: string) =>
-  fetch(NEXT_PUBLIC_API_URL + '/api/artworks/' + id).then((res) => {
+  await fetch(NEXT_PUBLIC_API_URL + '/api/artworks/' + id).then((res) => {
+    if (!res.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return res.json();
+  });
+
+const fetchAuthorProfile = async (id: string) =>
+  await fetch(NEXT_PUBLIC_API_URL + '/api/members/' + id).then((res) => {
     if (!res.ok) {
       throw new Error('Failed to fetch data');
     }
@@ -21,6 +29,10 @@ export default async function ProfilePage({
   params: { slug: string[] };
 }) {
   const data: ArtworkType = await fetchArtwork(params.slug[0]);
+  if (!data) throw new Error('Failed to fetch data');
+  const author: profileApiResponseType = await fetchAuthorProfile(
+    data.artwork.authorUsername
+  );
   return (
     <div className='my-4 space-y-3'>
       <h1 className='mx-2 text-left font-serif text-4xl'>
@@ -82,7 +94,26 @@ export default async function ProfilePage({
       </div>
 
       <div className='h-0.5 bg-default-100'></div>
-      <div>{data.artwork.authorName}</div>
+      <div>
+        <div className='flex flex-row items-center justify-between'>
+          {author.picture && (
+            <Image
+              src={author.picture}
+              alt={author.name + "'s profile image"}
+              width={50}
+              height={50}
+              className='rounded-full'
+            />
+          )}
+          <div className='flex flex-col items-center justify-center'>
+            <p className='text-lg font-bold'>{author.name}</p>
+            <p className='text-sm'>{author.introduction}</p>
+            <p className='text-sm'>{author.history}</p>
+            <p className='text-sm'>{author.websiteUrl}</p>
+            <p className='text-sm'>{author.snsUrl}</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

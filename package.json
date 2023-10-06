@@ -25,6 +25,8 @@
     "@nextui-org/react": "^2.1.13",
     "@tanstack/react-query": "^4.32.6",
     "@tanstack/react-query-next-experimental": "^5.0.0-alpha.80",
+    "@toss/react": "^1.5.0",
+    "@toss/utils": "^1.4.4",
     "axios": "^1.5.0",
     "clsx": "^1.2.1",
     "env-cmd": "^10.1.0",

@@ -96,12 +96,14 @@ export type profileApiType = {
   updatedTime: Date | null;
 };
 
-export type generalProfileApiType = {
+export type profileApiResponseType = {
   artistStatus: 'NONE' | 'PENDING' | 'APPROVED' | 'REJECTED';
   createdTime: Date;
   email: string;
+  oauthProvider: null | 'google' | 'naver';
   history: string;
   introduction: string;
+  activated: boolean;
   name: string;
   picture: string;
   snsUrl: string;
@@ -207,7 +209,7 @@ export interface ArtistForm {
   introduction: string;
   history: string;
   snsUrl: string;
-  websiteUrl: string | undefined;
+  websiteUrl?: string;
 }
 
 export type ArtworkListParams = {

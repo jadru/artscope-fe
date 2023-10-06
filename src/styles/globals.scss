@@ -52,6 +52,10 @@ html {
   }
 }
 
+* {
+  font-size: 0.9rem;
+}
+
 @layer utilities {
   .animated-underline {
     background-image: linear-gradient(#33333300, #33333300),

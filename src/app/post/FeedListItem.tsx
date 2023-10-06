@@ -49,7 +49,7 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
 
   return (
     <div
-      className={`border-x border-b border-default-200 bg-white p-4 pb-2 transition-colors md:mx-0 ${
+      className={`border-x border-default-200 bg-white p-4 pb-2 transition-colors md:mx-0 ${
         feed.type === 'artwork' ? 'cursor-pointer hover:bg-gray-100' : ''
       }`}
       onClick={() => {
@@ -82,17 +82,12 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
           </div>
           <div className='flex flex-col justify-start px-1.5 py-3'>
             <div className='text flex w-full flex-col gap-1'>
-              {feed.title && (
-                <h4 className='w-full text-xl font-semibold text-default-600'>
-                  {feed.title}
-                </h4>
-              )}
               <h5
                 className={`${
                   !readMore && feed.content.length > 130
                     ? 'cursor-pointer hover:underline'
                     : ''
-                } w-full overflow-x-hidden text-medium tracking-tight text-default-800`}
+                } w-full overflow-x-hidden text-base text-medium leading-normal tracking-tight text-default-800`}
                 onClick={() => {
                   if (!readMore && feed.content.length > 130) setReadMore(true);
                 }}

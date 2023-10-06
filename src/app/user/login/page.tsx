@@ -62,8 +62,8 @@ const Login = () => {
 
   return (
     <>
-      <Title>로그인</Title>
-      <div className='mx-auto my-8 flex max-w-md flex-col items-stretch gap-2 p-4'>
+      <div className='mx-auto flex max-w-md flex-col items-stretch gap-2 p-4'>
+        <Title>로그인</Title>
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-2'>
           <Input
             type='text'
