@@ -1,5 +1,6 @@
 'use client';
 
+import { Card, Skeleton } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { ReactElement, useEffect, useRef } from 'react';
@@ -15,6 +16,15 @@ import UserInfo from '@/app/UserInfo';
 
 import { ArtWorkApiResponseType, ArtworkType } from '@/types';
 
+const SkeletonArtwork = () => (
+  <Card className='w-full gap-2'>
+    <Skeleton className='h-[180px] w-full rounded-2xl' />
+    <div className='mx-3 mb-3 mt-2 flex h-4 justify-between'>
+      <Skeleton className=' w-[140px] rounded-full' />
+      <Skeleton className=' w-[70px] rounded-full' />
+    </div>
+  </Card>
+);
 export default function Page() {
   const bottom = useRef(null);
   const user = useUser();
@@ -30,7 +40,7 @@ export default function Page() {
       })
       .then((res) => res.data as ArtWorkApiResponseType);
 
-  const { data, isSuccess, fetchNextPage } = useInfiniteQuery(
+  const { data, isSuccess, fetchNextPage, isLoading } = useInfiniteQuery(
     ['artworks'],
     ({ pageParam = 0 }) => fetchArtworks({ pageParam }),
     {
@@ -80,6 +90,19 @@ export default function Page() {
             <div ref={bottom}>
               <ObservationComponent />
             </div>
+          </ResponsiveGrid>
+        )}
+        {isLoading && (
+          <ResponsiveGrid>
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
           </ResponsiveGrid>
         )}
       </div>

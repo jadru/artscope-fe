@@ -45,7 +45,7 @@ const SignupForm = () => {
             params: { email: data.email },
           })
           .then(async () => {
-            push('/user/email/verification');
+            push('/user/auth/verify' + '?email=' + data.email);
             toast.success(data.email + '로 보낸 이메일 인증을 완료해주세요.');
           });
       });

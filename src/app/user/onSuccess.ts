@@ -10,7 +10,7 @@ export const onSuccess = async (username: string, router: Router) => {
     .get(`/api/members/profile`)
     .then((res) => res.data);
   if (profile.artistStatus === 'NONE') {
-    toast('작가님의 정보를 입력해주세요.');
-    await router.push(`/user/apply`);
+    toast(username + ' 작가님의 정보를 입력해주세요.');
+    router.push('/user/artist');
   }
 };

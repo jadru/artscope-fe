@@ -18,7 +18,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 import TextareaAutoSize from 'react-textarea-autosize';
 import { toast } from 'react-toastify';
 
-import { TopicType } from '@/app/post/TopicTypeCheckBox';
+import { TopicType } from '@/app/(feed)/TopicTypeCheckBox';
 import UserInfo from '@/app/UserInfo';
 import jxios from '@/utils/jxios';
 import {

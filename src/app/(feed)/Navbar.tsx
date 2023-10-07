@@ -2,6 +2,7 @@
 
 import {
   Avatar,
+  Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -17,6 +18,7 @@ import {
 } from '@nextui-org/react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { BiSearch } from 'react-icons/bi';
 
 import LoginModal from '@/app/(feed)/LoginModalButton';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
@@ -115,8 +117,18 @@ export default function NavBar({ theme }: { theme: 'light' | 'dark' }) {
           </NavbarMenuItem>
         ))}
       </NavbarContent>
-      {!user ? (
-        <NavbarContent justify='end'>
+      <NavbarContent justify='end'>
+        <NavbarItem>
+          <Link href='/search'>
+            <Button
+              variant='light'
+              startContent={<BiSearch className='mt-0.5 h-5 w-5' />}
+            >
+              검색
+            </Button>
+          </Link>
+        </NavbarItem>
+        {!user ? (
           <NavbarItem className='hidden md:inline'>
             <LoginModal
               btnText='로그인 / 회원가입'
@@ -142,9 +154,7 @@ export default function NavBar({ theme }: { theme: 'light' | 'dark' }) {
               link={NEXT_PUBLIC_API_URL + '/oauth2/authorization/google'}
             />
           </NavbarItem>
-        </NavbarContent>
-      ) : (
-        <NavbarContent as='div' justify='end'>
+        ) : (
           <Dropdown placement='bottom-end'>
             <DropdownTrigger>
               <Avatar
@@ -188,8 +198,8 @@ export default function NavBar({ theme }: { theme: 'light' | 'dark' }) {
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
-        </NavbarContent>
-      )}
+        )}
+      </NavbarContent>
       <NavbarMenu>
         {!user ? (
           <LoginModal
@@ -260,7 +270,6 @@ export default function NavBar({ theme }: { theme: 'light' | 'dark' }) {
             </DropdownMenu>
           </Dropdown>
         )}
-        )
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item.name}-${index}`}>
             <Link

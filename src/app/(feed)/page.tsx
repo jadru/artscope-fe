@@ -1,6 +1,6 @@
 'use client';
 
-import Feed from '@/app/post';
+import Feed from '@/app/(feed)';
 
 export default function Page() {
   return (

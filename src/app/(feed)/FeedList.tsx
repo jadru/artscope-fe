@@ -1,8 +1,8 @@
 import {} from '@toss/react';
 import React, { useEffect, useState } from 'react';
 
-import ArtworkItemforFeed from '@/app/post/ArtworkItemforFeed';
-import FeedListItem from '@/app/post/FeedListItem';
+import ArtworkItemforFeed from '@/app/(feed)/ArtworkItemforFeed';
+import FeedListItem from '@/app/(feed)/FeedListItem';
 
 import { feedItemType } from '@/types';
 
