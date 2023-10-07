@@ -36,6 +36,16 @@ export type ArtWorkApiResponseType = {
   };
 };
 
+export type ArtworkSearchApiResponseType = {
+  artworks: DetailedArtworkType[];
+  pageInfo: {
+    page: number;
+    size: number;
+    totalPages: number;
+    totalElements: number;
+  };
+};
+
 export type ArtWorkApiByMember = {
   artworks: DetailedArtworkType[];
   pageInfo: {
