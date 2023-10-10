@@ -52,24 +52,12 @@ export default function NavBar({
       url: '/artwork',
     },
     {
-      name: '전시',
-      url: '/exhibition',
-    },
-    {
       name: '이벤트',
       url: '/event',
     },
     {
       name: '네트워크',
       url: '/network',
-    },
-    {
-      name: '장소',
-      url: '/space',
-    },
-    {
-      name: '뉴스',
-      url: '/news',
     },
     {
       name: '매거진',
