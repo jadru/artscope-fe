@@ -8,7 +8,7 @@ export default function EmailVerification() {
   const searchParams = useSearchParams();
   const email = searchParams.get('email');
   return (
-    <div className='container mx-auto my-12 max-w-xl gap-2 text-center'>
+    <>
       <h2>
         <AiOutlineMail
           size={60}
@@ -24,6 +24,6 @@ export default function EmailVerification() {
       >
         홈으로 가기
       </Link>
-    </div>
+    </>
   );
 }

@@ -7,7 +7,7 @@ export type userCookieType = {
   role: roleType;
   name: string;
   email: string;
-  picture: string;
+  picture?: string;
 };
 
 export const saveUserOnCookie = (

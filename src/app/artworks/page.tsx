@@ -9,6 +9,7 @@ import { useInView } from 'react-intersection-observer';
 import useUser from '@/hooks/useUser';
 
 import ResponsiveGrid from '@/components/ResponsiveGrid';
+import RootLayout from '@/components/RootLayout';
 
 import ArtworkItem from '@/app/artworks/ArtworkItem';
 import NewArtworkModal from '@/app/artworks/NewArtworkModalButton';
@@ -69,43 +70,44 @@ export default function Page() {
     return <div ref={ref} className='mb-1 h-1' />;
   };
   return (
-    <div className='container mx-auto flex flex-col items-center justify-center'>
-      <div className='container max-w-screen-md'>
-        {user && user.username && (
-          <div className='flex flex-row justify-start gap-2 space-y-1 p-3'>
-            <UserInfo />
-            <NewArtworkModal
-              submitBtnText='업로드'
-              placeholder='감각적인 작품이 있나요?'
-            />
+    <RootLayout>
+      {user && user.username && (
+        <div className='flex flex-row justify-start gap-2 space-y-1 p-3'>
+          <UserInfo />
+          <NewArtworkModal
+            submitBtnText='업로드'
+            placeholder='감각적인 작품이 있나요?'
+          />
+        </div>
+      )}
+      {isSuccess && (
+        <ResponsiveGrid>
+          {data.pages.map((group) =>
+            group.artworks.map((aw: ArtworkType) => (
+              <ArtworkItem artwork={aw} key={aw.artwork.id} />
+            ))
+          )}
+          <div ref={bottom}>
+            <ObservationComponent />
           </div>
-        )}
-        {isSuccess && (
-          <ResponsiveGrid>
-            {data.pages.map((group) =>
-              group.artworks.map((aw: ArtworkType) => (
-                <ArtworkItem artwork={aw} key={aw.artwork.id} />
-              ))
-            )}
-            <div ref={bottom}>
-              <ObservationComponent />
-            </div>
-          </ResponsiveGrid>
-        )}
-        {isLoading && (
-          <ResponsiveGrid>
-            <SkeletonArtwork />
-            <SkeletonArtwork />
-            <SkeletonArtwork />
-            <SkeletonArtwork />
-            <SkeletonArtwork />
-            <SkeletonArtwork />
-            <SkeletonArtwork />
-            <SkeletonArtwork />
-            <SkeletonArtwork />
-          </ResponsiveGrid>
-        )}
-      </div>
-    </div>
+        </ResponsiveGrid>
+      )}
+      {isLoading && (
+        <ResponsiveGrid>
+          <SkeletonArtwork />
+          <SkeletonArtwork />
+          <SkeletonArtwork />
+          <SkeletonArtwork />
+          <SkeletonArtwork />
+          <SkeletonArtwork />
+          <SkeletonArtwork />
+          <SkeletonArtwork />
+          <SkeletonArtwork />
+          <SkeletonArtwork />
+          <SkeletonArtwork />
+          <SkeletonArtwork />
+        </ResponsiveGrid>
+      )}
+    </RootLayout>
   );
 }

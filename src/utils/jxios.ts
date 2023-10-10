@@ -70,6 +70,8 @@ Jaxios.interceptors.response.use(
                 `${response.data.message} ${response.data.detail || ''}`
               );
             else toast.error(response.data);
+            cookies.remove('refreshToken');
+            cookies.remove('user');
             return Promise.reject(err);
           }
         case 502:

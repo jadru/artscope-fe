@@ -25,8 +25,12 @@ const noto_Sans_KR = Noto_Sans_KR({
 // });
 
 export const metadata: Metadata = {
-  title: '아트스코프 Artscope - 새로운 예술 플랫폼',
-  applicationName: '아트스코프 Artscope',
+  metadataBase: new URL('https://www.artscope.kr'),
+  title: {
+    template: '%s | 새로운 예술 플랫폼 Artscope',
+    absolute: 'Artscope 아트스코프 - 새로운 예술 플랫폼',
+  },
+  applicationName: 'Artscope',
   description: '예술가와 기획자를 위한 새로운 예술 네트워크 플랫폼 Artscope',
   viewport: 'width=device-width, initial-scale=1.0',
   other: {
@@ -40,6 +44,39 @@ export const metadata: Metadata = {
     other: {
       rel: 'apple-touch-icon-precomposed',
       url: '/favicon/android-chrome-192x192.png',
+    },
+  },
+  generator: 'Media Xi',
+  keywords: [
+    '아트스코프',
+    'Artscope',
+    '예술',
+    'art',
+    'artwork',
+    'artist',
+    'artplatform',
+  ],
+  colorScheme: 'light',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    title: 'Artscope 아트스코프 ',
+    description: '예술가와 기획자를 위한 새로운 예술 네트워크 플랫폼',
+    siteName: 'Artscope',
+    type: 'website',
+    locale: 'ko_KR',
+    url: 'https://www.artscope.kr',
+  },
+  themeColor: 'white',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
     },
   },
 };

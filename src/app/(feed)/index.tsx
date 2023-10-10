@@ -29,9 +29,10 @@ const SkeletonFeed = () => (
       <Skeleton className='h-4 w-full rounded-full' />
       <Skeleton className='h-4 w-full rounded-full' />
       <div className='flex flex-row gap-3'>
-        <Skeleton className='h-4 w-[50px] rounded-full' />
-        <Skeleton className='h-4 w-[50px] rounded-full' />
-        <Skeleton className='h-4 w-[50px] rounded-full' />
+        <Skeleton className='h-5 w-[60px] rounded-full' />
+        <Skeleton className='h-5 w-[60px] rounded-full' />
+        <Skeleton className='h-5 w-[60px] rounded-full' />
+        <Skeleton className='h-5 w-[60px] rounded-full' />
       </div>
       <Skeleton className='mx-1 mt-4 h-0.5 rounded-full' />
     </div>
@@ -41,6 +42,7 @@ const SkeletonFeed = () => (
 export default function Feeds() {
   const bottom = useRef(null);
   const user = useUser();
+
   const fetchFeeds = async ({ pageParam = 0 }) =>
     await axios
       .post('/api/feed', undefined, {
@@ -94,6 +96,8 @@ export default function Feeds() {
         })}
       {isLoading && (
         <>
+          <SkeletonFeed />
+          <SkeletonFeed />
           <SkeletonFeed />
           <SkeletonFeed />
           <SkeletonFeed />

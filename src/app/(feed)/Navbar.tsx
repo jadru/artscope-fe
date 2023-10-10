@@ -21,6 +21,7 @@ import { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 
 import LoginModal from '@/app/(feed)/LoginModalButton';
+import Logo from '@/assets/images/logo_long.svg';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import { useUser } from '@/states';
 
@@ -88,10 +89,9 @@ export default function NavBar({ theme }: { theme: 'light' | 'dark' }) {
         <NavbarBrand>
           <Link
             href='/'
-            className='box-border flex flex-grow basis-0 flex-row flex-nowrap items-center justify-start whitespace-nowrap bg-transparent text-medium no-underline'
+            className='group box-border flex flex-grow basis-0 flex-row flex-nowrap items-center justify-start whitespace-nowrap bg-transparent text-medium no-underline'
           >
-            <Logo />
-            <p className='font-bold text-inherit'>Artscope</p>
+            <Logo className='mt-2 h-24 w-36 overflow-hidden fill-black transition duration-100 group-hover:fill-blue-500' />
           </Link>
         </NavbarBrand>
       </NavbarContent>
@@ -176,7 +176,7 @@ export default function NavBar({ theme }: { theme: 'light' | 'dark' }) {
                     push('/profile/' + user.username);
                     break;
                   case 'settings':
-                    push('/settings');
+                    push('/user/settings');
                     break;
                   case 'feedback':
                     push('/feedback');
@@ -247,7 +247,7 @@ export default function NavBar({ theme }: { theme: 'light' | 'dark' }) {
                     push('/profile/' + user.username);
                     break;
                   case 'settings':
-                    push('/settings');
+                    push('/user/settings');
                     break;
                   case 'feedback':
                     push('/feedback');
@@ -294,14 +294,3 @@ export default function NavBar({ theme }: { theme: 'light' | 'dark' }) {
     </Navbar>
   );
 }
-
-const Logo = () => (
-  <svg fill='none' height='36' viewBox='0 0 32 32' width='36'>
-    <path
-      clipRule='evenodd'
-      d='M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z'
-      fill='currentColor'
-      fillRule='evenodd'
-    />
-  </svg>
-);
