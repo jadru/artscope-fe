@@ -44,10 +44,6 @@ export default function NavBar({
 
   const menuItems = [
     {
-      name: '피드',
-      url: '/',
-    },
-    {
       name: '작품',
       url: '/artwork',
     },
@@ -62,6 +58,10 @@ export default function NavBar({
     {
       name: '매거진',
       url: '/magazine',
+    },
+    {
+      name: 'Art',
+      url: '/assistant',
     },
   ];
 
@@ -100,11 +100,7 @@ export default function NavBar({
           <NavbarMenuItem key={`${item.name}-${index}`}>
             <Link
               color={
-                index === 0
-                  ? pathname === '/'
-                    ? 'primary'
-                    : 'foreground'
-                  : pathname.startsWith(item.url)
+                pathname.startsWith(item.url.slice(0, -1))
                   ? 'primary'
                   : 'foreground'
               }
@@ -238,11 +234,7 @@ export default function NavBar({
           <NavbarMenuItem key={`${item.name}-${index}`}>
             <Link
               color={
-                index === 0
-                  ? pathname === '/'
-                    ? 'primary'
-                    : 'foreground'
-                  : pathname.startsWith(item.url.slice(0, -1))
+                pathname.startsWith(item.url.slice(0, -1))
                   ? 'primary'
                   : 'foreground'
               }
