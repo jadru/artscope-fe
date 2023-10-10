@@ -14,7 +14,10 @@ import {
 import { toast } from 'react-toastify';
 import { RWebShare } from 'react-web-share';
 
-import { NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
+import {
+  NEXT_PUBLIC_MEDIA_STORAGE_URL,
+  NEXT_PUBLIC_ROOT_URL,
+} from '@/constant/env';
 import { useUser } from '@/states';
 
 import { feedItemType } from '@/types';
@@ -131,7 +134,11 @@ export default function FeedListItem({
               }
               avatarProps={{
                 src: feed.authorProfileImageUrl
-                  ? feed.authorProfileImageUrl
+                  ? feed.authorProfileImageUrl.startsWith('http')
+                    ? feed.authorProfileImageUrl
+                    : NEXT_PUBLIC_MEDIA_STORAGE_URL +
+                      '/' +
+                      feed.authorProfileImageUrl
                   : undefined,
               }}
               className='p-1 hover:underline'

@@ -137,7 +137,7 @@ export default async function ProfilePage({
               className='rounded-full'
             />
           )}
-          <div className='flex flex-col items-center justify-center'>
+          <div className='flex flex-col items-center justify-center px-4'>
             <p className='text-lg font-bold'>{author.name}</p>
             <p className='text-sm'>{author.introduction}</p>
             <p className='text-sm'>{author.history}</p>

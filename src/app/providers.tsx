@@ -11,15 +11,16 @@ import React from 'react';
 import { toast } from 'react-toastify';
 
 import useToken from '@/hooks/useToken';
-import useUser from '@/hooks/useUser';
 
 import Footer from '@/components/Footer';
 
 import NavBar from '@/app/(feed)/Navbar';
+import { useUser } from '@/states';
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  useToken();
-  useUser();
+  const [isLoading, setIsLoading] = React.useState(true);
+  useToken({ setIsLoading });
+  const { user } = useUser();
   const [queryClient] = React.useState(
     new QueryClient({
       queryCache: new QueryCache({
@@ -33,7 +34,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <NextUIProvider>
-        <NavBar theme='light' />
+        <NavBar theme='light' user={user} isLoading={isLoading} />
         <div className='container mx-auto min-h-screen max-w-[1024px]'>
           {children}
         </div>

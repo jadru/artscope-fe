@@ -1,26 +1,14 @@
 import { create } from 'zustand';
 
-import { userCookieType } from '@/utils/auth';
-
-type LoadingType = {
-  isLoading: boolean;
-  setLoading: () => void;
-  setLoadingStop: () => void;
-};
-
-export const useIsLoading = create<LoadingType>((set) => ({
-  isLoading: true,
-  setLoading: () => set({ isLoading: true }),
-  setLoadingStop: () => set({ isLoading: false }),
-}));
+import { profileApiResponseType } from '@/types';
 
 type userType = {
-  user: userCookieType | undefined;
-  setUser: (user: userCookieType) => void;
+  user: profileApiResponseType | undefined;
+  setUser: (user: profileApiResponseType) => void;
   isLogin: boolean;
 };
 export const useUser = create<userType>((set) => ({
   user: undefined,
-  setUser: (user: userCookieType) => set({ user, isLogin: true }),
+  setUser: (user: profileApiResponseType) => set({ user, isLogin: true }),
   isLogin: false,
 }));

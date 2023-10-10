@@ -6,14 +6,13 @@ import axios from 'axios';
 import { ReactElement, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import useUser from '@/hooks/useUser';
-
 import ResponsiveGrid from '@/components/ResponsiveGrid';
 import RootLayout from '@/components/RootLayout';
 
 import ArtworkItem from '@/app/artworks/ArtworkItem';
 import NewArtworkModal from '@/app/artworks/NewArtworkModalButton';
 import UserInfo from '@/app/UserInfo';
+import { useUser } from '@/states';
 
 import { ArtWorkApiResponseType, ArtworkType } from '@/types';
 
@@ -28,7 +27,7 @@ const SkeletonArtwork = () => (
 );
 export default function Page() {
   const bottom = useRef(null);
-  const user = useUser();
+  const { user } = useUser();
   const LIMIT = 10;
   const fetchArtworks = async ({ pageParam = 0 }) =>
     await axios
