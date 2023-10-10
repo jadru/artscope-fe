@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
+import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
 import { ArtistForm } from '@/types';
@@ -25,6 +26,7 @@ export default function ArtistForm({
   isEdit?: ArtistForm | undefined;
 }) {
   const { push } = useRouter();
+  const { user } = useUser();
   const {
     register,
     handleSubmit,
@@ -45,9 +47,13 @@ export default function ArtistForm({
             toast.error(err.response.data);
           })
       : jxios
-          .put('/api/members/artist', data)
+          .put('/api/members/' + user?.username, {
+            ...data,
+            email: user?.email,
+            name: user?.name,
+            username: user?.username,
+          })
           .then(() => {
-            push('/');
             toast.success('아티스트 정보가 수정되었습니다.');
           })
           .catch((err) => {

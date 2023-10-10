@@ -43,9 +43,7 @@ export default async function ProfilePage({
           <h2 className='text-2xl'>@{data.username}</h2>
         </div>
         <Image
-          src={
-            data.picture || NEXT_PUBLIC_API_URL + '/images/default-profile.png'
-          }
+          src={data.picture || 'images/default-profile.png'}
           alt='profile picture'
           className='rounded-3xl drop-shadow-xl'
           width={180}

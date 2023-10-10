@@ -6,11 +6,10 @@ import axios from 'axios';
 import { ReactElement, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import useUser from '@/hooks/useUser';
-
 import FeedList from '@/app/(feed)/FeedList';
 import NewPostModal from '@/app/(feed)/NewPostModalButton';
 import UserInfo from '@/app/UserInfo';
+import { useUser } from '@/states';
 
 import { feedApiResponseType } from '@/types';
 
@@ -41,7 +40,7 @@ const SkeletonFeed = () => (
 
 export default function Feeds() {
   const bottom = useRef(null);
-  const user = useUser();
+  const { user } = useUser();
 
   const fetchFeeds = async ({ pageParam = 0 }) =>
     await axios

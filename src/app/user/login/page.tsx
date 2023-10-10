@@ -15,10 +15,10 @@ import Title from '@/components/Title';
 
 import { onSuccess } from '@/app/user/onSuccess';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
-import { saveUserOnCookie } from '@/utils/auth';
+import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
-import { profileApiType } from '@/types';
+import { profileApiResponseType } from '@/types';
 
 const loginSchema = yup.object().shape({
   username: yup.string().required('아이디를 입력하세요.'),
@@ -37,6 +37,7 @@ const Login = () => {
     resolver: yupResolver(loginSchema),
   });
   const router = useRouter();
+  const { setUser } = useUser();
   const [pwInputVisible, setPwInputVisible] = useState(false);
   const togglePwInputVisible = () => setPwInputVisible(!pwInputVisible);
   const cookies = new Cookies();
@@ -47,13 +48,14 @@ const Login = () => {
       if (res.status === 200 && accessToken) {
         cookies.set('refreshToken', refreshToken, {
           path: '/',
+          expires: new Date((new Date().getTime() / 1000 + expiresIn) * 1000),
         });
         jxios.defaults.headers.common[
           'Authorization'
         ] = `Bearer ${accessToken}`;
         await jxios.get('/api/members/profile').then((res) => {
-          const data: profileApiType = res.data;
-          saveUserOnCookie(data, cookies, expiresIn);
+          const data: profileApiResponseType = res.data;
+          setUser(data);
           toast.success('로그인 되었습니다.');
           onSuccess(data.artistStatus, router);
         });

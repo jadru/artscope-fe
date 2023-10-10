@@ -3,10 +3,6 @@ import jwt_decode from 'jwt-decode';
 import { Cookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 
-import { saveUserOnCookie } from './auth';
-
-import { profileApiType } from '@/types';
-
 const Jaxios = axios.create({
   withCredentials: true,
   headers: {
@@ -25,17 +21,13 @@ const getRefreshToken = async () => {
       },
     })
     .then((res) => {
-      const { accessToken, refreshToken, expiresIn } = res.data;
+      const { accessToken, refreshToken } = res.data;
       Jaxios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
       const decodedRefreshToken: { exp: number } = jwt_decode(refreshToken);
       cookies.remove('refreshToken');
       cookies.set('refreshToken', refreshToken, {
         expires: new Date(decodedRefreshToken.exp * 1000),
         path: '/',
-      });
-      Jaxios.get('/api/members/profile').then((resProfile) => {
-        const { data } = resProfile as { data: profileApiType };
-        saveUserOnCookie(data, cookies, expiresIn as number);
       });
     })
     .catch(() => {
@@ -71,7 +63,6 @@ Jaxios.interceptors.response.use(
               );
             else toast.error(response.data);
             cookies.remove('refreshToken');
-            cookies.remove('user');
             return Promise.reject(err);
           }
         case 502:

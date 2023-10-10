@@ -1,28 +1,31 @@
-import { useEffect, useMemo } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import { Cookies } from 'react-cookie';
 
-import useUser from '@/hooks/useUser';
-
-import { useIsLoading } from '@/states';
-import { saveUserOnCookie } from '@/utils/auth';
+import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
-export default function useToken() {
+import { profileApiResponseType } from '@/types';
+
+export default function useToken({
+  setIsLoading,
+}: {
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
+}) {
   const cookies = useMemo(() => new Cookies(), []);
-  const user = useUser();
+  const { user, setUser } = useUser();
   const refreshToken = cookies.get('refreshToken');
-  const { setLoadingStop } = useIsLoading();
+
   useEffect(() => {
     if (jxios.defaults.headers.common['Authorization']) {
-      setLoadingStop();
+      setIsLoading(false);
       return;
     }
     if (user) {
-      setLoadingStop();
+      setIsLoading(false);
       return;
     }
     if (!refreshToken) {
-      setLoadingStop();
+      setIsLoading(false);
       return;
     }
     jxios
@@ -37,9 +40,11 @@ export default function useToken() {
         cookies.remove('refreshToken');
         cookies.set('refreshToken', refreshToken, {
           path: '/',
+          expires: new Date((new Date().getTime() / 1000 + expiresIn) * 1000),
         });
-        jxios.get('/api/members/profile').then((resProfile) => {
-          saveUserOnCookie(resProfile.data, cookies, expiresIn as number);
+        jxios.get('/api/members/profile').then((response) => {
+          const profileResponse: profileApiResponseType = response.data;
+          setUser(profileResponse);
         });
       })
       .catch((err) => {
@@ -52,11 +57,12 @@ export default function useToken() {
         }
       })
       .finally(() => {
-        setLoadingStop();
+        setIsLoading(false);
       });
     return () => {
       cookies.remove('refreshToken');
-      setLoadingStop();
+      setIsLoading(false);
     };
-  }, [cookies, refreshToken, setLoadingStop, user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 }

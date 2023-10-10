@@ -19,6 +19,8 @@ const nextConfig = {
     ];
   },
 
+  reactStrictMode: false,
+
   images: {
     domains: [process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL],
     loader: 'custom',
