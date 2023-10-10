@@ -1,3 +1,4 @@
+import { useCallbackOnce } from '@toss/react';
 import { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import { Cookies } from 'react-cookie';
 
@@ -15,7 +16,7 @@ export default function useToken({
   const { user, setUser } = useUser();
   const refreshToken = cookies.get('refreshToken');
 
-  useEffect(() => {
+  const callToken = useCallbackOnce(() => {
     if (jxios.defaults.headers.common['Authorization']) {
       setIsLoading(false);
       return;
@@ -59,6 +60,10 @@ export default function useToken({
       .finally(() => {
         setIsLoading(false);
       });
+  }, []);
+
+  useEffect(() => {
+    callToken();
     return () => {
       cookies.remove('refreshToken');
       setIsLoading(false);

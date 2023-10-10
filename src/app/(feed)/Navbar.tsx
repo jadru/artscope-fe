@@ -60,7 +60,7 @@ export default function NavBar({
       url: '/magazine',
     },
     {
-      name: 'Art',
+      name: '예술',
       url: '/assistant',
     },
   ];
