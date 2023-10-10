@@ -51,30 +51,30 @@ export default function NavBar({
       name: '작품',
       url: '/artwork',
     },
-    // {
-    //   name: '프로그램',
-    //   url: '/program',
-    // },
-    // {
-    //   name: '전시',
-    //   url: '/exhibition',
-    // },
-    // {
-    //   name: '네트워크',
-    //   url: '/network',
-    // },
-    // {
-    //   name: '장소',
-    //   url: '/space',
-    // },
-    // {
-    //   name: '뉴스',
-    //   url: '/news',
-    // },
-    // {
-    //   name: '매거진',
-    //   url: '/magazine',
-    // },
+    {
+      name: '전시',
+      url: '/exhibition',
+    },
+    {
+      name: '이벤트',
+      url: '/event',
+    },
+    {
+      name: '네트워크',
+      url: '/network',
+    },
+    {
+      name: '장소',
+      url: '/space',
+    },
+    {
+      name: '뉴스',
+      url: '/news',
+    },
+    {
+      name: '매거진',
+      url: '/magazine',
+    },
   ];
 
   return (

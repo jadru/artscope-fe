@@ -1,5 +1,6 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import {
   NEXT_PUBLIC_API_URL,
@@ -126,26 +127,29 @@ export default async function ProfilePage({
       </div>
 
       <div className='h-0.5 bg-default-100'></div>
-      <div>
-        <div className='flex flex-row items-center justify-between'>
-          {author.picture && (
-            <Image
-              src={author.picture}
-              alt={author.name + "'s profile image"}
-              width={50}
-              height={50}
-              className='rounded-full'
-            />
-          )}
-          <div className='flex flex-col items-center justify-center px-4'>
-            <p className='text-lg font-bold'>{author.name}</p>
-            <p className='text-sm'>{author.introduction}</p>
-            <p className='text-sm'>{author.history}</p>
-            <p className='text-sm'>{author.websiteUrl}</p>
-            <p className='text-sm'>{author.snsUrl}</p>
-          </div>
+
+      <Link
+        className='flex cursor-pointer flex-row items-center justify-between rounded-2xl border border-white bg-white px-4 py-3 text-default-900 transition-colors duration-100 hover:border-default-400 hover:bg-default-100 hover:text-default-700'
+        href={'/profile/' + author.username}
+      >
+        <div className='flex flex-col items-start justify-center'>
+          <p className='text-lg font-bold'>{author.name}</p>
+          <p className='text-sm'>@{author.username}</p>
         </div>
-      </div>
+        {author.picture && (
+          <Image
+            src={
+              author.picture.startsWith('http')
+                ? author.picture
+                : NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + author.picture
+            }
+            alt={author.name + "'s profile image"}
+            width={60}
+            height={60}
+            className='rounded-full'
+          />
+        )}
+      </Link>
     </div>
   );
 }
