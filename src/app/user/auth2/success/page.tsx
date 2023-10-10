@@ -7,13 +7,14 @@ import { toast } from 'react-toastify';
 
 import Seo from '@/components/Seo';
 
+import { onSuccess } from '@/app/user/onSuccess';
 import { saveUserOnCookie } from '@/utils/auth';
 import jxios from '@/utils/jxios';
 
 import { profileApiType } from '@/types';
 
 const RedirectOAuth2 = () => {
-  const { push } = useRouter();
+  const router = useRouter();
   const cookies = useMemo(() => new Cookies(), []);
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
@@ -32,19 +33,16 @@ const RedirectOAuth2 = () => {
             path: '/',
           });
           jxios.get('/api/members/profile').then((res) => {
-            saveUserOnCookie(
-              res.data as profileApiType,
-              cookies,
-              ress.data.expiresIn as number
-            );
-            push('/');
+            const data: profileApiType = res.data;
+            saveUserOnCookie(data, cookies, ress.data.expiresIn as number);
             toast.success('로그인이 완료되었습니다.');
+            onSuccess(data.artistStatus, router);
           });
         });
     } else {
-      push('/');
+      router.push('/');
     }
-  }, [cookies, push, token]);
+  }, [cookies, router, token]);
 
   return <Seo templateTitle='구글 로그인'></Seo>;
 };

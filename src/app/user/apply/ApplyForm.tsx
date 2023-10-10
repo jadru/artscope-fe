@@ -10,7 +10,7 @@ import GeneralForm from '@/app/user/apply/GeneralForm';
 
 const SignupForm = () => {
   return (
-    <Tabs aria-label='Options' fullWidth>
+    <Tabs aria-label='Options' fullWidth defaultSelectedKey='artist'>
       <Tab key='general' title='일반 General'>
         <Card>
           <CardBody>
@@ -18,7 +18,7 @@ const SignupForm = () => {
           </CardBody>
         </Card>
       </Tab>
-      <Tab key='artsit' title='작가 Artist'>
+      <Tab key='artist' title='작가 Artist'>
         <Card>
           <CardBody>
             <ArtistForm />

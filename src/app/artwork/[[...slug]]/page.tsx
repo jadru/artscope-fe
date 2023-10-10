@@ -1,3 +1,4 @@
+import { Metadata, ResolvingMetadata } from 'next';
 import Image from 'next/image';
 
 import {
@@ -22,6 +23,37 @@ const fetchAuthorProfile = async (id: string) =>
     }
     return res.json();
   });
+
+export async function generateMetadata(
+  {
+    params,
+  }: {
+    params: { slug: string[] };
+  },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const id = params.slug[0];
+  const data: ArtworkType = await fetchArtwork(id);
+  const thumbnail = data.artwork.thumbnail || [];
+  const previousImages = (await parent).openGraph?.images || [];
+  return {
+    title: `${data.artwork.title} - ${data.artwork.authorName}`,
+    description: data.artwork.description,
+    openGraph: {
+      title: `${data.artwork.title} - ${data.artwork.authorName}`,
+      description: data.artwork.description.slice(0, 100),
+      url: 'https://www.artscope.kr/artwork/' + id,
+      type: 'article',
+      authors: [data.artwork.authorName],
+      images: [
+        NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + thumbnail.mediaUrl,
+        ...previousImages,
+      ],
+    },
+    publisher: data.artwork.authorName,
+  };
+}
 
 export default async function ProfilePage({
   params,

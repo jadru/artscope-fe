@@ -13,6 +13,7 @@ import * as yup from 'yup';
 
 import Title from '@/components/Title';
 
+import { onSuccess } from '@/app/user/onSuccess';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import { saveUserOnCookie } from '@/utils/auth';
 import jxios from '@/utils/jxios';
@@ -35,7 +36,7 @@ const Login = () => {
   } = useForm<loginInputs>({
     resolver: yupResolver(loginSchema),
   });
-  const { push } = useRouter();
+  const router = useRouter();
   const [pwInputVisible, setPwInputVisible] = useState(false);
   const togglePwInputVisible = () => setPwInputVisible(!pwInputVisible);
   const cookies = new Cookies();
@@ -51,10 +52,11 @@ const Login = () => {
           'Authorization'
         ] = `Bearer ${accessToken}`;
         await jxios.get('/api/members/profile').then((res) => {
-          saveUserOnCookie(res.data as profileApiType, cookies, expiresIn);
+          const data: profileApiType = res.data;
+          saveUserOnCookie(data, cookies, expiresIn);
+          toast.success('로그인 되었습니다.');
+          onSuccess(data.artistStatus, router);
         });
-        toast.success('로그인 되었습니다.');
-        push('/');
       } else {
         toast.error(res.data);
       }
@@ -62,66 +64,64 @@ const Login = () => {
 
   return (
     <>
-      <div className='mx-auto flex max-w-md flex-col items-stretch gap-2 p-4'>
-        <Title>로그인</Title>
-        <form onSubmit={handleSubmit(onSubmit)} className='space-y-2'>
-          <Input
-            type='text'
-            label='아이디'
-            variant='bordered'
-            placeholder='아이디를 입력해주세요'
-            errorMessage={errors.username?.message}
-            isInvalid={!!errors.username}
-            {...register('username')}
-          />
-          <Input
-            label='비밀번호'
-            variant='bordered'
-            placeholder='비밀번호를 입력해주세요'
-            endContent={
-              <button
-                className='focus:outline-none'
-                type='button'
-                onClick={togglePwInputVisible}
-              >
-                {pwInputVisible ? (
-                  <EyeSlashFilledIcon className='pointer-events-none text-2xl text-default-400' />
-                ) : (
-                  <EyeFilledIcon className='pointer-events-none text-2xl text-default-400' />
-                )}
-              </button>
-            }
-            type={pwInputVisible ? 'text' : 'password'}
-            errorMessage={errors.password?.message}
-            isInvalid={!!errors.password}
-            {...register('password')}
-          />
+      <Title>로그인</Title>
+      <form onSubmit={handleSubmit(onSubmit)} className='space-y-2'>
+        <Input
+          type='text'
+          label='아이디'
+          variant='bordered'
+          placeholder='아이디를 입력해주세요'
+          errorMessage={errors.username?.message}
+          isInvalid={!!errors.username}
+          {...register('username')}
+        />
+        <Input
+          label='비밀번호'
+          variant='bordered'
+          placeholder='비밀번호를 입력해주세요'
+          endContent={
+            <button
+              className='focus:outline-none'
+              type='button'
+              onClick={togglePwInputVisible}
+            >
+              {pwInputVisible ? (
+                <EyeSlashFilledIcon className='pointer-events-none text-2xl text-default-400' />
+              ) : (
+                <EyeFilledIcon className='pointer-events-none text-2xl text-default-400' />
+              )}
+            </button>
+          }
+          type={pwInputVisible ? 'text' : 'password'}
+          errorMessage={errors.password?.message}
+          isInvalid={!!errors.password}
+          {...register('password')}
+        />
 
-          <Button type='submit' variant='flat' color='primary' fullWidth>
-            로그인
-          </Button>
-        </form>
-        <div className='flex gap-1'>
-          <Button
-            color='secondary'
-            variant='flat'
-            onClick={() => push('/user/signup')}
-            className='w-1/2'
-          >
-            회원가입
-          </Button>
-          <Button
-            color='warning'
-            variant='flat'
-            className='w-1/2'
-            startContent={<AiOutlineGoogle className='h-6 w-6 text-lg' />}
-            onClick={() =>
-              push(NEXT_PUBLIC_API_URL + '/oauth2/authorization/google')
-            }
-          >
-            구글로 로그인
-          </Button>
-        </div>
+        <Button type='submit' variant='flat' color='primary' fullWidth>
+          로그인
+        </Button>
+      </form>
+      <div className='flex gap-1'>
+        <Button
+          color='secondary'
+          variant='flat'
+          onClick={() => router.push('/user/signup')}
+          className='w-1/2'
+        >
+          회원가입
+        </Button>
+        <Button
+          color='warning'
+          variant='flat'
+          className='w-1/2'
+          startContent={<AiOutlineGoogle className='h-6 w-6 text-lg' />}
+          onClick={() =>
+            router.push(NEXT_PUBLIC_API_URL + '/oauth2/authorization/google')
+          }
+        >
+          구글로 로그인
+        </Button>
       </div>
     </>
   );

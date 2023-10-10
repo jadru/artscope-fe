@@ -1,14 +1,33 @@
 import { Button, User } from '@nextui-org/react';
+import { DebounceClick } from '@toss/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { AiFillHeart, AiFillMessage, AiFillStar } from 'react-icons/ai';
+import {
+  AiOutlineDelete,
+  AiOutlineEdit,
+  AiOutlineLike,
+  AiOutlineMessage,
+  AiOutlineShareAlt,
+  AiOutlineStar,
+} from 'react-icons/ai';
 import { toast } from 'react-toastify';
+import { RWebShare } from 'react-web-share';
+
+import { NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
+import { useUser } from '@/states';
 
 import { feedItemType } from '@/types';
 
-export default function FeedListItem({ feed }: { feed: feedItemType }) {
+export default function FeedListItem({
+  feed,
+  isSinglePost = false,
+}: {
+  feed: feedItemType;
+  isSinglePost?: boolean;
+}) {
   const { push } = useRouter();
+  const { user } = useUser();
   const [readMore, setReadMore] = useState<boolean>(false);
 
   const extractLinks = (
@@ -47,6 +66,43 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
     return result;
   };
 
+  const timeCaculator = (from: Date): string => {
+    const time = new Date(String(from));
+    const now = new Date();
+    const diff = now.getTime() - time.getTime();
+    const diffDay = diff / (1000 * 60 * 60 * 24);
+    const diffHour = diff / (1000 * 60 * 60);
+
+    if (diffDay > 365) {
+      return time.toLocaleString('ko-KR');
+    }
+    if (diffDay > 30) {
+      return time.toLocaleString('ko-KR');
+    }
+    if (diffDay > 1) {
+      return Math.floor(diffDay) + '일 전';
+    }
+    if (diffHour > 1) {
+      return Math.floor(diffHour) + '시간 전';
+    }
+    if (diff > 30) {
+      return Math.floor(diff / (1000 * 60)) + '분 전';
+    }
+    return '방금';
+  };
+
+  const handleLike = () => {
+    toast('좋아요 누름');
+  };
+
+  const handleComment = () => {
+    toast('댓글 누름');
+  };
+
+  const handleSave = () => {
+    toast('저장 누름');
+  };
+
   return (
     <div
       className={`border-x border-default-200 bg-white p-4 pb-2 transition-colors md:mx-0 ${
@@ -57,7 +113,7 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
       }}
     >
       <div className='flex w-full flex-col justify-between text-left md:flex-row'>
-        <div>
+        <div className='w-full'>
           <div
             className='cursor-pointer'
             onClick={(e) => {
@@ -68,7 +124,8 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
             <User
               name={feed.authorName}
               description={
-                '@' +
+                timeCaculator(feed.createdTime) +
+                ' @' +
                 feed.authorUsername +
                 (feed.authorDescription ? ' - ' + feed.authorDescription : '')
               }
@@ -92,7 +149,7 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
                   if (!readMore && feed.content.length > 130) setReadMore(true);
                 }}
               >
-                {!readMore && feed.content.length > 130
+                {!isSinglePost && !readMore && feed.content.length > 130
                   ? feed.content.slice(0, 130) + '... 더보기'
                   : extractLinks(feed.content).map((item, index) => {
                       if (item.type === 'text') {
@@ -121,39 +178,84 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
         </div>
       </div>
       <div className='w-full justify-evenly gap-1 self-start md:w-auto md:justify-items-start'>
-        <Button
-          startContent={<AiFillHeart className='h-5 w-5' />}
-          variant='light'
-          className='text-md text-gray-500 hover:text-red-500'
-          onClick={(e) => {
-            e.stopPropagation();
-            toast('좋아요 누름');
-          }}
-        >
-          {feed.likes}
-        </Button>
-        <Button
-          startContent={<AiFillMessage className='h-5 w-5' />}
-          variant='light'
-          className='text-md text-gray-500 hover:text-blue-500'
-          onClick={(e) => {
-            e.stopPropagation();
-            toast('댓글 누름');
-          }}
-        >
-          {feed.likes}
-        </Button>
-        <Button
-          startContent={<AiFillStar className='h-5 w-5' />}
-          variant='light'
-          className='text-md text-gray-500 hover:text-green-500'
-          onClick={(e) => {
-            e.stopPropagation();
-            toast('저장 누름');
-          }}
-        >
-          {feed.likes}
-        </Button>
+        <DebounceClick wait={500}>
+          <Button
+            startContent={<AiOutlineLike className='h-5 w-5' />}
+            variant='light'
+            className='text-md text-gray-500 hover:text-red-500'
+            onClick={handleLike}
+          >
+            {feed.likes}
+          </Button>
+        </DebounceClick>
+        <DebounceClick wait={500}>
+          <Button
+            startContent={<AiOutlineMessage className='h-5 w-5' />}
+            variant='light'
+            className='text-md text-gray-500 hover:text-blue-500'
+            onClick={handleComment}
+          >
+            {feed.likes}
+          </Button>
+        </DebounceClick>
+        <DebounceClick wait={500}>
+          <Button
+            startContent={<AiOutlineStar className='h-5 w-5' />}
+            variant='light'
+            className='text-md text-gray-500 hover:text-green-500'
+            onClick={handleSave}
+          >
+            {feed.likes}
+          </Button>
+        </DebounceClick>
+        <DebounceClick wait={500}>
+          <RWebShare
+            data={{
+              text: 'Artscope - ' + feed.content.slice(0, 70),
+              url: NEXT_PUBLIC_ROOT_URL + '/post/' + feed.id,
+              title: feed.content.slice(0, 15) + '... | Artscope',
+            }}
+          >
+            <Button
+              startContent={<AiOutlineShareAlt className='h-5 w-5' />}
+              variant='light'
+              className='text-md text-gray-500 hover:text-amber-600'
+              onClick={handleSave}
+            >
+              공유
+            </Button>
+          </RWebShare>
+        </DebounceClick>
+        {feed.authorUsername === user?.username && (
+          <>
+            <DebounceClick wait={500}>
+              <Button
+                startContent={<AiOutlineEdit className='h-5 w-5' />}
+                variant='light'
+                className='text-md text-gray-500 hover:text-purple-500'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toast('수정 누름');
+                }}
+              >
+                수정
+              </Button>
+            </DebounceClick>
+            <DebounceClick wait={500}>
+              <Button
+                startContent={<AiOutlineDelete className='h-5 w-5' />}
+                variant='light'
+                className='text-md text-gray-500 hover:text-red-500'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toast('삭제 누름');
+                }}
+              >
+                삭제
+              </Button>
+            </DebounceClick>
+          </>
+        )}
       </div>
     </div>
   );
