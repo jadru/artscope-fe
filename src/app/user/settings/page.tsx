@@ -1,9 +1,9 @@
 'use client';
 
 import { Button, Input } from '@nextui-org/react';
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
+import ASNextImage from '@/components/ASNextImage';
 import Title from '@/components/Title';
 
 import ArtistForm from '@/app/user/apply/ArtistForm';
@@ -59,7 +59,7 @@ export default function SettingsPage() {
       </div>
       <div className='flex items-center justify-between'>
         {data.picture && (
-          <Image
+          <ASNextImage
             src={data.picture}
             alt='프로필 사진'
             width={100}

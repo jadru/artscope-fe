@@ -1,9 +1,9 @@
 'use client';
 
 import { Pagination } from '@nextui-org/react';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
+import ASNextImage from '@/components/ASNextImage';
 import RootLayout from '@/components/RootLayout';
 import Title from '@/components/Title';
 
@@ -50,7 +50,7 @@ export default function Exhibitions() {
                 {new Date(exhibition.endDate).toLocaleString()}
               </h5>
             </div>
-            <Image
+            <ASNextImage
               src={exhibition.thumbnail.mediaUrl}
               alt='thumbnail'
               width={100}

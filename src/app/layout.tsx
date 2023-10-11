@@ -38,13 +38,20 @@ export const metadata: Metadata = {
     'mobile-web-app-capable': 'yes',
   },
   icons: {
-    icon: '/favicon/favicon-32x32.png',
-    shortcut: '/favicon/favicon.ico',
+    icon: '/favicon/favicon.svg',
+    shortcut: '/favicon/favicon.svg',
     apple: '/favicon/apple-touch-icon.png',
-    other: {
-      rel: 'apple-touch-icon-precomposed',
-      url: '/favicon/android-chrome-192x192.png',
-    },
+    other: [
+      {
+        rel: 'apple-touch-icon-precomposed',
+        url: '/favicon/android-chrome-192x192.png',
+      },
+      {
+        rel: 'mask-icon',
+        url: '/favicon.svg',
+        color: '#086788',
+      },
+    ],
   },
   generator: 'Media Xi',
   keywords: [

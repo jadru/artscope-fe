@@ -1,7 +1,8 @@
 import { CardBody, CardFooter } from '@nextui-org/card';
 import { Card } from '@nextui-org/react';
-import Image from 'next/image';
 import Link from 'next/link';
+
+import ASNextImage from '@/components/ASNextImage';
 
 import { ArtworkType } from '@/types';
 
@@ -9,7 +10,7 @@ const ArtworkItem = ({ artwork: aw }: { artwork: ArtworkType }) => (
   <Link href={'/artwork/' + aw.artwork.id} className='group'>
     <Card shadow='sm'>
       <CardBody className='overflow-visible p-0 transition duration-100 group-hover:bg-default-100'>
-        <Image
+        <ASNextImage
           src={aw.artwork.thumbnail.mediaUrl}
           alt={aw.artwork.title}
           className='h-[180px] w-full rounded-xl bg-white object-cover drop-shadow-sm group-hover:bg-default-100'

@@ -60,7 +60,20 @@ module.exports = {
       addCommonColors: true,
       themes: {
         light: {
-          colors: {},
+          colors: {
+            primary: {
+              DEFAULT: '#086788',
+            },
+            secondary: {
+              DEFAULT: '#07A0C3',
+            },
+            accent: {
+              DEFAULT: '#F0c808',
+            },
+            danger: {
+              DEFAULT: '#DD1C1A',
+            },
+          },
         },
         dark: {
           colors: {},

@@ -17,7 +17,6 @@ import {
   useDisclosure,
 } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import {
   AiFillCloseCircle,
@@ -29,6 +28,8 @@ import {
 import { FaHashtag } from 'react-icons/fa';
 import TextareaAutoSize from 'react-textarea-autosize';
 import { toast } from 'react-toastify';
+
+import ASNextImage from '@/components/ASNextImage';
 
 import PublicTypeCheckBox, {
   PublicType,
@@ -471,7 +472,7 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
                               className='relative h-[76px] w-[76px]'
                             >
                               {file.mediaType === 'image' ? (
-                                <Image
+                                <ASNextImage
                                   src={imgs[index]}
                                   width={64}
                                   height={64}
@@ -490,7 +491,7 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
                                   </p>
                                 </div>
                               ) : (
-                                <Image
+                                <ASNextImage
                                   className='absolute bottom-0 left-0 h-16 w-16 rounded-md bg-gray-600'
                                   src={
                                     imgs[index]

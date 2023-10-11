@@ -1,6 +1,7 @@
 import { Metadata, ResolvingMetadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
+
+import ASNextImage from '@/components/ASNextImage';
 
 import {
   NEXT_PUBLIC_API_URL,
@@ -68,7 +69,7 @@ export default async function ProfilePage({
   );
   return (
     <div className='my-4 space-y-3'>
-      <h1 className='mx-2 text-left font-serif text-4xl'>
+      <h1 className='mx-2 break-words text-left font-serif text-4xl'>
         {data.artwork.title}
       </h1>
       {data.artwork.tags.length > 0 && (
@@ -87,7 +88,7 @@ export default async function ProfilePage({
         </div>
       )}
       <div className='h-0.5 bg-default-100'></div>
-      <h2 className='mx-2 text-left text-xl font-normal'>
+      <h2 className='mx-2 break-words text-left text-xl font-normal'>
         {data.artwork.description}
       </h2>
 
@@ -95,7 +96,7 @@ export default async function ProfilePage({
         {data.artwork.artworkMedias.map((media, mediaIndex) => (
           <>
             {(media.mediaType === 'image' && (
-              <Image
+              <ASNextImage
                 className='relative h-auto w-full'
                 src={media.mediaUrl}
                 alt={'artworkMedia' + mediaIndex}
@@ -137,7 +138,7 @@ export default async function ProfilePage({
           <p className='text-sm'>@{author.username}</p>
         </div>
         {author.picture && (
-          <Image
+          <ASNextImage
             src={
               author.picture.startsWith('http')
                 ? author.picture

@@ -25,7 +25,7 @@ const nextConfig = {
     domains: [process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL],
     loader: 'custom',
     loaderFile: './src/utils/imageLoader.ts',
-    minimumCacheTTL: 60,
+    minimumCacheTTL: 86400,
   },
 
   compress: true,

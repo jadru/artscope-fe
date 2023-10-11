@@ -46,15 +46,15 @@ export default function FeedList({ data }: FeedListProps) {
         <>
           {Array.isArray(feed) ? (
             <div
-              className={`mx-2 my-1 grid ${
+              className={`grid ${
                 feed.length === 1
                   ? 'grid-cols-1'
                   : feed.length % 2 === 0
                   ? 'grid-cols-2'
                   : feed.length % 3 === 0
-                  ? 'grid-cols-2'
-                  : 'grid-cols-3'
-              } gap-1 md:mx-0`}
+                  ? 'grid-cols-2 md:grid-cols-3'
+                  : 'grid-cols-2'
+              } gap-0 border-x md:mx-0`}
               key={index}
             >
               {feed.map((feedItem, index) => (
