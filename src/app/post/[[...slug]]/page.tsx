@@ -8,7 +8,7 @@ import jxios from '@/utils/jxios';
 import { feedItemType } from '@/types';
 
 const fetchPost = async (id: string) =>
-  jxios.get('/api/post/' + id).then((res) => res.data);
+  jxios.get('/api/posts/' + id).then((res) => res.data);
 
 export default function SinglePost({ params }: { params: { slug: string[] } }) {
   const [data, setData] = useState<feedItemType | undefined>(undefined);

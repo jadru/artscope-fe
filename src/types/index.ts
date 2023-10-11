@@ -178,7 +178,7 @@ export type feedApiResponseType = {
 
 export type feedItemType = {
   id: number;
-  title: string;
+  title: string | null;
   content: string;
   type: contentType;
   thumbnailUrl: string | null;
@@ -191,6 +191,7 @@ export type feedItemType = {
   categoryId: string;
   views: number;
   likes: number;
+  isLiked: boolean;
   comments: number;
   createdTime: Date;
   updatedTime: Date | null;

@@ -2,8 +2,9 @@ import { Button, User } from '@nextui-org/react';
 import { DebounceClick } from '@toss/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
+  AiFillLike,
   AiOutlineDelete,
   AiOutlineEdit,
   AiOutlineLike,
@@ -19,6 +20,7 @@ import {
   NEXT_PUBLIC_ROOT_URL,
 } from '@/constant/env';
 import { useUser } from '@/states';
+import jxios from '@/utils/jxios';
 
 import { feedItemType } from '@/types';
 
@@ -30,6 +32,7 @@ export default function FeedListItem({
   isSinglePost?: boolean;
 }) {
   const { push } = useRouter();
+  const [like, setLike] = useState<boolean>(feed.isLiked);
   const { user } = useUser();
   const [readMore, setReadMore] = useState<boolean>(false);
 
@@ -95,7 +98,8 @@ export default function FeedListItem({
   };
 
   const handleLike = () => {
-    toast('좋아요 누름');
+    setLike(!like);
+    jxios.post(`/api/posts/${feed.id}/like`);
   };
 
   const handleComment = () => {
@@ -105,6 +109,10 @@ export default function FeedListItem({
   const handleSave = () => {
     toast('저장 누름');
   };
+
+  useEffect(() => {
+    setLike(feed.isLiked);
+  }, [feed.isLiked]);
 
   return (
     <div
@@ -188,12 +196,20 @@ export default function FeedListItem({
       <div className='w-full justify-evenly gap-1 self-start md:w-auto md:justify-items-start'>
         <DebounceClick wait={500}>
           <Button
-            startContent={<AiOutlineLike className='h-5 w-5' />}
+            startContent={
+              like ? (
+                <AiFillLike className='h-5 w-5 text-red-500' />
+              ) : (
+                <AiOutlineLike className='h-5 w-5' />
+              )
+            }
             variant='light'
-            className='text-md text-gray-500 hover:text-red-500'
+            className={`text-md hover:text-red-500 ${
+              like ? 'text-red-500' : 'text-gray-500'
+            }`}
             onClick={handleLike}
           >
-            {feed.likes}
+            {feed.likes + (like ? 1 : 0) + (feed.isLiked ? -1 : 0)}
           </Button>
         </DebounceClick>
         <DebounceClick wait={500}>
@@ -203,7 +219,7 @@ export default function FeedListItem({
             className='text-md text-gray-500 hover:text-blue-500'
             onClick={handleComment}
           >
-            {feed.likes}
+            {feed.comments}
           </Button>
         </DebounceClick>
         <DebounceClick wait={500}>
@@ -213,22 +229,21 @@ export default function FeedListItem({
             className='text-md text-gray-500 hover:text-green-500'
             onClick={handleSave}
           >
-            {feed.likes}
+            {0}
           </Button>
         </DebounceClick>
         <DebounceClick wait={500}>
           <RWebShare
             data={{
-              text: 'Artscope - ' + feed.content.slice(0, 70),
+              text: 'Artscope 포스트',
               url: NEXT_PUBLIC_ROOT_URL + '/post/' + feed.id,
-              title: feed.content.slice(0, 15) + '... | Artscope',
+              title: feed.content.slice(0, 18) + ' - Artscope',
             }}
           >
             <Button
               startContent={<AiOutlineShareAlt className='h-5 w-5' />}
               variant='light'
               className='text-md text-gray-500 hover:text-amber-600'
-              onClick={handleSave}
             >
               공유
             </Button>
