@@ -65,7 +65,7 @@ export default function NewPostModal({ placeholder, submitBtnText }: Props) {
     setIsSubmit(true);
     onClose();
     jxios
-      .post('/api/post', {
+      .post('/api/posts', {
         title: '',
         content: postContent,
       })

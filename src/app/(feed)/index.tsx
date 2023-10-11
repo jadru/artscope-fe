@@ -2,7 +2,6 @@
 
 import { Skeleton } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { ReactElement, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
@@ -10,6 +9,7 @@ import FeedList from '@/app/(feed)/FeedList';
 import NewPostModal from '@/app/(feed)/NewPostModalButton';
 import UserInfo from '@/app/UserInfo';
 import { useUser } from '@/states';
+import jxios from '@/utils/jxios';
 
 import { feedApiResponseType } from '@/types';
 
@@ -43,7 +43,7 @@ export default function Feeds() {
   const { user } = useUser();
 
   const fetchFeeds = async ({ pageParam = 0 }) =>
-    await axios
+    await jxios
       .post('/api/feed', undefined, {
         params: {
           page: pageParam,
@@ -54,7 +54,7 @@ export default function Feeds() {
         return res.data as feedApiResponseType;
       });
   const LIMIT = 10;
-  const { data, fetchNextPage, isLoading } = useInfiniteQuery(
+  const { data, fetchNextPage, isLoading, refetch } = useInfiniteQuery(
     ['feed'],
     async ({ pageParam = 0 }) => await fetchFeeds({ pageParam }),
     {
@@ -77,6 +77,10 @@ export default function Feeds() {
 
     return <div ref={ref} className='mb-1 h-1' />;
   };
+
+  useEffect(() => {
+    refetch();
+  }, [refetch, user]);
 
   return (
     <>
