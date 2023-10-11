@@ -54,7 +54,7 @@ export default function LoginModal({
               <ModalBody>{description}</ModalBody>
               <ModalFooter className='flex-col justify-center gap-2'>
                 <Button
-                  color='warning'
+                  color='primary'
                   variant='shadow'
                   fullWidth
                   onPress={handleLogin}
@@ -63,7 +63,7 @@ export default function LoginModal({
                   {title}하기
                 </Button>
                 <Button
-                  color='primary'
+                  color='secondary'
                   variant='light'
                   fullWidth
                   onPress={handleNativeLogin}

@@ -156,6 +156,7 @@ export default function FeedListItem({
                   if (!readMore && feed.content.length > 130) setReadMore(true);
                 }}
               >
+                {feed.type === 'exhibition' ? <b>전시안내 - </b> : ''}
                 {!isSinglePost && !readMore && feed.content.length > 130
                   ? feed.content.slice(0, 130) + '... 더보기'
                   : extractLinks(feed.content).map((item, index) => {

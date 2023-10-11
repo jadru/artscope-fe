@@ -1,6 +1,7 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+
+import ASNextImage from '@/components/ASNextImage';
 
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 
@@ -36,16 +37,16 @@ export default async function ProfilePage({
   ));
 
   return (
-    <div className='mx-auto my-14 max-w-4xl space-y-3 px-4'>
+    <div className='mx-auto my-6 max-w-4xl space-y-3 px-4'>
       <div className='flex w-full items-center justify-between py-4'>
-        <div className='space-y-4'>
+        <div className='space-y-4 px-2.5'>
           <h1 className='font-serif text-4xl'>{data.name}</h1>
           <h2 className='text-2xl'>@{data.username}</h2>
         </div>
-        <Image
+        <ASNextImage
           src={data.picture || 'images/default-profile.png'}
           alt='profile picture'
-          className='rounded-3xl drop-shadow-xl'
+          className='h-32 w-32 rounded-3xl border object-cover drop-shadow-xl'
           width={180}
           height={180}
         />

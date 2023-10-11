@@ -207,7 +207,7 @@ type pageInfoType = {
 export type contentType =
   | 'post'
   | 'artwork'
-  | 'artist'
+  | 'exhibition'
   | 'notice'
   | 'event'
   | 'faq'

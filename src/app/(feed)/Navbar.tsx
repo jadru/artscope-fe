@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Avatar,
   Button,
@@ -44,6 +42,10 @@ export default function NavBar({
 
   const menuItems = [
     {
+      name: '피드',
+      url: '/',
+    },
+    {
       name: '작품',
       url: '/artwork',
     },
@@ -58,10 +60,6 @@ export default function NavBar({
     {
       name: '매거진',
       url: '/magazine',
-    },
-    {
-      name: '예술',
-      url: '/assistant',
     },
   ];
 
@@ -91,7 +89,7 @@ export default function NavBar({
             href='/'
             className='group box-border flex flex-grow basis-0 flex-row flex-nowrap items-center justify-start whitespace-nowrap bg-transparent text-medium no-underline'
           >
-            <Logo className='mt-2 h-24 w-36 overflow-hidden fill-black transition duration-100 group-hover:fill-blue-500' />
+            <Logo className='mt-2 h-24 w-36 overflow-hidden fill-black transition duration-100 group-hover:fill-[#07A0C3]' />
           </Link>
         </NavbarBrand>
       </NavbarContent>
@@ -100,7 +98,9 @@ export default function NavBar({
           <NavbarMenuItem key={`${item.name}-${index}`}>
             <Link
               color={
-                pathname.startsWith(item.url.slice(0, -1))
+                item.url === '/'
+                  ? 'primary'
+                  : pathname.startsWith(item.url.slice(0, -1))
                   ? 'primary'
                   : 'foreground'
               }
@@ -234,7 +234,9 @@ export default function NavBar({
           <NavbarMenuItem key={`${item.name}-${index}`}>
             <Link
               color={
-                pathname.startsWith(item.url.slice(0, -1))
+                item.url === '/'
+                  ? 'primary'
+                  : pathname.startsWith(item.url.slice(0, -1))
                   ? 'primary'
                   : 'foreground'
               }

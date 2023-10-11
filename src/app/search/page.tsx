@@ -3,6 +3,7 @@
 import { Divider, Input, Link, Pagination } from '@nextui-org/react';
 import { useDebounce, useDidUpdate } from '@toss/react';
 import React, { useCallback, useState } from 'react';
+import { AiOutlineSearch } from 'react-icons/ai';
 
 import jxios from '@/utils/jxios';
 
@@ -41,9 +42,11 @@ export default function Search() {
       <Input
         label='예술을 검색하세요'
         variant='bordered'
+        type='search'
         size='lg'
         labelPlacement='outside'
         onChange={handleSearch}
+        startContent={<AiOutlineSearch className='h-5 w-5' />}
         autoFocus
       />
       {data &&
