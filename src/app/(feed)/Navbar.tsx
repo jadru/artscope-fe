@@ -53,10 +53,10 @@ export default function NavBar({
       name: '이벤트',
       url: '/event',
     },
-    {
-      name: '네트워크',
-      url: '/network',
-    },
+    // {
+    //   name: '네트워크',
+    //   url: '/network',
+    // },
     {
       name: '매거진',
       url: '/magazine',
@@ -98,8 +98,10 @@ export default function NavBar({
           <NavbarMenuItem key={`${item.name}-${index}`}>
             <Link
               color={
-                item.url === '/'
-                  ? 'primary'
+                index === 0
+                  ? pathname === '/'
+                    ? 'primary'
+                    : 'foreground'
                   : pathname.startsWith(item.url.slice(0, -1))
                   ? 'primary'
                   : 'foreground'
@@ -234,8 +236,10 @@ export default function NavBar({
           <NavbarMenuItem key={`${item.name}-${index}`}>
             <Link
               color={
-                item.url === '/'
-                  ? 'primary'
+                index === 0
+                  ? pathname === '/'
+                    ? 'primary'
+                    : 'foreground'
                   : pathname.startsWith(item.url.slice(0, -1))
                   ? 'primary'
                   : 'foreground'

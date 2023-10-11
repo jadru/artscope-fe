@@ -20,7 +20,7 @@ export default function FeedList({ data }: FeedListProps) {
     let finalArtworkIndex = 0;
 
     for (let index = 0; index < data.length; index++) {
-      if (finalArtworkIndex >= index) continue;
+      if (finalArtworkIndex > index) continue;
 
       if (data[index].type === 'artwork') {
         finalArtworkIndex = index;
@@ -34,9 +34,13 @@ export default function FeedList({ data }: FeedListProps) {
         newFeeds.push(data.slice(index, finalArtworkIndex + 1));
       } else {
         newFeeds.push(data[index]);
+        finalArtworkIndex = index;
       }
     }
 
+    if (finalArtworkIndex < data.length - 1) {
+      newFeeds.push(data.slice(finalArtworkIndex + 1));
+    }
     setFeeds(newFeeds);
   }, [data, setFeeds]);
 

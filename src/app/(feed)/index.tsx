@@ -89,10 +89,16 @@ export default function Feeds() {
           />
         </div>
       )}
-      {data &&
-        data.pages.map((page, index) => {
-          return <FeedList data={page.feedItems} key={'feed-' + index} />;
-        })}
+      {data && (
+        <>
+          {data.pages.map((page, index) => (
+            <FeedList data={page.feedItems} key={'feed-' + index} />
+          ))}
+          <div ref={bottom} className='mb-8 h-1'>
+            <FeedObservationComponent />
+          </div>
+        </>
+      )}
       {isLoading && (
         <>
           <SkeletonFeed />
@@ -105,9 +111,6 @@ export default function Feeds() {
           <SkeletonFeed />
         </>
       )}
-      <div ref={bottom} className='mb-8'>
-        <FeedObservationComponent />
-      </div>
     </>
   );
 }
