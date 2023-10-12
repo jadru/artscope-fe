@@ -3,6 +3,7 @@
 import { Card, Skeleton } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { notFound } from 'next/navigation';
 import { ReactElement, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
@@ -40,17 +41,24 @@ export default function Page() {
       })
       .then((res) => res.data as ArtWorkApiResponseType);
 
-  const { data, isSuccess, fetchNextPage, isLoading } = useInfiniteQuery(
-    ['artworks'],
-    ({ pageParam = 0 }) => fetchArtworks({ pageParam }),
-    {
-      getNextPageParam: (lastPage) => {
-        return lastPage.pageInfo.totalPages - lastPage.pageInfo.page > 0
-          ? lastPage.pageInfo.page + 1
-          : null;
-      },
+  const { data, isSuccess, fetchNextPage, isLoading, isError } =
+    useInfiniteQuery(
+      ['artworks'],
+      ({ pageParam = 0 }) => fetchArtworks({ pageParam }),
+      {
+        getNextPageParam: (lastPage) => {
+          return lastPage.pageInfo.totalPages - lastPage.pageInfo.page > 0
+            ? lastPage.pageInfo.page + 1
+            : null;
+        },
+      }
+    );
+
+  useEffect(() => {
+    if (isError) {
+      notFound();
     }
-  );
+  }, [isError]);
 
   const ObservationComponent = (): ReactElement => {
     const [ref, inView] = useInView();
@@ -106,6 +114,9 @@ export default function Page() {
           <SkeletonArtwork />
           <SkeletonArtwork />
         </ResponsiveGrid>
+      )}
+      {data && data.pages[0].artworks.length === 0 && (
+        <h3 className='text-center'>아직 작성된 작품이 없습니다.</h3>
       )}
     </RootLayout>
   );

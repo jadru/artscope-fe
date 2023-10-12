@@ -4388,6 +4388,27 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
+"@toss/impression-area@^1.2.10":
+  version "1.2.10"
+  resolved "https://registry.yarnpkg.com/@toss/impression-area/-/impression-area-1.2.10.tgz#1ae6b08575c671fd4cc60f442ac8c26929eb33fc"
+  integrity sha512-rsdgOYadanG3cxLZLYL9IzO32mGTfkAvC7XdGOHnEmUkACaLRsg/S0Dq87ueeu9uhj3P7CWKAAf70dS4Gkq2vA==
+  dependencies:
+    "@toss/react" "^1.5.0"
+    "@toss/utils" "^1.4.4"
+    "@types/react" "^18.0.21"
+    lodash.debounce "^4.0.8"
+
+"@toss/lottie@^1.1.10":
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/@toss/lottie/-/lottie-1.1.10.tgz#1fa75d9f17592378a1f89ea3b1e36b064a70923c"
+  integrity sha512-t1lBieGkzw0POxt3LpR3+xYAMnlhXrVCn+uxs01rBgLgU29Y8iN7xVegVtUrKneeYPI6MiYe6mKULRy2iSL4YQ==
+  dependencies:
+    "@toss/impression-area" "^1.2.10"
+    "@toss/react" "^1.5.0"
+    "@toss/utils" "^1.4.4"
+    lodash.debounce "^4.0.8"
+    lottie-web "^5.5.9"
+
 "@toss/react@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@toss/react/-/react-1.5.0.tgz#f41de08fa049dece69062bec091bed7f63daeb69"
@@ -4743,6 +4764,15 @@
   version "18.2.27"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.27.tgz#746e52b06f3ccd5d7a724fd53769b70792601440"
   integrity sha512-Wfv7B7FZiR2r3MIqbAlXoY1+tXm4bOqfz4oRr+nyXdBqapDBZ0l/IGcSlAfvxIHEEJjkPU0MYAc/BlFPOcrgLw==
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
+    csstype "^3.0.2"
+
+"@types/react@^18.0.21":
+  version "18.2.28"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.28.tgz#86877465c0fcf751659a36c769ecedfcfacee332"
+  integrity sha512-ad4aa/RaaJS3hyGz0BGegdnSRXQBkd1CCYDCdNjBPg90UUpLgo+WlJqb9fMYUxtehmzF3PJaTWqRZjko6BRzBg==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -8926,17 +8956,10 @@ loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
-lottie-react@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/lottie-react/-/lottie-react-2.4.0.tgz#f7249eee2b1deee70457a2d142194fdf2456e4bd"
-  integrity sha512-pDJGj+AQlnlyHvOHFK7vLdsDcvbuqvwPZdMlJ360wrzGFurXeKPr8SiRCjLf3LrNYKANQtSsh5dz9UYQHuqx4w==
-  dependencies:
-    lottie-web "^5.10.2"
-
-lottie-web@^5.10.2:
-  version "5.12.0"
-  resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.12.0.tgz#345bab6ae2e77ff9475483e8b4847f353559d2cc"
-  integrity sha512-tt2oiv0EmXC8J/RF877dVCo93vZBBnww+SO6dldREgHD8EsP97jQ42JRryIRfY+6aVESQsHYNEAYgH25cBFy7A==
+lottie-web@^5.5.9:
+  version "5.12.2"
+  resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.12.2.tgz#579ca9fe6d3fd9e352571edd3c0be162492f68e5"
+  integrity sha512-uvhvYPC8kGPjXT3MyKMrL3JitEAmDMp30lVkuq/590Mw9ok6pWcFCwXJveo0t5uqYw1UREQHofD+jVpdjBv8wg==
 
 lru-cache@^5.1.1:
   version "5.1.1"
