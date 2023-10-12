@@ -8,7 +8,7 @@ import '../styles/globals.scss';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { Providers } from '@/app/providers';
-import { GA_TRACKING_ID } from '@/constant/env';
+import { GA_TRACKING_ID, NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 import { cls } from '@/utils';
 
 const noto_Sans_KR = Noto_Sans_KR({
@@ -25,7 +25,7 @@ const noto_Sans_KR = Noto_Sans_KR({
 // });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.artscope.kr'),
+  metadataBase: new URL(NEXT_PUBLIC_ROOT_URL + ''),
   title: {
     template: '%s | 새로운 예술 플랫폼 Artscope',
     absolute: 'Artscope 아트스코프 - 새로운 예술 플랫폼',
@@ -70,12 +70,12 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    title: 'Artscope 아트스코프 ',
+    title: 'Artscope',
     description: '예술가와 기획자를 위한 새로운 예술 네트워크 플랫폼',
     siteName: 'Artscope',
     type: 'website',
     locale: 'ko_KR',
-    url: 'https://www.artscope.kr',
+    url: NEXT_PUBLIC_ROOT_URL,
   },
   themeColor: 'white',
   robots: {

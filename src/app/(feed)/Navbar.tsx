@@ -163,7 +163,7 @@ export default function NavBar({
                   name={user.name}
                   size='sm'
                   src={
-                    user.picture.startsWith('http')
+                    user.picture?.startsWith('http')
                       ? user.picture
                       : NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + user.picture ||
                         undefined

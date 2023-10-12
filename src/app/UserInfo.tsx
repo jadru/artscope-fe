@@ -13,7 +13,7 @@ export default function UserInfo() {
       description={`@${user.username?.slice(0, 12)}`}
       avatarProps={{
         src:
-          (user.picture.startsWith('http')
+          (user.picture?.startsWith('http')
             ? user.picture
             : NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + user.picture) || '',
         color: 'secondary',
