@@ -2,6 +2,7 @@
 
 import { Skeleton } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { notFound } from 'next/navigation';
 import { ReactElement, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
@@ -54,7 +55,7 @@ export default function Feeds() {
         return res.data as feedApiResponseType;
       });
   const LIMIT = 10;
-  const { data, fetchNextPage, isLoading, refetch } = useInfiniteQuery(
+  const { data, fetchNextPage, isLoading, refetch, isError } = useInfiniteQuery(
     ['feed'],
     async ({ pageParam = 0 }) => await fetchFeeds({ pageParam }),
     {
@@ -81,6 +82,12 @@ export default function Feeds() {
   useEffect(() => {
     refetch();
   }, [refetch, user]);
+
+  useEffect(() => {
+    if (isError) {
+      notFound();
+    }
+  }, [isError]);
 
   return (
     <>
@@ -114,6 +121,9 @@ export default function Feeds() {
           <SkeletonFeed />
           <SkeletonFeed />
         </>
+      )}
+      {data && data.pages[0].feedItems.length === 0 && (
+        <h3 className='my-12 text-center'>아직 작성된 글이 없습니다.</h3>
       )}
     </>
   );
