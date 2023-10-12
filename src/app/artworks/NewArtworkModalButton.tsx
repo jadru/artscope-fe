@@ -431,36 +431,38 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
                           {item}
                         </Chip>
                       ))}
-                    <div className='relative m-1 h-8 w-36 rounded-full bg-gray-100'>
-                      <FaHashtag className='absolute bottom-auto left-2 top-1/2 -translate-y-1/2' />
-                      <Kbd
-                        keys={['enter']}
-                        className='absolute bottom-auto right-2 top-1/2 -translate-y-1/2'
-                      ></Kbd>
-                      <input
-                        className='m-1 ml-5 h-6 max-h-6 w-24 rounded-full !border-0 bg-transparent p-2 focus:border-none focus:shadow-none focus:shadow-transparent focus:ring-0'
-                        placeholder='태그 추가'
-                        onKeyDown={(e) => {
-                          if (
-                            (e.key === 'Enter' ||
-                              e.key == ' ' ||
-                              e.code == 'Space') &&
-                            !e.nativeEvent.isComposing
-                          ) {
-                            handleAddTag(
-                              e.currentTarget.value.replace(regExp, '')
-                            );
-                            e.currentTarget.value = '';
-                          }
-                        }}
-                        onChange={(e) => {
-                          e.currentTarget.value = e.currentTarget.value.replace(
-                            regExp,
-                            ''
-                          );
-                        }}
-                      />
-                    </div>
+                    {tagCount.length < 5 ? (
+                      <div className='relative m-1 h-8 w-36 rounded-full bg-gray-100'>
+                        <FaHashtag className='absolute bottom-auto left-2 top-1/2 -translate-y-1/2' />
+                        <Kbd
+                          keys={['enter']}
+                          className='absolute bottom-auto right-2 top-1/2 -translate-y-1/2'
+                        ></Kbd>
+                        <input
+                          className='m-1 ml-5 h-6 max-h-6 w-24 rounded-full !border-0 bg-transparent p-2 focus:border-none focus:shadow-none focus:shadow-transparent focus:ring-0'
+                          placeholder='태그 추가'
+                          onKeyDown={(e) => {
+                            if (
+                              (e.key === 'Enter' ||
+                                e.key == ' ' ||
+                                e.code == 'Space') &&
+                              !e.nativeEvent.isComposing
+                            ) {
+                              handleAddTag(
+                                e.currentTarget.value.replace(regExp, '')
+                              );
+                              e.currentTarget.value = '';
+                            }
+                          }}
+                          onChange={(e) => {
+                            e.currentTarget.value =
+                              e.currentTarget.value.replace(regExp, '');
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      ''
+                    )}
                   </div>
                   <div className='flex flex-wrap gap-1'>
                     {fileUrls.length > 0 &&
