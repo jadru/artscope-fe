@@ -1,10 +1,12 @@
 import { Metadata, ResolvingMetadata } from 'next';
+import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
 
 import ArtworkAction from '@/app/artwork/[[...slug]]/ArtworkAction';
 import ArtworkAuthorProfile from '@/app/artwork/[[...slug]]/ArtworkAuthorProfile';
 import ArtworkComment from '@/app/artwork/[[...slug]]/ArtworkComment';
+import ArtworkContent from '@/app/artwork/[[...slug]]/ArtworkContent';
 import {
   NEXT_PUBLIC_API_URL,
   NEXT_PUBLIC_MEDIA_STORAGE_URL,
@@ -94,7 +96,7 @@ export default async function ProfilePage({
       )}
       <div className='h-0.5 bg-default-100'></div>
       <h2 className='mx-2 break-words text-left text-xl font-normal'>
-        {data.artwork.description}
+        <ArtworkContent content={data.artwork.description} />
       </h2>
 
       <div className='flex flex-col items-center justify-center'>

@@ -69,6 +69,7 @@ export default function SinglePostItemAction({
               className={`text-md hover:text-red-500 ${
                 like ? 'text-red-500' : 'text-gray-500'
               }`}
+              size='sm'
               onClick={handleLike}
             >
               {feed.likes + (like ? 1 : 0) + (feed.isLiked ? -1 : 0)} 좋아요
@@ -78,6 +79,7 @@ export default function SinglePostItemAction({
             <Button
               startContent={<AiOutlineMessage className='h-5 w-5' />}
               variant='light'
+              size='sm'
               className='text-md text-gray-500 hover:text-blue-500'
             >
               {feed.comments} 댓글
@@ -101,6 +103,7 @@ export default function SinglePostItemAction({
                 <Button
                   startContent={<AiOutlineEdit className='h-5 w-5' />}
                   variant='light'
+                  size='sm'
                   className='text-md text-gray-500 hover:text-purple-500'
                   onClick={(e) => {
                     e.stopPropagation();
@@ -114,6 +117,7 @@ export default function SinglePostItemAction({
                 <Button
                   startContent={<AiOutlineDelete className='h-5 w-5' />}
                   variant='light'
+                  size='sm'
                   className='text-md text-gray-500 hover:text-red-500'
                   onClick={handleDelete}
                 >
@@ -133,6 +137,7 @@ export default function SinglePostItemAction({
               <Button
                 startContent={<AiOutlineShareAlt className='h-5 w-5' />}
                 variant='light'
+                size='sm'
                 className='text-md text-gray-500 hover:text-amber-600'
               >
                 공유

@@ -344,18 +344,17 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
 
   return (
     <>
-      <button
-        className='w-full truncate rounded-full bg-default-100 px-4 text-left text-sm font-bold text-default-400 transition-colors hover:bg-default-200'
+      <div
+        className='flex animate-fade cursor-pointer flex-row justify-between gap-3 space-y-1 border-x border-b border-white p-3 transition hover:bg-default-100'
         onClick={() => {
           onOpen();
         }}
       >
-        {postContent.length === 0
-          ? placeholder
-          : postTitle.length === 0
-          ? postContent
-          : postTitle}
-      </button>
+        <UserInfo />
+        <span className='flex h-12 w-[calc(100%-4rem)] items-center truncate rounded-3xl border border-white bg-default-100 px-3 text-left text-sm font-bold text-default-500'>
+          {placeholder}
+        </span>
+      </div>
       <Modal
         backdrop='blur'
         hideCloseButton

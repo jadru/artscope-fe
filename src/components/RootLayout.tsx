@@ -6,7 +6,11 @@ export default function RootLayout({
   className = '',
 }: {
   children: React.ReactNode;
-  maxWidth?: 'max-w-screen-md' | 'max-w-screen-lg' | 'max-w-screen-xl';
+  maxWidth?:
+    | 'max-w-screen-sm'
+    | 'max-w-screen-md'
+    | 'max-w-screen-lg'
+    | 'max-w-screen-xl';
   className?: string;
 }) {
   return (

@@ -1,24 +1,21 @@
 'use client';
 
-import { User } from '@nextui-org/react';
+import ASNextImage from '@/components/ASNextImage';
 
-import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 import { useUser } from '@/states';
 
 export default function UserInfo() {
   const { user } = useUser();
   return user ? (
-    <User
-      name={user.name}
-      description={`@${user.username?.slice(0, 12)}`}
-      avatarProps={{
-        src:
-          (user.picture?.startsWith('http')
-            ? user.picture
-            : NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + user.picture) || '',
-        color: 'secondary',
-      }}
-    />
+    <div className='flex flex-col items-center justify-center'>
+      <ASNextImage
+        src={user.picture || ''}
+        alt='프로필 사진'
+        width={24}
+        height={24}
+        className='h-12 w-12 min-w-max rounded-full'
+      />
+    </div>
   ) : (
     <></>
   );
