@@ -1,5 +1,3 @@
-'use client';
-
 import RootLayout from '@/components/RootLayout';
 
 import Feed from '@/app/(feed)';

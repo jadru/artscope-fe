@@ -222,13 +222,16 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
     if (isUpload) return;
     try {
       if (fileUrls.length === 0) {
-        return { error: '파일을 업로드해주세요.' };
+        toast.warn('파일을 업로드해주세요.');
+        return;
       }
       if (postTitle.length === 0) {
-        return { error: '제목을 입력해주세요.' };
+        toast.warn('제목을 입력해주세요.');
+        return;
       }
       if (postContent.length === 0) {
-        return { error: '내용을 입력해주세요.' };
+        toast.warn('내용을 입력해주세요.');
+        return;
       }
       let count = 0;
       fileUrls.map((fileUrl) => {
@@ -238,7 +241,8 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
       });
       if (count === 0) {
         setIsUpload(false);
-        return { error: '이미지나 동영상을 업로드해주세요.' };
+        toast.warn('이미지나 동영상을 업로드해주세요.');
+        return;
       }
       if (
         fileUrls.reduce(
@@ -249,7 +253,8 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
         100
       ) {
         setIsUpload(false);
-        return { error: '파일 용량이 너무 큽니다.' };
+        toast.warn('파일 용량이 너무 큽니다.');
+        return;
       }
       setIsUpload(true);
       const newState = { ...initialArtWork };
@@ -312,7 +317,7 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
           },
         })
         .then((res) => {
-          resetAfterUpload && resetAfterUpload();
+          resetAfterUpload();
           if (res.status === 201) {
             toast.success('작품이 업로드되었습니다.');
             refetch();
@@ -332,6 +337,9 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
   const resetAfterUpload = () => {
     setFileUrls([]);
     setImgs([]);
+    setTagCount([]);
+    setPostContent('');
+    setPostTitle('');
   };
 
   return (
@@ -398,6 +406,9 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
                     onChange={(e) => {
                       setPostTitle(e.currentTarget.value);
                     }}
+                    onKeyDown={(e) => {
+                      if (e.nativeEvent.isComposing) return;
+                    }}
                   />
                   <TextareaAutoSize
                     defaultValue={postContent}
@@ -407,6 +418,9 @@ export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
                     className='min-h-12 mt-0.5 max-h-[90%] w-full resize-none !border-0 px-0 text-lg focus:border-none focus:shadow-none focus:shadow-transparent focus:ring-0'
                     onChange={(e) => {
                       setPostContent(e.currentTarget.value);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.nativeEvent.isComposing) return;
                     }}
                     onFocus={(e) => {
                       const val = e.target.value;

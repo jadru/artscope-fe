@@ -7,6 +7,9 @@ import { ToastContainer } from 'react-toastify';
 import '../styles/globals.scss';
 import 'react-toastify/dist/ReactToastify.css';
 
+import Footer from '@/components/Footer';
+
+import NavBar from '@/app/(feed)/Navbar';
 import { Providers } from '@/app/providers';
 import { GA_TRACKING_ID, NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 import { cls } from '@/utils';
@@ -117,7 +120,13 @@ export default function RootLayout({
           `,
           }}
         />
-        <Providers>{children}</Providers>
+        <Providers>
+          <NavBar theme='light' />
+          <div className='container mx-auto min-h-[calc(100vh-10rem)] max-w-[1024px]'>
+            {children}
+          </div>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

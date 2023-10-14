@@ -1,25 +1,36 @@
-'use client';
+import { redirect } from 'next/navigation';
 
-import { useEffect, useState } from 'react';
+import SinglePostItem from '@/app/post/[[...slug]]/SinglePostItem';
+import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 
-import FeedListItem from '@/app/(feed)/FeedListItem';
-import jxios from '@/utils/jxios';
-
-import { feedItemType } from '@/types';
+import { SinglePostType } from '@/types';
 
 const fetchPost = async (id: string) =>
-  jxios.get('/api/posts/' + id).then((res) => res.data);
+  await fetch(NEXT_PUBLIC_API_URL + '/api/posts/' + id).then((res) =>
+    res.json()
+  );
 
-export default function SinglePost({ params }: { params: { slug: string[] } }) {
-  const [data, setData] = useState<feedItemType | undefined>(undefined);
-  useEffect(() => {
-    fetchPost(params.slug[0]).then((res) => setData(res));
-  }, [params.slug]);
-  return data ? (
-    <>
-      <FeedListItem feed={data} isSinglePost={true} />
-    </>
-  ) : (
-    ''
+export default async function SinglePost({
+  params,
+  searchParams,
+}: {
+  params: { slug: string[] };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
+  const data: SinglePostType = await fetchPost(params.slug[0]);
+  if (data.parentPostId)
+    redirect(
+      `/post/${data.parentPostId}${
+        searchParams?.edit ? '?edit=' + searchParams?.edit : ''
+      }`
+    );
+
+  return (
+    <div>
+      <SinglePostItem
+        feed={data}
+        editMode={Boolean(searchParams?.edit) ?? false}
+      />
+    </div>
   );
 }

@@ -2,9 +2,10 @@
 
 import { Skeleton } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import { ReactElement, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
+import useLocalStorage from 'use-local-storage';
 
 import FeedList from '@/app/(feed)/FeedList';
 import NewPostModal from '@/app/(feed)/NewPostModalButton';
@@ -41,7 +42,9 @@ const SkeletonFeed = () => (
 
 export default function Feeds() {
   const bottom = useRef(null);
+  const [scrollY, setScrollY] = useLocalStorage('feed_scroll', 0);
   const { user } = useUser();
+  const params = useParams();
 
   const fetchFeeds = async ({ pageParam = 0 }) =>
     await jxios
@@ -89,6 +92,20 @@ export default function Feeds() {
     }
   }, [isError]);
 
+  useEffect(() => {
+    if (
+      scrollY === 0 ||
+      document.documentElement?.scrollHeight - 100 < scrollY ||
+      scrollY === window.scrollY
+    ) {
+      return;
+    } else {
+      window.scrollTo(0, scrollY);
+      setScrollY(0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setScrollY, scrollY, params, isLoading]);
+
   return (
     <>
       {user && user.username && (
@@ -103,7 +120,10 @@ export default function Feeds() {
       {data && (
         <>
           {data.pages.map((page, index) => (
-            <FeedList data={page.feedItems} key={'feed-' + index} />
+            <FeedList
+              data={page.feedItems}
+              key={'feed-' + page.feedItems[0].id + index}
+            />
           ))}
           <div ref={bottom} className='mb-8 h-1'>
             <FeedObservationComponent />

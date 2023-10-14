@@ -1,22 +1,22 @@
 'use client';
 
-import { Button } from '@nextui-org/react';
+import { Link } from '@nextui-org/react';
+import { useSearchParams } from 'next/navigation';
 
-import Seo from '@/components/Seo';
 import Title from '@/components/Title';
 
 const RedirectOAuth2 = () => {
+  const searchParams = useSearchParams();
   return (
     <>
-      <Seo templateTitle='구글 로그인 실패'></Seo>
       <Title>
         Failed to login with Google
         <br />
-        구글 로그인이 실패되었습니다.
+        {searchParams.get('error') ?? '구글 로그인이 실패되었습니다.'}
       </Title>
-      <Button href='/' className='btn btn-primary'>
+      <Link href='/' color='primary' className='w-full text-center'>
         메인으로 가기
-      </Button>
+      </Link>
     </>
   );
 };

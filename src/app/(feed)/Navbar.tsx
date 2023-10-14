@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Avatar,
   Button,
@@ -5,7 +7,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Link,
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -18,26 +19,26 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 
+import useToken from '@/hooks/useToken';
+
 import LoginModal from '@/app/(feed)/LoginModalButton';
 import Logo from '@/assets/images/logo_long.svg';
 import {
   NEXT_PUBLIC_API_URL,
   NEXT_PUBLIC_MEDIA_STORAGE_URL,
 } from '@/constant/env';
-
-import { profileApiResponseType } from '@/types';
+import { useUser } from '@/states';
 
 export default function NavBar({
   theme,
-  user,
-  isLoading,
 }: {
   theme: 'light' | 'dark';
   isLoading?: boolean;
-  user?: profileApiResponseType;
 }) {
+  useToken();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { push } = useRouter();
+  const { user, isLogin } = useUser();
   const pathname = usePathname();
 
   const menuItems = [
@@ -57,14 +58,15 @@ export default function NavBar({
     //   name: '네트워크',
     //   url: '/network',
     // },
-    {
-      name: '매거진',
-      url: '/magazine',
-    },
+    // {
+    //   name: '매거진',
+    //   url: '/magazine',
+    // },
   ];
 
   return (
     <Navbar
+      isMenuOpen={isMobileMenuOpen}
       onMenuOpenChange={setIsMobileMenuOpen}
       maxWidth='xl'
       motionProps={{
@@ -85,127 +87,48 @@ export default function NavBar({
           className='md:hidden'
         />
         <NavbarBrand>
-          <Link
-            href='/'
-            className='group box-border flex flex-grow basis-0 flex-row flex-nowrap items-center justify-start whitespace-nowrap bg-transparent text-medium no-underline'
+          <div
+            onClick={() => push('/')}
+            className='group box-border flex flex-grow basis-0 cursor-pointer flex-row flex-nowrap items-center justify-start whitespace-nowrap bg-transparent text-medium no-underline'
           >
-            <Logo className='mt-2 h-24 w-36 overflow-hidden fill-black transition duration-100 group-hover:fill-[#07A0C3]' />
-          </Link>
+            <Logo className='h-20 w-24 overflow-hidden fill-[#22bce0] transition duration-100 group-hover:fill-secondary' />
+          </div>
         </NavbarBrand>
       </NavbarContent>
       <NavbarContent className='hidden gap-4 sm:flex' justify='center'>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item.name}-${index}`}>
-            <Link
-              color={
+            <span
+              className={`w-full cursor-pointer text-lg transition hover:font-bold hover:text-black ${
                 index === 0
                   ? pathname === '/'
-                    ? 'primary'
-                    : 'foreground'
+                    ? 'text-primary'
+                    : 'text-default-800'
                   : pathname.startsWith(item.url.slice(0, -1))
-                  ? 'primary'
-                  : 'foreground'
-              }
-              className='w-full text-lg'
-              href={item.url === '/' ? item.url : item.url + 's'}
-              size='lg'
+                  ? 'text-primary'
+                  : 'text-default-800'
+              }`}
+              onClick={() => push(item.url === '/' ? item.url : item.url + 's')}
             >
               {item.name}
-            </Link>
+            </span>
           </NavbarMenuItem>
         ))}
       </NavbarContent>
       <NavbarContent justify='end'>
         <NavbarItem>
-          <Link href='/search'>
-            <Button
-              variant='light'
-              startContent={<BiSearch className='mt-0.5 h-5 w-5' />}
-            >
-              검색
-            </Button>
-          </Link>
+          <Button
+            variant='light'
+            startContent={<BiSearch className='mt-0.5 h-5 w-5' />}
+            onClick={() => push('/search')}
+          >
+            검색
+          </Button>
         </NavbarItem>
-        {!isLoading &&
-          (!user ? (
-            <NavbarItem className='hidden md:inline'>
-              <LoginModal
-                btnText='로그인 / 회원가입'
-                title='구글로 로그인 / 회원가입'
-                description={
-                  <>
-                    <p>아티스트 커뮤니티에 참여하세요</p>
-                    <p>
-                      창의력이 핵심인 <b>아티스트</b>들의 커뮤니티에 함께하세요.
-                      전국의 다양한 예술가들과 네트워크를 구축하고 함께 일하며
-                      성장하세요.
-                    </p>
-                    <p>
-                      포트폴리오를 만드세요. 예술가들의 포트폴리오를 쉽게 만들
-                      수 있게 도와줍니다.
-                    </p>
-                    <p>
-                      좋은 <b>전시 기획자</b>를 만나보세요. 전시에 참여하고 싶은
-                      예술가들을 쉽게 찾을 수 있습니다.
-                    </p>
-                  </>
-                }
-                link={NEXT_PUBLIC_API_URL + '/oauth2/authorization/google'}
-              />
-            </NavbarItem>
-          ) : (
-            <Dropdown placement='bottom-end'>
-              <DropdownTrigger>
-                <Avatar
-                  as='button'
-                  color='secondary'
-                  className='transition-transform'
-                  name={user.name}
-                  size='sm'
-                  src={
-                    user.picture?.startsWith('http')
-                      ? user.picture
-                      : NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + user.picture ||
-                        undefined
-                  }
-                />
-              </DropdownTrigger>
-              <DropdownMenu
-                aria-label='Profile Actions'
-                variant='flat'
-                onAction={(key) => {
-                  switch (key) {
-                    case 'profile':
-                      push('/profile/' + user.username);
-                      break;
-                    case 'settings':
-                      push('/user/settings');
-                      break;
-                    case 'feedback':
-                      push('https://ad21pifdjli.typeform.com/to/kg4KHrj4');
-                      break;
-                    case 'logout':
-                      push('/user/signout');
-                      break;
-                  }
-                }}
-              >
-                <DropdownItem key='profile' className='h-14 gap-1'>
-                  <p className='text-lg font-semibold'>{user.name}</p>
-                  <p className='font-semibold'>@{user.username}</p>
-                </DropdownItem>
-                <DropdownItem key='settings'>설정</DropdownItem>
-                <DropdownItem key='feedback'>피드백</DropdownItem>
-                <DropdownItem key='logout' color='danger'>
-                  로그아웃
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          ))}
-      </NavbarContent>
-      <NavbarMenu>
-        {!isLoading &&
-          (!user ? (
+        {isLogin === undefined ? (
+          <></>
+        ) : !isLogin ? (
+          <NavbarItem className='hidden md:inline'>
             <LoginModal
               btnText='로그인 / 회원가입'
               title='구글로 로그인 / 회원가입'
@@ -229,27 +152,107 @@ export default function NavBar({
               }
               link={NEXT_PUBLIC_API_URL + '/oauth2/authorization/google'}
             />
-          ) : (
-            <div></div>
-          ))}
+          </NavbarItem>
+        ) : (
+          <Dropdown placement='bottom-end'>
+            <DropdownTrigger>
+              <Avatar
+                as='button'
+                color='secondary'
+                className='transition-transform'
+                name={user.name}
+                size='sm'
+                src={
+                  user.picture?.startsWith('http')
+                    ? user.picture
+                    : NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + user.picture ||
+                      undefined
+                }
+              />
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label='Profile Actions'
+              variant='flat'
+              onAction={(key) => {
+                switch (key) {
+                  case 'profile':
+                    push('/profile/' + user.username);
+                    break;
+                  case 'settings':
+                    push('/user/settings');
+                    break;
+                  case 'feedback':
+                    push('https://ad21pifdjli.typeform.com/to/kg4KHrj4');
+                    break;
+                  case 'logout':
+                    push('/user/signout');
+                    break;
+                }
+              }}
+            >
+              <DropdownItem key='profile' className='h-14 gap-1'>
+                <p className='text-lg font-semibold'>{user.name}</p>
+                <p className='font-semibold'>@{user.username}</p>
+              </DropdownItem>
+              <DropdownItem key='settings'>설정</DropdownItem>
+              <DropdownItem key='feedback'>피드백</DropdownItem>
+              <DropdownItem key='logout' color='danger'>
+                로그아웃
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        )}
+      </NavbarContent>
+      <NavbarMenu>
+        {isLogin === undefined ? (
+          <></>
+        ) : !isLogin ? (
+          <LoginModal
+            btnText='로그인 / 회원가입'
+            title='구글로 로그인 / 회원가입'
+            description={
+              <>
+                <p>아티스트 커뮤니티에 참여하세요</p>
+                <p>
+                  창의력이 핵심인 <b>아티스트</b>들의 커뮤니티에 함께하세요.
+                  전국의 다양한 예술가들과 네트워크를 구축하고 함께 일하며
+                  성장하세요.
+                </p>
+                <p>
+                  포트폴리오를 만드세요. 예술가들의 포트폴리오를 쉽게 만들 수
+                  있게 도와줍니다.
+                </p>
+                <p>
+                  좋은 <b>전시 기획자</b>를 만나보세요. 전시에 참여하고 싶은
+                  예술가들을 쉽게 찾을 수 있습니다.
+                </p>
+              </>
+            }
+            link={NEXT_PUBLIC_API_URL + '/oauth2/authorization/google'}
+            setIsMobileMenuOpen={setIsMobileMenuOpen}
+          />
+        ) : (
+          <div></div>
+        )}
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item.name}-${index}`}>
-            <Link
-              color={
+            <span
+              className={`w-full cursor-pointer text-lg hover:font-bold hover:text-secondary ${
                 index === 0
                   ? pathname === '/'
-                    ? 'primary'
-                    : 'foreground'
+                    ? 'text-primary'
+                    : 'text-default-800'
                   : pathname.startsWith(item.url.slice(0, -1))
-                  ? 'primary'
-                  : 'foreground'
-              }
-              className='w-full'
-              href={item.url === '/' ? item.url : item.url + 's'}
-              size='lg'
+                  ? 'text-primary'
+                  : 'text-default-800'
+              }`}
+              onClick={() => {
+                push(item.url === '/' ? item.url : item.url + 's');
+                setIsMobileMenuOpen(false);
+              }}
             >
               {item.name}
-            </Link>
+            </span>
           </NavbarMenuItem>
         ))}
       </NavbarMenu>

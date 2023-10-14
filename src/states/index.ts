@@ -3,14 +3,29 @@ import { create } from 'zustand';
 import { profileApiResponseType } from '@/types';
 
 type userType = {
-  user: profileApiResponseType | undefined;
+  user: profileApiResponseType;
   setUser: (user: profileApiResponseType) => void;
   clearUser: () => void;
-  isLogin: boolean;
+  setNotLogin: () => void;
+  isLogin: boolean | undefined;
 };
 export const useUser = create<userType>((set) => ({
-  user: undefined,
+  user: {
+    artistStatus: 'NONE',
+    createdTime: new Date(),
+    email: '',
+    oauthProvider: null,
+    history: '',
+    introduction: '',
+    activated: true,
+    name: '',
+    picture: '',
+    snsUrl: '',
+    username: '',
+    websiteUrl: '',
+  },
   setUser: (user: profileApiResponseType) => set({ user, isLogin: true }),
   clearUser: () => set({ user: undefined, isLogin: false }),
-  isLogin: false,
+  setNotLogin: () => set({ isLogin: false }),
+  isLogin: undefined,
 }));

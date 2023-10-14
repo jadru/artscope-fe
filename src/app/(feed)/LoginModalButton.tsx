@@ -8,7 +8,7 @@ import {
   useDisclosure,
 } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
-import { ReactElement } from 'react';
+import { Dispatch, ReactElement, SetStateAction } from 'react';
 import { AiOutlineGoogle } from 'react-icons/ai';
 
 type Props = {
@@ -16,6 +16,7 @@ type Props = {
   title: string;
   description: ReactElement;
   link: string;
+  setIsMobileMenuOpen?: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function LoginModal({
@@ -23,14 +24,17 @@ export default function LoginModal({
   title,
   description,
   link,
+  setIsMobileMenuOpen,
 }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { push } = useRouter();
   const handleLogin = () => {
+    setIsMobileMenuOpen && setIsMobileMenuOpen(false);
     push(link);
     onClose();
   };
   const handleNativeLogin = () => {
+    setIsMobileMenuOpen && setIsMobileMenuOpen(false);
     push('/user/login');
     onClose();
   };
