@@ -5,7 +5,9 @@ export const onSuccess = (artistStatus: string, router: AppRouterInstance) => {
   if (artistStatus === 'NONE') {
     toast('정보를 입력해주세요.');
     router.push('/user/apply');
+    router.refresh();
   } else {
     router.push('/');
+    router.refresh();
   }
 };

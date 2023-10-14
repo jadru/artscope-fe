@@ -1,3 +1,4 @@
+import { Metadata, ResolvingMetadata } from 'next';
 import { redirect } from 'next/navigation';
 
 import SinglePostItem from '@/app/post/[[...slug]]/SinglePostItem';
@@ -6,9 +7,38 @@ import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import { SinglePostType } from '@/types';
 
 const fetchPost = async (id: string) =>
-  await fetch(NEXT_PUBLIC_API_URL + '/api/posts/' + id).then((res) =>
-    res.json()
-  );
+  await fetch(NEXT_PUBLIC_API_URL + '/api/posts/' + id, {
+    method: 'GET',
+    cache: 'no-cache',
+  }).then((res) => res.json());
+
+export async function generateMetadata(
+  {
+    params,
+  }: {
+    params: { slug: string[] };
+  },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const id = params.slug[0];
+  const data: SinglePostType = await fetchPost(id);
+  // const thumbnail = (await parent).openGraph?.images || [];
+  const previousImages = (await parent).openGraph?.images || [];
+  return {
+    title: `${data.content.slice(0, 20)} - ${data.authorName}`,
+    description: data.content,
+    openGraph: {
+      title: `${data.content.slice(0, 20)} - ${data.authorName} | Artscope`,
+      description: data.content.slice(0, 100),
+      url: 'https://www.artscope.kr/artwork/' + id,
+      type: 'article',
+      authors: [data.authorName],
+      images: [...previousImages],
+    },
+    publisher: data.authorName,
+  };
+}
 
 export default async function SinglePost({
   params,
@@ -26,11 +56,11 @@ export default async function SinglePost({
     );
 
   return (
-    <div>
+    <>
       <SinglePostItem
         feed={data}
         editMode={Boolean(searchParams?.edit) ?? false}
       />
-    </div>
+    </>
   );
 }

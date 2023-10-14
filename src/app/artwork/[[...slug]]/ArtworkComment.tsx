@@ -1,17 +1,19 @@
 'use client';
 
 import { Button, Input } from '@nextui-org/react';
-import { DebounceClick } from '@toss/react';
+import { useDebounce } from '@toss/react';
 import React, { ChangeEvent, useState } from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
 
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
+import { timeCaculatortoKO } from '@/utils/timeCalculator';
 
 import { ArtworkType } from '@/types';
 
-export default function ArtworkComment({ aw }: { aw: ArtworkType }) {
+export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
+  const [aw, setAwData] = useState<ArtworkType>(awData);
   const { user, isLogin } = useUser();
   const [content, setContent] = useState<string>('');
 
@@ -19,14 +21,20 @@ export default function ArtworkComment({ aw }: { aw: ArtworkType }) {
     setContent(e.target.value);
   };
 
-  const submitComment = () =>
-    content !== '' &&
-    jxios
-      .post(`/api/artworks/${aw.artwork.id}/comments`, { content })
-      .then((res) => {
-        setContent('');
-        aw.artwork.artworkComments = res.data.artworkComments;
-      });
+  const submitComment = useDebounce(
+    () =>
+      content !== '' &&
+      jxios
+        .post(`/api/artworks/${aw.artwork.id}/comments`, { content })
+        .then((res) => {
+          setContent('');
+          setAwData((prev) => ({
+            ...prev,
+            artwork: res.data as ArtworkType['artwork'],
+          }));
+        }),
+    300
+  );
 
   const handleCommentDelete = (id: number) => {
     if (confirm('댓글을 정말 삭제하시겠습니까?'))
@@ -34,7 +42,15 @@ export default function ArtworkComment({ aw }: { aw: ArtworkType }) {
         .delete(`/api/artworks/${aw.artwork.id}/comments/${id}`)
         .then((res) => {
           if (res.status === 204)
-            aw.artwork.artworkComments.filter((comment) => comment.id !== id);
+            setAwData((prev) => ({
+              ...prev,
+              artwork: {
+                ...prev.artwork,
+                artworkComments: prev.artwork.artworkComments.filter(
+                  (comment) => comment.id !== id
+                ),
+              },
+            }));
         });
   };
 
@@ -61,16 +77,14 @@ export default function ArtworkComment({ aw }: { aw: ArtworkType }) {
             }}
             size='lg'
           />
-          <DebounceClick wait={500}>
-            <Button
-              className='ml-2'
-              color='primary'
-              size='lg'
-              onClick={submitComment}
-            >
-              작성
-            </Button>
-          </DebounceClick>
+          <Button
+            className='ml-2'
+            color='primary'
+            size='lg'
+            onClick={submitComment}
+          >
+            작성
+          </Button>
         </div>
       )}
       <div className=''>
@@ -92,6 +106,10 @@ export default function ArtworkComment({ aw }: { aw: ArtworkType }) {
                   <h5 className='text-lg font-bold'>{comment.authorName}</h5>
                   <h5 className='ml-2 text-lg text-gray-500'>
                     @{comment.authorUsername}
+                  </h5>
+                  <h5 className='ml-2 text-gray-500'>
+                    {timeCaculatortoKO(comment.updatedTime) ??
+                      timeCaculatortoKO(comment.createdTime)}
                   </h5>
                   {user.username === comment.authorUsername && (
                     <h5

@@ -48,7 +48,7 @@ export async function generateMetadata(
     title: `${data.artwork.title} - ${data.artwork.authorName}`,
     description: data.artwork.description,
     openGraph: {
-      title: `${data.artwork.title} - ${data.artwork.authorName}`,
+      title: `${data.artwork.title} - ${data.artwork.authorName} | Artscope`,
       description: data.artwork.description.slice(0, 100),
       url: 'https://www.artscope.kr/artwork/' + id,
       type: 'article',
