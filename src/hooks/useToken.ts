@@ -1,5 +1,5 @@
 import { useCallbackOnce } from '@toss/react';
-import { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Cookies } from 'react-cookie';
 
 import { useUser } from '@/states';
@@ -7,26 +7,20 @@ import jxios from '@/utils/jxios';
 
 import { profileApiResponseType } from '@/types';
 
-export default function useToken({
-  setIsLoading,
-}: {
-  setIsLoading: Dispatch<SetStateAction<boolean>>;
-}) {
+export default function useToken() {
   const cookies = useMemo(() => new Cookies(), []);
-  const { user, setUser } = useUser();
+  const { setNotLogin, setUser, isLogin } = useUser();
   const refreshToken = cookies.get('refreshToken');
 
   const callToken = useCallbackOnce(() => {
-    if (jxios.defaults.headers.common['Authorization']) {
-      setIsLoading(false);
+    if (isLogin !== undefined) {
       return;
     }
-    if (user) {
-      setIsLoading(false);
+    if (jxios.defaults.headers.common['Authorization']) {
       return;
     }
     if (!refreshToken) {
-      setIsLoading(false);
+      setNotLogin();
       return;
     }
     jxios
@@ -55,10 +49,8 @@ export default function useToken({
           err.response.status === 403
         ) {
           cookies.remove('refreshToken');
+          setNotLogin();
         }
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   }, []);
 
@@ -66,7 +58,7 @@ export default function useToken({
     callToken();
     return () => {
       cookies.remove('refreshToken');
-      setIsLoading(false);
+      setNotLogin();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

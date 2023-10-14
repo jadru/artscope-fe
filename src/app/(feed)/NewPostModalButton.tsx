@@ -13,7 +13,7 @@ import {
 } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { debounce } from 'lodash';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import TextareaAutoSize from 'react-textarea-autosize';
 import { toast } from 'react-toastify';
@@ -60,6 +60,10 @@ export default function NewPostModal({ placeholder, submitBtnText }: Props) {
   const handleSubmit = useDebounce(() => {
     if (postContent.length < 10) {
       toast('10자 이상 입력해주세요.');
+      return;
+    }
+    if (postContent.length > 1000) {
+      toast('1000자 이하로 입력해주세요.');
       return;
     }
     setIsSubmit(true);

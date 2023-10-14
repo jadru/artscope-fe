@@ -10,6 +10,9 @@ const nextConfig = {
   eslint: {
     dirs: ['src'],
   },
+  experimental: {
+    scrollRestoration: true,
+  },
   async rewrites() {
     return [
       {

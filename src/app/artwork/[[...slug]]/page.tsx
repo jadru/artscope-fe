@@ -1,8 +1,10 @@
 import { Metadata, ResolvingMetadata } from 'next';
-import Link from 'next/link';
 
 import ASNextImage from '@/components/ASNextImage';
 
+import ArtworkAction from '@/app/artwork/[[...slug]]/ArtworkAction';
+import ArtworkAuthorProfile from '@/app/artwork/[[...slug]]/ArtworkAuthorProfile';
+import ArtworkComment from '@/app/artwork/[[...slug]]/ArtworkComment';
 import {
   NEXT_PUBLIC_API_URL,
   NEXT_PUBLIC_MEDIA_STORAGE_URL,
@@ -11,7 +13,10 @@ import {
 import { ArtworkType, profileApiResponseType } from '@/types';
 
 const fetchArtwork = async (id: string) =>
-  await fetch(NEXT_PUBLIC_API_URL + '/api/artworks/' + id).then((res) => {
+  await fetch(NEXT_PUBLIC_API_URL + '/api/artworks/' + id, {
+    method: 'GET',
+    cache: 'no-cache',
+  }).then((res) => {
     if (!res.ok) {
       throw new Error('Failed to fetch data');
     }
@@ -126,31 +131,12 @@ export default async function ProfilePage({
           </>
         ))}
       </div>
-
-      <div className='h-0.5 bg-default-100'></div>
-
-      <Link
-        className='flex cursor-pointer flex-row items-center justify-between rounded-2xl border border-white bg-white px-4 py-3 text-default-900 transition-colors duration-100 hover:border-default-400 hover:bg-default-100 hover:text-default-700'
-        href={'/profile/' + author.username}
-      >
-        <div className='flex flex-col items-start justify-center'>
-          <p className='text-lg font-bold'>{author.name}</p>
-          <p className='text-sm'>@{author.username}</p>
-        </div>
-        {author.picture && (
-          <ASNextImage
-            src={
-              author.picture.startsWith('http')
-                ? author.picture
-                : NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + author.picture
-            }
-            alt={author.name + "'s profile image"}
-            width={60}
-            height={60}
-            className='rounded-full'
-          />
-        )}
-      </Link>
+      <hr className='h-0.5 bg-default-100'></hr>
+      <ArtworkAuthorProfile author={author} />
+      <hr className='h-0.5 bg-default-100'></hr>
+      <ArtworkAction aw={data} />
+      <hr className='h-0.5 bg-default-100'></hr>
+      <ArtworkComment aw={data} />
     </div>
   );
 }

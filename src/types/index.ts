@@ -68,6 +68,7 @@ export type DetailedArtworkType = {
   tags: string[];
   likes: number;
   authorUsername: string;
+  comments: number;
   authorName: string;
   thumbnail: {
     id: number;
@@ -85,6 +86,7 @@ export type DetailedArtworkType = {
     imageWidth: number;
     description: string;
   }[];
+  artworkComments: artworkCommentType[];
   createdTime: Date;
   updatedTime: Date | null;
   views: number;
@@ -227,4 +229,33 @@ export type ArtworkListParams = {
   page: number;
   size: number;
   sortDirection?: 'ASC' | 'DESC';
+};
+
+export type SinglePostType = {
+  id: number;
+  content: string;
+  view: number;
+  likes: number;
+  comments: number;
+  isLiked: boolean;
+  authorUsername: string;
+  authorName: string;
+  authorDescription: string | null;
+  authorProfileImageUrl: string | null;
+  createdTime: Date;
+  updatedTime: Date | null;
+  parentPostId: number | null;
+  commentPosts: SinglePostType[];
+};
+
+export type artworkCommentType = {
+  id: number;
+  content: string;
+  authorUsername: string;
+  parentCommentId: number | null;
+  authorName: string;
+  authorDescription: string | null;
+  authorProfileImageUrl: string | null;
+  createdTime: Date;
+  updatedTime: Date | null;
 };

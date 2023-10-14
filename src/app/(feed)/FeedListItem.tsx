@@ -1,76 +1,20 @@
-import { Button, User } from '@nextui-org/react';
-import { DebounceClick } from '@toss/react';
+import { User } from '@nextui-org/react';
+import { convertNewlineToJSX } from '@toss/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import {
-  AiFillLike,
-  AiOutlineDelete,
-  AiOutlineEdit,
-  AiOutlineLike,
-  AiOutlineMessage,
-  AiOutlineShareAlt,
-  AiOutlineStar,
-} from 'react-icons/ai';
-import { toast } from 'react-toastify';
-import { RWebShare } from 'react-web-share';
+import { useState } from 'react';
+import useLocalStorage from 'use-local-storage';
 
-import {
-  NEXT_PUBLIC_MEDIA_STORAGE_URL,
-  NEXT_PUBLIC_ROOT_URL,
-} from '@/constant/env';
-import { useUser } from '@/states';
-import jxios from '@/utils/jxios';
+import FeedListItemAction from '@/app/(feed)/FeedListItemAction';
+import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
+import textInUrlSeperator from '@/utils/textInUrlSeperator';
 
 import { feedItemType } from '@/types';
 
-export default function FeedListItem({
-  feed,
-  isSinglePost = false,
-}: {
-  feed: feedItemType;
-  isSinglePost?: boolean;
-}) {
+export default function FeedListItem({ feed }: { feed: feedItemType }) {
   const { push } = useRouter();
-  const [like, setLike] = useState<boolean>(feed.isLiked);
-  const { user } = useUser();
+  const [_, setScrollY] = useLocalStorage('feed_scroll', 0);
   const [readMore, setReadMore] = useState<boolean>(false);
-
-  const extractLinks = (
-    text: string
-  ): { type: 'text' | 'link'; value: string }[] => {
-    const linkRegex = /(https:\/\/\S+)/g;
-    const matches = text.match(linkRegex);
-
-    if (!matches) {
-      return [{ type: 'text', value: text }];
-    }
-
-    const result: { type: 'text' | 'link'; value: string }[] = [];
-
-    let lastIndex = 0;
-    for (const match of matches) {
-      const startIndex = text.indexOf(match, lastIndex);
-      if (startIndex > lastIndex) {
-        // 링크 이전의 텍스트를 배열에 추가
-        const textBeforeLink = text.substring(lastIndex, startIndex);
-        result.push({ type: 'text', value: textBeforeLink });
-      }
-
-      // 링크를 배열에 추가
-      result.push({ type: 'link', value: decodeURI(match) });
-
-      lastIndex = startIndex + match.length;
-    }
-
-    // 마지막 링크 이후의 텍스트를 배열에 추가
-    if (lastIndex < text.length) {
-      const textAfterLink = text.substring(lastIndex);
-      result.push({ type: 'text', value: textAfterLink });
-    }
-
-    return result;
-  };
 
   const timeCaculator = (from: Date): string => {
     const time = new Date(String(from));
@@ -97,31 +41,11 @@ export default function FeedListItem({
     return '방금';
   };
 
-  const handleLike = () => {
-    setLike(!like);
-    jxios.post(`/api/posts/${feed.id}/like`);
-  };
-
-  const handleComment = () => {
-    toast('댓글 누름');
-  };
-
-  const handleSave = () => {
-    toast('저장 누름');
-  };
-
-  useEffect(() => {
-    setLike(feed.isLiked);
-  }, [feed.isLiked]);
-
   return (
     <div
-      className={`border-x border-default-200 bg-white p-4 pb-2 transition-colors md:mx-0 ${
+      className={`border-default-200 bg-white p-4 pb-2 transition-colors md:mx-0 md:border-x ${
         feed.type === 'artwork' ? 'cursor-pointer hover:bg-gray-100' : ''
       }`}
-      onClick={() => {
-        if (feed.type === 'artwork') push(`/artwork/${feed.id}`);
-      }}
     >
       <div className='flex w-full flex-col justify-between text-left md:flex-row'>
         <div className='w-full'>
@@ -129,6 +53,7 @@ export default function FeedListItem({
             className='cursor-pointer'
             onClick={(e) => {
               e.stopPropagation();
+              setScrollY(window.scrollY);
               push(`/profile/${feed.authorUsername}`);
             }}
           >
@@ -161,27 +86,32 @@ export default function FeedListItem({
                     : ''
                 } w-full overflow-x-hidden text-base text-medium leading-normal tracking-tight text-default-800`}
                 onClick={() => {
+                  setScrollY(window.scrollY);
                   if (!readMore && feed.content.length > 130) setReadMore(true);
                 }}
               >
                 {feed.type === 'exhibition' ? <b>전시안내 - </b> : ''}
-                {!isSinglePost && !readMore && feed.content.length > 130
+                {!readMore && feed.content.length > 130
                   ? feed.content.slice(0, 130) + '... 더보기'
-                  : extractLinks(feed.content).map((item, index) => {
+                  : textInUrlSeperator(feed.content).map((item, index) => {
                       if (item.type === 'text') {
                         return (
-                          <span key={index} className='text-default-800'>
-                            {item.value}
-                          </span>
+                          <p key={index} className='inline text-default-800'>
+                            {convertNewlineToJSX(item.value)}
+                          </p>
                         );
                       } else {
                         return (
                           <Link
                             key={item.value}
                             href={item.value}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setScrollY(window.scrollY);
+                            }}
                             target='_blank'
                             rel='noopener noreferrer'
-                            className='text-blue-500 hover:underline'
+                            className='inline text-blue-500 hover:underline'
                           >
                             {item.value}
                           </Link>
@@ -193,93 +123,7 @@ export default function FeedListItem({
           </div>
         </div>
       </div>
-      <div className='w-full justify-evenly gap-1 self-start md:w-auto md:justify-items-start'>
-        <DebounceClick wait={500}>
-          <Button
-            startContent={
-              like ? (
-                <AiFillLike className='h-5 w-5 text-red-500' />
-              ) : (
-                <AiOutlineLike className='h-5 w-5' />
-              )
-            }
-            variant='light'
-            className={`text-md hover:text-red-500 ${
-              like ? 'text-red-500' : 'text-gray-500'
-            }`}
-            onClick={handleLike}
-          >
-            {feed.likes + (like ? 1 : 0) + (feed.isLiked ? -1 : 0)}
-          </Button>
-        </DebounceClick>
-        <DebounceClick wait={500}>
-          <Button
-            startContent={<AiOutlineMessage className='h-5 w-5' />}
-            variant='light'
-            className='text-md text-gray-500 hover:text-blue-500'
-            onClick={handleComment}
-          >
-            {feed.comments}
-          </Button>
-        </DebounceClick>
-        <DebounceClick wait={500}>
-          <Button
-            startContent={<AiOutlineStar className='h-5 w-5' />}
-            variant='light'
-            className='text-md text-gray-500 hover:text-green-500'
-            onClick={handleSave}
-          >
-            {0}
-          </Button>
-        </DebounceClick>
-        <DebounceClick wait={500}>
-          <RWebShare
-            data={{
-              text: 'Artscope 포스트',
-              url: NEXT_PUBLIC_ROOT_URL + '/post/' + feed.id,
-              title: feed.content.slice(0, 18) + ' - Artscope',
-            }}
-          >
-            <Button
-              startContent={<AiOutlineShareAlt className='h-5 w-5' />}
-              variant='light'
-              className='text-md text-gray-500 hover:text-amber-600'
-            >
-              공유
-            </Button>
-          </RWebShare>
-        </DebounceClick>
-        {feed.authorUsername === user?.username && (
-          <>
-            <DebounceClick wait={500}>
-              <Button
-                startContent={<AiOutlineEdit className='h-5 w-5' />}
-                variant='light'
-                className='text-md text-gray-500 hover:text-purple-500'
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toast('수정 누름');
-                }}
-              >
-                수정
-              </Button>
-            </DebounceClick>
-            <DebounceClick wait={500}>
-              <Button
-                startContent={<AiOutlineDelete className='h-5 w-5' />}
-                variant='light'
-                className='text-md text-gray-500 hover:text-red-500'
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toast('삭제 누름');
-                }}
-              >
-                삭제
-              </Button>
-            </DebounceClick>
-          </>
-        )}
-      </div>
+      <FeedListItemAction feed={feed} />
     </div>
   );
 }
