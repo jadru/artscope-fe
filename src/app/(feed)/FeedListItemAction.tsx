@@ -39,7 +39,7 @@ export default function FeedListItemAction({ feed }: { feed: feedItemType }) {
   }, [feed.isLiked]);
 
   return (
-    <div className='flex w-full justify-between gap-1 self-start md:w-auto md:justify-items-start'>
+    <div className='flex w-full justify-between gap-1 self-start px-1 md:w-auto md:justify-items-start'>
       <div>
         <Button
           startContent={

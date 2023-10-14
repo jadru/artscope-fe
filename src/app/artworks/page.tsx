@@ -12,7 +12,6 @@ import RootLayout from '@/components/RootLayout';
 
 import ArtworkItem from '@/app/artworks/ArtworkItem';
 import NewArtworkModal from '@/app/artworks/NewArtworkModalButton';
-import UserInfo from '@/app/UserInfo';
 import { useUser } from '@/states';
 
 import { ArtWorkApiResponseType, ArtworkType } from '@/types';
@@ -79,13 +78,10 @@ export default function Page() {
   return (
     <RootLayout>
       {user && user.username && (
-        <div className='flex flex-row justify-start gap-2 space-y-1 p-3'>
-          <UserInfo />
-          <NewArtworkModal
-            submitBtnText='업로드'
-            placeholder='감각적인 작품이 있나요?'
-          />
-        </div>
+        <NewArtworkModal
+          submitBtnText='업로드'
+          placeholder='감각적인 작품이 있나요?'
+        />
       )}
       {isSuccess && (
         <ResponsiveGrid>

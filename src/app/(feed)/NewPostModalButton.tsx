@@ -95,7 +95,7 @@ export default function NewPostModal({ placeholder, submitBtnText }: Props) {
         <UserInfo />
         <span
           className={
-            'flex w-full items-center truncate rounded-2xl border border-white bg-default-100 px-3 text-left text-sm font-bold text-default-500'
+            'flex h-12 w-[calc(100%-4rem)] items-center truncate rounded-3xl border border-white bg-default-100 px-3 text-left text-sm font-bold text-default-500'
           }
         >
           {postContent.length === 0 ? placeholder : postContent}
@@ -121,9 +121,6 @@ export default function NewPostModal({ placeholder, submitBtnText }: Props) {
               <Divider />
               <ModalBody className='items-start justify-between'>
                 <div className='w-full overflow-y-scroll'>
-                  <div className='flex flex-row gap-2'>
-                    <UserInfo />
-                  </div>
                   <ScrollShadow className='max-h-max'>
                     <TextareaAutoSize
                       defaultValue={postContent}

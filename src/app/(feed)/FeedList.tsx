@@ -59,15 +59,18 @@ export default function FeedList({ data }: FeedListProps) {
                   ? 'grid-cols-1 md:grid-cols-3'
                   : 'grid-cols-2'
               } gap-0 border-x md:mx-0`}
-              key={index}
+              key={'feed-post-' + index + feed[0].id}
             >
               {feed.map((feedItem, index) => (
-                <ArtworkItemforFeed feed={feedItem} key={'artwork-' + index} />
+                <ArtworkItemforFeed
+                  feed={feedItem}
+                  key={'artwork-' + index + feedItem.id}
+                />
               ))}
             </div>
           ) : (
-            <div key={feed.id}>
-              <FeedListItem feed={feed} key={feed.id} />
+            <div key={'feed' + index + feed.id}>
+              <FeedListItem feed={feed} />
             </div>
           )}
           <hr />

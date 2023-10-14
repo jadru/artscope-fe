@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import Comment from '@/app/post/[[...slug]]/Comment';
+import PostComment from '@/app/post/[[...slug]]/PostComment';
 import SinglePostItemAction from '@/app/post/[[...slug]]/SinglePostItemAction';
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 import textInUrlSeperator from '@/utils/textInUrlSeperator';
@@ -84,7 +84,7 @@ export default function SinglePostItem({
                 </h5>
               </div>
             </div>
-            <p className='text-md px-1.5 text-right font-bold text-default-600'>
+            <p className='text-md px-1.5 text-left font-bold text-default-600'>
               {feed.updatedTime
                 ? new Date(feed.updatedTime).toLocaleString('ko-KR', {
                     dateStyle: 'full',
@@ -99,7 +99,7 @@ export default function SinglePostItem({
         </div>
         <SinglePostItemAction feed={feed} setEditMode={setEdit} />
       </div>
-      <Comment post={feed} />
+      <PostComment post={feed} />
     </div>
   );
 }
