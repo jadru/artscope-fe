@@ -26,10 +26,10 @@ export default function SinglePostItem({
   return (
     <div>
       <div
-        className={`border-default-200 bg-white p-4 pb-2 transition-colors md:mx-0
+        className={`border-default-200 bg-white pb-2 transition-colors md:mx-0
       md:border-x`}
       >
-        <div className='flex w-full flex-col justify-between text-left md:flex-row'>
+        <div className='flex w-full flex-col justify-between p-4 text-left md:flex-row'>
           <div className='w-full'>
             <div
               className='cursor-pointer'
@@ -84,15 +84,13 @@ export default function SinglePostItem({
                 </h5>
               </div>
             </div>
-            <p className='px-1.5 text-right text-default-600'>
+            <p className='text-md px-1.5 text-right font-bold text-default-600'>
               {feed.updatedTime
                 ? new Date(feed.updatedTime).toLocaleString('ko-KR', {
-                    timeZone: 'Asia/Seoul',
                     dateStyle: 'full',
                     timeStyle: 'short',
                   }) + ' 편집됨'
                 : new Date(feed.createdTime).toLocaleString('ko-KR', {
-                    timeZone: 'Asia/Seoul',
                     dateStyle: 'full',
                     timeStyle: 'short',
                   }) + ' 작성'}

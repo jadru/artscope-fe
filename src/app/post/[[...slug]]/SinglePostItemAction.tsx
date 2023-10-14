@@ -54,7 +54,7 @@ export default function SinglePostItemAction({
 
   return (
     <>
-      <div className='flex w-full justify-between gap-1 self-start md:w-auto md:justify-items-start'>
+      <div className='mt-2 flex w-full justify-between gap-1 self-start border-t px-2 pt-2 md:w-auto md:justify-items-start'>
         <div>
           <DebounceClick wait={500}>
             <Button

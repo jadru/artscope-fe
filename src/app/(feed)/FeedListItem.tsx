@@ -8,6 +8,7 @@ import useLocalStorage from 'use-local-storage';
 import FeedListItemAction from '@/app/(feed)/FeedListItemAction';
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 import textInUrlSeperator from '@/utils/textInUrlSeperator';
+import { timeCaculatortoKO } from '@/utils/timeCalculator';
 
 import { feedItemType } from '@/types';
 
@@ -15,31 +16,6 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
   const { push } = useRouter();
   const [_, setScrollY] = useLocalStorage('feed_scroll', 0);
   const [readMore, setReadMore] = useState<boolean>(false);
-
-  const timeCaculator = (from: Date): string => {
-    const time = new Date(String(from));
-    const now = new Date();
-    const diff = now.getTime() - time.getTime();
-    const diffDay = diff / (1000 * 60 * 60 * 24);
-    const diffHour = diff / (1000 * 60 * 60);
-
-    if (diffDay > 365) {
-      return time.toLocaleString('ko-KR');
-    }
-    if (diffDay > 30) {
-      return time.toLocaleString('ko-KR');
-    }
-    if (diffDay > 1) {
-      return Math.floor(diffDay) + '일 전';
-    }
-    if (diffHour > 1) {
-      return Math.floor(diffHour) + '시간 전';
-    }
-    if (diff > 30) {
-      return Math.floor(diff / (1000 * 60)) + '분 전';
-    }
-    return '방금';
-  };
 
   return (
     <div
@@ -60,7 +36,7 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
             <User
               name={feed.authorName}
               description={
-                timeCaculator(feed.createdTime) +
+                timeCaculatortoKO(feed.createdTime) +
                 ' @' +
                 feed.authorUsername +
                 (feed.authorDescription ? ' - ' + feed.authorDescription : '')

@@ -18,7 +18,6 @@ export default function UserInfo() {
             : NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + user.picture) || '',
         color: 'secondary',
       }}
-      className='p-1'
     />
   ) : (
     <></>

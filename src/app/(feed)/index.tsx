@@ -9,7 +9,6 @@ import useLocalStorage from 'use-local-storage';
 
 import FeedList from '@/app/(feed)/FeedList';
 import NewPostModal from '@/app/(feed)/NewPostModalButton';
-import UserInfo from '@/app/UserInfo';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
@@ -109,13 +108,10 @@ export default function Feeds() {
   return (
     <>
       {user && user.username && (
-        <div className='flex animate-fade flex-row justify-start gap-2 space-y-1 border-x border-b border-default-200 p-3'>
-          <UserInfo />
-          <NewPostModal
-            submitBtnText='작성'
-            placeholder='무슨 이야기가 있나요?'
-          />
-        </div>
+        <NewPostModal
+          submitBtnText='작성'
+          placeholder='무슨 이야기가 있나요?'
+        />
       )}
       {data && (
         <>

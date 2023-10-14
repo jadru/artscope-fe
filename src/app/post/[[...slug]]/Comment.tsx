@@ -1,31 +1,49 @@
 import { Button, Input } from '@nextui-org/react';
-import { DebounceClick } from '@toss/react';
+import { useDebounce } from '@toss/react';
 import React, { ChangeEvent, useState } from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
 
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
+import { timeCaculatortoKO } from '@/utils/timeCalculator';
 
 import { SinglePostType } from '@/types';
 
-export default function Comment({ post }: { post: SinglePostType }) {
-  const { isLogin } = useUser();
+export default function Comment({ post: PostData }: { post: SinglePostType }) {
+  const [post, setPostData] = useState<SinglePostType>(PostData);
+  const { user, isLogin } = useUser();
   const [content, setContent] = useState<string>('');
 
   const handleCommentContentInput = (e: ChangeEvent<HTMLInputElement>) => {
     setContent(e.target.value);
   };
 
-  const submitComment = () =>
-    content !== '' &&
-    jxios.post(`/api/posts/${post.id}/comments`, { content }).then((res) => {
-      setContent('');
-      const newPostData = res.data as SinglePostType;
-      if (newPostData.id === post.id)
-        post.commentPosts = newPostData.commentPosts;
-      else post.commentPosts.push(res.data);
-    });
+  const submitComment = useDebounce(
+    () =>
+      content !== '' &&
+      jxios.post(`/api/posts/${post.id}/comments`, { content }).then((res) => {
+        setContent('');
+        const newPostData = res.data as SinglePostType;
+        if (newPostData.id === post.id)
+          post.commentPosts = newPostData.commentPosts;
+        else post.commentPosts.push(res.data);
+      }),
+    300
+  );
+
+  const handleCommentDelete = (id: number) => {
+    if (confirm('댓글을 정말 삭제하시겠습니까?'))
+      jxios.delete(`/api/posts/${id}`).then((res) => {
+        if (res.status === 200)
+          setPostData({
+            ...post,
+            commentPosts: post.commentPosts.filter(
+              (comment) => comment.id !== id
+            ),
+          });
+      });
+  };
 
   return (
     <div className='space-y-2 border-t px-2 py-4 md:border'>
@@ -48,16 +66,14 @@ export default function Comment({ post }: { post: SinglePostType }) {
             }}
             size='lg'
           />
-          <DebounceClick wait={500}>
-            <Button
-              className='ml-2'
-              color='primary'
-              size='lg'
-              onClick={submitComment}
-            >
-              작성
-            </Button>
-          </DebounceClick>
+          <Button
+            className='ml-2'
+            color='primary'
+            size='lg'
+            onClick={submitComment}
+          >
+            작성
+          </Button>
         </div>
       )}
       <div className=''>
@@ -80,6 +96,18 @@ export default function Comment({ post }: { post: SinglePostType }) {
                   <h5 className='ml-2 text-lg text-gray-500'>
                     @{comment.authorUsername}
                   </h5>
+                  <h5 className='ml-2 text-gray-500'>
+                    {timeCaculatortoKO(comment.updatedTime) ??
+                      timeCaculatortoKO(comment.createdTime)}
+                  </h5>
+                  {user.username === comment.authorUsername && (
+                    <h5
+                      className='ml-2 cursor-pointer text-lg font-bold text-gray-500 hover:underline'
+                      onClick={() => handleCommentDelete(comment.id)}
+                    >
+                      삭제
+                    </h5>
+                  )}
                 </div>
                 <p className='break-words'>{comment.content}</p>
               </div>

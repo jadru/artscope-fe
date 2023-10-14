@@ -86,14 +86,21 @@ export default function NewPostModal({ placeholder, submitBtnText }: Props) {
 
   return (
     <>
-      <button
-        className='w-full truncate rounded-full bg-default-100 px-4 text-left text-sm font-bold text-default-400 transition-colors hover:bg-default-200'
+      <div
+        className='flex animate-fade cursor-pointer flex-row justify-between gap-3 space-y-1 border-x border-b border-default-200 p-3 transition hover:bg-default-100'
         onClick={() => {
           onOpen();
         }}
       >
-        {postContent.length === 0 ? placeholder : postContent}
-      </button>
+        <UserInfo />
+        <span
+          className={
+            'flex w-full items-center truncate rounded-2xl border border-white bg-default-100 px-3 text-left text-sm font-bold text-default-500'
+          }
+        >
+          {postContent.length === 0 ? placeholder : postContent}
+        </span>
+      </div>
       <Modal
         backdrop='blur'
         hideCloseButton
