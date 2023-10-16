@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { profileApiResponseType } from '@/types';
+import { profileApiResponseType } from '@/types/profile';
 
 type userType = {
   user: profileApiResponseType;

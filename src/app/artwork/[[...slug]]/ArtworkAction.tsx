@@ -17,7 +17,7 @@ import { NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
-import { ArtworkType } from '@/types';
+import { ArtworkType } from '@/types/artwork';
 
 export default function ArtworkAction({ aw }: { aw: ArtworkType }) {
   const [like, setLike] = useState<boolean>(aw.isLike);

@@ -87,7 +87,7 @@ export default function NewPostModal({ placeholder, submitBtnText }: Props) {
   return (
     <>
       <div
-        className='flex animate-fade cursor-pointer flex-row justify-between gap-3 space-y-1 border-x border-b border-default-200 p-3 transition hover:bg-default-100'
+        className='flex animate-fade cursor-pointer flex-row justify-between gap-3 space-y-1 border-b border-default-200 p-3 transition hover:bg-default-100 md:border-x'
         onClick={() => {
           onOpen();
         }}

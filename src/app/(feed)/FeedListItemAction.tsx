@@ -16,7 +16,7 @@ import { NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
-import { feedItemType } from '@/types';
+import { feedItemType } from '@/types/feed';
 
 export default function FeedListItemAction({ feed }: { feed: feedItemType }) {
   const [like, setLike] = useState<boolean>(feed.isLiked);

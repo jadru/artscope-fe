@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import ArtworkItemforFeed from '@/app/(feed)/ArtworkItemforFeed';
 import FeedListItem from '@/app/(feed)/FeedListItem';
 
-import { feedItemType } from '@/types';
+import { feedItemType } from '@/types/feed';
 
 type feedType = (feedItemType[] | feedItemType)[];
 
@@ -61,10 +61,10 @@ export default function FeedList({ data }: FeedListProps) {
               } gap-0 border-x md:mx-0`}
               key={'feed-post-' + index + feed[0].id}
             >
-              {feed.map((feedItem, index) => (
+              {feed.map((feedItem) => (
                 <ArtworkItemforFeed
                   feed={feedItem}
-                  key={'artwork-' + index + feedItem.id}
+                  key={'artwork-' + feedItem.id}
                 />
               ))}
             </div>

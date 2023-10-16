@@ -6,12 +6,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import PostComment from '@/app/post/[[...slug]]/PostComment';
+import PostComment from '@/app/post/[[...slug]]/comment';
 import SinglePostItemAction from '@/app/post/[[...slug]]/SinglePostItemAction';
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 import textInUrlSeperator from '@/utils/textInUrlSeperator';
 
-import { SinglePostType } from '@/types';
+import { SinglePostType } from '@/types/feed';
 
 export default function SinglePostItem({
   feed,

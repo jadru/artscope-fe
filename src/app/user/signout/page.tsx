@@ -14,7 +14,7 @@ const SignoutPage = () => {
   const { clearUser } = useUser();
   useEffect(() => {
     jxios.post('/api/logout');
-    cookies.remove('refreshToken');
+    cookies.remove('refresh-token');
     clearUser();
     push('/');
     toast.success('로그아웃 되었습니다.');

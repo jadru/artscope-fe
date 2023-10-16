@@ -17,7 +17,7 @@ import { NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
-import { SinglePostType } from '@/types';
+import { SinglePostType } from '@/types/feed';
 
 export default function SinglePostItemAction({
   feed,

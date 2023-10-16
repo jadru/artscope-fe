@@ -12,7 +12,8 @@ import {
   NEXT_PUBLIC_MEDIA_STORAGE_URL,
 } from '@/constant/env';
 
-import { ArtworkType, profileApiResponseType } from '@/types';
+import { ArtworkType } from '@/types/artwork';
+import { profileApiResponseType } from '@/types/profile';
 
 const fetchArtwork = async (id: string) =>
   await fetch(NEXT_PUBLIC_API_URL + '/api/artworks/' + id, {

@@ -10,7 +10,7 @@ import FeedListItemAction from '@/app/(feed)/FeedListItemAction';
 import textInUrlSeperator from '@/utils/textInUrlSeperator';
 import { timeCaculatortoKO } from '@/utils/timeCalculator';
 
-import { feedItemType } from '@/types';
+import { feedItemType } from '@/types/feed';
 
 export default function FeedListItem({ feed }: { feed: feedItemType }) {
   const { push } = useRouter();
