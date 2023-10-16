@@ -3,7 +3,7 @@ import { MetadataRoute } from 'next';
 import { NEXT_PUBLIC_API_URL, NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
-import { ArtworkType } from '@/types';
+import { ArtworkType } from '@/types/artwork';
 
 async function getArtworks() {
   const { data } = await jxios.get(NEXT_PUBLIC_API_URL + '/api/artworks', {

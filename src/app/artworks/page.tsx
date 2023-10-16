@@ -14,7 +14,7 @@ import ArtworkItem from '@/app/artworks/ArtworkItem';
 import NewArtworkModal from '@/app/artworks/NewArtworkModalButton';
 import { useUser } from '@/states';
 
-import { ArtWorkApiResponseType, ArtworkType } from '@/types';
+import { ArtWorkApiResponseType, ArtworkType } from '@/types/artwork';
 
 const SkeletonArtwork = () => (
   <Card className='w-full gap-2'>

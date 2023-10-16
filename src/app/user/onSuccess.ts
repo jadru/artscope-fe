@@ -7,6 +7,7 @@ export const onSuccess = (artistStatus: string, router: AppRouterInstance) => {
     router.push('/user/apply');
     router.refresh();
   } else {
+    toast.success('로그인 되었습니다.');
     router.push('/');
     router.refresh();
   }

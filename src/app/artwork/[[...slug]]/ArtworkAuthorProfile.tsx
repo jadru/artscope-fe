@@ -6,7 +6,7 @@ import ASNextImage from '@/components/ASNextImage';
 
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 
-import { profileApiResponseType } from '@/types';
+import { profileApiResponseType } from '@/types/profile';
 
 export default function ArtworkAuthorProfile({
   author,

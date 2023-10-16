@@ -12,7 +12,7 @@ import NewPostModal from '@/app/(feed)/NewPostModalButton';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
-import { feedApiResponseType } from '@/types';
+import { feedApiResponseType } from '@/types/feed';
 
 const SkeletonFeed = () => (
   <>

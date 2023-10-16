@@ -5,7 +5,7 @@ import useLocalStorage from 'use-local-storage';
 
 import ASNextImage from '@/components/ASNextImage';
 
-import { feedItemType } from '@/types';
+import { feedItemType } from '@/types/feed';
 
 const ArtworkItemforFeed = ({ feed }: { feed: feedItemType }) => {
   const { push } = useRouter();

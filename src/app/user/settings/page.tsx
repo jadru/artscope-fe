@@ -10,7 +10,7 @@ import ArtistForm from '@/app/user/apply/ArtistForm';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
-import { profileApiResponseType } from '@/types';
+import { profileApiResponseType } from '@/types/profile';
 
 const fetchProfile = async (): Promise<profileApiResponseType> =>
   await jxios

@@ -14,8 +14,8 @@ const getRefreshToken = async () => {
   const cookies = new Cookies();
 
   axios
-    .post('/api/refresh', cookies.get('refreshToken'), {
-      data: cookies.get('refreshToken'),
+    .post('/api/refresh', cookies.get('refresh-token'), {
+      data: cookies.get('refresh-token'),
       headers: {
         'Content-Type': 'text/plain',
       },
@@ -24,14 +24,14 @@ const getRefreshToken = async () => {
       const { accessToken, refreshToken } = res.data;
       Jaxios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
       const decodedRefreshToken: { exp: number } = jwt_decode(refreshToken);
-      cookies.remove('refreshToken');
-      cookies.set('refreshToken', refreshToken, {
+      cookies.remove('refresh-token');
+      cookies.set('refresh-token', refreshToken, {
         expires: new Date(decodedRefreshToken.exp * 1000),
         path: '/',
       });
     })
     .catch(() => {
-      cookies.remove('refreshToken');
+      cookies.remove('refresh-token');
     });
 };
 Jaxios.interceptors.response.use(
@@ -52,7 +52,7 @@ Jaxios.interceptors.response.use(
           return Promise.reject(err);
         case 401:
         case 403:
-          if (cookies.get('refreshToken')) {
+          if (cookies.get('refresh-token')) {
             config.sent = true;
             await getRefreshToken();
             return axios(config);
@@ -62,7 +62,7 @@ Jaxios.interceptors.response.use(
                 `${response.data.message} ${response.data.detail || ''}`
               );
             else toast.error(response.data);
-            cookies.remove('refreshToken');
+            cookies.remove('refresh-token');
             return Promise.reject(err);
           }
         case 502:

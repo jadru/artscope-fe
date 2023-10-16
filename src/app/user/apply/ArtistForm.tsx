@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
-import { ArtistForm } from '@/types';
+import { ArtistForm } from '@/types/member';
 
 const artistSchema = yup.object().shape({
   introduction: yup.string().required('아티스트 소개를 입력해주세요.'),

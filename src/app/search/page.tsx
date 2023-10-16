@@ -7,7 +7,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 
 import jxios from '@/utils/jxios';
 
-import { ArtworkSearchApiResponseType } from '@/types';
+import { ArtworkSearchApiResponseType } from '@/types/artwork';
 
 export default function Search() {
   const [search, setSearch] = useState('');

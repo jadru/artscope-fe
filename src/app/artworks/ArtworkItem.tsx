@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import ASNextImage from '@/components/ASNextImage';
 
-import { ArtworkType } from '@/types';
+import { ArtworkType } from '@/types/artwork';
 
 const ArtworkItem = ({ artwork: aw }: { artwork: ArtworkType }) => {
   const { push } = useRouter();

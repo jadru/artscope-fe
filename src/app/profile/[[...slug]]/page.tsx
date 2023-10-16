@@ -5,7 +5,7 @@ import ASNextImage from '@/components/ASNextImage';
 
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 
-import { profileApiType } from '@/types';
+import { profileApiType } from '@/types/profile';
 
 const fetchProfile = async (username: string) =>
   await fetch(NEXT_PUBLIC_API_URL + '/api/members/' + username, {

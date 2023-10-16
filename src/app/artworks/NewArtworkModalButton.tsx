@@ -37,7 +37,7 @@ import PublicTypeCheckBox, {
 import UserInfo from '@/app/UserInfo';
 import jxios from '@/utils/jxios';
 
-import { ArtWorkApiRequestType, ArtWorkMediaType } from '@/types';
+import { ArtWorkApiRequestType, ArtWorkMediaType } from '@/types/artwork';
 
 type Props = {
   placeholder: string;

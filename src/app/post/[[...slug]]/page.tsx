@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import SinglePostItem from '@/app/post/[[...slug]]/SinglePostItem';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 
-import { SinglePostType } from '@/types';
+import { SinglePostType } from '@/types/feed';
 
 const fetchPost = async (id: string) =>
   await fetch(NEXT_PUBLIC_API_URL + '/api/posts/' + id, {

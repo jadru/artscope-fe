@@ -10,7 +10,7 @@ import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 import { timeCaculatortoKO } from '@/utils/timeCalculator';
 
-import { ArtworkType } from '@/types';
+import { ArtworkType } from '@/types/artwork';
 
 export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
   const [aw, setAwData] = useState<ArtworkType>(awData);
