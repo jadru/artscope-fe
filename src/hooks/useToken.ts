@@ -1,7 +1,7 @@
 import { useCallbackOnce } from '@toss/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import cookie from 'react-cookies';
+import cookies from 'react-cookies';
 
 import { removeRefreshToken } from '@/auth/cookieTokenManager';
 import { onLogin } from '@/auth/onLogin';
@@ -10,7 +10,7 @@ import jxios from '@/utils/jxios';
 
 export default function useToken() {
   const { setNotLogin, setUser, isLogin } = useUser();
-  const refreshToken = cookie.load('refresh-token');
+  const refreshToken = cookies.load('refresh-token');
   const router = useRouter();
 
   const callToken = useCallbackOnce(() => {
@@ -20,7 +20,7 @@ export default function useToken() {
     if (jxios.defaults.headers.common['Authorization']) {
       return;
     }
-    if (cookie.load('access-token')) {
+    if (cookies.load('access-token')) {
       return;
     }
     if (!refreshToken) {
@@ -49,7 +49,7 @@ export default function useToken() {
   useEffect(() => {
     callToken();
     return () => {
-      cookie.remove('refresh-token');
+      cookies.remove('refresh-token');
       setNotLogin();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,12 +1,13 @@
 import { convertNewlineToJSX } from '@toss/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useLocalStorage from 'use-local-storage';
 
 import ASNextImage from '@/components/ASNextImage';
 
 import FeedListItemAction from '@/app/(feed)/FeedListItemAction';
+import OpengraphCard from '@/app/(feed)/OpengraphCard';
 import textInUrlSeperator from '@/utils/textInUrlSeperator';
 import { timeCaculatortoKO } from '@/utils/timeCalculator';
 
@@ -15,7 +16,18 @@ import { feedItemType } from '@/types/feed';
 export default function FeedListItem({ feed }: { feed: feedItemType }) {
   const { push } = useRouter();
   const [_, setScrollY] = useLocalStorage('feed_scroll', 0);
+  const [firstLink, setFirstLink] = useState<string | undefined>();
   const [readMore, setReadMore] = useState<boolean>(false);
+
+  useEffect(() => {
+    feed.content &&
+      textInUrlSeperator(feed.content).forEach((item) => {
+        if (item.type === 'link') {
+          setFirstLink(item.value);
+          return;
+        }
+      });
+  }, [feed]);
 
   return (
     <div
@@ -102,6 +114,7 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
                 )}
               </h5>
             </div>
+            {firstLink && <OpengraphCard externalUrl={firstLink} />}
           </div>
         </div>
       </div>
