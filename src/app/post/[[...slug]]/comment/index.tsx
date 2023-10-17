@@ -277,7 +277,6 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                                 <span>@{reCommentMentionUsername}</span>
                               )
                             }
-                            autoFocus
                             variant='bordered'
                             value={reCommentContent}
                             onChange={handleRecommentContentInput}
