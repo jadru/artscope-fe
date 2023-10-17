@@ -12,7 +12,7 @@ import NewPostModal from '@/app/(feed)/NewPostModalButton';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
-import { feedApiResponseType } from '@/types/feed';
+const LIMIT = 10;
 
 const SkeletonFeed = () => (
   <>
@@ -39,27 +39,30 @@ const SkeletonFeed = () => (
   </>
 );
 
+const fetchFeeds = async ({ pageParam = 0 }) =>
+  await jxios
+    .post('/api/feed', undefined, {
+      params: {
+        page: pageParam,
+        size: LIMIT,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      throw Error(err);
+    });
+
 export default function Feeds() {
   const bottom = useRef(null);
   const [scrollY, setScrollY] = useLocalStorage('feed_scroll', 0);
   const { user } = useUser();
   const params = useParams();
 
-  const fetchFeeds = async ({ pageParam = 0 }) =>
-    await jxios
-      .post('/api/feed', undefined, {
-        params: {
-          page: pageParam,
-          size: LIMIT,
-        },
-      })
-      .then((res) => {
-        return res.data as feedApiResponseType;
-      });
-  const LIMIT = 10;
   const { data, fetchNextPage, isLoading, refetch, isError } = useInfiniteQuery(
     ['feed'],
-    async ({ pageParam = 0 }) => await fetchFeeds({ pageParam }),
+    ({ pageParam = 0 }) => fetchFeeds({ pageParam }),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.hasNext ? allPages.length : null;

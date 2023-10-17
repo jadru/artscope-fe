@@ -4,8 +4,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import { Cookies } from 'react-cookie';
 
-import Seo from '@/components/Seo';
-
 import { onLogin } from '@/auth/onLogin';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
@@ -38,7 +36,7 @@ const RedirectOAuth2 = () => {
     }
   }, [setUser, cookies, router, token]);
 
-  return <Seo templateTitle='구글 로그인'></Seo>;
+  return <div></div>;
 };
 
 export default RedirectOAuth2;

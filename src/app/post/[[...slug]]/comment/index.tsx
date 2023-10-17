@@ -1,7 +1,7 @@
 import { Button, Input } from '@nextui-org/react';
 import { useDebounce } from '@toss/react';
 import { useRouter } from 'next/navigation';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
 
@@ -28,9 +28,6 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
   useEffect(() => {
     setReCommentContent('');
   }, [toComment]);
-  const handleCommentContentInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setContent(e.target.value);
-  };
 
   const submitComment = useDebounce(
     () =>
@@ -104,10 +101,6 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
     300
   );
 
-  const handleRecommentContentInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setReCommentContent(e.target.value);
-  };
-
   const handleCommentDelete = (id: number) => {
     if (confirm('댓글을 정말 삭제하시겠습니까?'))
       jxios.delete(`/api/posts/${id}`).then((res) => {
@@ -130,7 +123,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
             placeholder='댓글을 입력하세요'
             variant='bordered'
             value={content}
-            onChange={handleCommentContentInput}
+            onValueChange={setContent}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 submitComment();
@@ -277,9 +270,10 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                                 <span>@{reCommentMentionUsername}</span>
                               )
                             }
+                            autoFocus
                             variant='bordered'
                             value={reCommentContent}
-                            onChange={handleRecommentContentInput}
+                            onValueChange={setReCommentContent}
                             onKeyDown={(e) => {
                               if (e.key === 'Enter') {
                                 submitRecommentMention();
@@ -313,7 +307,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                   autoFocus
                   variant='bordered'
                   value={reCommentContent}
-                  onChange={submitRecomment}
+                  onValueChange={setReCommentContent}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       submitRecommentMention();
