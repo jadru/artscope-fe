@@ -46,8 +46,8 @@ export default function FeedList({ data }: FeedListProps) {
 
   return (
     <div className='flex flex-col'>
-      {feeds.map((feed, index) => (
-        <>
+      {feeds.map((feed) => (
+        <div key={Array.isArray(feed) ? feed[0].id : feed.id}>
           {Array.isArray(feed) ? (
             <div
               className={`grid ${
@@ -59,7 +59,6 @@ export default function FeedList({ data }: FeedListProps) {
                   ? 'grid-cols-1 md:grid-cols-3'
                   : 'grid-cols-2'
               } gap-0 border-x md:mx-0`}
-              key={'feed-post-' + index + feed[0].id}
             >
               {feed.map((feedItem) => (
                 <ArtworkItemforFeed
@@ -69,12 +68,10 @@ export default function FeedList({ data }: FeedListProps) {
               ))}
             </div>
           ) : (
-            <div key={'feed' + index + feed.id}>
-              <FeedListItem feed={feed} />
-            </div>
+            <FeedListItem feed={feed} />
           )}
           <hr />
-        </>
+        </div>
       ))}
     </div>
   );

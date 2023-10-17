@@ -38,12 +38,17 @@ export default function Page() {
           sortDirection: 'DESC',
         },
       })
-      .then((res) => res.data as ArtWorkApiResponseType);
+      .then((res) => {
+        return res.data as ArtWorkApiResponseType;
+      })
+      .catch((err) => {
+        throw Error(err);
+      });
 
   const { data, isSuccess, fetchNextPage, isLoading, isError } =
     useInfiniteQuery(
       ['artworks'],
-      ({ pageParam = 0 }) => fetchArtworks({ pageParam }),
+      async ({ pageParam = 0 }) => await fetchArtworks({ pageParam }),
       {
         getNextPageParam: (lastPage) => {
           return lastPage.pageInfo.totalPages - lastPage.pageInfo.page > 0

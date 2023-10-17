@@ -26,13 +26,13 @@ const ArtworkItem = ({ artwork: aw }: { artwork: ArtworkType }) => {
           />
         </CardBody>
         <CardFooter className='flex-row justify-between space-x-0.5 text-small transition duration-100 group-hover:bg-default-100'>
-          <p className='w-2/3 truncate'>
+          <div className='w-2/3 truncate'>
             <b className='w-full truncate'>{aw.artwork.title}</b>
             <p className='space-x-2 text-sm text-default-500'>
               <span>좋아요 {aw.artwork.likes}</span>
               <span>댓글 {aw.artwork.comments}</span>
             </p>
-          </p>
+          </div>
           <p className='w-1/3 truncate text-right font-bold text-default-500'>
             {aw.artwork.authorName}
           </p>

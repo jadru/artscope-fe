@@ -28,7 +28,7 @@ const noto_Sans_KR = Noto_Sans_KR({
 // });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(NEXT_PUBLIC_ROOT_URL + ''),
+  metadataBase: new URL(NEXT_PUBLIC_ROOT_URL + '/'),
   title: {
     template: '%s | 새로운 예술 플랫폼 Artscope',
     absolute: 'Artscope 아트스코프 - 새로운 예술 플랫폼',
@@ -102,6 +102,7 @@ export default function RootLayout({
     <html lang='ko' className='light'>
       <body className={cls(noto_Sans_KR.className)}>
         <ToastContainer limit={2} hideProgressBar />
+        <link rel='manifest' href='/manifest.json' />
         <Script
           strategy='afterInteractive'
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}

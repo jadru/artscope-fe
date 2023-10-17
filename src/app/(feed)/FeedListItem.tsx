@@ -37,8 +37,8 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
               <ASNextImage
                 src={feed.authorProfileImageUrl ?? '/images/default.png'}
                 alt={feed.authorName}
-                width={36}
-                height={36}
+                width={40}
+                height={40}
                 className='h-12 w-12 rounded-full bg-gray-300'
               />
               <div>

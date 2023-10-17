@@ -6,6 +6,9 @@ export default function ASNextImage(Props: ImageProps) {
     <Image
       placeholder='blur'
       blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBAB  bWyZJf74GZgAAAABJRU5ErkJggg=='
+      unoptimized={
+        typeof Props.src === 'string' ? Props.src.startsWith('http') : false
+      }
       {...Props}
     />
   );
