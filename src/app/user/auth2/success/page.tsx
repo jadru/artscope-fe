@@ -1,8 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo } from 'react';
-import { Cookies } from 'react-cookie';
+import { useEffect } from 'react';
 
 import { onLogin } from '@/auth/onLogin';
 import { useUser } from '@/states';
@@ -12,7 +11,6 @@ import { loginResponseType } from '@/types/auth';
 
 const RedirectOAuth2 = () => {
   const router = useRouter();
-  const cookies = useMemo(() => new Cookies(), []);
   const { setUser } = useUser();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
@@ -34,7 +32,7 @@ const RedirectOAuth2 = () => {
     } else {
       router.push('/');
     }
-  }, [setUser, cookies, router, token]);
+  }, [setUser, router, token]);
 
   return <div></div>;
 };

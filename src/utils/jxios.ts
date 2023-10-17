@@ -1,6 +1,6 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import { Cookies } from 'react-cookie';
+import cookie from 'react-cookies';
 import { toast } from 'react-toastify';
 
 const Jaxios = axios.create({
@@ -11,11 +11,9 @@ const Jaxios = axios.create({
 });
 
 const getRefreshToken = async () => {
-  const cookies = new Cookies();
-
   axios
-    .post('/api/refresh', cookies.get('refresh-token'), {
-      data: cookies.get('refresh-token'),
+    .post('/api/refresh', cookie.load('refresh-token'), {
+      data: cookie.load('refresh-token'),
       headers: {
         'Content-Type': 'text/plain',
       },
@@ -24,21 +22,20 @@ const getRefreshToken = async () => {
       const { accessToken, refreshToken } = res.data;
       Jaxios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
       const decodedRefreshToken: { exp: number } = jwt_decode(refreshToken);
-      cookies.remove('refresh-token');
-      cookies.set('refresh-token', refreshToken, {
+      cookie.remove('refresh-token');
+      cookie.save('refresh-token', refreshToken, {
         expires: new Date(decodedRefreshToken.exp * 1000),
         path: '/',
       });
     })
     .catch(() => {
-      cookies.remove('refresh-token');
+      cookie.remove('refresh-token');
     });
 };
 Jaxios.interceptors.response.use(
   (res) => res,
   async (err) => {
     const { config, response } = err;
-    const cookies = new Cookies();
     if (response && response.status) {
       switch (response.status || config.sent) {
         case 400:
@@ -52,7 +49,7 @@ Jaxios.interceptors.response.use(
           return Promise.reject(err);
         case 401:
         case 403:
-          if (cookies.get('refresh-token')) {
+          if (cookie.load('refresh-token')) {
             config.sent = true;
             await getRefreshToken();
             return axios(config);
@@ -62,7 +59,7 @@ Jaxios.interceptors.response.use(
                 `${response.data.message} ${response.data.detail || ''}`
               );
             else toast.error(response.data);
-            cookies.remove('refresh-token');
+            cookie.remove('refresh-token');
             return Promise.reject(err);
           }
         case 502:

@@ -48,7 +48,7 @@ export async function generateMetadata(
   const thumbnail = data.artwork.thumbnail || [];
   const previousImages = (await parent).openGraph?.images || [];
   return {
-    title: `${data.artwork.title} - ${data.artwork.authorName}`,
+    title: `${data.artwork.title} - ${data.artwork.authorName} 작가`,
     description: data.artwork.description,
     openGraph: {
       title: `${data.artwork.title} - ${data.artwork.authorName} | Artscope`,
