@@ -1,12 +1,24 @@
 'use client';
 
 import { NextUIProvider } from '@nextui-org/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const [queryClient] = useState(new QueryClient());
+  const [queryClient] = useState(
+    new QueryClient({
+      queryCache: new QueryCache({
+        onError: (error) =>
+          toast.error(`Something went wrong: ${error.message}`),
+      }),
+    })
+  );
   return (
     <QueryClientProvider client={queryClient}>
       <NextUIProvider>{children}</NextUIProvider>

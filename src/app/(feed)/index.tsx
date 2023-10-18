@@ -48,12 +48,7 @@ const fetchFeeds = async ({ pageParam = 0 }) =>
         size: LIMIT,
       },
     })
-    .then((res) => {
-      return res.data as feedApiResponseType;
-    })
-    .catch((err) => {
-      throw Error(err);
-    });
+    .then((res) => res.data as feedApiResponseType);
 
 export default function Feeds() {
   const bottom = useRef(null);

@@ -87,13 +87,10 @@ export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
           </Button>
         </div>
       )}
-      <div className=''>
+      <div>
         {aw.artwork.artworkComments.map((comment, index) => (
-          <>
-            <div
-              key={comment.id}
-              className='flex px-2 py-3 hover:bg-default-100'
-            >
+          <div key={comment.id}>
+            <div className='flex px-2 py-3 hover:bg-default-100'>
               <ASNextImage
                 src={comment.authorProfileImageUrl ?? '/images/default.png'}
                 alt={comment.authorName}
@@ -123,10 +120,8 @@ export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
                 <p className='break-words'>{comment.content}</p>
               </div>
             </div>
-            {index + 1 !== aw.artwork.artworkComments.length && (
-              <hr key={comment.id + '-divider'} />
-            )}
-          </>
+            {index + 1 !== aw.artwork.artworkComments.length && <hr />}
+          </div>
         ))}
       </div>
     </div>
