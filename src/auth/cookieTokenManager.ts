@@ -23,9 +23,9 @@ export const setRefreshToken = (
     ),
   });
 
-export const getAccessToken = () => cookie.load('access-token');
+export const getAccessToken = async () => await cookie.load('access-token');
 
-export const getRefreshToken = () => cookie.load('refresh-token');
+export const getRefreshToken = async () => await cookie.load('refresh-token');
 
 export const removeAccessToken = () => cookie.remove('access-token');
 

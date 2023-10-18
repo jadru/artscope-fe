@@ -28,16 +28,14 @@ export const onGetProfile = async (
   router: AppRouterInstance,
   setUser: (user: profileApiResponseType | undefined) => void
 ) => {
-  if (getRefreshToken()) {
-    const res = await fetch('/api/members/profile', {
-      method: 'GET',
+  if (await getRefreshToken()) {
+    const res = await jxios.get('/api/members/profile', {
       headers: {
         'Content-Type': 'application/json',
       },
-      credentials: 'include',
     });
-    const data: profileApiResponseType = await res.json();
-    if (!res.ok) {
+    const data: profileApiResponseType = await res.data;
+    if (res.status !== 200) {
       setUser(undefined);
       return;
     } else {

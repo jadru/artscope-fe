@@ -24,6 +24,7 @@ export const getRefreshToken = async () => {
     })
     .then((res) => {
       const tokenData: loginResponseType = res.data;
+
       Jxios.defaults.headers.common[
         'Authorization'
       ] = `Bearer ${tokenData.accessToken}`;
@@ -41,6 +42,7 @@ Jxios.interceptors.response.use(
     if (response && response.status) {
       switch (response.status || config.sent) {
         case 400:
+        case 401:
           toast.error(`
               ${response.data.message}
                 ${
@@ -48,9 +50,6 @@ Jxios.interceptors.response.use(
                     ? ' : ' + response.data.detail
                     : ''
                 }`);
-          return Promise.reject(err);
-        case 401:
-          toast.warn('권한이 없습니다.');
           return Promise.reject(err);
         case 403:
           if (cookie.load('refresh-token')) {

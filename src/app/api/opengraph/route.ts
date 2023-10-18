@@ -12,6 +12,12 @@ export async function GET(request: Request) {
 
   const result: urlMetadata.Result = await urlMetadata(url);
 
+  if (!result)
+    return NextResponse.json(
+      { error: 'Could not get url metadata' },
+      { status: 500 }
+    );
+
   return NextResponse.json(
     {
       ogTitle: result['og:title'] ?? result['title'],

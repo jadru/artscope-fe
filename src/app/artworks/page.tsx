@@ -45,7 +45,7 @@ export default function Page() {
         throw Error(err);
       });
 
-  const { data, isSuccess, fetchNextPage, isLoading, isError } =
+  const { data, isSuccess, refetch, fetchNextPage, isLoading, isError } =
     useInfiniteQuery({
       queryKey: ['artworks'],
       queryFn: async ({ pageParam }) => await fetchArtworks({ pageParam }),
@@ -85,6 +85,7 @@ export default function Page() {
         <NewArtworkModal
           submitBtnText='업로드'
           placeholder='감각적인 작품이 있나요?'
+          refetch={refetch}
         />
       )}
       {isSuccess && (

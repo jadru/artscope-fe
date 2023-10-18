@@ -16,7 +16,6 @@ import {
   PopoverTrigger,
   useDisclosure,
 } from '@nextui-org/react';
-import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import {
   AiFillCloseCircle,
@@ -42,6 +41,7 @@ import { ArtWorkApiRequestType, ArtWorkMediaType } from '@/types/artwork';
 type Props = {
   placeholder: string;
   submitBtnText: string;
+  refetch: () => void;
 };
 
 const initialArtWork: ArtWorkApiRequestType = {
@@ -57,9 +57,12 @@ const initialArtWork: ArtWorkApiRequestType = {
   thumbnailFile: undefined,
 };
 
-export default function NewArtworkModal({ placeholder, submitBtnText }: Props) {
+export default function NewArtworkModal({
+  placeholder,
+  submitBtnText,
+  refetch,
+}: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { refetch } = useQuery({ queryKey: ['artworks'] });
   const [isExpanded, setIsExpanded] = useState(false);
   const [publicType, setPublicType] = useState<PublicType>('public');
   const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);

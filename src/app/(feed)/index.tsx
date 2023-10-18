@@ -95,6 +95,7 @@ export default function Feeds() {
         <NewPostModal
           submitBtnText='작성'
           placeholder='무슨 이야기가 있나요?'
+          refetch={refetch}
         />
       )}
       {data && (

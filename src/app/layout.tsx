@@ -15,7 +15,7 @@ import { GA_TRACKING_ID, NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 import { cls } from '@/utils';
 
 const noto_Sans_KR = Noto_Sans_KR({
-  weight: ['100', '400', '700', '900'],
+  weight: ['100', '400', '700'],
   variable: '--noto-sans-kr',
   subsets: ['latin'],
   display: 'swap',
