@@ -111,7 +111,7 @@ export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
                     {timeCaculatortoKO(comment.updatedTime) ??
                       timeCaculatortoKO(comment.createdTime)}
                   </h5>
-                  {user.username === comment.authorUsername && (
+                  {user?.username === comment.authorUsername && (
                     <h5
                       className='ml-2 cursor-pointer text-lg font-bold text-gray-500 hover:underline'
                       onClick={() => handleCommentDelete(comment.id)}
