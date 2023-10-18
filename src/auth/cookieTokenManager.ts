@@ -1,10 +1,14 @@
 import cookie from 'react-cookies';
 
+import { NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
+
 export const setAccessToken = (accessToken: string, expiresIn: number) =>
   cookie.save('access-token', accessToken, {
     path: '/',
+    domain: NEXT_PUBLIC_ROOT_URL,
     httpOnly: true,
     secure: true,
+    sameSite: 'lax',
     expires: new Date(Date.now() + expiresIn * 1000 + 9 * 60 * 60 * 1000),
   });
 

@@ -19,7 +19,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 
-import useToken from '@/hooks/useToken';
+import useUserHook from '@/hooks/useUser';
 
 import LoginModal from '@/app/(feed)/LoginModalButton';
 import Logo from '@/assets/images/logo_long.svg';
@@ -35,7 +35,7 @@ export default function NavBar({
   theme: 'light' | 'dark';
   isLoading?: boolean;
 }) {
-  useToken();
+  useUserHook();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { push } = useRouter();
   const { user, isLogin } = useUser();
@@ -127,7 +127,7 @@ export default function NavBar({
         </NavbarItem>
         {isLogin === undefined ? (
           <></>
-        ) : !isLogin ? (
+        ) : !user ? (
           <NavbarItem className='hidden md:inline'>
             <LoginModal
               btnText='로그인 / 회원가입'

@@ -2,15 +2,16 @@
 
 import { Skeleton } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { notFound, useParams } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { ReactElement, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
-import useLocalStorage from 'use-local-storage';
 
 import FeedList from '@/app/(feed)/FeedList';
 import NewPostModal from '@/app/(feed)/NewPostModalButton';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
+
+import { feedApiResponseType } from '@/types/feed';
 
 const LIMIT = 10;
 
@@ -48,7 +49,7 @@ const fetchFeeds = async ({ pageParam = 0 }) =>
       },
     })
     .then((res) => {
-      return res.data;
+      return res.data as feedApiResponseType;
     })
     .catch((err) => {
       throw Error(err);
@@ -56,14 +57,13 @@ const fetchFeeds = async ({ pageParam = 0 }) =>
 
 export default function Feeds() {
   const bottom = useRef(null);
-  const [scrollY, setScrollY] = useLocalStorage('feed_scroll', 0);
   const { user } = useUser();
-  const params = useParams();
 
   const { data, fetchNextPage, isLoading, refetch, isError } = useInfiniteQuery(
-    ['feed'],
-    ({ pageParam = 0 }) => fetchFeeds({ pageParam }),
     {
+      queryKey: ['feed'],
+      queryFn: async ({ pageParam }) => await fetchFeeds({ pageParam }),
+      initialPageParam: 0,
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.hasNext ? allPages.length : null;
       },
@@ -93,20 +93,6 @@ export default function Feeds() {
       notFound();
     }
   }, [isError]);
-
-  useEffect(() => {
-    if (
-      scrollY === 0 ||
-      document.documentElement?.scrollHeight - 100 < scrollY ||
-      scrollY === window.scrollY
-    ) {
-      return;
-    } else {
-      window.scrollTo(0, scrollY);
-      setScrollY(0);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setScrollY, scrollY, params, isLoading]);
 
   return (
     <>
