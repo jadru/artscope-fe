@@ -7,7 +7,6 @@ import {
   setRefreshToken,
 } from '@/auth/cookieTokenManager';
 import jxios from '@/utils/jxios';
-import { getRefreshToken as getRefreshFromApi } from '@/utils/jxios';
 
 import { loginResponseType } from '@/types/auth';
 import { profileApiResponseType } from '@/types/profile';
@@ -30,20 +29,21 @@ export const onGetProfile = async (
   setUser: (user: profileApiResponseType | undefined) => void
 ) => {
   if (getRefreshToken()) {
-    jxios
-      .get('/api/members/profile', {
-        headers: { withCredentials: true },
-      })
-      .then((res) => {
-        const data: profileApiResponseType = res.data;
-        setUser(data);
-        onSuccess(data.artistStatus, router);
-      })
-      .catch((err) => {
-        if (err.response.status === 403) {
-          getRefreshFromApi();
-        }
-      });
+    const res = await fetch('/api/members/profile', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+    const data: profileApiResponseType = await res.json();
+    if (!res.ok) {
+      setUser(undefined);
+      return;
+    } else {
+      setUser(data);
+      onSuccess(data.artistStatus, router);
+    }
   } else {
     setUser(undefined);
   }

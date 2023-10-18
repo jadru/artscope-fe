@@ -48,7 +48,7 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
                 alt={feed.authorName}
                 width={40}
                 height={40}
-                className='h-12 w-12 rounded-full bg-gray-300'
+                className='h-12 w-12 rounded-full bg-gray-300 object-cover'
               />
               <div>
                 <h5 className='text-md inline font-bold'>{feed.authorName}</h5>
