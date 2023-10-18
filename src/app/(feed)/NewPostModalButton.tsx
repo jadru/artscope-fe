@@ -32,6 +32,7 @@ import { delay } from '@toss/utils';
 type Props = {
   placeholder: string;
   submitBtnText: string;
+  refetch: () => void;
 };
 
 type ImageType = {
@@ -39,9 +40,12 @@ type ImageType = {
   url: string;
 };
 
-export default function NewPostModal({ placeholder, submitBtnText }: Props) {
+export default function NewPostModal({
+  placeholder,
+  submitBtnText,
+  refetch,
+}: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { refetch } = useQuery({ queryKey: ['feed'] });
   const [postType, setPostType] = useState<TopicType>('default');
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [imageCount] = useState<ImageType[]>([]);

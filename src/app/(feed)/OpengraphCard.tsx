@@ -20,6 +20,7 @@ const OpengraphCard = ({ externalUrl }: { externalUrl: string }) => {
       const data = await jxios
         .get(`/api/opengraph?url=${encodeURI(externalUrl)}`)
         .then((res) => res.data);
+
       setOgData(data);
     };
     getOgData();
@@ -40,7 +41,7 @@ const OpengraphCard = ({ externalUrl }: { externalUrl: string }) => {
           className='h-24 w-24 rounded-xl object-cover'
         />
         <div className='w-[calc(100%-6rem)] px-2 py-1.5'>
-          <h5 className='truncate text-xl font-bold'>{ogData.ogTitle}</h5>
+          <h5 className='truncate text-lg font-bold'>{ogData.ogTitle}</h5>
           <p className='line-clamp-2 text-default-600'>
             {ogData.ogDescription}
           </p>

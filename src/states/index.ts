@@ -8,13 +8,11 @@ type userType = {
   clearUser: () => void;
   setNotLogin: () => void;
   isLogin: boolean | undefined;
-  isLoading: boolean;
 };
 export const useUser = create<userType>((set) => ({
-  isLoading: true,
   user: undefined,
   setUser: (user: profileApiResponseType | undefined) =>
-    set({ user, isLogin: !!user, isLoading: false }),
+    set({ user, isLogin: user !== undefined }),
   clearUser: () => set({ user: undefined, isLogin: false }),
   setNotLogin: () => set({ isLogin: false }),
   isLogin: undefined,
