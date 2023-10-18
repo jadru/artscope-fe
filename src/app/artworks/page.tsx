@@ -46,17 +46,16 @@ export default function Page() {
       });
 
   const { data, isSuccess, fetchNextPage, isLoading, isError } =
-    useInfiniteQuery(
-      ['artworks'],
-      async ({ pageParam = 0 }) => await fetchArtworks({ pageParam }),
-      {
-        getNextPageParam: (lastPage) => {
-          return lastPage.pageInfo.totalPages - lastPage.pageInfo.page > 0
-            ? lastPage.pageInfo.page + 1
-            : null;
-        },
-      }
-    );
+    useInfiniteQuery({
+      queryKey: ['artworks'],
+      queryFn: async ({ pageParam }) => await fetchArtworks({ pageParam }),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage) => {
+        return lastPage.pageInfo.totalPages - lastPage.pageInfo.page > 0
+          ? lastPage.pageInfo.page + 1
+          : null;
+      },
+    });
 
   useEffect(() => {
     if (isError) {

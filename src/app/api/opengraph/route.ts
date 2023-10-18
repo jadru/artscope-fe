@@ -17,6 +17,7 @@ export async function GET(request: Request) {
       ogTitle: result['og:title'] ?? result['title'],
       ogUrl: result['og:url'] ?? result['url'],
       ogImage: result['og:image'] || result['image'],
+      ogDescription: result['og:description'] ?? result['description'],
     },
     { status: 200 }
   );

@@ -2,9 +2,12 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import cookie from 'react-cookies';
 import { toast } from 'react-toastify';
 
+import {
+  removeAccessToken,
+  removeRefreshToken,
+} from '@/auth/cookieTokenManager';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
@@ -13,7 +16,8 @@ const SignoutPage = () => {
   const { clearUser } = useUser();
   useEffect(() => {
     jxios.post('/api/logout');
-    cookie.remove('refresh-token');
+    removeAccessToken();
+    removeRefreshToken();
     clearUser();
     push('/');
     toast.success('로그아웃 되었습니다.');

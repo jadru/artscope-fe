@@ -26,14 +26,26 @@ const OpengraphCard = ({ externalUrl }: { externalUrl: string }) => {
   }, [externalUrl]);
 
   return ogData ? (
-    <Link className='h-24 w-full' href={ogData.ogUrl} target='_blank'>
-      <ASNextImage
-        src={ogData.ogImage}
-        alt={ogData.ogTitle}
-        width={200}
-        height={200}
-      />
-      <div className='text-2xl font-bold'>{ogData.ogTitle}</div>
+    <Link
+      href={ogData.ogUrl}
+      target='_blank'
+      className='group mt-1.5 animate-appearance-in hover:text-black'
+    >
+      <div className='flex h-24 rounded-2xl border transition group-hover:bg-default-100'>
+        <ASNextImage
+          src={ogData.ogImage}
+          alt={ogData.ogTitle}
+          width={200}
+          height={200}
+          className='h-24 w-24 rounded-xl object-cover'
+        />
+        <div className='w-[calc(100%-6rem)] px-2 py-1.5'>
+          <h5 className='truncate text-xl font-bold'>{ogData.ogTitle}</h5>
+          <p className='line-clamp-2 text-default-600'>
+            {ogData.ogDescription}
+          </p>
+        </div>
+      </div>
     </Link>
   ) : (
     <></>

@@ -11,7 +11,7 @@ import {
   ScrollShadow,
   useDisclosure,
 } from '@nextui-org/react';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { debounce } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
@@ -41,7 +41,7 @@ type ImageType = {
 
 export default function NewPostModal({ placeholder, submitBtnText }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { refetch } = useInfiniteQuery(['feed']);
+  const { refetch } = useQuery({ queryKey: ['feed'] });
   const [postType, setPostType] = useState<TopicType>('default');
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [imageCount] = useState<ImageType[]>([]);
