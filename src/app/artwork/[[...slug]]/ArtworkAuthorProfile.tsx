@@ -16,7 +16,7 @@ export default function ArtworkAuthorProfile({
   const { push } = useRouter();
   return (
     <div
-      className='flex cursor-pointer flex-row items-center justify-between rounded-2xl border border-white bg-white px-4 py-3 text-default-900 transition-colors duration-100 hover:border-default-400 hover:bg-default-100 hover:text-default-700'
+      className='mx-2 flex cursor-pointer flex-row items-center justify-between rounded-2xl border border-white bg-white px-3 py-3 text-default-900 transition-colors duration-100 hover:border-default-400 hover:bg-default-100 hover:text-default-700'
       onClick={() => push('/profile/' + author.username)}
     >
       <div className='flex flex-col items-start justify-center'>

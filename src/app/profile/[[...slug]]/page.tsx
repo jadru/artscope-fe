@@ -25,15 +25,12 @@ export default async function ProfilePage({
   const data: profileApiType = await fetchProfile(params.slug[0]);
   // when string data.history meets /n, make <br/>component on array
   const history = data.history?.split('\n').map((line, index) => (
-    <>
-      <h3
-        key={'line-' + index}
-        className='cursor-text px-2.5 py-2 text-xl font-normal hover:bg-stone-900/10'
-      >
+    <div key={'line-' + index}>
+      <h3 className='cursor-text px-2.5 py-2 text-xl font-normal hover:bg-stone-900/10'>
         {line}
       </h3>
       {data.history?.length > index && <hr />}
-    </>
+    </div>
   ));
 
   return (
