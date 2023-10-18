@@ -23,7 +23,6 @@ const config = {
     domains: [process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL],
     loader: 'custom',
     loaderFile: './src/utils/imageLoader.ts',
-    minimumCacheTTL: 86400,
   },
 
   compress: true,
