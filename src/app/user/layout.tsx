@@ -1,4 +1,10 @@
+import { Metadata } from 'next';
 import React from 'react';
+
+export const metadata: Metadata = {
+  title: '회원 정보 관리',
+  description: '회원 정보 관리 페이지입니다.',
+};
 
 export default function DashboardLayout({
   children, // will be a page or nested layout

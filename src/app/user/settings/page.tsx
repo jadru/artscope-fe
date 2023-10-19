@@ -53,22 +53,26 @@ export default function SettingsPage() {
   return data ? (
     <>
       <Title>회원 정보 설정</Title>
-      <div className='flex justify-stretch gap-1'>
-        <Input disabled value={data.username} />
-        <Button color='primary'>아이디 변경</Button>
-      </div>
-      <div className='flex items-center justify-between'>
-        {data.picture && (
-          <ASNextImage
-            src={data.picture}
-            alt='프로필 사진'
-            width={100}
-            height={100}
-          />
-        )}
-        <Button fullWidth onClick={() => inputRef?.current?.click()}>
-          프로필 사진 업로드
-        </Button>
+      <div className='flex flex-col items-center justify-between'>
+        <button
+          onClick={() => inputRef?.current?.click()}
+          className='group relative'
+        >
+          {data.picture ? (
+            <ASNextImage
+              src={data.picture}
+              alt='프로필 사진'
+              width={150}
+              height={150}
+              className='h-48 w-48 rounded-full object-cover'
+            />
+          ) : (
+            <div className='h-48 w-48 rounded-full bg-default-200 object-cover'></div>
+          )}
+          <div className='absolute top-0 flex h-48 w-48 items-center justify-center rounded-full bg-black text-white opacity-0 transition group-hover:opacity-50'>
+            프로필 사진 변경
+          </div>
+        </button>
         <input
           type='file'
           className='hidden'
@@ -76,6 +80,10 @@ export default function SettingsPage() {
           accept='image/jpg, image/png, image/jpeg, image/gif'
           onChange={handleProfileImageUpload}
         />
+      </div>
+      <div className='flex justify-stretch gap-1'>
+        <Input disabled value={data.username} />
+        <Button color='primary'>아이디 변경</Button>
       </div>
       <hr />
       <div className='flex justify-stretch gap-1'>
@@ -87,14 +95,16 @@ export default function SettingsPage() {
         <Button>활동명 변경</Button>
       </div>
       <hr />
-      <ArtistForm
-        isEdit={{
-          introduction: data.introduction,
-          history: data.history,
-          snsUrl: data.snsUrl,
-          websiteUrl: data.websiteUrl,
-        }}
-      />
+      {user?.artistStatus !== 'NONE' && (
+        <ArtistForm
+          isEdit={{
+            introduction: data.introduction,
+            history: data.history,
+            snsUrl: data.snsUrl,
+            websiteUrl: data.websiteUrl,
+          }}
+        />
+      )}
     </>
   ) : (
     '로딩 중...'

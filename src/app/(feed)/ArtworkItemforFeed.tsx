@@ -1,7 +1,6 @@
 import { CardBody, CardFooter } from '@nextui-org/card';
 import { Card } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
-import useLocalStorage from 'use-local-storage';
 
 import ASNextImage from '@/components/ASNextImage';
 
@@ -9,11 +8,9 @@ import { feedItemType } from '@/types/feed';
 
 const ArtworkItemforFeed = ({ feed }: { feed: feedItemType }) => {
   const { push } = useRouter();
-  const [_, setScrollY] = useLocalStorage('feed_scroll', 0);
   return (
     <div
       onClick={() => {
-        setScrollY(window.scrollY);
         push('/artwork/' + feed.id);
       }}
       className='group cursor-pointer'
@@ -26,8 +23,8 @@ const ArtworkItemforFeed = ({ feed }: { feed: feedItemType }) => {
             className='h-[200px] w-full bg-white object-cover drop-shadow-sm group-hover:bg-default-100'
             placeholder='blur'
             blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=='
-            width='300'
-            height='300'
+            width='250'
+            height='200'
           />
         </CardBody>
         <CardFooter className='justify-between space-x-0.5 rounded-none text-small transition duration-100 group-hover:bg-default-100'>

@@ -2,16 +2,24 @@
 
 import { Button } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { AiOutlineGoogle } from 'react-icons/ai';
 
 import Title from '@/components/Title';
 
 import LoginForm from '@/app/user/login/LoginForm';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
+import { useUser } from '@/states';
 
 const Login = () => {
   const router = useRouter();
+  const { isLogin } = useUser();
 
+  useEffect(() => {
+    if (isLogin) {
+      router.push('/');
+    }
+  }, [router, isLogin]);
   return (
     <>
       <Title>로그인</Title>

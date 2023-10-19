@@ -14,8 +14,8 @@ export async function GET(request: Request) {
 
   if (!result)
     return NextResponse.json(
-      { error: 'Could not get url metadata' },
-      { status: 500 }
+      { undefined: 'No metadata found' },
+      { status: 204 }
     );
 
   return NextResponse.json(

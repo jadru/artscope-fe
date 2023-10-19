@@ -7,14 +7,14 @@ import {
   ModalHeader,
   useDisclosure,
 } from '@nextui-org/react';
+import { Lottie } from '@toss/lottie';
 import { useRouter } from 'next/navigation';
-import { Dispatch, ReactElement, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { AiOutlineGoogle } from 'react-icons/ai';
 
 type Props = {
   btnText: string;
   title: string;
-  description: ReactElement;
   link: string;
   setIsMobileMenuOpen?: Dispatch<SetStateAction<boolean>>;
 };
@@ -22,7 +22,6 @@ type Props = {
 export default function LoginModal({
   btnText,
   title,
-  description,
   link,
   setIsMobileMenuOpen,
 }: Props) {
@@ -55,7 +54,28 @@ export default function LoginModal({
               <ModalHeader className='flex flex-col gap-1'>
                 <p className='text-center'>{title}</p>
               </ModalHeader>
-              <ModalBody>{description}</ModalBody>
+              <ModalBody>
+                <Lottie
+                  src='/animation/artist-drawing.json'
+                  className='h-48 w-full'
+                  autoPlay
+                  loop
+                />
+                <p className='text-xl font-bold'>
+                  요즘 예술인 커뮤니티 Artscope에 가입하세요!
+                </p>
+                <p>
+                  <b className='font-bold text-blue-600'>
+                    작품 등록, 예술가 검색, 소통 기능, 프로젝트 제안, 예술 관련
+                    정보 제공 등
+                  </b>{' '}
+                  다양한 기능을 회원가입하고 시작해보세요!
+                </p>
+                <p>
+                  다양한 예술가들과 기획자들이 여러분을 기다리고 있습니다. 함께
+                  예술을 만들어가는 즐거움을 느껴보세요.
+                </p>
+              </ModalBody>
               <ModalFooter className='flex-col justify-center gap-2'>
                 <Button
                   color='primary'

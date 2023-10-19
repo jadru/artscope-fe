@@ -131,25 +131,7 @@ export default function NavBar({
           <NavbarItem className='hidden md:inline'>
             <LoginModal
               btnText='로그인 / 회원가입'
-              title='구글로 로그인 / 회원가입'
-              description={
-                <>
-                  <p>아티스트 커뮤니티에 참여하세요</p>
-                  <p>
-                    창의력이 핵심인 <b>아티스트</b>들의 커뮤니티에 함께하세요.
-                    전국의 다양한 예술가들과 네트워크를 구축하고 함께 일하며
-                    성장하세요.
-                  </p>
-                  <p>
-                    포트폴리오를 만드세요. 예술가들의 포트폴리오를 쉽게 만들 수
-                    있게 도와줍니다.
-                  </p>
-                  <p>
-                    좋은 <b>전시 기획자</b>를 만나보세요. 전시에 참여하고 싶은
-                    예술가들을 쉽게 찾을 수 있습니다.
-                  </p>
-                </>
-              }
+              title='로그인 / 회원가입'
               link={NEXT_PUBLIC_API_URL + '/oauth2/authorization/google'}
             />
           </NavbarItem>
@@ -210,24 +192,6 @@ export default function NavBar({
           <LoginModal
             btnText='로그인 / 회원가입'
             title='구글로 로그인 / 회원가입'
-            description={
-              <>
-                <p>아티스트 커뮤니티에 참여하세요</p>
-                <p>
-                  창의력이 핵심인 <b>아티스트</b>들의 커뮤니티에 함께하세요.
-                  전국의 다양한 예술가들과 네트워크를 구축하고 함께 일하며
-                  성장하세요.
-                </p>
-                <p>
-                  포트폴리오를 만드세요. 예술가들의 포트폴리오를 쉽게 만들 수
-                  있게 도와줍니다.
-                </p>
-                <p>
-                  좋은 <b>전시 기획자</b>를 만나보세요. 전시에 참여하고 싶은
-                  예술가들을 쉽게 찾을 수 있습니다.
-                </p>
-              </>
-            }
             link={NEXT_PUBLIC_API_URL + '/oauth2/authorization/google'}
             setIsMobileMenuOpen={setIsMobileMenuOpen}
           />
