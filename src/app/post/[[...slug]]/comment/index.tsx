@@ -142,7 +142,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
         </div>
       )}
       <div>
-        {post.commentPosts.map((comment, index) => (
+        {post.commentPosts.map((comment) => (
           <div key={comment.id}>
             <div className='flex px-2 py-3 hover:bg-default-100'>
               <ASNextImage
@@ -150,7 +150,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                 alt={comment.authorName}
                 width={48}
                 height={48}
-                className='h-12 w-12 rounded-full bg-gray-300'
+                className='h-12 w-12 rounded-full bg-gray-300 object-cover'
               />
               <div className='flex w-[calc(100%-48px)] flex-col pl-2'>
                 <div className='flex'>
@@ -188,81 +188,81 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
               </div>
             </div>
             {comment.commentPosts && comment.commentPosts.length > 0 && (
-              <div className='ml-8 flex flex-col gap-2'>
+              <div className='flex flex-col gap-2 pl-6'>
                 {comment.commentPosts.map((reComment) => (
-                  <div
-                    className='flex px-2 py-3 hover:bg-default-100'
-                    key={reComment.id}
-                  >
-                    <ASNextImage
-                      src={
-                        reComment.authorProfileImageUrl ?? '/images/default.png'
-                      }
-                      alt={reComment.authorName}
-                      width={48}
-                      height={48}
-                      className='h-12 w-12 rounded-full bg-gray-300'
-                    />
-                    <div className='flex w-[calc(100%-48px)] flex-col pl-2'>
-                      <div className='flex'>
-                        <h5 className='text-lg font-bold'>
-                          {reComment.authorName}
-                        </h5>
-                        <h5 className='ml-2 text-gray-500'>
-                          {timeCaculatortoKO(reComment.updatedTime) ??
-                            timeCaculatortoKO(reComment.createdTime)}
-                        </h5>
-                        <h5 className='ml-2 text-gray-500'>
-                          좋아요 {reComment.likes}
-                        </h5>
-                        <h5
-                          className='ml-2 cursor-pointer font-bold text-gray-500 hover:underline'
-                          onClick={() => {
-                            if (
-                              toComment === comment.id &&
-                              reCommentMentionUsername ===
-                                reComment.authorUsername
-                            ) {
-                              setTocomment(undefined);
-                              setReCommentMentionUsername(undefined);
-                              setReCommentParentId(undefined);
-                              return;
-                            }
-                            setTocomment(comment.id);
-                            setReCommentMentionUsername(
-                              reComment.authorUsername
-                            );
-                            setReCommentParentId(reComment.id);
-                          }}
-                        >
-                          댓글
-                        </h5>
-                        {user?.username === reComment.authorUsername && (
-                          <h5
-                            className='ml-2 cursor-pointer text-lg font-bold text-gray-500 hover:underline'
-                            onClick={() => handleCommentDelete(reComment.id)}
-                          >
-                            삭제
+                  <div key={reComment.id} className='hover:bg-default-100'>
+                    <div className='flex px-2 py-3'>
+                      <ASNextImage
+                        src={
+                          reComment.authorProfileImageUrl ??
+                          '/images/default.png'
+                        }
+                        alt={reComment.authorName}
+                        width={48}
+                        height={48}
+                        className='h-12 w-12 rounded-full bg-gray-300 object-cover'
+                      />
+                      <div className='flex w-[calc(100%-48px)] flex-col pl-2'>
+                        <div className='flex'>
+                          <h5 className='text-lg font-bold'>
+                            {reComment.authorName}
                           </h5>
-                        )}
+                          <h5 className='ml-2 text-gray-500'>
+                            {timeCaculatortoKO(reComment.updatedTime) ??
+                              timeCaculatortoKO(reComment.createdTime)}
+                          </h5>
+                          <h5 className='ml-2 text-gray-500'>
+                            좋아요 {reComment.likes}
+                          </h5>
+                          <h5
+                            className='ml-2 cursor-pointer font-bold text-gray-500 hover:underline'
+                            onClick={() => {
+                              if (
+                                toComment === comment.id &&
+                                reCommentMentionUsername ===
+                                  reComment.authorUsername
+                              ) {
+                                setTocomment(undefined);
+                                setReCommentMentionUsername(undefined);
+                                setReCommentParentId(undefined);
+                                return;
+                              }
+                              setTocomment(comment.id);
+                              setReCommentMentionUsername(
+                                reComment.authorUsername
+                              );
+                              setReCommentParentId(reComment.id);
+                            }}
+                          >
+                            댓글
+                          </h5>
+                          {user?.username === reComment.authorUsername && (
+                            <h5
+                              className='ml-2 cursor-pointer text-lg font-bold text-gray-500 hover:underline'
+                              onClick={() => handleCommentDelete(reComment.id)}
+                            >
+                              삭제
+                            </h5>
+                          )}
+                        </div>
+                        <p className='break-words'>
+                          <span
+                            className='cursor-pointer font-bold text-default-600 hover:underline'
+                            onClick={() =>
+                              push('/profile/' + reComment.authorUsername)
+                            }
+                          >
+                            {reComment.mentionUsername
+                              ? '@' + reComment.mentionUsername
+                              : ''}
+                          </span>
+                          {reComment.content}
+                        </p>
                       </div>
-                      <p className='break-words'>
-                        <span
-                          className='cursor-pointer font-bold text-default-600 hover:underline'
-                          onClick={() =>
-                            push('/profile/' + reComment.authorUsername)
-                          }
-                        >
-                          {reComment.mentionUsername
-                            ? '@' + reComment.mentionUsername
-                            : ''}
-                        </span>
-                        {reComment.content}
-                      </p>
                     </div>
                     {reCommentParentId &&
                       reCommentParentId === reComment.id && (
-                        <div className='flex px-2'>
+                        <div className='flex px-2 py-1.5'>
                           <Input
                             placeholder='댓글을 입력하세요'
                             startContent={
@@ -296,7 +296,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
               </div>
             )}
             {toComment && !reCommentParentId && toComment === comment.id && (
-              <div className='flex px-2'>
+              <div className='flex px-2 py-1.5'>
                 <Input
                   placeholder='댓글을 입력하세요'
                   startContent={
@@ -325,7 +325,6 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                 </Button>
               </div>
             )}
-            {index + 1 !== post.commentPosts.length && <hr />}
           </div>
         ))}
       </div>

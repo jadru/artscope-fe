@@ -40,7 +40,7 @@ const OpengraphCard = ({ externalUrl }: { externalUrl: string }) => {
           height={200}
           className='h-24 w-24 rounded-xl object-cover'
         />
-        <div className='w-[calc(100%-6rem)] px-2 py-1.5'>
+        <div className='w-[calc(100%-6rem)] px-3 py-3'>
           <h5 className='truncate text-lg font-bold'>{ogData.ogTitle}</h5>
           <p className='line-clamp-2 text-default-600'>
             {ogData.ogDescription}

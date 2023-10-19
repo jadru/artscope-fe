@@ -7,6 +7,7 @@ import ArtworkAction from '@/app/artwork/[[...slug]]/ArtworkAction';
 import ArtworkAuthorProfile from '@/app/artwork/[[...slug]]/ArtworkAuthorProfile';
 import ArtworkComment from '@/app/artwork/[[...slug]]/ArtworkComment';
 import ArtworkContent from '@/app/artwork/[[...slug]]/ArtworkContent';
+import ArtworkTags from '@/app/artwork/[[...slug]]/ArtworkTags';
 import {
   NEXT_PUBLIC_API_URL,
   NEXT_PUBLIC_MEDIA_STORAGE_URL,
@@ -19,6 +20,7 @@ const fetchArtwork = async (id: string) =>
   await fetch(NEXT_PUBLIC_API_URL + '/api/artworks/' + id, {
     method: 'GET',
     cache: 'no-cache',
+    credentials: 'include',
   }).then((res) => {
     if (!res.ok) {
       throw new Error('Failed to fetch data');
@@ -65,7 +67,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function ProfilePage({
+export default async function ArtworkPage({
   params,
 }: {
   params: { slug: string[] };
@@ -76,25 +78,11 @@ export default async function ProfilePage({
     data.artwork.authorUsername
   );
   return (
-    <div className='my-4 space-y-3'>
+    <div className='space-y-3 py-4 md:border-x'>
       <h1 className='mx-2 break-words text-left font-serif text-4xl'>
         {data.artwork.title}
       </h1>
-      {data.artwork.tags.length > 0 && (
-        <div className='mx-2 flex gap-1'>
-          {data.artwork.tags.map(
-            (value) =>
-              value !== '' && (
-                <div
-                  className='text-bold rounded-full bg-default-100 px-2 pb-1 pt-0.5 text-sm text-default-700'
-                  key={value}
-                >
-                  {value}
-                </div>
-              )
-          )}
-        </div>
-      )}
+      <ArtworkTags data={data} />
       <div className='h-0.5 bg-default-100'></div>
       <h2 className='mx-2 break-words text-left text-xl font-normal'>
         <ArtworkContent content={data.artwork.description} />
@@ -102,7 +90,7 @@ export default async function ProfilePage({
 
       <div className='flex flex-col items-center justify-center'>
         {data.artwork.artworkMedias.map((media, mediaIndex) => (
-          <>
+          <div key={media.id}>
             {(media.mediaType === 'image' && (
               <ASNextImage
                 className='relative h-auto w-full'
@@ -131,7 +119,7 @@ export default async function ProfilePage({
                   controls
                 />
               )}
-          </>
+          </div>
         ))}
       </div>
       <hr className='h-0.5 bg-default-100'></hr>

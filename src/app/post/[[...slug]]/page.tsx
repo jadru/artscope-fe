@@ -37,6 +37,7 @@ const fetchPost = async (id: string) =>
   await fetch(NEXT_PUBLIC_API_URL + '/api/posts/' + id, {
     method: 'GET',
     cache: 'no-cache',
+    credentials: 'include',
   }).then((res) => res.json());
 
 export default async function SinglePost({

@@ -1,4 +1,4 @@
-IMAGE_FILE_PATH="/home/ubuntu/deploy/image.txt"
+IMAGE_FILE_PATH="/home/ubuntu/deploy/fe-image.txt"
 IMAGE_NAME=$(cat "$IMAGE_FILE_PATH")
 CONTAINER_ENV_PATH="/home/ubuntu/env/.env.fe"
 SERVICE_NAME=art-fe
@@ -11,9 +11,9 @@ art-be:
 container_name: art-frontend
 image: ${IMAGE_NAME}
 ports:
-- 18080:8080
+  - 3000:3000
 env_file:
-- ${CONTAINER_ENV_PATH}
+  - ${CONTAINER_ENV_PATH}
 
 networks:
 default:

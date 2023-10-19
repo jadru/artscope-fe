@@ -55,7 +55,7 @@ export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
   };
 
   return (
-    <div className='space-y-2 border-t px-2 py-4 md:border'>
+    <div className='space-y-2 px-2 py-4'>
       <h4 className='px-2 text-3xl'>
         댓글 {aw.artwork.artworkComments.length}
       </h4>
@@ -96,7 +96,7 @@ export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
                 alt={comment.authorName}
                 width={48}
                 height={48}
-                className='h-12 w-12 rounded-full bg-gray-300'
+                className='h-12 w-12 rounded-full bg-gray-300 object-cover'
               />
               <div className='flex w-[calc(100%-48px)] flex-col pl-2'>
                 <div className='flex'>

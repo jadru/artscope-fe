@@ -57,6 +57,20 @@ export default function SinglePostItem({
                 className='p-1 hover:underline'
               />
             </div>
+            <p className='mx-1.5 mt-1 text-default-500 '>
+              {new Date(feed.createdTime).toLocaleString('ko-KR', {
+                dateStyle: 'full',
+                timeStyle: 'short',
+              }) + ' 작성'}
+            </p>
+            {feed.updatedTime && (
+              <p className='mx-1.5 mt-0.5 text-default-500 '>
+                {new Date(feed.updatedTime).toLocaleString('ko-KR', {
+                  dateStyle: 'full',
+                  timeStyle: 'short',
+                }) + ' 수정'}
+              </p>
+            )}
             <div className='flex flex-col justify-start px-1.5 py-3'>
               <div className='text flex w-full flex-col gap-1'>
                 <h5 className='w-full overflow-x-hidden text-base text-medium leading-normal tracking-tight text-default-800'>
@@ -84,17 +98,6 @@ export default function SinglePostItem({
                 </h5>
               </div>
             </div>
-            <p className='text-md px-1.5 text-left font-bold text-default-600'>
-              {feed.updatedTime
-                ? new Date(feed.updatedTime).toLocaleString('ko-KR', {
-                    dateStyle: 'full',
-                    timeStyle: 'short',
-                  }) + ' 편집됨'
-                : new Date(feed.createdTime).toLocaleString('ko-KR', {
-                    dateStyle: 'full',
-                    timeStyle: 'short',
-                  }) + ' 작성'}
-            </p>
           </div>
         </div>
         <SinglePostItemAction feed={feed} setEditMode={setEdit} />

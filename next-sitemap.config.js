@@ -21,11 +21,11 @@ module.exports = {
         disallow: [
           '/404',
           '/admin/**',
-          '/oauth2/**',
           '/user/**',
-          '/api/**',
           '/_next/**',
-          '/upload',
+          '/magazines/**',
+          '/networks/**',
+          '/events/**',
         ],
       },
     ],
@@ -33,10 +33,10 @@ module.exports = {
   exclude: [
     '/404',
     '/admin/**',
-    '/oauth2/**',
     '/user/**',
-    '/api/**',
     '/_next/**',
-    '/upload',
+    '/magazines/**',
+    '/networks/**',
+    '/events/**',
   ],
 };

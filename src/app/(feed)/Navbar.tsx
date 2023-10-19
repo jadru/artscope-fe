@@ -50,10 +50,10 @@ export default function NavBar({
       name: '작품',
       url: '/artwork',
     },
-    {
-      name: '이벤트',
-      url: '/event',
-    },
+    // {
+    //   name: '이벤트',
+    //   url: '/event',
+    // },
     // {
     //   name: '네트워크',
     //   url: '/network',
