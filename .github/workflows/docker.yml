@@ -78,10 +78,10 @@ jobs:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
       # Docker 이미지 이름을 image.txt 파일에 쓰기
       - name: Write Docker image name to file
-        run: echo "${{ env.IMAGE_NAME }}:${{ secrets.MAJOR }}.${{ secrets.MINOR }}" > image.txt
+        run: echo "${{ env.IMAGE_NAME }}:${{ secrets.MAJOR }}.${{ secrets.MINOR }}" > fe-image.txt
 
       - name: Create zip file for AWS CodeDeploy
-        run: mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec.yml image.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
+        run: mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec.yml fe-image.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
 
         # AWS 설정
       - name: AWS Configure

@@ -10,8 +10,8 @@ import {
   AiOutlineShareAlt,
 } from 'react-icons/ai';
 import { RWebShare } from 'react-web-share';
-import useLocalStorage from 'use-local-storage';
 
+import { getRefreshToken } from '@/auth/cookieTokenManager';
 import { NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
@@ -20,7 +20,6 @@ import { feedItemType } from '@/types/feed';
 
 export default function FeedListItemAction({ feed }: { feed: feedItemType }) {
   const [like, setLike] = useState<boolean>(feed.isLiked);
-  const [_, setScrollY] = useLocalStorage('feed_scroll', 0);
   const { user, isLogin } = useUser();
   const { push } = useRouter();
 
@@ -54,10 +53,13 @@ export default function FeedListItemAction({ feed }: { feed: feedItemType }) {
           className={`text-md hover:text-red-500 ${
             like ? 'text-red-500' : 'text-gray-500'
           }`}
-          onClick={() => {
-            setScrollY(window.scrollY);
-            setLike(!like);
-            handleLike();
+          onClick={async () => {
+            if (await getRefreshToken()) {
+              setLike(!like);
+              handleLike();
+            } else {
+              push('/user/login');
+            }
           }}
         >
           {feed.likes + (like ? 1 : 0) + (feed.isLiked ? -1 : 0)}
@@ -68,7 +70,6 @@ export default function FeedListItemAction({ feed }: { feed: feedItemType }) {
           size='sm'
           className='text-md text-gray-500 hover:text-blue-500'
           onClick={() => {
-            setScrollY(window.scrollY);
             push(`/post/${feed.id}`);
           }}
         >
@@ -89,7 +90,6 @@ export default function FeedListItemAction({ feed }: { feed: feedItemType }) {
         {feed.authorUsername === user?.username && (
           <Button
             onClick={() => {
-              setScrollY(window.scrollY);
               push(`/post/${feed.id}?edit=true`);
             }}
             startContent={<AiOutlineEdit className='h-5 w-5' />}
@@ -106,9 +106,6 @@ export default function FeedListItemAction({ feed }: { feed: feedItemType }) {
               text: 'Artscope 포스트',
               url: NEXT_PUBLIC_ROOT_URL + '/post/' + feed.id,
               title: feed.content.slice(0, 18) + ' - Artscope',
-            }}
-            onClick={() => {
-              setScrollY(window.scrollY);
             }}
           >
             <Button
