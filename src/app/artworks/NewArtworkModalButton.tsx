@@ -60,7 +60,7 @@ const initialArtWork: ArtWorkApiRequestType = {
 export default function NewArtworkModal({
   placeholder,
   submitBtnText,
-  refetch,
+  refetch: refetchArtwork,
 }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -323,7 +323,7 @@ export default function NewArtworkModal({
           resetAfterUpload();
           if (res.status === 201) {
             toast.success('작품이 업로드되었습니다.');
-            refetch();
+            refetchArtwork();
             onClose();
           }
         })
@@ -354,7 +354,7 @@ export default function NewArtworkModal({
         }}
       >
         <UserInfo />
-        <span className='flex h-12 w-[calc(100%-4rem)] items-center truncate rounded-3xl border border-white bg-default-100 px-3 text-left text-sm font-bold text-default-500'>
+        <span className='flex h-12 w-[calc(100%-3rem)] items-center truncate rounded-3xl border border-white bg-default-100 px-3 text-left text-sm font-bold text-default-500'>
           {placeholder}
         </span>
       </div>
