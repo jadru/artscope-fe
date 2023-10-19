@@ -56,15 +56,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
           setPostData((prev) => {
             return {
               ...prev,
-              commentPosts: prev.commentPosts.map((comment) => {
-                if (comment.id === toComment) {
-                  return {
-                    ...comment,
-                    childComments: res.data.commentPosts,
-                  };
-                }
-                return comment;
-              }),
+              commentPosts: res.data.commentPosts,
             };
           });
           setReCommentContent('');
@@ -203,20 +195,20 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                         </div>
                         <p className='break-words'>
                           <span
-                            className='cursor-pointer font-bold text-default-600 hover:underline'
+                            className='cursor-pointer font-bold text-blue-500 hover:underline'
                             onClick={() =>
                               push('/profile/' + reComment.authorUsername)
                             }
                           >
                             {reComment.mentionUsername
-                              ? '@' + reComment.mentionUsername
+                              ? '@' + reComment.mentionUsername + '  '
                               : ''}
                           </span>
                           {reComment.content}
                         </p>
                       </div>
                     </div>
-                    {reComment.id && (
+                    {toComment && toComment === reComment?.id && (
                       <div className='flex px-2 py-1.5'>
                         <Input
                           placeholder='댓글을 입력하세요'

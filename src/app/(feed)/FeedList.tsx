@@ -73,6 +73,7 @@ export default function FeedList({ data }: FeedListProps) {
           <hr />
         </div>
       ))}
+      {feeds.length === 0 && <p className='m-12'>데이터가 없습니다.</p>}
     </div>
   );
 }

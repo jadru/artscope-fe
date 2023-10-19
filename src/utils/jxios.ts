@@ -64,7 +64,6 @@ Jxios.interceptors.response.use(
           }
         case 502:
         case 500:
-          toast.error(`서버에 문제가 있습니다.`);
           return Promise.reject(err);
         default:
           toast.error(`
