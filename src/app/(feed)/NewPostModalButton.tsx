@@ -43,7 +43,7 @@ type ImageType = {
 export default function NewPostModal({
   placeholder,
   submitBtnText,
-  refetch,
+  refetch: refetchFeed,
 }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [postType, setPostType] = useState<TopicType>('default');
@@ -80,7 +80,7 @@ export default function NewPostModal({
       .then(async () => {
         toast.success('작성되었습니다.');
         await delay(500);
-        await refetch();
+        await refetchFeed();
       })
       .finally(() => {
         setIsSubmit(false);
@@ -99,7 +99,7 @@ export default function NewPostModal({
         <UserInfo />
         <span
           className={
-            'flex h-12 w-[calc(100%-4rem)] items-center truncate rounded-3xl border border-white bg-default-100 px-3 text-left text-sm font-bold text-default-500'
+            'flex h-12 w-[calc(100%-3rem)] items-center truncate rounded-3xl border border-white bg-default-100 px-3 text-left text-sm font-bold text-default-500'
           }
         >
           {postContent.length === 0 ? placeholder : postContent}
