@@ -30,7 +30,7 @@ export type feedItemType = {
 export type SinglePostType = {
   id: number;
   content: string;
-  view: number;
+  views: number;
   likes: number;
   comments: number;
   isLiked: boolean;
@@ -42,5 +42,19 @@ export type SinglePostType = {
   createdTime: Date;
   updatedTime: Date | null;
   parentPostId: number | null;
-  commentPosts: SinglePostType[];
+  commentPosts: CommentPostType[];
+};
+
+export type CommentPostType = {
+  id: number;
+  content: string;
+  comments: number;
+  authorUsername: string;
+  authorName: string;
+  mentionUsername: string | null;
+  authorProfileImageUrl: string | null;
+  createdTime: Date;
+  updatedTime: Date | null;
+  parentCommentId: number | null;
+  childComments: SinglePostType[];
 };
