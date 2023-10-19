@@ -31,7 +31,7 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
     <div
       className={`border-default-200 bg-white pb-2 transition-colors md:mx-0 md:border-x ${
         feed.type === 'artwork' ? 'cursor-pointer hover:bg-gray-100' : ''
-      }`}
+      }}`}
     >
       <div className='flex w-full flex-col justify-between text-left md:flex-row'>
         <div className='w-full'>

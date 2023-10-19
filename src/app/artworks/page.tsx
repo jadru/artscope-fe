@@ -14,7 +14,7 @@ import ArtworkItem from '@/app/artworks/ArtworkItem';
 import NewArtworkModal from '@/app/artworks/NewArtworkModalButton';
 import { useUser } from '@/states';
 
-import { ArtWorkApiResponseType, ArtworkType } from '@/types/artwork';
+import { ArtWorkApiResponseType } from '@/types/artwork';
 
 const SkeletonArtwork = () => (
   <Card className='w-full gap-2'>
@@ -91,7 +91,7 @@ export default function Page() {
       {isSuccess && (
         <ResponsiveGrid>
           {data.pages.map((group) =>
-            group.artworks.map((aw: ArtworkType) => (
+            group.artworks.map((aw) => (
               <ArtworkItem artwork={aw} key={aw.artwork.id} />
             ))
           )}
