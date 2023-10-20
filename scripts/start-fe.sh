@@ -7,7 +7,7 @@ echo "IMAGE_NAME: $IMAGE_NAME 도커 실행"
 echo "version: '3.8'
 
 services:
-  art-be:
+  art-fe:
     container_name: art-frontend-production
     image: ${IMAGE_NAME}
     ports:
