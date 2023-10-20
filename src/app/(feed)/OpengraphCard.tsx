@@ -31,8 +31,9 @@ const OpengraphCard = ({ externalUrl }: { externalUrl: string }) => {
       href={ogData.ogUrl}
       target='_blank'
       className='group mt-1.5 animate-appearance-in hover:text-black'
+      onClick={(e) => e.stopPropagation()}
     >
-      <div className='flex h-24 rounded-2xl border transition group-hover:bg-default-100'>
+      <div className='flex h-24 rounded-2xl border transition group-hover:bg-default-200'>
         <ASNextImage
           src={ogData.ogImage}
           alt={ogData.ogTitle}

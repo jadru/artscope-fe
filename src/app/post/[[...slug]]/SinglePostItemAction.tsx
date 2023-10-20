@@ -1,7 +1,7 @@
 import { Button } from '@nextui-org/react';
 import { DebounceClick, useDebounce } from '@toss/react';
 import { useRouter } from 'next/navigation';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   AiFillLike,
   AiOutlineDelete,
@@ -11,7 +11,6 @@ import {
   AiOutlineShareAlt,
 } from 'react-icons/ai';
 import { toast } from 'react-toastify';
-import { RWebShare } from 'react-web-share';
 
 import { NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 import { useUser } from '@/states';
@@ -21,10 +20,8 @@ import { SinglePostType } from '@/types/feed';
 
 export default function SinglePostItemAction({
   feed,
-  setEditMode,
 }: {
   feed: SinglePostType;
-  setEditMode: Dispatch<SetStateAction<boolean>>;
 }) {
   const [like, setLike] = useState<boolean>(feed.isLiked);
   const { user, isLogin } = useUser();
@@ -107,7 +104,7 @@ export default function SinglePostItemAction({
                   className='text-md text-gray-500 hover:text-purple-500'
                   onClick={(e) => {
                     e.stopPropagation();
-                    setEditMode(true);
+                    push(`/post/${feed.id}?edit=true`);
                   }}
                 >
                   수정
@@ -126,24 +123,32 @@ export default function SinglePostItemAction({
               </DebounceClick>
             </>
           )}
-          <DebounceClick wait={500}>
-            <RWebShare
-              data={{
-                text: 'Artscope 포스트',
-                url: NEXT_PUBLIC_ROOT_URL + '/post/' + feed.id,
-                title: feed.content.slice(0, 18) + ' - Artscope',
-              }}
-            >
-              <Button
-                startContent={<AiOutlineShareAlt className='h-5 w-5' />}
-                variant='light'
-                size='sm'
-                className='text-md text-gray-500 hover:text-amber-600'
-              >
-                공유
-              </Button>
-            </RWebShare>
-          </DebounceClick>
+          <Button
+            startContent={<AiOutlineShareAlt className='h-5 w-5' />}
+            variant='light'
+            size='sm'
+            className='text-md text-gray-500 hover:text-amber-600'
+            onClick={(e) => {
+              e.stopPropagation();
+              if (navigator.share) {
+                navigator.share({
+                  url: NEXT_PUBLIC_ROOT_URL + '/post/' + feed.id,
+                  title: 'Artscope -' + feed.content.slice(0, 25),
+                });
+              } else {
+                if (navigator.clipboard)
+                  navigator.clipboard
+                    .writeText(NEXT_PUBLIC_ROOT_URL + '/post/' + feed.id)
+                    .then(() => {
+                      toast.success('링크가 복사되었습니다.', {
+                        position: 'bottom-center',
+                      });
+                    });
+              }
+            }}
+          >
+            공유
+          </Button>
         </div>
       </div>
     </>

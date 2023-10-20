@@ -67,13 +67,23 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
 
   const handleCommentDelete = (id: number) => {
     if (confirm('댓글을 정말 삭제하시겠습니까?'))
-      jxios.delete(`/api/comments/${id}`).then((res) => {
+      jxios.delete(`/api/posts/comments/${id}`).then((res) => {
         if (res.status === 200)
           setPostData({
             ...post,
-            commentPosts: post.commentPosts.filter(
-              (comment) => comment.id !== id
-            ),
+            commentPosts: post.commentPosts.map((comment) => {
+              return comment.id === id
+                ? {
+                    ...comment,
+                    content: '삭제된 댓글입니다.',
+                  }
+                : {
+                    ...comment,
+                    childComments: comment.childComments.filter(
+                      (reComment) => reComment.id !== id
+                    ),
+                  };
+            }),
           });
       });
   };
@@ -123,20 +133,21 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                     {timeCaculatortoKO(comment.updatedTime) ??
                       timeCaculatortoKO(comment.createdTime)}
                   </h5>
-                  {isLogin && (
-                    <h5
-                      className='ml-2 cursor-pointer font-bold text-gray-500 hover:underline'
-                      onClick={() => {
-                        if (toComment === comment.id) {
-                          setTocomment(undefined);
-                          return;
-                        }
-                        setTocomment(comment.id);
-                      }}
-                    >
-                      댓글
-                    </h5>
-                  )}
+
+                  <h5
+                    className='ml-2 cursor-pointer font-bold text-gray-500 hover:underline'
+                    onClick={() => {
+                      if (!isLogin) push('/user/login');
+                      if (toComment === comment.id) {
+                        setTocomment(undefined);
+                        return;
+                      }
+                      setTocomment(comment.id);
+                    }}
+                  >
+                    댓글
+                  </h5>
+
                   {user?.username === comment.authorUsername && (
                     <h5
                       className='ml-2 cursor-pointer text-lg font-bold text-gray-500 hover:underline'
@@ -173,13 +184,12 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                             {timeCaculatortoKO(reComment.updatedTime) ??
                               timeCaculatortoKO(reComment.createdTime)}
                           </h5>
-                          <h5 className='ml-2 text-gray-500'>
-                            좋아요 {reComment.likes}
-                          </h5>
                           <h5
                             className='ml-2 cursor-pointer font-bold text-gray-500 hover:underline'
                             onClick={() => {
-                              setTocomment(reComment.id);
+                              isLogin
+                                ? setTocomment(reComment.id)
+                                : push('/user/login');
                             }}
                           >
                             댓글
@@ -208,7 +218,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                         </p>
                       </div>
                     </div>
-                    {toComment && toComment === reComment?.id && (
+                    {isLogin && toComment && toComment === reComment?.id && (
                       <div className='flex px-2 py-1.5'>
                         <Input
                           placeholder='댓글을 입력하세요'
@@ -237,7 +247,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                 ))}
               </div>
             )}
-            {toComment && toComment === comment.id && (
+            {isLogin && toComment && toComment === comment.id && (
               <div className='flex px-2 py-1.5'>
                 <Input
                   placeholder='댓글을 입력하세요'

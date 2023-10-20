@@ -47,7 +47,6 @@
     "react-query": "^3.39.3",
     "react-textarea-autosize": "^8.5.3",
     "react-toastify": "^9.1.2",
-    "react-web-share": "^2.0.2",
     "sass": "^1.62.0",
     "sharp": "^0.32.0",
     "tailwind-merge": "^1.10.0",
