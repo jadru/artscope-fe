@@ -67,7 +67,7 @@ export default function Search() {
                 data.artworks.length > 0 &&
                 data.artworks.map((item) => (
                   <ArtworkItem
-                    artwork={{ artwork: item, isLike: false }}
+                    artwork={{ artwork: item, isLiked: false }}
                     key={item.id}
                   />
                 ))}
