@@ -28,13 +28,7 @@ const OpengraphCard = ({ externalUrl }: { externalUrl: string }) => {
 
   return ogData ? (
     <Link
-      href={
-        ogData.ogUrl.startsWith('http')
-          ? ogData.ogUrl
-          : externalUrl.match(
-              /(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/gi
-            ) + ogData.ogUrl
-      }
+      href={encodeURI(externalUrl)}
       target='_blank'
       className='group mt-1.5 animate-appearance-in hover:text-black'
       onClick={(e) => e.stopPropagation()}
