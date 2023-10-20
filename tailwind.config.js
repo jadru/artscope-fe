@@ -1,59 +1,85 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { fontFamily } = require('tailwindcss/defaultTheme');
+const { nextui } = require('@nextui-org/react');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  content: [
+    './src/**/*.{js,jsx,ts,tsx}',
+    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
+  ],
   theme: {
+    fontSize: {
+      sm: '0.7rem',
+      base: '0.95rem',
+      lg: '1rem',
+      xl: '1.125rem',
+      '2xl': '1.25rem',
+      '3xl': '1.563rem',
+      '4xl': '2.953rem',
+      '5xl': '3.441rem',
+    },
     extend: {
       fontFamily: {
-        primary: [...fontFamily.sans],
-      },
-      colors: {
-        primary: {
-          // Customize it on globals.scss :root
-          50: 'rgb(var(--tw-color-primary-50) / <alpha-value>)',
-          100: 'rgb(var(--tw-color-primary-100) / <alpha-value>)',
-          200: 'rgb(var(--tw-color-primary-200) / <alpha-value>)',
-          300: 'rgb(var(--tw-color-primary-300) / <alpha-value>)',
-          400: 'rgb(var(--tw-color-primary-400) / <alpha-value>)',
-          500: 'rgb(var(--tw-color-primary-500) / <alpha-value>)',
-          600: 'rgb(var(--tw-color-primary-600) / <alpha-value>)',
-          700: 'rgb(var(--tw-color-primary-700) / <alpha-value>)',
-          800: 'rgb(var(--tw-color-primary-800) / <alpha-value>)',
-          900: 'rgb(var(--tw-color-primary-900) / <alpha-value>)',
-        },
-        dark: '#222222',
-      },
-      keyframes: {
-        flicker: {
-          '0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100%': {
-            opacity: 0.99,
-            filter:
-              'drop-shadow(0 0 1px rgba(252, 211, 77)) drop-shadow(0 0 15px rgba(245, 158, 11)) drop-shadow(0 0 1px rgba(252, 211, 77))',
-          },
-          '20%, 21.999%, 63%, 63.999%, 65%, 69.999%': {
-            opacity: 0.4,
-            filter: 'none',
-          },
-        },
-        shimmer: {
-          '0%': {
-            backgroundPosition: '-700px 0',
-          },
-          '100%': {
-            backgroundPosition: '700px 0',
-          },
-        },
+        primary: ['var(--noto-sans-kr)', ...fontFamily.sans],
+        serif: ['var(--nanum-myeongjo)', ...fontFamily.serif],
       },
       animation: {
-        flicker: 'flicker 3s linear infinite',
-        shimmer: 'shimmer 1.3s linear infinite',
+        fade: 'fadeOut 1s ease-in-out',
       },
+      // keyframes: {
+      //   flicker: {
+      //     '0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100%': {
+      //       opacity: 0.99,
+      //       filter:
+      //         'drop-shadow(0 0 1px rgba(252, 211, 77)) drop-shadow(0 0 15px rgba(245, 158, 11)) drop-shadow(0 0 1px rgba(252, 211, 77))',
+      //     },
+      //     '20%, 21.999%, 63%, 63.999%, 65%, 69.999%': {
+      //       opacity: 0.4,
+      //       filter: 'none',
+      //     },
+      //   },
+      //   shimmer: {
+      //     '0%': {
+      //       backgroundPosition: '-700px 0',
+      //     },
+      //     '100%': {
+      //       backgroundPosition: '700px 0',
+      //     },
+      //   },
+      // },
+      // animation: {
+      //   flicker: 'flicker 3s linear infinite',
+      //   shimmer: 'shimmer 1.3s linear infinite',
+      // },
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('daisyui')],
-  daisyui: {
-    themes: ['emerald', 'dark'],
-  },
+  darkMode: 'class',
+  plugins: [
+    nextui({
+      prefix: 'nextui',
+      addCommonColors: true,
+      themes: {
+        light: {
+          colors: {
+            primary: {
+              DEFAULT: '#086788',
+            },
+            secondary: {
+              DEFAULT: '#07A0C3',
+            },
+            accent: {
+              DEFAULT: '#F0c808',
+            },
+            danger: {
+              DEFAULT: '#DD1C1A',
+            },
+          },
+        },
+        dark: {
+          colors: {},
+        },
+      },
+    }),
+  ],
 };

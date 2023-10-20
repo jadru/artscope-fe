@@ -15,3 +15,5 @@ declare module '*.webm' {
 
 declare module 'react-session-api';
 declare module 'react-responsive-masonry';
+declare module 'opengraph-react';
+declare module 'react-datepicker';

@@ -41,3 +41,6 @@ sitemap.xml
 sitemap-*.xml
 
 /git-story_media
+
+public/sw.js
+public/workbox-*.js

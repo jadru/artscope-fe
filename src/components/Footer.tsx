@@ -1,66 +1,10 @@
-import Link from 'next/link';
-import React, { FC } from 'react';
-
-interface Props {
-  dark?: boolean;
-  absolute?: boolean;
-  left?: boolean;
-}
-const Footer: FC<Props> = ({
-  dark = false,
-  absolute = false,
-  left = false,
-}) => {
+export default function Footer() {
   return (
-    <footer
-      className={`footer w-full items-center py-6 ${
-        dark ? '' : 'dark:bg-dark'
-      } ${absolute ? 'fixed bottom-[-2px] pb-4' : ''}`}
-    >
-      <div className={`w-full ${dark ? 'text-gray-100' : 'text-dark'}`}>
-        <p
-          className={`w-full ${
-            left ? 'text-left' : 'text-center'
-          } dark:text-gray-100`}
-        >
-          <Link
-            href='https://www.instagram.com/artscope.kr/'
-            target='_blank'
-            className='link'
-          >
-            {' '}
-            <strong>Artscope</strong>
-          </Link>{' '}
-          by{' '}
-          <Link
-            className='link text-amber-700 dark:text-amber-300'
-            href='https://www.instagram.com/media_xi/'
-            target='_blank'
-          >
-            Media Xi
-          </Link>{' '}
-          x{' '}
-          <Link
-            href='https://art.geumjeong.go.kr'
-            target='_blank'
-            className={`link ${
-              dark ? 'text-green-200' : 'text-cyan-700 dark:text-cyan-300'
-            }`}
-          >
-            금샘미술관
-          </Link>{' '}
-          &{' '}
-          <Link
-            href='https://ad21pifdjli.typeform.com/to/kg4KHrj4'
-            target='_blank'
-            className='link'
-          >
-            피드백
-          </Link>
-        </p>
-      </div>
+    <footer className='flex h-24 w-full flex-col items-center justify-center border-y bg-default-100'>
+      <p className='text-md px-8 text-center font-bold text-gray-600'>
+        © 2023 Artscope by MediaXi from Busan
+        <br /> All rights reserved.
+      </p>
     </footer>
   );
-};
-
-export default Footer;
+}

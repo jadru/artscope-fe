@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html {
-  @apply bg-white dark:bg-dark;
+  @apply dark:bg-dark bg-white;
 }
 @layer base {
   .h0 {
@@ -49,6 +49,14 @@ html {
   /* Class to adjust with sticky footer */
   .min-h-main {
     @apply min-h-[calc(100vh-56px)];
+  }
+}
+
+* {
+  font-size: 0.95rem;
+  font-family: Noto Sans KR, sans-serif;
+  @media (max-width: 768px) {
+    font-size: 1rem;
   }
 }
 
@@ -145,4 +153,12 @@ html {
 
 *:focus {
   outline: none;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+  &:hover {
+    color: #07a0c3;
+  }
 }
