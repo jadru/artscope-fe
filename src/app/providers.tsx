@@ -10,7 +10,12 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
+import useUserHook from '@/hooks/useUser';
+
+import NavBar from '@/app/(feed)/Navbar';
+
 export function Providers({ children }: { children: React.ReactNode }) {
+  useUserHook();
   const [queryClient] = useState(
     new QueryClient({
       queryCache: new QueryCache({
@@ -21,7 +26,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
   return (
     <QueryClientProvider client={queryClient}>
-      <NextUIProvider>{children}</NextUIProvider>
+      <NextUIProvider>
+        <NavBar theme='light' />
+        {children}
+      </NextUIProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
