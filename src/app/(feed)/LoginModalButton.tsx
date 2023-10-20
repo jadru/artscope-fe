@@ -62,7 +62,7 @@ export default function LoginModal({
                   loop
                 />
                 <p className='text-xl font-bold'>
-                  요즘 예술인 커뮤니티 Artscope에 가입하세요!
+                  창의적인 예술가들의 성장과 교류 커뮤니티 Artscope!
                 </p>
                 <p>
                   <b className='font-bold text-blue-600'>
