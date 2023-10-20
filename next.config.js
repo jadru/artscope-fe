@@ -1,7 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const withPWA = require('next-pwa');
+const config = {
   eslint: {
     dirs: ['src'],
+  },
+  experimental: {
+    scrollRestoration: true,
   },
   async rewrites() {
     return [
@@ -12,22 +17,17 @@ const nextConfig = {
     ];
   },
 
+  reactStrictMode: false,
+
   images: {
     domains: [process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL],
     loader: 'custom',
     loaderFile: './src/utils/imageLoader.ts',
-    minimumCacheTTL: 60,
   },
 
   compress: true,
 
-  reactStrictMode: false,
-  swcMinify: true,
   output: 'standalone',
-
-  future: {
-    webpack5: true,
-  },
 
   // SVGR
   webpack(config, { isServer, webpack }) {
@@ -53,11 +53,22 @@ const nextConfig = {
     if (!isServer) {
       config.resolve.fallback = {
         fs: false,
+        net: false,
+        tls: false,
+        path: false,
+        dns: false,
       };
     }
     return config;
   },
 };
+
+const nextConfig = withPWA({
+  dest: 'public',
+  register: true,
+  disable: process.env.NODE_ENV === 'development',
+  skipWaiting: true,
+})(config);
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
