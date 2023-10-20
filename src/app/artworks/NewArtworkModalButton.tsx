@@ -71,6 +71,7 @@ export default function NewArtworkModal({
   const [tagCount, setTagCount] = useState<string[]>([]);
   const [postContent, setPostContent] = useState<string>('');
   const [postTitle, setPostTitle] = useState<string>('');
+  const [uploadPopoverOpen, setUploadPopoverOpen] = useState(false);
 
   const regExp = /[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/ ]/gim;
 
@@ -134,6 +135,7 @@ export default function NewArtworkModal({
         },
       ]);
     }
+    setUploadPopoverOpen(false);
   };
 
   const handleLinkAdded = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -169,6 +171,7 @@ export default function NewArtworkModal({
     ]);
     setImgs((prev) => [...prev, link]);
     e.currentTarget.value = '';
+    setUploadPopoverOpen(false);
   };
 
   const handleDeleteFile = (index: number) => {
@@ -236,17 +239,6 @@ export default function NewArtworkModal({
         toast.warn('내용을 입력해주세요.');
         return;
       }
-      let count = 0;
-      fileUrls.map((fileUrl) => {
-        if (fileUrl.mediaType === 'video' || fileUrl.mediaType === 'image') {
-          count += 1;
-        }
-      });
-      if (count === 0) {
-        setIsUpload(false);
-        toast.warn('이미지나 동영상을 업로드해주세요.');
-        return;
-      }
       if (
         fileUrls.reduce(
           (acc, cur) => (cur.file ? cur.file.size + acc : acc),
@@ -283,7 +275,26 @@ export default function NewArtworkModal({
         // @ts-ignore
         formData.append('thumbnailFile', fileUrls[0].file);
       } else {
-        return;
+        fileUrls[0].linkUrl &&
+          formData.append(
+            'thumbnailFile',
+            await fetch(
+              'https://img.youtube.com/vi/' +
+                fileUrls[0].linkUrl.substring(
+                  fileUrls[0].linkUrl.indexOf('=') + 1
+                ) +
+                '/maxresdefault.jpg',
+              {
+                mode: 'no-cors',
+                headers: {
+                  'Access-Control-Allow-Origin': '*',
+                  Accept: '*/*',
+                  'Content-Type': 'image/jpeg',
+                },
+              }
+            ).then((res) => res.blob()),
+            'yt_thumbnail.jpg'
+          );
       }
       newState.dto.medias = [];
       fileUrls.forEach((media) => {
@@ -495,7 +506,7 @@ export default function NewArtworkModal({
                                   width={64}
                                   height={64}
                                   alt='image'
-                                  className='absolute bottom-0 left-0 h-16 w-16 rounded-md bg-gray-600'
+                                  className='absolute bottom-0 left-0 h-16 w-16 rounded-md bg-gray-600 object-cover'
                                 />
                               ) : file.mediaType === 'video' ? (
                                 <video
@@ -510,7 +521,7 @@ export default function NewArtworkModal({
                                 </div>
                               ) : (
                                 <ASNextImage
-                                  className='absolute bottom-0 left-0 h-16 w-16 rounded-md bg-gray-600'
+                                  className='absolute bottom-0 left-0 h-16 w-16 rounded-md bg-gray-600 object-cover'
                                   src={
                                     imgs[index]
                                       ? 'https://img.youtube.com/vi/' +
@@ -536,7 +547,13 @@ export default function NewArtworkModal({
                       )}
 
                     {imgs.length < 10 && (
-                      <Popover placement='bottom' offset={20} showArrow>
+                      <Popover
+                        placement='bottom'
+                        offset={20}
+                        showArrow
+                        isOpen={uploadPopoverOpen}
+                        onOpenChange={(open) => setUploadPopoverOpen(open)}
+                      >
                         <PopoverTrigger>
                           <div
                             key='plus'
@@ -560,6 +577,12 @@ export default function NewArtworkModal({
                               type='url'
                               onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
+                                  if (fileUrls.length === 0) {
+                                    toast.warn(
+                                      '첫번째 파일은 썸네일이므로, 이미지나 동영상을 업로드해주세요.'
+                                    );
+                                    return;
+                                  }
                                   handleLinkAdded(e);
                                   e.currentTarget.value = '';
                                 }

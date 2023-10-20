@@ -39,6 +39,7 @@ export type SinglePostType = {
   mentionUsername: string | null;
   authorDescription: string | null;
   authorProfileImageUrl: string | null;
+  likeMembers: { username: string; name: string; likedTime: Date }[];
   createdTime: Date;
   updatedTime: Date | null;
   parentPostId: number | null;

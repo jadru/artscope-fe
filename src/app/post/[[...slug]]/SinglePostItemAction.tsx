@@ -24,6 +24,7 @@ export default function SinglePostItemAction({
   feed: SinglePostType;
 }) {
   const [like, setLike] = useState<boolean>(feed.isLiked);
+  const [firstLike, setFirstLike] = useState<boolean>(feed.isLiked);
   const { user, isLogin } = useUser();
   const { push } = useRouter();
 
@@ -38,8 +39,11 @@ export default function SinglePostItemAction({
   );
 
   useEffect(() => {
-    setLike(feed.isLiked);
-  }, [feed.isLiked]);
+    if (feed.likeMembers.find((data) => data.username === user?.username)) {
+      setFirstLike(true);
+      setLike(true);
+    }
+  }, [feed.likeMembers, feed.isLiked, user?.username, feed]);
 
   const handleDelete = () => {
     if (confirm('포스트를 정말 삭제하시겠습니까?'))
@@ -69,7 +73,7 @@ export default function SinglePostItemAction({
               size='sm'
               onClick={handleLike}
             >
-              {feed.likes + (like ? 1 : 0) + (feed.isLiked ? -1 : 0)} 좋아요
+              {feed.likes + (like ? 1 : 0) + (firstLike ? -1 : 0)} 좋아요
             </Button>
           </DebounceClick>
           <DebounceClick wait={500}>

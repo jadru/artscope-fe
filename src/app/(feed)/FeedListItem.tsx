@@ -95,6 +95,9 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
                         target='_blank'
                         rel='noopener noreferrer'
                         className='inline text-blue-500 hover:underline'
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
                       >
                         {item.value}
                       </Link>

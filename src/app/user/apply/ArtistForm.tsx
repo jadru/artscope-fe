@@ -36,6 +36,9 @@ export default function ArtistForm({
   });
 
   const onArtistInfoSubmit = (data: ArtistForm) => {
+    if (data.websiteUrl === '') {
+      data.websiteUrl = undefined;
+    }
     !isSubmitting && !isEdit
       ? jxios
           .post('/api/members/artist', data)
@@ -74,7 +77,7 @@ export default function ArtistForm({
       />
       <Textarea
         label='활동 정보 입력'
-        placeholder='OO전시 참여, OO상 수상 등'
+        placeholder='OO전시 참여, OO상 수상 등 (엔터키로 구분)'
         defaultValue={isEdit?.history}
         errorMessage={errors.history?.message}
         required
