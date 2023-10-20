@@ -40,13 +40,15 @@ export default async function ProfilePage({
           <h1 className='font-serif text-4xl'>{data.name}</h1>
           <h2 className='text-2xl'>@{data.username}</h2>
         </div>
-        <ASNextImage
-          src={data.picture || 'images/default-profile.png'}
-          alt='profile picture'
-          className='h-32 w-32 rounded-3xl border object-cover drop-shadow-xl'
-          width={180}
-          height={180}
-        />
+        {data.picture && (
+          <ASNextImage
+            src={data.picture}
+            alt='profile picture'
+            className='h-32 w-32 rounded-3xl border object-cover drop-shadow-xl'
+            width={180}
+            height={180}
+          />
+        )}
       </div>
       {data.introduction && (
         <>

@@ -1,4 +1,4 @@
-import { contentType } from '@/types/default';
+import { contentType, pageInfoType } from '@/types/default';
 
 export type feedApiResponseType = {
   feedItems: feedItemType[];
@@ -57,4 +57,9 @@ export type CommentPostType = {
   updatedTime: Date | null;
   parentCommentId: number | null;
   childComments: SinglePostType[];
+};
+
+export type PostListResponse = {
+  posts: SinglePostType[];
+  pageInfo: pageInfoType;
 };

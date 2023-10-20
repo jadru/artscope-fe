@@ -17,7 +17,7 @@ const LIMIT = 10;
 
 const SkeletonFeed = () => (
   <>
-    <div className='flex flex-col gap-2 border-x px-4 py-4'>
+    <div className='flex w-full flex-col gap-2 border-x px-4 py-4'>
       <div className='flex w-full max-w-[300px] items-center gap-3'>
         <div>
           <Skeleton className='flex h-12 w-12 rounded-full' />
@@ -90,7 +90,7 @@ export default function Feeds() {
   }, [isError]);
 
   return (
-    <>
+    <div className='md:w-[calc(100%-34rem)]'>
       {user && user.username && (
         <NewPostModal
           submitBtnText='작성'
@@ -112,7 +112,7 @@ export default function Feeds() {
         </>
       )}
       {isLoading && (
-        <>
+        <div className='w-full'>
           <SkeletonFeed />
           <SkeletonFeed />
           <SkeletonFeed />
@@ -121,11 +121,11 @@ export default function Feeds() {
           <SkeletonFeed />
           <SkeletonFeed />
           <SkeletonFeed />
-        </>
+        </div>
       )}
       {data && data.pages[0].feedItems.length === 0 && (
         <h3 className='my-12 text-center'>아직 작성된 글이 없습니다.</h3>
       )}
-    </>
+    </div>
   );
 }
