@@ -43,7 +43,7 @@ export type ArtWorkApiByMember = {
 
 export type ArtworkType = {
   artwork: DetailedArtworkType;
-  isLike: boolean;
+  isLiked: boolean;
 };
 
 export type DetailedArtworkType = {

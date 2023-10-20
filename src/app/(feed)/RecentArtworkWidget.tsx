@@ -1,3 +1,4 @@
+import { Skeleton } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
@@ -22,8 +23,8 @@ export default function RecentArtworkWidget() {
   });
   const { push } = useRouter();
   return post.data && post.data.artworks.length > 0 ? (
-    <div className='hidden w-80 border-b border-r p-4 md:block'>
-      <h4 className='mb-1.5 pl-1.5'>최근 작성된 아트워크</h4>
+    <div className='w-full border-b border-r p-4'>
+      <h4 className='mb-1.5 pl-1.5'>최근 작성된 작품</h4>
       {post.data?.artworks.map((aw) => (
         <button
           className='w-full truncate rounded-md px-2 py-1.5 text-left transition-colors hover:bg-default-100'
@@ -35,6 +36,16 @@ export default function RecentArtworkWidget() {
       ))}
     </div>
   ) : (
-    <div></div>
+    <div className='space-y-5 border-b border-r p-4'>
+      <Skeleton className='h-4 w-32 rounded-full' />
+      <Skeleton className='h-4 w-full rounded-full' />
+      <Skeleton className='h-4 w-full rounded-full' />
+      <Skeleton className='h-4 w-full rounded-full' />
+      <Skeleton className='h-4 w-full rounded-full' />
+      <Skeleton className='h-4 w-full rounded-full' />
+      <Skeleton className='h-4 w-full rounded-full' />
+      <Skeleton className='h-4 w-full rounded-full' />
+      <Skeleton className='h-4 w-full rounded-full' />
+    </div>
   );
 }

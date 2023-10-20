@@ -18,7 +18,7 @@ export default function Page() {
   return (
     <div className=' mx-auto flex justify-center '>
       <div className='relative flex w-full max-w-screen-sm md:max-w-screen-lg lg:max-w-screen-xl'>
-        <div className='\border-l sticky top-[60px] hidden h-max w-64 flex-col space-y-3 p-4 md:block'>
+        <div className='sticky top-[60px] hidden h-max flex-col space-y-3 p-4 md:block md:w-44 lg:w-52'>
           <button
             className='flex w-full rounded-3xl px-3 pb-1 pt-2 text-left text-black transition hover:bg-default-100'
             onClick={() => push('/')}
@@ -57,7 +57,7 @@ export default function Page() {
           </button>
         </div>
         <Feed />
-        <div className='sticky top-[60px] h-max'>
+        <div className='sticky top-[60px] hidden h-max md:block md:w-60 lg:w-80'>
           <RecentPostWidget />
           <RecentArtworkWidget />
         </div>

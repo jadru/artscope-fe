@@ -80,7 +80,7 @@ export default function Page() {
     return <div ref={ref} className='mb-1 h-1' />;
   };
   return (
-    <RootLayout>
+    <RootLayout className='w-full'>
       {user && user.username && (
         <NewArtworkModal
           submitBtnText='업로드'

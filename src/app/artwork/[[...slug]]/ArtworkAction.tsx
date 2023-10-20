@@ -21,7 +21,8 @@ import jxios from '@/utils/jxios';
 import { ArtworkType } from '@/types/artwork';
 
 export default function ArtworkAction({ aw }: { aw: ArtworkType }) {
-  const [like, setLike] = useState<boolean>(aw.isLike);
+  const [like, setLike] = useState<boolean>(aw.isLiked);
+  const [firstLike, setFirstLike] = useState<boolean>(aw.isLiked);
   const { user, isLogin } = useUser();
   const { push } = useRouter();
 
@@ -36,8 +37,17 @@ export default function ArtworkAction({ aw }: { aw: ArtworkType }) {
   );
 
   useEffect(() => {
-    setLike(aw.isLike);
-  }, [aw.isLike]);
+    const fetchLike = async () =>
+      await jxios
+        .get('/api/artworks/' + aw.artwork.id + '/member/likes')
+        .then((res) => {
+          if (res.data) {
+            setLike(true);
+            setFirstLike(true);
+          }
+        });
+    fetchLike();
+  }, [aw.isLiked, aw.artwork.id]);
 
   return (
     <div className='flex w-full justify-between gap-1 self-start md:w-auto md:justify-items-start'>
@@ -60,7 +70,7 @@ export default function ArtworkAction({ aw }: { aw: ArtworkType }) {
             handleLike();
           }}
         >
-          {aw.artwork.likes + (like ? 1 : 0) + (aw.isLike ? -1 : 0)}
+          {aw.artwork.likes + (like ? 1 : 0) + (firstLike ? -1 : 0)}
         </Button>
         <Button
           startContent={<AiOutlineMessage className='h-5 w-5' />}

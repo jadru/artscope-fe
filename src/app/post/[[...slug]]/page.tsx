@@ -2,6 +2,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 
 import SinglePostItem from '@/app/post/[[...slug]]/SinglePostItem';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
+import jxios from '@/utils/jxios';
 
 import { SinglePostType } from '@/types/feed';
 
@@ -34,11 +35,11 @@ export async function generateMetadata(
 }
 
 const fetchPost = async (id: string) =>
-  await fetch(NEXT_PUBLIC_API_URL + '/api/posts/' + id, {
-    method: 'GET',
-    cache: 'no-cache',
-    credentials: 'include',
-  }).then((res) => res.json());
+  jxios
+    .get(NEXT_PUBLIC_API_URL + '/api/posts/' + id, {
+      withCredentials: true,
+    })
+    .then((res) => res.data as SinglePostType);
 
 export default async function SinglePost({
   params,
@@ -47,7 +48,7 @@ export default async function SinglePost({
   params: { slug: string[] };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const data: SinglePostType = await fetchPost(params.slug[0]);
+  const data = await fetchPost(params.slug[0]);
 
   return (
     <SinglePostItem
