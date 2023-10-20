@@ -4,9 +4,9 @@ import { User } from '@nextui-org/react';
 import { convertNewlineToJSX } from '@toss/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 
 import PostComment from '@/app/post/[[...slug]]/comment';
+import SinglePostEdit from '@/app/post/[[...slug]]/SinglePostEdit';
 import SinglePostItemAction from '@/app/post/[[...slug]]/SinglePostItemAction';
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 import textInUrlSeperator from '@/utils/textInUrlSeperator';
@@ -21,14 +21,10 @@ export default function SinglePostItem({
   editMode: boolean;
 }) {
   const { push } = useRouter();
-  const [_, setEdit] = useState<boolean>(editMode);
 
-  return (
+  return !editMode ? (
     <div>
-      <div
-        className={`border-default-200 bg-white pb-2 transition-colors md:mx-0
-      md:border-x`}
-      >
+      <div className='border-default-200 bg-white pb-2 transition-colors md:mx-0 md:border-x'>
         <div className='flex w-full flex-col justify-between p-4 text-left md:flex-row'>
           <div className='w-full'>
             <div
@@ -100,9 +96,11 @@ export default function SinglePostItem({
             </div>
           </div>
         </div>
-        <SinglePostItemAction feed={feed} setEditMode={setEdit} />
+        <SinglePostItemAction feed={feed} />
       </div>
       <PostComment post={feed} />
     </div>
+  ) : (
+    <SinglePostEdit feed={feed} />
   );
 }

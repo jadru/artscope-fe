@@ -1,5 +1,4 @@
-import { Button } from '@nextui-org/react';
-import { DebounceClick, useDebounce } from '@toss/react';
+import { useDebounce } from '@toss/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
@@ -9,9 +8,8 @@ import {
   AiOutlineMessage,
   AiOutlineShareAlt,
 } from 'react-icons/ai';
-import { RWebShare } from 'react-web-share';
+import { toast } from 'react-toastify';
 
-import { getRefreshToken } from '@/auth/cookieTokenManager';
 import { NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
@@ -25,11 +23,9 @@ export default function FeedListItemAction({ feed }: { feed: feedItemType }) {
 
   const handleLike = useDebounce(
     () =>
-      isLogin
-        ? jxios
-            .post(`/api/posts/${feed.id}/like`)
-            .then((res) => setLike(res.status !== 204))
-        : push('/user/login'),
+      jxios
+        .post(`/api/posts/${feed.id}/like`)
+        .then((res) => setLike(res.status !== 204)),
     500
   );
 
@@ -38,44 +34,38 @@ export default function FeedListItemAction({ feed }: { feed: feedItemType }) {
   }, [feed.isLiked]);
 
   return (
-    <div className='flex w-full justify-between gap-1 self-start px-1 md:w-auto md:justify-items-start'>
-      <div>
-        <Button
-          startContent={
-            like ? (
-              <AiFillLike className='h-5 w-5 text-red-500' />
-            ) : (
-              <AiOutlineLike className='h-5 w-5' />
-            )
+    <div className='mt-1 flex w-full justify-start gap-1 self-start md:w-auto md:justify-items-start'>
+      <button
+        className={`text-md flex p-2 transition hover:text-red-500 ${
+          like ? 'text-red-500' : 'text-gray-500'
+        }`}
+        onClick={async (e) => {
+          e.stopPropagation();
+          if (isLogin) {
+            setLike(!like);
+            handleLike();
+          } else {
+            push('/user/login');
           }
-          variant='light'
-          size='sm'
-          className={`text-md hover:text-red-500 ${
-            like ? 'text-red-500' : 'text-gray-500'
-          }`}
-          onClick={async () => {
-            if (await getRefreshToken()) {
-              setLike(!like);
-              handleLike();
-            } else {
-              push('/user/login');
-            }
-          }}
-        >
-          {feed.likes + (like ? 1 : 0) + (feed.isLiked ? -1 : 0)}
-        </Button>
-        <Button
-          startContent={<AiOutlineMessage className='h-5 w-5' />}
-          variant='light'
-          size='sm'
-          className='text-md text-gray-500 hover:text-blue-500'
-          onClick={() => {
-            push(`/post/${feed.id}`);
-          }}
-        >
-          {feed.comments}
-        </Button>
-      </div>
+        }}
+      >
+        {like ? (
+          <AiFillLike className='mr-2 h-5 w-5 text-red-500' />
+        ) : (
+          <AiOutlineLike className='mr-2 h-5 w-5' />
+        )}
+        {feed.likes + (like ? 1 : 0) + (feed.isLiked ? -1 : 0)}
+      </button>
+      <button
+        className='flex p-2 text-gray-500 transition hover:text-blue-500'
+        onClick={(e) => {
+          e.stopPropagation();
+          push(`/post/${feed.id}`);
+        }}
+      >
+        <AiOutlineMessage className='mr-2 h-5 w-5' />
+        {feed.comments}
+      </button>
       {/* <DebounceClick wait={500}> */}
       {/*   <Button */}
       {/*     startContent={<AiOutlineStar className='h-5 w-5' />} */}
@@ -86,39 +76,40 @@ export default function FeedListItemAction({ feed }: { feed: feedItemType }) {
       {/*     {0} */}
       {/*   </Button> */}
       {/* </DebounceClick> */}
-      <div>
-        {feed.authorUsername === user?.username && (
-          <Button
-            onClick={() => {
-              push(`/post/${feed.id}?edit=true`);
-            }}
-            startContent={<AiOutlineEdit className='h-5 w-5' />}
-            variant='light'
-            size='sm'
-            className='text-md text-gray-500 hover:text-purple-500'
-          >
-            수정 / 삭제
-          </Button>
-        )}
-        <DebounceClick wait={500}>
-          <RWebShare
-            data={{
-              text: 'Artscope 포스트',
+      {feed.authorUsername === user?.username && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            push(`/post/${feed.id}?edit=true`);
+          }}
+          className='text-md flex p-2 text-gray-500 hover:text-purple-500'
+        >
+          <AiOutlineEdit className='h-5 w-5' />
+        </button>
+      )}
+      <button
+        className='flex p-2 text-gray-500 transition hover:text-amber-600'
+        onClick={(e) => {
+          e.stopPropagation();
+          if (navigator.share) {
+            navigator.share({
               url: NEXT_PUBLIC_ROOT_URL + '/post/' + feed.id,
-              title: feed.content.slice(0, 18) + ' - Artscope',
-            }}
-          >
-            <Button
-              startContent={<AiOutlineShareAlt className='h-5 w-5' />}
-              variant='light'
-              size='sm'
-              className='text-md text-gray-500 hover:text-amber-600'
-            >
-              공유
-            </Button>
-          </RWebShare>
-        </DebounceClick>
-      </div>
+              title: 'Artscope -' + feed.content.slice(0, 25),
+            });
+          } else {
+            if (navigator.clipboard)
+              navigator.clipboard
+                .writeText(NEXT_PUBLIC_ROOT_URL + '/post/' + feed.id)
+                .then(() => {
+                  toast.success('링크가 복사되었습니다.', {
+                    position: 'bottom-center',
+                  });
+                });
+          }
+        }}
+      >
+        <AiOutlineShareAlt className='h-5 w-5' />
+      </button>
     </div>
   );
 }

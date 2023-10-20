@@ -46,9 +46,9 @@ export default function FeedList({ data }: FeedListProps) {
 
   return (
     <div className='flex flex-col'>
-      {feeds.map((feed) => (
-        <div key={Array.isArray(feed) ? feed[0].id : feed.id}>
-          {Array.isArray(feed) ? (
+      {feeds.map((feed) =>
+        Array.isArray(feed) ? (
+          feed.length > 0 && (
             <div
               className={`grid ${
                 feed.length === 1
@@ -59,6 +59,7 @@ export default function FeedList({ data }: FeedListProps) {
                   ? 'grid-cols-1 md:grid-cols-3'
                   : 'grid-cols-2'
               } gap-0 border-x md:mx-0`}
+              key={feed[0].id + '-artwork'}
             >
               {feed.map((feedItem) => (
                 <ArtworkItemforFeed
@@ -67,12 +68,11 @@ export default function FeedList({ data }: FeedListProps) {
                 />
               ))}
             </div>
-          ) : (
-            <FeedListItem feed={feed} />
-          )}
-          <hr />
-        </div>
-      ))}
+          )
+        ) : (
+          <FeedListItem feed={feed} key={feed.id} />
+        )
+      )}
       {feeds.length === 0 && <p className='m-12'>데이터가 없습니다.</p>}
     </div>
   );

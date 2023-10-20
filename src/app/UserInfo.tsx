@@ -11,8 +11,8 @@ export default function UserInfo() {
       <ASNextImage
         src={user.picture || ''}
         alt='프로필 사진'
-        width={24}
-        height={24}
+        width={48}
+        height={48}
         className='h-12 w-12 rounded-full object-cover'
       />
     </div>

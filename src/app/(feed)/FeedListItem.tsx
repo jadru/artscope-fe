@@ -1,3 +1,4 @@
+import { Tooltip } from '@nextui-org/react';
 import { convertNewlineToJSX } from '@toss/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -15,7 +16,6 @@ import { feedItemType } from '@/types/feed';
 export default function FeedListItem({ feed }: { feed: feedItemType }) {
   const { push } = useRouter();
   const [firstLink, setFirstLink] = useState<string | undefined>();
-  const [readMore, setReadMore] = useState<boolean>(false);
   const [content, _] = useState(textInUrlSeperator(feed.content));
 
   useEffect(() => {
@@ -29,59 +29,53 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
 
   return (
     <div
-      className={`border-default-200 bg-white pb-2 transition-colors md:mx-0 md:border-x ${
-        feed.type === 'artwork' ? 'cursor-pointer hover:bg-gray-100' : ''
-      }}`}
+      className='flex cursor-pointer space-x-2 border-b border-default-200 bg-white px-3.5 pb-1 pt-3.5 transition-colors hover:bg-gray-100 md:mx-0 md:border-x'
+      onClick={(e) => {
+        e.stopPropagation();
+        push(`/post/${feed.id}`);
+      }}
     >
-      <div className='flex w-full flex-col justify-between text-left md:flex-row'>
-        <div className='w-full'>
-          <div className='flex justify-between p-1'>
-            <div
-              className='flex cursor-pointer items-center gap-2 rounded-3xl border border-white px-2 py-2 transition hover:underline'
-              onClick={(e) => {
-                e.stopPropagation();
-                push(`/profile/${feed.authorUsername}`);
-              }}
+      <ASNextImage
+        src={feed.authorProfileImageUrl ?? '/images/default.png'}
+        alt={feed.authorName}
+        width={40}
+        height={40}
+        className='h-10 w-10 rounded-full bg-gray-300 object-cover'
+      />
+      <div className='flex w-[calc(100%-3rem)] flex-col justify-between text-left'>
+        <div className='w-full space-y-1'>
+          <div className='flex justify-between'>
+            <Tooltip
+              placement='right'
+              content={feed.authorDescription ?? '@' + feed.authorUsername}
+              color='primary'
             >
-              <ASNextImage
-                src={feed.authorProfileImageUrl ?? '/images/default.png'}
-                alt={feed.authorName}
-                width={40}
-                height={40}
-                className='h-12 w-12 rounded-full bg-gray-300 object-cover'
-              />
-              <div>
-                <h5 className='text-md inline font-bold'>{feed.authorName}</h5>
-                <h5
+              <div
+                className='flex gap-1 transition hover:underline'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  push(`/profile/${feed.authorUsername}`);
+                }}
+              >
+                <p className='inline text-[0.9rem] font-bold'>
+                  {feed.authorName}
+                </p>
+                <p
                   className={`${
                     feed.authorDescription ? 'ml-1 inline' : ''
-                  } text-default-500`}
+                  } text-[0.9rem] text-default-500`}
                 >
                   @{feed.authorUsername}
-                </h5>
-                {feed.authorDescription && <h5>{feed.authorDescription}</h5>}
+                </p>
               </div>
-            </div>
-            <h5 className='mr-3 mt-3 text-default-600'>
+            </Tooltip>
+            <h5 className='text-[0.9rem] text-default-600'>
               {timeCaculatortoKO(feed.createdTime)}
             </h5>
           </div>
-          <div className='flex flex-col justify-start px-5 pb-2'>
+          <div className='flex flex-col justify-start'>
             <div className='text flex w-full flex-col gap-1'>
-              <h5
-                className={`${
-                  !readMore && feed.content.length > 130
-                    ? 'line-clamp-3 cursor-pointer hover:underline'
-                    : ''
-                } w-full overflow-x-hidden text-medium leading-normal tracking-tight text-default-800`}
-                onClick={(event) => {
-                  if (!readMore && feed.content.length > 130) {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    setReadMore(true);
-                  }
-                }}
-              >
+              <h5 className='line-clamp-3 w-full overflow-x-hidden leading-normal tracking-tight text-default-800'>
                 {feed.type === 'exhibition' ? <b>전시안내 - </b> : ''}
                 {content.map((item, index) => {
                   if (item.type === 'text') {
@@ -112,8 +106,8 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
             {firstLink && <OpengraphCard externalUrl={firstLink} />}
           </div>
         </div>
+        <FeedListItemAction feed={feed} />
       </div>
-      <FeedListItemAction feed={feed} />
     </div>
   );
 }
