@@ -10,5 +10,6 @@ export default function useUserHook() {
   useEffect(() => {
     const fetch = async () => await onGetProfile(router, setUser);
     fetch();
-  }, [router, setUser]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setUser]);
 }

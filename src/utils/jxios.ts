@@ -43,13 +43,6 @@ Jxios.interceptors.response.use(
       switch (response.status || config.sent) {
         case 400:
         case 401:
-          toast.error(`
-              ${response.data.message}
-                ${
-                  response.data.detail !== null
-                    ? ' : ' + response.data.detail
-                    : ''
-                }`);
           return Promise.reject(err);
         case 403:
           if (cookie.load('refresh-token')) {
