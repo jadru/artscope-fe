@@ -8,7 +8,7 @@ echo "version: '3.8'
 
 services:
   art-be:
-    container_name: art-frontend
+    container_name: art-frontend-production
     image: ${IMAGE_NAME}
     ports:
       - 3000:3000
