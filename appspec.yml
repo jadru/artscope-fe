@@ -14,11 +14,11 @@ permissions:
 
 hooks:
   ApplicationStop:
-    - location: scripts/stop.sh
+    - location: scripts/stop-fe.sh
       timeout: 60
       runas: root
 
   ApplicationStart:
-    - location: scripts/start.sh
+    - location: scripts/start-fe.sh
       timeout: 60
       runas: root
