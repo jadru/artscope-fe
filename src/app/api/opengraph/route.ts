@@ -20,10 +20,13 @@ export async function GET(request: Request) {
 
   return NextResponse.json(
     {
-      ogTitle: result['og:title'] ?? result['title'],
+      ogTitle: result['og:title'] ?? result['twitter:title'] ?? result['title'],
       ogUrl: result['og:url'] ?? result['url'],
-      ogImage: result['og:image'] || result['image'],
-      ogDescription: result['og:description'] ?? result['description'],
+      ogImage: result['og:image'] || result['twitter:image'] || result['image'],
+      ogDescription:
+        result['og:description'] ??
+        result['twitter:description'] ??
+        result['description'],
     },
     { status: 200 }
   );
