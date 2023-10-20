@@ -47,10 +47,12 @@ export async function generateMetadata(
   const previousImages = (await parent).openGraph?.images || [];
   return {
     title: `${data.artwork.title} - ${data.artwork.authorName} 작가`,
-    description: data.artwork.description,
+    description: data.artwork.description.replace(/<[^>]*>?/g, ''),
     openGraph: {
       title: `${data.artwork.title} - ${data.artwork.authorName} | Artscope`,
-      description: data.artwork.description.slice(0, 100),
+      description: data.artwork.description
+        .replace(/<[^>]*>?/g, '')
+        .slice(0, 100),
       url: 'https://www.artscope.kr/artwork/' + id,
       type: 'article',
       authors: [data.artwork.authorName],
@@ -86,10 +88,12 @@ export default async function ArtworkPage({
           <ArtworkTags data={data} />
           <div className='h-0.5 bg-default-100'></div>
           <h2 className='mx-2 break-words text-left text-xl font-normal'>
-            <ArtworkContent content={data.artwork.description} />
+            <ArtworkContent
+              content={data.artwork.description.replace(/<[^>]*>?/g, '')}
+            />
           </h2>
 
-          <div className=''>
+          <div>
             {data.artwork.artworkMedias.map((media, mediaIndex) => (
               <div key={media.id}>
                 {(media.mediaType === 'image' && (

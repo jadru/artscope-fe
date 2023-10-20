@@ -18,15 +18,40 @@ export async function GET(request: Request) {
       { status: 204 }
     );
 
+  const isEmptyOrNullUndefined = (
+    text:
+      | string
+      | boolean
+      | Record<string, string>
+      | Array<Record<string, string>>
+  ) => {
+    if (text === undefined || text === null || text === '') return false;
+    else return text;
+  };
+
   return NextResponse.json(
     {
-      ogTitle: result['og:title'] ?? result['twitter:title'] ?? result['title'],
-      ogUrl: result['og:url'] ?? result['url'],
-      ogImage: result['og:image'] || result['twitter:image'] || result['image'],
+      ogTitle:
+        isEmptyOrNullUndefined(result['og:title']) ||
+        isEmptyOrNullUndefined(result['twitter:title']) ||
+        isEmptyOrNullUndefined(result.title) ||
+        isEmptyOrNullUndefined(result.author) ||
+        undefined,
+      ogUrl:
+        isEmptyOrNullUndefined(result['og:url']) ||
+        isEmptyOrNullUndefined(result.url) ||
+        undefined,
+      ogImage:
+        isEmptyOrNullUndefined(result['og:image']) ||
+        isEmptyOrNullUndefined(result['twitter:image']) ||
+        isEmptyOrNullUndefined(result['image']) ||
+        undefined,
       ogDescription:
-        result['og:description'] ??
-        result['twitter:description'] ??
-        result['description'],
+        isEmptyOrNullUndefined(result['og:description']) ||
+        isEmptyOrNullUndefined(result['twitter:description']) ||
+        isEmptyOrNullUndefined(result.description) ||
+        isEmptyOrNullUndefined(result.author) ||
+        undefined,
     },
     { status: 200 }
   );

@@ -21,10 +21,10 @@ export async function generateMetadata(
   const previousImages = (await parent).openGraph?.images || [];
   return {
     title: `${data.content.slice(0, 20)} - ${data.authorName}`,
-    description: data.content,
+    description: data.content.replace(/<[^>]*>?/g, ''),
     openGraph: {
       title: `${data.content.slice(0, 20)} - ${data.authorName} | Artscope`,
-      description: data.content.slice(0, 100),
+      description: data.content.replace(/<[^>]*>?/g, '').slice(0, 100),
       url: 'https://www.artscope.kr/artwork/' + id,
       type: 'article',
       authors: [data.authorName],
