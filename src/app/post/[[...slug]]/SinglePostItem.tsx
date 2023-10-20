@@ -70,7 +70,9 @@ export default function SinglePostItem({
             <div className='flex flex-col justify-start px-1.5 py-3'>
               <div className='text flex w-full flex-col gap-1'>
                 <h5 className='w-full overflow-x-hidden text-base text-medium leading-normal tracking-tight text-default-800'>
-                  {textInUrlSeperator(feed.content).map((item, index) => {
+                  {textInUrlSeperator(
+                    feed.content.replace(/<[^>]*>?/g, '')
+                  ).map((item, index) => {
                     if (item.type === 'text') {
                       return (
                         <p key={index} className='inline text-default-800'>

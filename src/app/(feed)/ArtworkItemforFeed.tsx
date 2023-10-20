@@ -28,8 +28,8 @@ const ArtworkItemforFeed = ({ feed }: { feed: feedItemType }) => {
           />
         </CardBody>
         <CardFooter className='justify-between space-x-0.5 rounded-none text-small transition duration-100 group-hover:bg-default-100'>
-          <b className='w-2/3 truncate'>{feed.title}</b>
-          <p className='w-1/3 truncate text-right text-default-500'>
+          <b className='w-2/3 truncate text-[0.86rem]'>{feed.title}</b>
+          <p className='w-1/3 truncate text-right text-[0.86rem] text-default-500'>
             {feed.authorName}
           </p>
         </CardFooter>

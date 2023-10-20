@@ -31,7 +31,9 @@ export default function RecentArtworkWidget() {
           key={aw.artwork.id}
           onClick={() => push('/artwork/' + aw.artwork.id)}
         >
-          <p className='truncate'>{aw.artwork.title}</p>
+          <p className='truncate'>
+            {aw.artwork.title.replace(/<[^>]*>?/g, '')}
+          </p>
         </button>
       ))}
     </div>

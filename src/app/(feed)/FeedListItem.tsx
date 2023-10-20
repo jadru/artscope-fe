@@ -16,7 +16,9 @@ import { feedItemType } from '@/types/feed';
 export default function FeedListItem({ feed }: { feed: feedItemType }) {
   const { push } = useRouter();
   const [firstLink, setFirstLink] = useState<string | undefined>();
-  const [content, _] = useState(textInUrlSeperator(feed.content));
+  const [content, _] = useState(
+    textInUrlSeperator(feed.content.replace(/<[^>]*>?/g, ''))
+  );
 
   useEffect(() => {
     for (const item of content) {

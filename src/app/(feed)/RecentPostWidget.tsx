@@ -31,7 +31,7 @@ export default function RecentPostWidget() {
           key={p.id}
           onClick={() => push('/post/' + p.id)}
         >
-          <p className='truncate'>{p.content}</p>
+          <p className='truncate'>{p.content.replace(/<[^>]*>?/g, '')}</p>
         </button>
       ))}
     </div>
