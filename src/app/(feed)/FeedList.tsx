@@ -45,7 +45,7 @@ export default function FeedList({ data }: FeedListProps) {
   }, [data, setFeeds]);
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex max-w-full flex-col'>
       {feeds.map((feed) =>
         Array.isArray(feed) ? (
           feed.length > 0 && (
