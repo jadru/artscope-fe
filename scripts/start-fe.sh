@@ -7,17 +7,17 @@ echo "IMAGE_NAME: $IMAGE_NAME 도커 실행"
 echo "version: '3.8'
 
 services:
-art-be:
-container_name: art-frontend
-image: ${IMAGE_NAME}
-ports:
-  - 3000:3000
-env_file:
-  - ${CONTAINER_ENV_PATH}
+  art-be:
+    container_name: art-frontend
+    image: ${IMAGE_NAME}
+    ports:
+      - 3000:3000
+    env_file:
+      - ${CONTAINER_ENV_PATH}
 
 networks:
-default:
-name: art
-external: true" > docker-compose.yaml
+  default:
+    name: art
+    external: true" > docker-compose.yaml
 
 docker-compose up -d $SERVICE_NAME
