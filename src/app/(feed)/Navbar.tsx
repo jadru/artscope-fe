@@ -2,7 +2,6 @@
 
 import {
   Avatar,
-  Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -17,7 +16,6 @@ import {
 } from '@nextui-org/react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { BiSearch } from 'react-icons/bi';
 
 import LoginModal from '@/app/(feed)/LoginModalButton';
 import Logo from '@/assets/images/logo_long.svg';
@@ -113,15 +111,6 @@ export default function NavBar({
         ))}
       </NavbarContent>
       <NavbarContent justify='end'>
-        <NavbarItem>
-          <Button
-            variant='light'
-            startContent={<BiSearch className='mt-0.5 h-5 w-5' />}
-            onClick={() => push('/search')}
-          >
-            검색
-          </Button>
-        </NavbarItem>
         {isLogin === undefined ? (
           <></>
         ) : !user ? (
@@ -195,6 +184,7 @@ export default function NavBar({
         ) : (
           <div></div>
         )}
+
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item.name}-${index}`}>
             <span
@@ -216,6 +206,21 @@ export default function NavBar({
             </span>
           </NavbarMenuItem>
         ))}
+        <NavbarMenuItem>
+          <span
+            className={`w-full cursor-pointer text-lg hover:font-bold hover:text-secondary ${
+              pathname.startsWith('/search')
+                ? 'text-primary'
+                : 'text-default-800'
+            }`}
+            onClick={() => {
+              push('search');
+              setIsMobileMenuOpen(false);
+            }}
+          >
+            검색
+          </span>
+        </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
   );

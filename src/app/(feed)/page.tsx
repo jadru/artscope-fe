@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import {
+  BiSearch,
   BiSolidCalendar,
   BiSolidHome,
   BiSolidNews,
@@ -18,42 +19,49 @@ export default function Page() {
   return (
     <div className=' mx-auto flex justify-center '>
       <div className='relative flex w-full max-w-screen-sm md:max-w-screen-lg lg:max-w-screen-xl'>
-        <div className='sticky top-[60px] hidden h-max flex-col space-y-3 p-4 md:block md:w-44 lg:w-52'>
+        <div className='sticky top-[60px] hidden h-max flex-col space-y-2.5 px-3 py-3 md:block md:w-44 lg:w-52'>
           <button
-            className='flex w-full rounded-3xl px-3 pb-1 pt-2 text-left text-black transition hover:bg-default-100'
+            className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-black transition hover:bg-default-100'
             onClick={() => push('/')}
           >
-            <BiSolidHome size={30} className='mr-3' />
-            <p className='my-1 text-2xl'>홈</p>
+            <BiSolidHome size={23} className='my-0.5 mr-2' />
+            <p className='my-1 text-lg'>홈</p>
           </button>
           <button
-            className='flex w-full rounded-3xl px-3 pb-1 pt-2 text-left text-black transition hover:bg-default-100'
+            className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-black transition hover:bg-default-100'
+            onClick={() => push('/search')}
+          >
+            <BiSearch size={23} className='my-0.5 mr-2' />
+            <p className='my-1 text-lg'>검색</p>
+          </button>
+          <button
+            className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-black transition hover:bg-default-100'
             onClick={() => push('/artworks')}
           >
-            <BiSolidZap size={30} className='mr-3' />
-            <p className='my-1 text-2xl'>작품</p>
+            <BiSolidZap size={23} className='my-0.5 mr-2' />
+            <p className='my-1 text-lg'>작품</p>
           </button>
           <button
-            className='flex w-full rounded-3xl px-3 pb-1 pt-2 text-left text-default-500 transition'
+            className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-default-500 transition'
             onClick={() => push('/artworks')}
             disabled
           >
-            <BiSolidCalendar size={30} className='mr-3' />
-            <p className='my-1 text-2xl'>이벤트</p>
+            <BiSolidCalendar size={23} className='my-0.5 mr-2' />
+            <p className='my-1 text-lg'>이벤트</p>
           </button>
           <button
-            className='flex w-full rounded-3xl px-3 pb-1 pt-2 text-left text-default-500 transition'
+            className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-default-500 transition'
             disabled
           >
-            <BiSolidPlanet size={30} className='mr-3' />
-            <p className='my-1 text-2xl'>네트워크</p>
+            <BiSolidPlanet size={23} className='my-0.5 mr-2' />
+            <p className='my-1 text-lg'>네트워크</p>
           </button>
           <button
-            className='flex w-full rounded-3xl px-3 pb-1 pt-2 text-left text-default-500 transition'
+            className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-default-500 transition'
             disabled
           >
-            <BiSolidNews size={30} className='mr-3' />
-            <p className='my-1 text-2xl'>매거진</p>
+            <BiSolidNews size={23} className='my-0.5 mr-2' />
+            <p className='my-1 text-lg'>매거진</p>
           </button>
         </div>
         <Feed />

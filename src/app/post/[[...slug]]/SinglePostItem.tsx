@@ -1,14 +1,14 @@
 'use client';
 
-import { User } from '@nextui-org/react';
 import { convertNewlineToJSX } from '@toss/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import ASNextImage from '@/components/ASNextImage';
+
 import PostComment from '@/app/post/[[...slug]]/comment';
 import SinglePostEdit from '@/app/post/[[...slug]]/SinglePostEdit';
 import SinglePostItemAction from '@/app/post/[[...slug]]/SinglePostItemAction';
-import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 import textInUrlSeperator from '@/utils/textInUrlSeperator';
 
 import { SinglePostType } from '@/types/feed';
@@ -34,48 +34,52 @@ export default function SinglePostItem({
                 push(`/profile/${feed.authorUsername}`);
               }}
             >
-              <User
-                name={feed.authorName}
-                description={
-                  '@' +
-                  feed.authorUsername +
-                  (feed.authorDescription ? ' - ' + feed.authorDescription : '')
-                }
-                avatarProps={{
-                  src: feed.authorProfileImageUrl
-                    ? feed.authorProfileImageUrl.startsWith('http')
-                      ? feed.authorProfileImageUrl
-                      : NEXT_PUBLIC_MEDIA_STORAGE_URL +
-                        '/' +
-                        feed.authorProfileImageUrl
-                    : undefined,
+              <div
+                className='flex flex-row items-start justify-start gap-2 transition hover:underline'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  push(`/profile/${feed.authorUsername}`);
                 }}
-                className='p-1 hover:underline'
-              />
+              >
+                <ASNextImage
+                  src={
+                    feed.authorProfileImageUrl || '/images/default_profile.png'
+                  }
+                  alt='프로필 사진'
+                  width={48}
+                  height={48}
+                  className='h-12 w-12 rounded-full object-cover'
+                />
+                <div className='flex flex-col gap-0.5 transition hover:underline'>
+                  <p className='inline text-[0.9rem] font-bold'>
+                    {feed.authorName}
+                  </p>
+                  <p
+                    className={`${
+                      feed.authorDescription ? 'ml-1 inline' : ''
+                    } text-[0.9rem] text-default-500`}
+                  >
+                    @{feed.authorUsername}{' '}
+                    {feed.authorDescription
+                      ? '- ' + feed.authorDescription
+                      : ''}
+                  </p>
+                </div>
+              </div>
             </div>
-            <p className='mx-1.5 mt-1 text-default-500 '>
-              {new Date(feed.createdTime).toLocaleString('ko-KR', {
-                dateStyle: 'full',
-                timeStyle: 'short',
-              }) + ' 작성'}
-            </p>
-            {feed.updatedTime && (
-              <p className='mx-1.5 mt-0.5 text-default-500 '>
-                {new Date(feed.updatedTime).toLocaleString('ko-KR', {
-                  dateStyle: 'full',
-                  timeStyle: 'short',
-                }) + ' 수정'}
-              </p>
-            )}
+
             <div className='flex flex-col justify-start px-1.5 py-3'>
               <div className='text flex w-full flex-col gap-1'>
-                <h5 className='w-full overflow-x-hidden text-base text-medium leading-normal tracking-tight text-default-800'>
+                <h5 className='w-full overflow-x-hidden text-lg leading-normal tracking-tight text-default-800'>
                   {textInUrlSeperator(
                     feed.content.replace(/<[^>]*>?/g, '')
                   ).map((item, index) => {
                     if (item.type === 'text') {
                       return (
-                        <p key={index} className='inline text-default-800'>
+                        <p
+                          key={index}
+                          className='inline text-lg text-default-800 '
+                        >
                           {convertNewlineToJSX(item.value)}
                         </p>
                       );
@@ -86,7 +90,7 @@ export default function SinglePostItem({
                           href={item.value}
                           target='_blank'
                           rel='noopener noreferrer'
-                          className='inline text-blue-500 hover:underline'
+                          className='inline text-lg text-blue-500 hover:underline '
                         >
                           {item.value}
                         </Link>
@@ -96,6 +100,21 @@ export default function SinglePostItem({
                 </h5>
               </div>
             </div>
+            {feed.updatedTime ? (
+              <p className='mx-1.5 mt-0.5 text-right text-default-500'>
+                {new Date(feed.updatedTime).toLocaleString('ko-KR', {
+                  dateStyle: 'full',
+                  timeStyle: 'short',
+                }) + ' 수정'}
+              </p>
+            ) : (
+              <p className='mx-1.5 mt-1 text-right text-default-500'>
+                {new Date(feed.createdTime).toLocaleString('ko-KR', {
+                  dateStyle: 'full',
+                  timeStyle: 'short',
+                }) + ' 작성'}
+              </p>
+            )}
           </div>
         </div>
         <SinglePostItemAction feed={feed} />
