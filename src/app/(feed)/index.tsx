@@ -90,7 +90,7 @@ export default function Feeds() {
   }, [isError]);
 
   return (
-    <div className='w-full md:w-[calc(100%-26rem)] lg:w-[calc(100%-33rem)]'>
+    <div className='w-full md:w-[calc(100%-24rem)] lg:w-[calc(100%-33rem)]'>
       {user && user.username && (
         <NewPostModal
           submitBtnText='작성'

@@ -57,7 +57,7 @@ export default function Search() {
         labelPlacement='outside'
         onValueChange={setSearch}
         startContent={<AiOutlineSearch className='h-5 w-5' />}
-        autoFocus
+        autoFocus={!searchKeyword}
       />
       {data &&
         (data.artworks.length > 0 ? (

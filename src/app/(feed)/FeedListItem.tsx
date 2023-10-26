@@ -1,4 +1,3 @@
-import { Tooltip } from '@nextui-org/react';
 import { convertNewlineToJSX } from '@toss/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -37,40 +36,44 @@ export default function FeedListItem({ feed }: { feed: feedItemType }) {
         push(`/post/${feed.id}`);
       }}
     >
-      <ASNextImage
-        src={feed.authorProfileImageUrl ?? '/images/default.png'}
-        alt={feed.authorName}
-        width={40}
-        height={40}
-        className='h-10 w-10 rounded-full bg-gray-300 object-cover'
-      />
+      <div>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            push(`/profile/${feed.authorUsername}`);
+          }}
+          className='bg-dark flex-shrink-0 overflow-hidden rounded-full border border-transparent transition hover:border-default-500 hover:opacity-80'
+        >
+          <ASNextImage
+            src={feed.authorProfileImageUrl ?? '/images/default.png'}
+            alt={feed.authorName}
+            width={40}
+            height={40}
+            className='h-10 w-10 rounded-full bg-gray-300 object-cover'
+          />
+        </button>
+      </div>
       <div className='flex w-[calc(100%-3rem)] flex-col justify-between text-left'>
         <div className='w-full space-y-1'>
           <div className='flex justify-between'>
-            <Tooltip
-              placement='right'
-              content={feed.authorDescription ?? '@' + feed.authorUsername}
-              color='primary'
+            <div
+              className='flex gap-1 transition hover:underline'
+              onClick={(e) => {
+                e.stopPropagation();
+                push(`/profile/${feed.authorUsername}`);
+              }}
             >
-              <div
-                className='flex gap-1 transition hover:underline'
-                onClick={(e) => {
-                  e.stopPropagation();
-                  push(`/profile/${feed.authorUsername}`);
-                }}
+              <p className='inline text-[0.9rem] font-bold'>
+                {feed.authorName}
+              </p>
+              <p
+                className={`${
+                  feed.authorDescription ? 'ml-1 inline' : ''
+                } text-[0.9rem] text-default-500`}
               >
-                <p className='inline text-[0.9rem] font-bold'>
-                  {feed.authorName}
-                </p>
-                <p
-                  className={`${
-                    feed.authorDescription ? 'ml-1 inline' : ''
-                  } text-[0.9rem] text-default-500`}
-                >
-                  @{feed.authorUsername}
-                </p>
-              </div>
-            </Tooltip>
+                @{feed.authorUsername}
+              </p>
+            </div>
             <h5 className='text-[0.9rem] text-default-600'>
               {timeCaculatortoKO(feed.createdTime)}
             </h5>
