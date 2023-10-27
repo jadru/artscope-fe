@@ -18,6 +18,7 @@ const config = {
   },
 
   reactStrictMode: false,
+  swcMinify: true,
 
   images: {
     domains: [process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL],
