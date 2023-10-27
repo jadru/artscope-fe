@@ -17,7 +17,7 @@ COPY . .
 RUN yarn add env-cmd
 RUN yarn build:dev
 
-RUN yarn install --immutable --production
+RUN yarn workspaces focus
 RUN rm -rf ./.next/cache
 
 FROM base AS runner
