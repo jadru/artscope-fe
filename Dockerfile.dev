@@ -7,9 +7,11 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
+RUN yarn set version 4.0.0
+
 # Install dependencies based on the preferred package manager
 COPY yarn.lock* ./
-RUN yarn install --immutable
+RUN yarn install
 
 FROM base AS builder
 WORKDIR /app
