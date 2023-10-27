@@ -29,6 +29,7 @@ COPY --from=builder /app/public ./public
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/.yarn/cache ./.yarn/cache
 COPY --from=builder --chown=nextjs:nodejs /app/.pnp.cjs ./.pnp.cjs
 COPY .env.development .env.production
 
