@@ -37,4 +37,4 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-CMD ["node", "server.js"]
+CMD ["node", "-r", "./.pnp.cjs", "server.js"]
