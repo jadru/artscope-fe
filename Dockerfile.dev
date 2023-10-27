@@ -1,4 +1,4 @@
-FROM alpine:3.18 AS base
+FROM node:18-alpine AS base
 
 ENV NODE_VERSION 18.18.2
 
@@ -7,10 +7,10 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-RUN yarn set version 4.0.0
 
 # Install dependencies based on the preferred package manager
 COPY yarn.lock* ./
+RUN yarn set version 4.0.0
 RUN yarn install
 
 FROM base AS builder

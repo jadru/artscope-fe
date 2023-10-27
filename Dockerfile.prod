@@ -6,10 +6,10 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-RUN yarn set version 4.0.0
 
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+RUN yarn set version 4.0.0
 RUN \
   if [ -f yarn.lock ]; then yarn; \
   elif [ -f package-lock.json ]; then npm ci; \
