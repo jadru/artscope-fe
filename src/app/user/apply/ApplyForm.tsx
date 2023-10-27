@@ -1,7 +1,6 @@
 'use client';
 
-import { CardBody } from '@nextui-org/card';
-import { Card, Tab, Tabs } from '@nextui-org/react';
+import { Card, CardBody, Tab, Tabs } from '@nextui-org/react';
 import React from 'react';
 
 import ArtistForm from '@/app/user/apply/ArtistForm';

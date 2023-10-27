@@ -41,6 +41,7 @@ const RAW_RUNTIME_STATE =
           ["@toss/lottie", "virtual:9dd178ac6ea65fc67a6b5cf9bf78107bb0f7a7912cb64efb8e932bf981007d21a9e7a66efa17aa0b63f5161acb983804484a466c28376b556c126011e13d0002#npm:1.1.10"],\
           ["@toss/react", "virtual:9dd178ac6ea65fc67a6b5cf9bf78107bb0f7a7912cb64efb8e932bf981007d21a9e7a66efa17aa0b63f5161acb983804484a466c28376b556c126011e13d0002#npm:1.5.0"],\
           ["@toss/utils", "npm:1.4.4"],\
+          ["@types/node", "npm:20.8.9"],\
           ["@types/react", "npm:18.2.33"],\
           ["@types/react-cookies", "npm:0.1.2"],\
           ["@types/react-dom", "npm:18.2.14"],\
@@ -18738,6 +18739,7 @@ const RAW_RUNTIME_STATE =
           ["@toss/lottie", "virtual:9dd178ac6ea65fc67a6b5cf9bf78107bb0f7a7912cb64efb8e932bf981007d21a9e7a66efa17aa0b63f5161acb983804484a466c28376b556c126011e13d0002#npm:1.1.10"],\
           ["@toss/react", "virtual:9dd178ac6ea65fc67a6b5cf9bf78107bb0f7a7912cb64efb8e932bf981007d21a9e7a66efa17aa0b63f5161acb983804484a466c28376b556c126011e13d0002#npm:1.5.0"],\
           ["@toss/utils", "npm:1.4.4"],\
+          ["@types/node", "npm:20.8.9"],\
           ["@types/react", "npm:18.2.33"],\
           ["@types/react-cookies", "npm:0.1.2"],\
           ["@types/react-dom", "npm:18.2.14"],\
