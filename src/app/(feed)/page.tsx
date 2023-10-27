@@ -1,70 +1,20 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import {
-  BiSearch,
-  BiSolidCalendar,
-  BiSolidHome,
-  BiSolidNews,
-  BiSolidPlanet,
-  BiSolidZap,
-} from 'react-icons/bi';
-
-import Feed from '@/app/(feed)';
+import Feed from '@/app/(feed)/FeedRoot';
+import MainNavigation from '@/app/(feed)/MainNavigation';
 import RecentArtworkWidget from '@/app/(feed)/RecentArtworkWidget';
 import RecentPostWidget from '@/app/(feed)/RecentPostWidget';
 
 export default function Page() {
-  const { push } = useRouter();
   return (
     <div className=' mx-auto flex justify-center '>
-      <div className='relative flex w-full max-w-screen-sm md:max-w-screen-lg lg:max-w-screen-xl'>
-        <div className='sticky top-[60px] hidden h-max flex-col space-y-2.5 px-3 py-3 md:block md:w-44 lg:w-52'>
-          <button
-            className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-black transition hover:bg-default-100'
-            onClick={() => push('/')}
-          >
-            <BiSolidHome size={23} className='my-0.5 mr-2' />
-            <p className='my-1 text-lg'>홈</p>
-          </button>
-          <button
-            className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-black transition hover:bg-default-100'
-            onClick={() => push('/search')}
-          >
-            <BiSearch size={23} className='my-0.5 mr-2' />
-            <p className='my-1 text-lg'>검색</p>
-          </button>
-          <button
-            className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-black transition hover:bg-default-100'
-            onClick={() => push('/artworks')}
-          >
-            <BiSolidZap size={23} className='my-0.5 mr-2' />
-            <p className='my-1 text-lg'>작품</p>
-          </button>
-          <button
-            className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-default-500 transition'
-            onClick={() => push('/artworks')}
-            disabled
-          >
-            <BiSolidCalendar size={23} className='my-0.5 mr-2' />
-            <p className='my-1 text-lg'>이벤트</p>
-          </button>
-          <button
-            className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-default-500 transition'
-            disabled
-          >
-            <BiSolidPlanet size={23} className='my-0.5 mr-2' />
-            <p className='my-1 text-lg'>네트워크</p>
-          </button>
-          <button
-            className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-default-500 transition'
-            disabled
-          >
-            <BiSolidNews size={23} className='my-0.5 mr-2' />
-            <p className='my-1 text-lg'>매거진</p>
-          </button>
+      <div className='flex w-full max-w-screen-sm md:max-w-screen-lg lg:max-w-screen-xl'>
+        <div className='sticky top-[60px] h-max md:w-44 lg:w-52'>
+          <MainNavigation />
         </div>
-        <Feed />
+        <div className='w-full md:w-[calc(100%-24rem)] lg:w-[calc(100%-33rem)]'>
+          <Feed />
+        </div>
         <div className='sticky top-[60px] hidden h-max md:block md:w-60 lg:w-80'>
           <RecentPostWidget />
           <RecentArtworkWidget />

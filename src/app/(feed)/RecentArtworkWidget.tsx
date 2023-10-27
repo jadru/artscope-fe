@@ -17,7 +17,7 @@ export default function RecentArtworkWidget() {
     queryFn: getRecentArtwork,
   });
   const { push } = useRouter();
-  return post.data && post.data.length > 0 ? (
+  return post.data ? (
     <div className='w-full border-b border-r p-4'>
       <h4 className='mb-1.5 pl-1.5'>인기있는 작품</h4>
       {post.data?.map((aw) => (

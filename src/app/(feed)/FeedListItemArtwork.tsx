@@ -5,7 +5,7 @@ import ASNextImage from '@/components/ASNextImage';
 
 import { feedItemType } from '@/types/feed';
 
-const ArtworkItemforFeed = ({ feed }: { feed: feedItemType }) => {
+const FeedListItemArtwork = ({ feed }: { feed: feedItemType }) => {
   const { push } = useRouter();
   return (
     <div
@@ -37,4 +37,4 @@ const ArtworkItemforFeed = ({ feed }: { feed: feedItemType }) => {
   );
 };
 
-export default ArtworkItemforFeed;
+export default FeedListItemArtwork;

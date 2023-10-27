@@ -8,7 +8,7 @@ import { ArtworkType } from '@/types/artwork';
 export default function ArtworkTags({ data }: { data: ArtworkType }) {
   const { push } = useRouter();
   return data.artwork.tags.length > 0 ? (
-    <div className='mx-2 flex gap-1'>
+    <div className='mx-2 flex flex-wrap gap-1'>
       {data.artwork.tags.map(
         (value) =>
           value !== '' && (

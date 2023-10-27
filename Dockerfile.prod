@@ -6,16 +6,19 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY .yarn ./.yarn
-COPY .pnp.cjs .yarnrc.yml package.json yarn.lock* ./
+COPY .yarnrc.yml package.json yarn.lock* ./
 RUN yarn install --immutable
 
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/.yarn ./.yarn
-COPY --from=deps /app/.pnp.cjs ./pnp.cjs
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN yarn add env-cmd
-RUN yarn build:prod
+
+RUN yarn build:dev
+
+RUN yarn workspaces focus
+RUN rm -rf ./.next/cache
 
 FROM base AS runner
 WORKDIR /app
@@ -29,8 +32,6 @@ COPY --from=builder /app/public ./public
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-COPY --from=builder --chown=nextjs:nodejs /.yarn/cache ./.yarn/cache
-COPY --from=builder --chown=nextjs:nodejs /.pnp.cjs ./.pnp.cjs
 
 USER nextjs
 
@@ -38,4 +39,4 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-CMD ["node", "-r", "./.pnp.cjs", "server.js"]
+CMD ["node", "server.js"]

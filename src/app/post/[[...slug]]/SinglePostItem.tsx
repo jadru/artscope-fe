@@ -50,14 +50,14 @@ export default function SinglePostItem({
                   height={48}
                   className='h-12 w-12 rounded-full object-cover'
                 />
-                <div className='flex flex-col gap-0.5 transition hover:underline'>
+                <div className='ml-0.5 flex flex-col gap-0.5 transition hover:underline'>
                   <p className='inline text-[0.9rem] font-bold'>
                     {feed.authorName}
                   </p>
                   <p
                     className={`${
-                      feed.authorDescription ? 'ml-1 inline' : ''
-                    } text-[0.9rem] text-default-500`}
+                      feed.authorDescription ? 'ml-0.5 inline w-full' : ''
+                    } line-clamp-1 text-[0.9rem] text-default-500`}
                   >
                     @{feed.authorUsername}{' '}
                     {feed.authorDescription
@@ -70,7 +70,7 @@ export default function SinglePostItem({
 
             <div className='flex flex-col justify-start px-1.5 py-3'>
               <div className='text flex w-full flex-col gap-1'>
-                <h5 className='w-full overflow-x-hidden text-lg leading-normal tracking-tight text-default-800'>
+                <h5 className='w-full overflow-x-hidden break-keep text-lg leading-relaxed tracking-tight text-default-800'>
                   {textInUrlSeperator(
                     feed.content.replace(/<[^>]*>?/g, '')
                   ).map((item, index) => {
