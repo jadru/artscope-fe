@@ -17,6 +17,9 @@ COPY . .
 RUN yarn add env-cmd
 RUN yarn build:dev
 
+RUN yarn install --immutable --production
+RUN rm -rf ./.next/cache
+
 FROM base AS runner
 WORKDIR /app
 
@@ -29,7 +32,7 @@ COPY --from=builder /app/public ./public
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-COPY --from=deps /app/.yarn ./.yarn/cache
+COPY --from=deps --chown=nextjs:nodejs /app/.yarn/cache ./.yarn/cache
 COPY --from=builder --chown=nextjs:nodejs /app/.pnp.cjs ./.pnp.cjs
 COPY .env.development .env.production
 
