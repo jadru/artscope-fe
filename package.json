@@ -98,6 +98,5 @@
     "src/**/*.{css,scss,md,webmanifest}": [
       "prettier -w"
     ]
-  },
-  "packageManager": "yarn@4.0.0"
+  }
 }
