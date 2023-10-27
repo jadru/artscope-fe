@@ -14,7 +14,7 @@ WORKDIR /app
 COPY --from=deps /app/.yarn ./.yarn
 COPY --from=deps /app/.pnp.cjs ./pnp.cjs
 COPY . .
-RUN yarn global add env-cmd
+
 RUN yarn build:dev
 
 FROM base AS runner
