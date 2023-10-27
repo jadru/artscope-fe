@@ -17,7 +17,8 @@ import {
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import LoginModal from '@/app/(feed)/LoginModalButton';
+import LoginModal from '@/components/Navbar/LoginModalButton';
+
 import Logo from '@/assets/images/logo_long.svg';
 import {
   NEXT_PUBLIC_API_URL,
@@ -25,7 +26,7 @@ import {
 } from '@/constant/env';
 import { useUser } from '@/states';
 
-export default function NavBar({
+export default function Index({
   theme,
 }: {
   theme: 'light' | 'dark';

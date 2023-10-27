@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     '작품 등록, 예술가 검색, 소통 기능, 프로젝트 제안, 예술 관련 정보 제공 등 다양한 기능을 제공합니다. ' +
     '이를 통해 예술가와 기획자들의 소통과 협업을 촉진하여, 새로운 예술 작품을 탄생시키는 데 기여합니다. ' +
     '예술에 관심 있는 모든 분들이 Artscope를 통해 새로운 경험을 할 수 있기를 기대합니다.',
-  viewport: 'width=device-width, initial-scale=1.0',
+  viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1',
   other: {
     'apple-mobile-web-app-capable': 'yes',
     'mobile-web-app-capable': 'yes',

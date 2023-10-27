@@ -16,7 +16,11 @@ import jxios from '@/utils/jxios';
 
 import { feedItemType } from '@/types/feed';
 
-export default function FeedListItemAction({ feed }: { feed: feedItemType }) {
+export default function FeedListItemPostAction({
+  feed,
+}: {
+  feed: feedItemType;
+}) {
   const [like, setLike] = useState<boolean>(feed.isLiked);
   const { user, isLogin } = useUser();
   const { push } = useRouter();

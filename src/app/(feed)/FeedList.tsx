@@ -1,8 +1,8 @@
 import {} from '@toss/react';
 import React, { useEffect, useState } from 'react';
 
-import ArtworkItemforFeed from '@/app/(feed)/ArtworkItemforFeed';
-import FeedListItem from '@/app/(feed)/FeedListItem';
+import FeedListItemArtwork from '@/app/(feed)/FeedListItemArtwork';
+import FeedListItemPost from '@/app/(feed)/FeedListItemPost';
 
 import { feedItemType } from '@/types/feed';
 
@@ -62,7 +62,7 @@ export default function FeedList({ data }: FeedListProps) {
               key={feed[0].id + '-artwork'}
             >
               {feed.map((feedItem) => (
-                <ArtworkItemforFeed
+                <FeedListItemArtwork
                   feed={feedItem}
                   key={'artwork-' + feedItem.id}
                 />
@@ -70,7 +70,7 @@ export default function FeedList({ data }: FeedListProps) {
             </div>
           )
         ) : (
-          <FeedListItem feed={feed} key={feed.id} />
+          <FeedListItemPost feed={feed} key={feed.id} />
         )
       )}
       {feeds.length === 0 && <p className='m-12'>데이터가 없습니다.</p>}

@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 
 import useUserHook from '@/hooks/useUser';
 
-import NavBar from '@/app/(feed)/Navbar';
+import NavBar from '@/components/Navbar';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   useUserHook();
