@@ -1,5 +1,4 @@
-import { CardBody, CardFooter } from '@nextui-org/card';
-import { Card } from '@nextui-org/react';
+import { Card, CardBody, CardFooter } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 
 import ASNextImage from '@/components/ASNextImage';
