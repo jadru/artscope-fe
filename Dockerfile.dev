@@ -36,12 +36,12 @@ COPY --from=builder --chown=nextjs:nodejs /root/.yarn/berry/cache
 COPY --from=builder --chown=nextjs:nodejs /app/.pnp.cjs ./.pnp.cjs
 COPY .env.development .env.production
 
+RUN chown -R nextjs:nodejs /root/.yarn/berry/cache
+
 USER nextjs
 
 EXPOSE 3000
 
 ENV PORT 3000
-
-RUN chmode -R 777 /root/.yarn/berry/cache
 
 CMD ["node", "-r", "./.pnp.cjs", "server.js"]
