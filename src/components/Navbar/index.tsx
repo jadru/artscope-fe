@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  Avatar,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -17,13 +16,11 @@ import {
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import ASNextImage from '@/components/ASNextImage';
 import LoginModal from '@/components/Navbar/LoginModalButton';
 
 import Logo from '@/assets/images/logo_long.svg';
-import {
-  NEXT_PUBLIC_API_URL,
-  NEXT_PUBLIC_MEDIA_STORAGE_URL,
-} from '@/constant/env';
+import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import { useUser } from '@/states';
 
 export default function Index({
@@ -46,10 +43,10 @@ export default function Index({
       name: '작품',
       url: '/artwork',
     },
-    // {
-    //   name: '이벤트',
-    //   url: '/event',
-    // },
+    {
+      name: '이벤트',
+      url: '/event',
+    },
     // {
     //   name: '네트워크',
     //   url: '/network',
@@ -125,19 +122,15 @@ export default function Index({
         ) : (
           <Dropdown placement='bottom-end'>
             <DropdownTrigger>
-              <Avatar
-                as='button'
-                color='secondary'
-                className='transition-transform'
-                name={user.name}
-                size='sm'
-                src={
-                  user.picture?.startsWith('http')
-                    ? user.picture
-                    : NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + user.picture ||
-                      undefined
-                }
-              />
+              <button>
+                <ASNextImage
+                  className='h-10 w-10 transform rounded-full border-2 border-transparent object-cover transition-transform hover:scale-110 hover:border-primary'
+                  alt={user.name}
+                  width={32}
+                  height={32}
+                  src={user.picture || '/images/default_profile.png'}
+                />
+              </button>
             </DropdownTrigger>
             <DropdownMenu
               aria-label='Profile Actions'

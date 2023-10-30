@@ -1,4 +1,4 @@
-import { contentType, pageInfoType } from '@/types/default';
+import { contentType, MediaType, pageInfoType } from '@/types/default';
 
 export type feedApiResponseType = {
   feedItems: feedItemType[];
@@ -63,4 +63,22 @@ export type CommentPostType = {
 export type PostListResponse = {
   posts: SinglePostType[];
   pageInfo: pageInfoType;
+};
+
+export type PostApiRequestType = {
+  dto: {
+    content: string;
+    medias:
+      | {
+          mediaType: MediaType;
+          description: string;
+        }[]
+      | null;
+    thumbnail: {
+      mediaType: MediaType;
+      description: string;
+    } | null;
+  };
+  mediaFiles: File[] | null;
+  thumbnailFile?: File | null;
 };

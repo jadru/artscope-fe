@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function RootLayout({
   children,
-  maxWidth = 'max-w-screen-md',
+  maxWidth = '',
   className = '',
 }: {
   children: React.ReactNode;
@@ -10,7 +10,8 @@ export default function RootLayout({
     | 'max-w-screen-sm'
     | 'max-w-screen-md'
     | 'max-w-screen-lg'
-    | 'max-w-screen-xl';
+    | 'max-w-screen-xl'
+    | '';
   className?: string;
 }) {
   return (

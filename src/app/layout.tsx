@@ -7,8 +7,6 @@ import { ToastContainer } from 'react-toastify';
 import '../styles/globals.scss';
 import 'react-toastify/dist/ReactToastify.css';
 
-import Footer from '@/components/Footer';
-
 import { Providers } from '@/app/providers';
 import { GA_TRACKING_ID, NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 import { cls } from '@/utils';
@@ -111,7 +109,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang='ko' className='light'>
-      <body className={cls(noto_Sans_KR.className, nanum_Myeongjo.className)}>
+      <body
+        className={cls(
+          noto_Sans_KR.className,
+          nanum_Myeongjo.className,
+          'min-h-screen'
+        )}
+      >
         <ToastContainer limit={2} hideProgressBar />
         <link rel='manifest' href='/manifest.json' />
         <Script
@@ -132,12 +136,7 @@ export default function RootLayout({
           `,
           }}
         />
-        <Providers>
-          <div className='container mx-auto min-h-[calc(100vh-10rem)] max-w-[1024px]'>
-            {children}
-          </div>
-          <Footer />
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
