@@ -5,25 +5,26 @@ import { AiOutlineHome, AiOutlineLink } from 'react-icons/ai';
 import ASNextImage from '@/components/ASNextImage';
 
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
+import jxios from '@/utils/jxios';
 
 import { profileApiType } from '@/types/profile';
 
 const fetchProfile = async (username: string) =>
-  await fetch(NEXT_PUBLIC_API_URL + '/api/members/' + username, {
-    headers: { accept: '*/*' },
-  }).then((res) => {
-    if (!res.ok) {
-      throw new Error(res.statusText);
-    }
-    return res.json();
-  });
+  await jxios
+    .get(NEXT_PUBLIC_API_URL + '/api/members/' + username)
+    .then((res) => {
+      if (res.status !== 200) {
+        throw new Error(res.statusText);
+      }
+      return res.data as profileApiType;
+    });
 
 export default async function ProfilePage({
   params,
 }: {
   params: { slug: string[] };
 }) {
-  const data: profileApiType = await fetchProfile(params.slug[0]);
+  const data = await fetchProfile(params.slug[0]);
   // when string data.history meets /n, make <br/>component on array
   const history = data.history?.split('\n').map((line, index) => {
     if (line === '') {

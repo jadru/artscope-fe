@@ -5,14 +5,13 @@ import { useEffect, useState } from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
 
-import FeedListItemPostAction from '@/app/(list)/(feed)/FeedListItemPostAction';
 import OpengraphCard from '@/app/(list)/(feed)/OpengraphCard';
 import textInUrlSeperator from '@/utils/textInUrlSeperator';
 import { timeCaculatortoKO } from '@/utils/timeCalculator';
 
 import { feedItemType } from '@/types/feed';
 
-export default function FeedListItemPost({ feed }: { feed: feedItemType }) {
+export default function FeedListItemEvent({ feed }: { feed: feedItemType }) {
   const { push } = useRouter();
   const [firstLink, setFirstLink] = useState<string | undefined>();
   const [content, _] = useState(
@@ -33,7 +32,7 @@ export default function FeedListItemPost({ feed }: { feed: feedItemType }) {
       className='flex cursor-pointer space-x-2 border-b border-default-200 bg-white px-3.5 pb-1 pt-3.5 transition-colors hover:bg-gray-100 md:mx-0 md:border-x'
       onClick={(e) => {
         e.stopPropagation();
-        push(`/post/${feed.id}`);
+        push(`/event/${feed.id}`);
       }}
     >
       <div>
@@ -81,7 +80,7 @@ export default function FeedListItemPost({ feed }: { feed: feedItemType }) {
           <div className='flex flex-col justify-start'>
             <div className='text flex w-full flex-col gap-1'>
               <div className='line-clamp-3 w-full overflow-x-hidden break-keep tracking-tight text-default-800'>
-                {feed.type === 'exhibition' ? <b>전시안내 - </b> : ''}
+                <b>전시안내 - </b>
                 {content.map((item, index) => {
                   if (item.type === 'text') {
                     return (
@@ -114,7 +113,6 @@ export default function FeedListItemPost({ feed }: { feed: feedItemType }) {
             {firstLink && <OpengraphCard externalUrl={firstLink} />}
           </div>
         </div>
-        <FeedListItemPostAction feed={feed} />
       </div>
     </div>
   );

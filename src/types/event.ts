@@ -1,6 +1,6 @@
 import { pageInfoType } from '@/types/default';
 
-export type normalEventType = {
+export type SingleEventType = {
   id: number;
   title: string;
   description: string;
@@ -17,11 +17,11 @@ export type normalEventType = {
 };
 
 export type EventResponseType = {
-  exhibitions: normalEventType[];
+  exhibitions: SingleEventType[];
   pageInfo: pageInfoType;
 };
 
 export type EventViewType = {
   date: string;
-  event: normalEventType[];
+  event: SingleEventType[];
 }[];

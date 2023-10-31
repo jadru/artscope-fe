@@ -5160,6 +5160,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tweenjs/tween.js@npm:^18.6.4":
+  version: 18.6.4
+  resolution: "@tweenjs/tween.js@npm:18.6.4"
+  checksum: 4fc9be51e2d48f1900b62acffbcf0dbe9d4b214a0cde06e6d2482695e8121ba80b066e20fc302bd14ef3ce1eb6e6aa6e7e27fd27d6ceed6589ce44b62b0d6e41
+  languageName: node
+  linkType: hard
+
 "@types/aria-query@npm:^5.0.1":
   version: 5.0.3
   resolution: "@types/aria-query@npm:5.0.3"
@@ -13207,6 +13214,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-slideshow-image@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "react-slideshow-image@npm:4.3.0"
+  dependencies:
+    "@tweenjs/tween.js": "npm:^18.6.4"
+    resize-observer-polyfill: "npm:^1.5.1"
+  peerDependencies:
+    react: ">=15"
+  checksum: e4159901f5f195cc3d25239c82555263e3f684b8aeeac63dbec35a7b199c77acfed108c06821d3b13387a78b93d2f62d94c7378a1cdbcc06f5aa2b5fc917f41d
+  languageName: node
+  linkType: hard
+
 "react-style-singleton@npm:^2.2.1":
   version: 2.2.1
   resolution: "react-style-singleton@npm:2.2.1"
@@ -13448,6 +13467,13 @@ __metadata:
   version: 1.0.0
   resolution: "requires-port@npm:1.0.0"
   checksum: b2bfdd09db16c082c4326e573a82c0771daaf7b53b9ce8ad60ea46aa6e30aaf475fe9b164800b89f93b748d2c234d8abff945d2551ba47bf5698e04cd7713267
+  languageName: node
+  linkType: hard
+
+"resize-observer-polyfill@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "resize-observer-polyfill@npm:1.5.1"
+  checksum: 5e882475067f0b97dc07e0f37c3e335ac5bc3520d463f777cec7e894bb273eddbfecb857ae668e6fb6881fd6f6bb7148246967172139302da50fa12ea3a15d95
   languageName: node
   linkType: hard
 
@@ -15015,6 +15041,7 @@ __metadata:
     react-intersection-observer: "npm:^9.4.3"
     react-lazy-load-image-component: "npm:^1.5.6"
     react-query: "npm:^3.39.3"
+    react-slideshow-image: "npm:^4.3.0"
     react-textarea-autosize: "npm:^8.5.3"
     react-toastify: "npm:^9.1.2"
     sass: "npm:^1.62.0"
