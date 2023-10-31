@@ -55,6 +55,7 @@
     "react-intersection-observer": "^9.4.3",
     "react-lazy-load-image-component": "^1.5.6",
     "react-query": "^3.39.3",
+    "react-slideshow-image": "^4.3.0",
     "react-textarea-autosize": "^8.5.3",
     "react-toastify": "^9.1.2",
     "sass": "^1.62.0",

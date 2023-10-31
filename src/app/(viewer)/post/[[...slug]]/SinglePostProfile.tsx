@@ -22,9 +22,7 @@ export default function SinglePostProfile({ feed }: { feed: SinglePostType }) {
           className='h-10 w-10 rounded-full object-cover'
         />
         <div className='ml-0.5 flex flex-col transition hover:underline'>
-          <p className='-mb-1 inline text-[0.9rem] font-bold'>
-            {feed.authorName}
-          </p>
+          <p className='inline text-[0.9rem] font-bold'>{feed.authorName}</p>
           <p
             className={`${
               feed.authorDescription ? 'ml-0.5 inline w-full' : ''

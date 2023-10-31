@@ -83,7 +83,7 @@ const NewArtwork = () => {
       }),
     ],
     content: '<h1></h1>',
-    autofocus: 'end',
+    autofocus: 'start',
     enableInputRules: false,
     enablePasteRules: false,
   });

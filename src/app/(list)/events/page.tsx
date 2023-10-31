@@ -2,16 +2,11 @@
 
 import { Pagination, Spacer } from '@nextui-org/react';
 import { format } from 'date-fns';
-import ko from 'date-fns/locale/ko';
 import { useEffect, useState } from 'react';
-import DatePicker, { registerLocale } from 'react-datepicker';
-registerLocale('ko', ko);
 
 import 'react-datepicker/dist/react-datepicker.css';
-import '@/styles/datepicker.scss';
 
-import ASNextImage from '@/components/ASNextImage';
-
+import EventListItem from '@/app/(list)/events/EventListItem';
 import jxios from '@/utils/jxios';
 
 import { pageInfoType } from '@/types/default';
@@ -19,7 +14,7 @@ import { EventResponseType, EventViewType } from '@/types/event';
 
 export default function Events() {
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, _b] = useState(
+  const [endDate, setEndDate] = useState(
     new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
   );
   const [data, setData] = useState<EventViewType>([]);
@@ -67,16 +62,19 @@ export default function Events() {
           setPage(eventDatas.pageInfo);
         });
     fetch();
-  }, [endDate, startDate, page.page]);
+  }, [startDate, page.page, endDate]);
+
+  useEffect(() => {
+    setEndDate(new Date(startDate.getTime() + 1000 * 60 * 60 * 24 * 30));
+  }, [startDate]);
 
   return (
-    <div className='py-3'>
-      <DatePicker
-        selected={startDate}
-        onChange={(date: Date) => setStartDate(date as Date)}
-        dateFormat='yyyy-MM-dd'
-        locale='ko'
-        className='mx-4 rounded-md border-2 border-gray-300 bg-default-100 px-3 py-2'
+    <div className='p-3'>
+      <input
+        type='date'
+        value={format(startDate, 'yyyy-MM-dd')}
+        onChange={(date) => setStartDate(new Date(date.target.value))}
+        className='rounded-md border-2 border-gray-300 bg-default-100 px-3 py-2'
       />
       <Spacer y={5} />
       <div className='relative mx-4'>
@@ -88,25 +86,7 @@ export default function Events() {
             <div className='flex flex-col space-y-1'>
               {date.event &&
                 date.event.map((exhibition) => (
-                  <div
-                    className='group ml-8 flex cursor-pointer flex-row justify-between bg-white group-hover:bg-default-100 md:ml-52'
-                    key={exhibition.id}
-                  >
-                    <div>
-                      <h3>{exhibition.title}</h3>
-                      <h4>{exhibition.description}</h4>
-                      <h5>
-                        {new Date(exhibition.startDate).toLocaleString()} ~
-                        {new Date(exhibition.endDate).toLocaleString()}
-                      </h5>
-                    </div>
-                    <ASNextImage
-                      src={exhibition.thumbnail.mediaUrl}
-                      alt='thumbnail'
-                      width={100}
-                      height={100}
-                    />
-                  </div>
+                  <EventListItem event={exhibition} key={exhibition.id} />
                 ))}
             </div>
           </div>

@@ -33,7 +33,7 @@ export default function ArtworkAuthorProfile({
           alt={author.name + "'s profile image"}
           width={60}
           height={60}
-          className='rounded-full'
+          className='h-16 w-16 rounded-full border object-cover'
         />
       )}
     </div>

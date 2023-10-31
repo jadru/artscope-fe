@@ -1,13 +1,13 @@
 'use client';
 
-import { Kbd, Pagination } from '@nextui-org/react';
+import { Kbd } from '@nextui-org/react';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 import ResponsiveGrid from '@/components/ResponsiveGrid';
 
-import FeedListItemPost from '@/app/(list)/(feed)/FeedListItemPost';
+import FeedListItemPost from '@/app/(list)/(feed)/FeedListItem/FeedListItemPost';
 import ArtworkItem from '@/app/(list)/artworks/ArtworkItem';
 import jxios from '@/utils/jxios';
 
@@ -15,8 +15,6 @@ import { searchType } from '@/types/search';
 
 export default function Search() {
   const [search, setSearch] = useState('');
-  const [_a, setPaginationArtwork] = useState(1);
-  const [_b, setPaginationPost] = useState(1);
   const [data, setData] = useState<searchType>();
   const searchParams = useSearchParams();
   const searchKeyword = searchParams.get('c');
@@ -58,17 +56,12 @@ export default function Search() {
           Enter
         </Kbd>
       </div>
-      <div className='flex h-12 items-center justify-start border-y px-4'>
-        검색 결과{' '}
-        {data &&
-          data?.searchPosts.posts.length + data?.searchArtworks.artworks.length}
-        건을 찾았습니다.
-      </div>
-      <div className='p-3'>
-        <h5>아트워크</h5>
-        {data &&
-          (data.searchArtworks.artworks.length > 0 ? (
-            <div>
+      <hr />
+      <div>
+        <div className='p-4'>
+          <h3>아트워크</h3>
+          {data &&
+            (data.searchArtworks.artworks.length > 0 ? (
               <ResponsiveGrid>
                 {data.searchArtworks &&
                   data.searchArtworks.artworks.length > 0 &&
@@ -79,30 +72,25 @@ export default function Search() {
                     />
                   ))}
               </ResponsiveGrid>
-              <Pagination
-                total={data.searchArtworks.pageInfo.totalPages}
-                onChange={setPaginationArtwork}
-              />
-            </div>
-          ) : (
-            <h3 className='py-14 text-default-500'>검색 결과가 없습니다.</h3>
-          ))}
-        <h5>게시글 검색 결과</h5>
-        {data &&
-          (data.searchPosts.posts.length > 0 ? (
-            <>
-              {data.searchPosts.posts.map((item) => (
-                <FeedListItemPost feed={item} key={item.id} />
-              ))}
-
-              <Pagination
-                total={data.searchPosts.pageInfo.totalPages}
-                onChange={setPaginationPost}
-              />
-            </>
-          ) : (
-            <h3 className='py-14 text-default-500'>검색 결과가 없습니다.</h3>
-          ))}
+            ) : (
+              <h3 className='py-14 text-default-500'>검색 결과가 없습니다.</h3>
+            ))}
+        </div>
+        <hr />
+        <div className='p-4'>
+          <h3>포스트 검색 결과</h3>
+          {data &&
+            (data.searchPosts.posts.length > 0 ? (
+              <div className='mt-1 border md:border-x-0'>
+                {data.searchPosts.posts.map((item) => (
+                  <FeedListItemPost feed={item} key={item.id} />
+                ))}
+              </div>
+            ) : (
+              <h3 className='py-14 text-default-500'>검색 결과가 없습니다.</h3>
+            ))}
+        </div>
+        <hr />
       </div>
     </div>
   );

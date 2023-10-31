@@ -12,7 +12,7 @@ export type feedItemType = {
   content: string;
   type: contentType;
   thumbnailUrl: string | null;
-  mediaUrls: string | null;
+  mediaUrls: string[] | null;
   authorUsername: string;
   authorName: string;
   authorDescription: string | null;
@@ -40,6 +40,13 @@ export type SinglePostType = {
   authorDescription: string | null;
   authorProfileImageUrl: string | null;
   likeMembers: { username: string; name: string; likedTime: Date }[];
+  medias: {
+    id: number;
+    mediaType: MediaType;
+    mediaUrl: string;
+    imageHeight: number;
+    imageWidth: number;
+  }[];
   createdTime: Date;
   updatedTime: Date | null;
   parentPostId: number | null;
@@ -71,12 +78,10 @@ export type PostApiRequestType = {
     medias:
       | {
           mediaType: MediaType;
-          description: string;
         }[]
       | null;
     thumbnail: {
       mediaType: MediaType;
-      description: string;
     } | null;
   };
   mediaFiles: File[] | null;

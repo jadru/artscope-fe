@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { ClassAttributes, HTMLAttributes, JSX } from 'react';
 import HTMLRenderer from 'react-html-renderer';
 
 import PostComment from '@/app/(viewer)/post/[[...slug]]/comment';
 import SinglePostEdit from '@/app/(viewer)/post/[[...slug]]/SinglePostEdit';
 import SinglePostItemAction from '@/app/(viewer)/post/[[...slug]]/SinglePostItemAction';
+import SinglePostMedia from '@/app/(viewer)/post/[[...slug]]/SinglePostMedia';
 import SinglePostProfile from '@/app/(viewer)/post/[[...slug]]/SinglePostProfile';
 
 import { SinglePostType } from '@/types/feed';
@@ -27,20 +27,10 @@ export default function SinglePostItem({
             <hr />
 
             <div className='flex flex-col justify-start px-1.5'>
-              <div className='flex w-full flex-col gap-1 break-keep p-3'>
+              <div className='flex w-full flex-col gap-1 break-keep p-3 text-xl leading-relaxed tracking-wide'>
                 <HTMLRenderer
                   html={feed.content}
                   components={{
-                    p: (
-                      props: JSX.IntrinsicAttributes &
-                        ClassAttributes<HTMLParagraphElement> &
-                        HTMLAttributes<HTMLParagraphElement>
-                    ) => (
-                      <p
-                        className='w-full overflow-x-hidden break-keep text-xl leading-relaxed tracking-wide text-default-800'
-                        {...props}
-                      />
-                    ),
                     a: Link,
                   }}
                 />
@@ -72,15 +62,18 @@ export default function SinglePostItem({
                 {/* })} */}
               </div>
             </div>
+            {feed.medias && feed.medias.length > 0 && (
+              <SinglePostMedia feed={feed} />
+            )}
             {feed.updatedTime ? (
-              <p className='mx-1.5 mt-0.5 text-right text-default-500'>
+              <p className='mx-1.5 mt-1.5 text-right text-default-500'>
                 {new Date(feed.updatedTime).toLocaleString('ko-KR', {
                   dateStyle: 'full',
                   timeStyle: 'short',
                 }) + ' 수정'}
               </p>
             ) : (
-              <p className='mx-1.5 mt-1 text-right text-default-500'>
+              <p className='mx-1.5 mt-1.5 text-right text-default-500'>
                 {new Date(feed.createdTime).toLocaleString('ko-KR', {
                   dateStyle: 'full',
                   timeStyle: 'short',

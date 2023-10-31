@@ -1,8 +1,9 @@
 import {} from '@toss/react';
 import React, { useEffect, useState } from 'react';
 
-import FeedListItemArtwork from '@/app/(list)/(feed)/FeedListItemArtwork';
-import FeedListItemPost from '@/app/(list)/(feed)/FeedListItemPost';
+import FeedListItemArtwork from '@/app/(list)/(feed)/FeedListItem/FeedListItemArtwork';
+import FeedListItemEvent from '@/app/(list)/(feed)/FeedListItem/FeedListItemEvent';
+import FeedListItemPost from '@/app/(list)/(feed)/FeedListItem/FeedListItemPost';
 
 import { feedItemType } from '@/types/feed';
 
@@ -58,7 +59,7 @@ export default function FeedList({ data }: FeedListProps) {
                   : feed.length % 3 === 0
                   ? 'grid-cols-1 md:grid-cols-3'
                   : 'grid-cols-2'
-              } gap-0 border-x md:mx-0`}
+              } gap-0 md:mx-0 md:border-x`}
               key={feed[0].id + '-artwork'}
             >
               {feed.map((feedItem) => (
@@ -69,8 +70,10 @@ export default function FeedList({ data }: FeedListProps) {
               ))}
             </div>
           )
-        ) : (
+        ) : feed.type === 'post' ? (
           <FeedListItemPost feed={feed} key={feed.id} />
+        ) : (
+          <FeedListItemEvent feed={feed} key={feed.id} />
         )
       )}
       {feeds.length === 0 && <p className='m-12'>데이터가 없습니다.</p>}

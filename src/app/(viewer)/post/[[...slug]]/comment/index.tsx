@@ -2,6 +2,7 @@
 
 import { Button, Input } from '@nextui-org/react';
 import { useDebounce } from '@toss/react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -96,7 +97,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
   return (
     <div className='space-y-2 border-t px-2 py-4'>
       <h4 className='px-2 text-3xl'>댓글 {commentCount}</h4>
-      {isLogin && (
+      {isLogin ? (
         <div className='flex px-2'>
           <Input
             placeholder='댓글을 입력하세요'
@@ -119,8 +120,18 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
             작성
           </Button>
         </div>
+      ) : (
+        <Link
+          className='flex h-24 w-full cursor-pointer items-center justify-center border hover:bg-default-100'
+          href='/user/login'
+        >
+          <p>댓글 작성을 위해 로그인하세요.</p>
+        </Link>
       )}
       <div>
+        {isLogin && post.comments === 0 && (
+          <p className='p-4 text-center'>첫 댓글을 작성해보세요</p>
+        )}
         {post.commentPosts.map((comment) => (
           <div key={comment.id}>
             <div className='flex px-2 py-3 hover:bg-default-100'>

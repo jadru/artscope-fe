@@ -93,13 +93,15 @@ const NewPost = () => {
 
       const formData = new FormData();
       if (fileUrls.length > 0) {
+        newState.dto.thumbnail = {
+          mediaType: 'image',
+        };
         formData.append('thumbnailFile', fileUrls[0].file as File);
         newState.dto.medias = [];
         fileUrls.forEach((media) => {
           formData.append('mediaFiles', media.file as File);
           newState.dto.medias?.push({
             mediaType: media.mediaType,
-            description: media.description,
           });
         });
       }
@@ -228,8 +230,7 @@ const NewPost = () => {
           disabled={isUpload}
           className={`
             h-12 rounded-2xl border-2 border-primary bg-white px-6 py-3 font-bold text-primary transition hover:border-secondary hover:bg-blue-50 hover:text-secondary ${
-              isUpload &&
-              'animate-pulse border-gray-200 bg-gray-200 text-default'
+              isUpload ? 'opacity-20' : ''
             }`}
         >
           새 포스트 작성
