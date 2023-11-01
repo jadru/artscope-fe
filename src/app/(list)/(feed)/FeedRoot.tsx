@@ -18,7 +18,7 @@ const LIMIT = 10;
 
 const SkeletonFeed = () => (
   <>
-    <div className='flex w-full flex-col gap-2 border-x px-4 py-4'>
+    <div className='flex w-full flex-col gap-2 px-4 py-4 md:border-x'>
       <div className='flex w-full max-w-[300px] items-center gap-3'>
         <div>
           <Skeleton className='flex h-12 w-12 rounded-full' />

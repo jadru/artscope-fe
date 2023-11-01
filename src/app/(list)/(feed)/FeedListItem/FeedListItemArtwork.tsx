@@ -1,19 +1,13 @@
 import { Card, CardBody, CardFooter } from '@nextui-org/react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 import ASNextImage from '@/components/ASNextImage';
 
 import { feedItemType } from '@/types/feed';
 
 const FeedListItemArtwork = ({ feed }: { feed: feedItemType }) => {
-  const { push } = useRouter();
   return (
-    <div
-      onClick={() => {
-        push('/artwork/' + feed.id);
-      }}
-      className='group cursor-pointer'
-    >
+    <Link href={`/artwork/${feed.id}`} className='group cursor-pointer'>
       <Card shadow='sm' className='m-0 rounded-none'>
         <CardBody className='overflow-visible rounded-none p-0 transition duration-100 group-hover:bg-default-100'>
           <ASNextImage
@@ -33,7 +27,7 @@ const FeedListItemArtwork = ({ feed }: { feed: feedItemType }) => {
           </p>
         </CardFooter>
       </Card>
-    </div>
+    </Link>
   );
 };
 

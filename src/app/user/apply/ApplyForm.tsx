@@ -5,18 +5,10 @@ import React from 'react';
 
 import ArtistForm from '@/app/user/apply/ArtistForm';
 import CuratorForm from '@/app/user/apply/CuratorForm';
-import GeneralForm from '@/app/user/apply/GeneralForm';
 
 const SignupForm = () => {
   return (
     <Tabs aria-label='Options' fullWidth defaultSelectedKey='artist'>
-      <Tab key='general' title='일반 General'>
-        <Card>
-          <CardBody>
-            <GeneralForm />
-          </CardBody>
-        </Card>
-      </Tab>
       <Tab key='artist' title='작가 Artist'>
         <Card>
           <CardBody>

@@ -28,11 +28,11 @@ export default function FeedListItemEvent({ feed }: { feed: feedItemType }) {
   }, [content]);
 
   return (
-    <div
+    <Link
+      href={`/event/${feed.id}`}
       className='flex cursor-pointer space-x-2 border-b border-default-200 bg-white px-3.5 pb-1 pt-3.5 transition-colors hover:bg-gray-100 md:mx-0 md:border-x'
       onClick={(e) => {
         e.stopPropagation();
-        push(`/event/${feed.id}`);
       }}
     >
       <div>
@@ -114,6 +114,6 @@ export default function FeedListItemEvent({ feed }: { feed: feedItemType }) {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

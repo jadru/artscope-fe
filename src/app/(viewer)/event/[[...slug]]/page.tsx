@@ -23,12 +23,10 @@ export async function generateMetadata(
   // const thumbnail = (await parent).openGraph?.images || [];
   const previousImages = (await parent).openGraph?.images || [];
   return {
-    title: `${data.title
-      .replace(/<[^>]*>?/g, '')
-      .slice(0, 20)} - ${'Artscope'}`,
+    title: `${data.title.replace(/<[^>]*>?/g, '').slice(0, 20)} 이벤트 정보`,
     description: data.description.replace(/<[^>]*>?/g, ''),
     openGraph: {
-      title: `${data.title.slice(0, 20)} - ${data.author} | Artscope`,
+      title: `${data.title.slice(0, 20)} 이벤트 | Artscope`,
       description: data.description.replace(/<[^>]*>?/g, '').slice(0, 100),
       url: 'https://www.artscope.kr/event/' + id,
       type: 'article',
@@ -50,6 +48,7 @@ export default async function Event(
   const id = params.slug[0];
   // eslint-disable-next-line
   const data = await fetchEvent(id);
+  if (!data) throw new Error('Failed to fetch data');
 
   return <></>;
 }

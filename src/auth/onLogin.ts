@@ -40,7 +40,7 @@ export const onGetProfile = async (
       return;
     } else {
       setUser(data);
-      onSuccess(data.artistStatus, router);
+      onSuccess(data.roleStatus, router);
     }
   } else {
     setUser(undefined);
