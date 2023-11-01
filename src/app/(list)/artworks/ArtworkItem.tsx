@@ -1,17 +1,13 @@
 import { Card, CardBody, CardFooter } from '@nextui-org/react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 import ASNextImage from '@/components/ASNextImage';
 
 import { ArtworkType } from '@/types/artwork';
 
 const ArtworkItem = ({ artwork: aw }: { artwork: ArtworkType }) => {
-  const { push } = useRouter();
   return (
-    <div
-      onClick={() => push('/artwork/' + aw.artwork.id)}
-      className='group cursor-pointer'
-    >
+    <Link href={'/artwork/' + aw.artwork.id} className='group cursor-pointer'>
       <Card shadow='sm'>
         <CardBody className='overflow-visible p-0 transition duration-100 group-hover:bg-default-100'>
           <ASNextImage
@@ -37,7 +33,7 @@ const ArtworkItem = ({ artwork: aw }: { artwork: ArtworkType }) => {
           </p>
         </CardFooter>
       </Card>
-    </div>
+    </Link>
   );
 };
 

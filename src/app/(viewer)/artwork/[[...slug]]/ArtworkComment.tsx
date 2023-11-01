@@ -92,7 +92,7 @@ export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
           <div key={comment.id}>
             <div className='flex px-2 py-3 hover:bg-default-100'>
               <ASNextImage
-                src={comment.authorProfileImageUrl ?? '/images/default.png'}
+                src={comment.authorProfileImageUrl ?? 'prod/images/default.jpg'}
                 alt={comment.authorName}
                 width={48}
                 height={48}

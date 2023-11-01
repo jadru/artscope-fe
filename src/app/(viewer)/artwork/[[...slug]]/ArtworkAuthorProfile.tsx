@@ -4,8 +4,6 @@ import { useRouter } from 'next/navigation';
 
 import ASNextImage from '@/components/ASNextImage';
 
-import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
-
 import { profileApiResponseType } from '@/types/profile';
 
 export default function ArtworkAuthorProfile({
@@ -23,18 +21,16 @@ export default function ArtworkAuthorProfile({
         <p className='text-lg font-bold'>{author.name} 작가</p>
         <p className='text-sm'>@{author.username}</p>
       </div>
-      {author.picture && (
+      {author.picture ? (
         <ASNextImage
-          src={
-            author.picture.startsWith('http')
-              ? author.picture
-              : NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + author.picture
-          }
+          src={author.picture}
           alt={author.name + "'s profile image"}
           width={60}
           height={60}
           className='h-16 w-16 rounded-full border object-cover'
         />
+      ) : (
+        <></>
       )}
     </div>
   );

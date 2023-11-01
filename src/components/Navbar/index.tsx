@@ -124,11 +124,11 @@ export default function Index({
             <DropdownTrigger>
               <button>
                 <ASNextImage
-                  className='h-10 w-10 transform rounded-full border-2 border-transparent object-cover transition-transform hover:scale-110 hover:border-primary'
+                  className='h-10 w-10 transform rounded-full border-2 border-default-500 object-cover transition-transform hover:scale-110 hover:border-primary'
                   alt={user.name}
                   width={32}
                   height={32}
-                  src={user.picture || '/images/default_profile.png'}
+                  src={user.picture ?? 'prod/images/default.jpg'}
                 />
               </button>
             </DropdownTrigger>

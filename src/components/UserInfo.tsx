@@ -13,7 +13,7 @@ export default function UserInfo() {
         alt='프로필 사진'
         width={48}
         height={48}
-        className='h-12 w-12 rounded-full object-cover'
+        className='h-12 w-12 rounded-full border border-default-400 object-cover'
       />
     </div>
   ) : (

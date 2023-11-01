@@ -44,7 +44,7 @@ export default function FeedListItemEvent({ feed }: { feed: feedItemType }) {
           className='bg-dark flex-shrink-0 overflow-hidden rounded-full border border-transparent transition hover:border-default-500 hover:opacity-80'
         >
           <ASNextImage
-            src={feed.authorProfileImageUrl ?? '/images/default.png'}
+            src={feed.authorProfileImageUrl ?? 'prod/images/default.jpg'}
             alt={feed.authorName}
             width={40}
             height={40}

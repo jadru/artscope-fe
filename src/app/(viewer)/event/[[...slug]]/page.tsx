@@ -1,5 +1,7 @@
 import { Metadata, ResolvingMetadata } from 'next';
 
+import MarkdownVewer from '@/components/MarkdownViewer';
+
 import jxios from '@/utils/jxios';
 
 import { SingleEventType } from '@/types/event';
@@ -50,5 +52,5 @@ export default async function Event(
   const data = await fetchEvent(id);
   if (!data) throw new Error('Failed to fetch data');
 
-  return <></>;
+  return <MarkdownVewer content={data.description} />;
 }

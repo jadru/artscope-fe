@@ -24,6 +24,7 @@ import {
   BiUnderline,
 } from 'react-icons/bi';
 import { toast } from 'react-toastify';
+import { Markdown } from 'tiptap-markdown';
 
 import '@/styles/editor.scss';
 
@@ -51,6 +52,13 @@ const NewPost = () => {
       Italic,
       Strike,
       Underline,
+      Markdown.configure({
+        html: false,
+        tightLists: true,
+        linkify: true,
+        transformPastedText: true,
+        transformCopiedText: true,
+      }),
       BulletList,
       ListItem,
       OrderedList,
@@ -59,14 +67,14 @@ const NewPost = () => {
         placeholder,
       }),
     ],
-    content: '<p></p>',
-    autofocus: 'end',
+    content: '',
+    autofocus: true,
   });
 
   const handleSubmitPostButton = useDebounce(async () => {
     if (isUpload) return;
     try {
-      const postContent = editor?.getHTML() || '';
+      const postContent = editor?.storage.markdown.getMarkdown() || '';
       if (postContent.length < 10) {
         toast('10자 이상 입력해주세요.');
         return;

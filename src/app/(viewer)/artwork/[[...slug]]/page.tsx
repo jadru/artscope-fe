@@ -2,11 +2,11 @@ import { Metadata, ResolvingMetadata } from 'next';
 import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
+import MarkdownVewer from '@/components/MarkdownViewer';
 
 import ArtworkAction from '@/app/(viewer)/artwork/[[...slug]]/ArtworkAction';
 import ArtworkAuthorProfile from '@/app/(viewer)/artwork/[[...slug]]/ArtworkAuthorProfile';
 import ArtworkComment from '@/app/(viewer)/artwork/[[...slug]]/ArtworkComment';
-import ArtworkContent from '@/app/(viewer)/artwork/[[...slug]]/ArtworkContent';
 import ArtworkEdit from '@/app/(viewer)/artwork/[[...slug]]/ArtworkEdit';
 import ArtworkTags from '@/app/(viewer)/artwork/[[...slug]]/ArtworkTags';
 import {
@@ -87,12 +87,9 @@ export default async function ArtworkPage({
           </h1>
           <ArtworkTags data={data} />
           <div className='h-0.5 bg-default-100'></div>
-          <h2 className='mx-2 break-words text-left text-xl font-normal'>
-            <ArtworkContent
-              content={data.artwork.description.replace(/<[^>]*>?/g, '')}
-            />
-          </h2>
-
+          <div className='px-2 md:px-3'>
+            <MarkdownVewer content={data.artwork.description} />
+          </div>
           <div>
             {data.artwork.artworkMedias.map((media, mediaIndex) => (
               <div key={media.id}>

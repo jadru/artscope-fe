@@ -36,7 +36,7 @@ export type profileApiResponseType = {
   introduction: string;
   activated: boolean;
   name: string;
-  picture: string | null;
+  picture?: string | null;
   snsUrl: string;
   companyName?: string;
   companyRole?: string;

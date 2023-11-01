@@ -25,6 +25,7 @@ import {
   BiUnderline,
 } from 'react-icons/bi';
 import { toast } from 'react-toastify';
+import { Markdown } from 'tiptap-markdown';
 
 import '@/styles/editor.scss';
 
@@ -65,6 +66,13 @@ const NewArtwork = () => {
       Text,
       Bold,
       Italic,
+      Markdown.configure({
+        html: false,
+        tightLists: true,
+        linkify: true,
+        transformPastedText: true,
+        transformCopiedText: true,
+      }),
       Strike,
       Underline,
       BulletList,
@@ -82,10 +90,8 @@ const NewArtwork = () => {
         showOnlyCurrent: false,
       }),
     ],
-    content: '<h1></h1>',
-    autofocus: 'start',
-    enableInputRules: false,
-    enablePasteRules: false,
+    content: '',
+    autofocus: true,
   });
 
   const handleCreateSaveButton = useDebounce(async () => {
@@ -118,7 +124,7 @@ const NewArtwork = () => {
       const newState = { ...initialArtWork };
       newState.dto.title =
         editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4)) || '';
-      newState.dto.description = editor?.getHTML() || '';
+      newState.dto.description = editor?.storage.markdown.getMarkdown() || '';
       newState.dto.tags = tagCount;
       newState.dto.visible = publicType === 'public';
 
