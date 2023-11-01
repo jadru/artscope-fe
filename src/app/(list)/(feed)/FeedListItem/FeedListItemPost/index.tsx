@@ -1,20 +1,12 @@
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import {
-  ClassAttributes,
-  HTMLAttributes,
-  JSX,
-  useEffect,
-  useState,
-} from 'react';
-import HTMLRenderer from 'react-html-renderer';
+import React, { useEffect, useState } from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
+import MarkdownVewer from '@/components/MarkdownViewer';
 
 import FeedListItemPostAction from '@/app/(list)/(feed)/FeedListItem/FeedListItemPost/FeedListItemPostAction';
 import FeedListItemPostMedia from '@/app/(list)/(feed)/FeedListItem/FeedListItemPost/FeedListItemPostMedia';
 import OpengraphCard from '@/app/(list)/(feed)/OpengraphCard';
-import textInUrlSeperator from '@/utils/textInUrlSeperator';
 import { timeCaculatortoKO } from '@/utils/timeCalculator';
 
 import { feedItemType } from '@/types/feed';
@@ -22,18 +14,13 @@ import { feedItemType } from '@/types/feed';
 export default function Index({ feed }: { feed: feedItemType }) {
   const { push } = useRouter();
   const [firstLink, setFirstLink] = useState<string | undefined>();
-  const [content, _] = useState(
-    textInUrlSeperator(feed.content.replace(/<[^>]*>?/g, ''))
-  );
 
   useEffect(() => {
-    for (const item of content) {
-      if (item.type === 'link') {
-        setFirstLink(item.value);
-        break;
-      }
-    }
-  }, [content]);
+    const linkRegex = /(https:\/\/\S+)/g;
+    const matches = feed.content.match(linkRegex);
+    if (!matches) return;
+    setFirstLink(matches[0]);
+  }, [feed.content]);
 
   return (
     <div
@@ -52,11 +39,11 @@ export default function Index({ feed }: { feed: feedItemType }) {
           className='bg-dark flex-shrink-0 overflow-hidden rounded-full border border-transparent transition hover:border-default-500 hover:opacity-80'
         >
           <ASNextImage
-            src={feed.authorProfileImageUrl ?? '/images/default.png'}
+            src={feed.authorProfileImageUrl ?? 'prod/images/default.jpg'}
             alt={feed.authorName}
             width={40}
             height={40}
-            className='h-10 w-10 rounded-full bg-gray-300 object-cover'
+            className='h-10 w-10 rounded-full border border-default-400 bg-gray-300 object-cover'
           />
         </button>
       </div>
@@ -83,18 +70,8 @@ export default function Index({ feed }: { feed: feedItemType }) {
           </div>
           <div className='flex flex-col justify-start'>
             <div className='text flex w-full flex-col gap-1'>
-              <div className='line-clamp-3 w-full overflow-x-hidden break-keep tracking-tight text-default-800'>
-                <HTMLRenderer
-                  html={feed.content}
-                  components={{
-                    p: (
-                      props: JSX.IntrinsicAttributes &
-                        ClassAttributes<HTMLParagraphElement> &
-                        HTMLAttributes<HTMLParagraphElement>
-                    ) => <p {...props} />,
-                    a: Link,
-                  }}
-                />
+              <div className='line-clamp-3 w-full overflow-x-hidden break-keep p-0.5 tracking-tight text-default-800'>
+                <MarkdownVewer content={feed.content} />
                 {/* {content.map((item, index) => { */}
                 {/*   if (item.type === 'text') { */}
                 {/*     return ( */}

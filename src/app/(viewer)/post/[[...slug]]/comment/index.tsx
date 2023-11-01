@@ -136,7 +136,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
           <div key={comment.id}>
             <div className='flex px-2 py-3 hover:bg-default-100'>
               <ASNextImage
-                src={comment.authorProfileImageUrl ?? '/images/default.png'}
+                src={comment.authorProfileImageUrl ?? 'prod/images/default.jpg'}
                 alt={comment.authorName}
                 width={48}
                 height={48}
@@ -184,7 +184,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                       <ASNextImage
                         src={
                           reComment.authorProfileImageUrl ??
-                          '/images/default.png'
+                          'prod/images/default.jpg'
                         }
                         alt={reComment.authorName}
                         width={48}

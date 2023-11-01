@@ -15,7 +15,7 @@ export default function SinglePostProfile({ feed }: { feed: SinglePostType }) {
     >
       <div className='flex flex-row items-start justify-start gap-2 p-3 transition hover:underline'>
         <ASNextImage
-          src={feed.authorProfileImageUrl || '/images/default_profile.png'}
+          src={feed.authorProfileImageUrl || 'prod/images/default.jpg'}
           alt='프로필 사진'
           width={40}
           height={40}

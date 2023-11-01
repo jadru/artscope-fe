@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import HTMLRenderer from 'react-html-renderer';
+
+import MarkdownVewer from '@/components/MarkdownViewer';
 
 import OpengraphCard from '@/app/(list)/(feed)/OpengraphCard';
 import PostComment from '@/app/(viewer)/post/[[...slug]]/comment';
@@ -43,12 +43,13 @@ export default function SinglePostItem({
 
             <div className='flex flex-col justify-start px-1.5'>
               <div className='flex w-full flex-col gap-1 break-keep p-3 text-xl leading-relaxed tracking-wide'>
-                <HTMLRenderer
-                  html={feed.content}
-                  components={{
-                    a: Link,
-                  }}
-                />
+                {/* <HTMLRenderer */}
+                {/*   html={feed.content} */}
+                {/*   components={{ */}
+                {/*     a: Link, */}
+                {/*   }} */}
+                {/* /> */}
+                <MarkdownVewer content={feed.content} />
                 {/* {textInUrlSeperator( */}
                 {/*   feed.content.replace(/<[^>]*>?/g, '') */}
                 {/* ).map((item, index) => { */}

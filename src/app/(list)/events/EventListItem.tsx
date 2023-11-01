@@ -7,7 +7,7 @@ import { SingleEventType } from '@/types/event';
 export default function EventListItem({ event }: { event: SingleEventType }) {
   return (
     <Link
-      className='group ml-8 flex flex-row justify-between bg-white group-hover:bg-default-100 md:ml-52'
+      className='group flex flex-row justify-between bg-white py-4 pl-8 hover:bg-default-100 group-hover:bg-default-100 md:pl-52'
       href={`/event/${event.id}`}
     >
       <div>
