@@ -1,13 +1,16 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import HTMLRenderer from 'react-html-renderer';
 
+import OpengraphCard from '@/app/(list)/(feed)/OpengraphCard';
 import PostComment from '@/app/(viewer)/post/[[...slug]]/comment';
 import SinglePostEdit from '@/app/(viewer)/post/[[...slug]]/SinglePostEdit';
 import SinglePostItemAction from '@/app/(viewer)/post/[[...slug]]/SinglePostItemAction';
 import SinglePostMedia from '@/app/(viewer)/post/[[...slug]]/SinglePostMedia';
 import SinglePostProfile from '@/app/(viewer)/post/[[...slug]]/SinglePostProfile';
+import textInUrlSeperator from '@/utils/textInUrlSeperator';
 
 import { SinglePostType } from '@/types/feed';
 
@@ -18,6 +21,18 @@ export default function SinglePostItem({
   feed: SinglePostType;
   editMode: boolean;
 }) {
+  const [firstLink, setFirstLink] = useState<string | undefined>();
+  const [content, _] = useState(
+    textInUrlSeperator(feed.content.replace(/<[^>]*>?/g, ''))
+  );
+  useEffect(() => {
+    for (const item of content) {
+      if (item.type === 'link') {
+        setFirstLink(item.value);
+        break;
+      }
+    }
+  }, [content]);
   return !editMode ? (
     <div>
       <div className='border-default-200 bg-white pb-2 transition-colors md:mx-0'>
@@ -60,6 +75,7 @@ export default function SinglePostItem({
                 {/*     ); */}
                 {/*   } */}
                 {/* })} */}
+                {firstLink && <OpengraphCard externalUrl={firstLink} />}
               </div>
             </div>
             {feed.medias && feed.medias.length > 0 && (
