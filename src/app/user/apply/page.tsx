@@ -12,7 +12,7 @@ export default function UserApply() {
   const { user } = useUser();
   const router = useRouter();
   useEffect(() => {
-    if (user?.artistStatus !== 'NONE') {
+    if (user?.roleStatus !== 'NONE') {
       router.push('/user/settings');
     }
   }, [user, router]);

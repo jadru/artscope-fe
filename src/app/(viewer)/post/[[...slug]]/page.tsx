@@ -51,7 +51,7 @@ export default async function SinglePost({
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const data = await fetchPost(params.slug[0]);
-
+  if (!data) throw new Error('Failed to fetch data');
   return (
     <SinglePostItem
       feed={data}

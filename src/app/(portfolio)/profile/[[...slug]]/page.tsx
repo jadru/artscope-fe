@@ -37,18 +37,25 @@ export default async function ProfilePage({
           <h3 className='cursor-text px-2.5 py-2 text-xl font-normal hover:bg-stone-900/10'>
             {line}
           </h3>
-          {data.history?.length > index && <hr />}
+          {data.history && data.history.length > index && <hr />}
         </div>
       </div>
     );
   });
 
   return (
-    <div className='mx-auto my-6 max-w-4xl space-y-3 px-4'>
+    <div className='mx-auto my-6 max-w-4xl space-y-3 px-4 font-serif'>
       <div className='flex w-full items-center justify-between py-4'>
-        <div className='space-y-4 px-2.5'>
-          <h1 className='font-serif text-4xl'>{data.name}</h1>
-          <h2 className='text-2xl'>@{data.username}</h2>
+        <div className='space-y-3 px-2.5'>
+          <div className='flex items-center gap-2'>
+            <h1 className='font-serif text-4xl'>{data.name}</h1>
+            <h2 className='my-0 text-2xl'>@{data.username}</h2>
+          </div>
+
+          <h2 className='my-0 text-xl'>
+            {data.companyName}
+            {data.companyRole ? ' | ' + data.companyRole : ''}
+          </h2>
         </div>
         {data.picture && (
           <ASNextImage
@@ -63,8 +70,9 @@ export default async function ProfilePage({
       <hr className='h-0.5 bg-black' />
       {data.introduction && (
         <>
-          <h2 className='mb-4 px-2.5 text-xl'>{data.introduction}</h2>
-          <hr className='h-0.5 bg-black' />
+          <h2 className='mb-4 border-b-1 border-black px-2.5 pb-2 text-xl'>
+            {data.introduction}
+          </h2>
         </>
       )}
       {history && (
@@ -95,6 +103,7 @@ export default async function ProfilePage({
             </h4>
           </Link>
         )}
+        <hr className='h-0.5 bg-black' />
       </div>
     </div>
   );

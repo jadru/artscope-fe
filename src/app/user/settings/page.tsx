@@ -10,6 +10,7 @@ import ASNextImage from '@/components/ASNextImage';
 import Title from '@/components/Title';
 
 import ArtistForm from '@/app/user/apply/ArtistForm';
+import CuratorForm from '@/app/user/apply/CuratorForm';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
@@ -93,8 +94,9 @@ export default function SettingsPage() {
   const changeUsername = useDebounce(
     async () =>
       await jxios
-        .put('/api/members/username', {
-          username: usernameEdit,
+        .put(`/api/members/${user?.username}/username`, {
+          newUsername: usernameEdit,
+          username: user?.username,
         })
         .then(() => {
           toast.success(
@@ -204,7 +206,22 @@ export default function SettingsPage() {
         </Button>
       </div>
       <hr />
-      {user?.artistStatus !== 'NONE' && (
+      {user?.roleStatus === 'NONE' ? (
+        <Button color='primary' onClick={() => push('/user/apply')} fullWidth>
+          아티스트 / 기획자 추가 정보 기입
+        </Button>
+      ) : user?.roleStatus.startsWith('CURATOR') ? (
+        <CuratorForm
+          isEdit={{
+            introduction: data.introduction,
+            history: data.history,
+            snsUrl: data.snsUrl,
+            websiteUrl: data.websiteUrl,
+            companyName: data.companyName,
+            companyRole: data.companyRole,
+          }}
+        />
+      ) : (
         <ArtistForm
           isEdit={{
             introduction: data.introduction,

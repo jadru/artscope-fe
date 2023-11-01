@@ -73,11 +73,7 @@ export default function Index({ feed }: { feed: feedItemType }) {
               <p className='inline text-[0.9rem] font-bold'>
                 {feed.authorName}
               </p>
-              <p
-                className={`${
-                  feed.authorDescription ? 'ml-1 inline' : ''
-                } text-[0.9rem] text-default-500`}
-              >
+              <p className='text-[0.9rem] text-default-500'>
                 @{feed.authorUsername}
               </p>
             </div>
