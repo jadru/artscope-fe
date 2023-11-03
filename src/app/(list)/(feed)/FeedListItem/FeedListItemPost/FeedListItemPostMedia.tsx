@@ -14,7 +14,6 @@ export default function FeedListItemPostMedia({
           <>
             {index < 3 && (
               <ASNextImage
-                key={item}
                 src={item}
                 alt={feed.authorName + '의 사진'}
                 width={100}
@@ -23,10 +22,7 @@ export default function FeedListItemPostMedia({
               />
             )}
             {index === 3 && (
-              <div
-                className='relative h-20 w-[calc(25%-0.25rem)] md:h-28'
-                key={item}
-              >
+              <div className='relative h-20 w-[calc(25%-0.25rem)] md:h-28'>
                 <ASNextImage
                   src={item}
                   alt={feed.authorName + '의 사진'}
