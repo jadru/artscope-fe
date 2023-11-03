@@ -3,6 +3,7 @@ import {
   BiSearch,
   BiSolidCalendar,
   BiSolidHome,
+  BiSolidNetworkChart,
   BiSolidNews,
   BiSolidPlanet,
   BiSolidZap,
@@ -40,6 +41,13 @@ export default function MainNavigation() {
         >
           <BiSolidCalendar size={23} className='my-0.5 mr-2' />
           <p className='my-1 text-lg'>이벤트</p>
+        </button>
+        <button
+          className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-black transition hover:bg-default-100'
+          onClick={() => push('/agora')}
+        >
+          <BiSolidNetworkChart size={23} className='my-0.5 mr-2' />
+          <p className='my-1 text-lg'>아고라</p>
         </button>
         <button
           className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-default-500 transition'
