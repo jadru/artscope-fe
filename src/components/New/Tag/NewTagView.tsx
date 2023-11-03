@@ -29,7 +29,7 @@ export default function NewTagView({ tagCount, setTagCount }: Props) {
             onClose={() => {
               setTagCount(tagCount.filter((tag) => tag !== item));
             }}
-            className='m-1 h-8'
+            className='m-1 h-8 animate-appearance-in'
             size='lg'
             key={item}
             startContent={<FaHashtag />}

@@ -1,9 +1,15 @@
 'use client';
 
+import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { Input, Select, SelectItem } from '@nextui-org/react';
 import { Bold } from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
 import { Document } from '@tiptap/extension-document';
+import { Heading } from '@tiptap/extension-heading';
 import { Italic } from '@tiptap/extension-italic';
+import { Link } from '@tiptap/extension-link';
 import { ListItem } from '@tiptap/extension-list-item';
 import { OrderedList } from '@tiptap/extension-ordered-list';
 import { Paragraph } from '@tiptap/extension-paragraph';
@@ -13,42 +19,71 @@ import { Text } from '@tiptap/extension-text';
 import { Underline } from '@tiptap/extension-underline';
 import { EditorContent, useEditor } from '@tiptap/react';
 import { useDebounce } from '@toss/react';
+import { ko } from 'date-fns/locale';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import {
   BiArrowBack,
   BiBold,
-  BiImage,
   BiItalic,
   BiStrikethrough,
   BiUnderline,
 } from 'react-icons/bi';
 import { toast } from 'react-toastify';
+import { Markdown } from 'tiptap-markdown';
 
 import '@/styles/editor.scss';
 
+import getVideoCoverFromLocal from '@/components/New/Artworks/getVideoCoverFromLocal';
 import NewMediaView from '@/components/New/Media/NewMediaView';
+import NewParticipantView from '@/components/New/Participant/NewParticipantView';
 
-import { initialPostSchema } from '@/app/new/post/initialPostSchema';
+import { EventTypeData } from '@/app/new/event/EventTypeData';
+import {
+  initialEventSchema,
+  initialScheduleSchema,
+} from '@/app/new/event/initialEventSchema';
 import jxios from '@/utils/jxios';
 
 import { ArtWorkMediaType } from '@/types/artwork';
+import { EventType, ScheduleType } from '@/types/event';
 
 const NewEvent = () => {
   const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
+  const [link, setLink] = useState<string>('');
+  const [eventType, setEventType] = useState<EventType>('STANDARD');
+  const [price, setPrice] = useState<number>(0);
   const [imgs, setImgs] = useState<string[]>([]);
-  const [insertImage, setInsertImage] = useState<boolean>(false);
+  const [schedule, setSchedule] = useState<ScheduleType[]>([
+    initialScheduleSchema,
+  ]);
   const { push } = useRouter();
   const [isUpload, setIsUpload] = useState(false);
-  const placeholder =
-    '예술을 공유해보세요. \n사진과 링크로도 공유할 수 있어요.';
+  const placeholderText = '이벤트를 자유롭게 설명해주세요.';
+
+  const CustomDocument = Document.extend({
+    content: 'heading block* paragraph+',
+  });
 
   const editor = useEditor({
     extensions: [
-      Document,
+      CustomDocument,
+      Heading.configure({
+        levels: [1, 2, 3],
+      }),
+      Link.configure({
+        protocols: ['http', 'https'],
+      }),
       Text,
       Bold,
       Italic,
+      Markdown.configure({
+        html: false,
+        tightLists: true,
+        linkify: true,
+        transformPastedText: true,
+        transformCopiedText: true,
+      }),
       Strike,
       Underline,
       BulletList,
@@ -56,23 +91,32 @@ const NewEvent = () => {
       OrderedList,
       Paragraph,
       Placeholder.configure({
-        placeholder,
+        emptyNodeClass: 'is-artwork-editor-empty',
+        placeholder: ({ node }) => {
+          if (node.type.name === 'heading') {
+            return '이벤트 제목을 입력해주세요.';
+          }
+          return placeholderText;
+        },
+        showOnlyCurrent: false,
       }),
     ],
-    content: '<p></p>',
-    autofocus: 'end',
+    content: '',
+    autofocus: true,
   });
 
-  const handleSubmitPostButton = useDebounce(async () => {
+  const handleCreateSaveButton = useDebounce(async () => {
     if (isUpload) return;
     try {
-      const postContent = editor?.getHTML() || '';
-      if (postContent.length < 10) {
-        toast('10자 이상 입력해주세요.');
+      if (fileUrls.length === 0) {
+        toast.warn('이미지, 영상 또는 썸네일을 업로드해주세요.');
         return;
       }
-      if (postContent.length > 1000) {
-        toast('1000자 이하로 입력해주세요.');
+      if (
+        editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4))
+          .length === 0
+      ) {
+        toast.warn('제목을 입력해주세요.');
         return;
       }
       if (
@@ -88,29 +132,79 @@ const NewEvent = () => {
         return;
       }
       setIsUpload(true);
-      const newState = { ...initialPostSchema };
-      newState.dto.content = postContent;
-
+      const newState = { ...initialEventSchema };
+      newState.dto.title =
+        editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4)) || '';
+      newState.dto.description = editor?.storage.markdown.getMarkdown() || '';
+      newState.dto.link = link;
+      newState.dto.eventType = eventType;
+      newState.dto.price = price;
+      newState.dto.schedule = schedule.reduce((acc, cur) => {
+        acc.push({
+          locationId: cur.locationId,
+          startTime: cur.startTime,
+          endTime: cur.endTime,
+          detailLocation: cur.detailLocation,
+          eventDate: cur.eventDate,
+          participants: cur.participants,
+        });
+        return acc;
+      }, [] as ScheduleType[]);
       const formData = new FormData();
-      if (fileUrls.length > 0) {
-        newState.dto.thumbnail = {
-          mediaType: 'image',
-        };
+      if (fileUrls[0].mediaType === 'video') {
+        const cover = (await getVideoCoverFromLocal(
+          fileUrls[0].file as File,
+          1.5
+        )) as Blob;
+        formData.append(
+          'thumbnailFile',
+          new File([cover], 'thumbnail.jpg', { type: 'image/jpeg' })
+        );
+      } else if (fileUrls[0].mediaType === 'image') {
         formData.append('thumbnailFile', fileUrls[0].file as File);
-        newState.dto.medias = [];
-        fileUrls.forEach((media) => {
-          formData.append('mediaFiles', media.file as File);
-          newState.dto.medias?.push({
+      } else {
+        fileUrls[0].linkUrl &&
+          formData.append(
+            'thumbnailFile',
+            await fetch(
+              'https://img.youtube.com/vi/' +
+                fileUrls[0].linkUrl.substring(
+                  fileUrls[0].linkUrl.indexOf('=') + 1
+                ) +
+                '/maxresdefault.jpg',
+              {
+                mode: 'no-cors',
+                headers: {
+                  'Access-Control-Allow-Origin': '*',
+                  Accept: '*/*',
+                  'Content-Type': 'image/jpeg',
+                },
+              }
+            ).then((res) => res.blob()),
+            'yt_thumbnail.jpg'
+          );
+      }
+      newState.dto.medias = [];
+      fileUrls.forEach((media) => {
+        media.mediaType === 'url'
+          ? formData.append(
+              'mediaFiles',
+              new File([media.linkUrl as string], 'mediaFiles', {
+                type: 'text/plain',
+              })
+            )
+          : formData.append('mediaFiles', media.file as File);
+        if (newState.dto.medias)
+          newState.dto.medias.push({
             mediaType: media.mediaType,
           });
-        });
-      }
+      });
       formData.append(
         'dto',
         new Blob([JSON.stringify(newState.dto)], { type: 'application/json' })
       );
       await jxios
-        .post('/api/posts', formData, {
+        .post('/api/exhibitions', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Accept: 'application/json',
@@ -118,16 +212,15 @@ const NewEvent = () => {
         })
         .then((res) => {
           if (res.status === 201) {
-            toast.success('포스트가 업로드되었습니다.');
-            push('/');
+            toast.success('이벤트가 업로드되었습니다.');
+            push('/events');
           }
         })
         .catch((err) => {
-          setIsUpload(false);
           toast.error(err.response.data);
         });
     } catch (err) {
-      toast.error((err as string) || '포스트 업로드에 실패했습니다.');
+      toast.error((err as string) || '이벤트 업로드에 실패했습니다.');
     } finally {
       setIsUpload(false);
     }
@@ -198,42 +291,163 @@ const NewEvent = () => {
           >
             <BiUnderline size={25} />
           </button>
-          <button onClick={() => setInsertImage((prev) => !prev)}>
-            <BiImage
-              size={25}
-              className={`hover:text-primary ${
-                insertImage ? 'text-black' : 'text-default'
-              }`}
-            />
-          </button>
         </div>
         <div></div>
       </div>
       <div className='h-16'></div>
-      <div className='w-full overflow-y-scroll p-4'>
+      <div className='w-full space-y-2 overflow-y-scroll p-4'>
         {editor && <EditorContent editor={editor} className='min-h-[80px]' />}
-        {insertImage && (
-          <NewMediaView
-            fileUrls={fileUrls}
-            setFileUrls={setFileUrls}
-            setImgs={setImgs}
-            imgs={imgs}
-            onlyImage
-            header='이미지 첨부'
-          />
-        )}
+        <NewMediaView
+          fileUrls={fileUrls}
+          setFileUrls={setFileUrls}
+          setImgs={setImgs}
+          imgs={imgs}
+          header='미디어 또는 링크 업로드'
+        />
+      </div>
+      <hr className='my-4' />
+      <div className='flex flex-col items-start justify-between gap-1 px-3 md:flex-row'>
+        <Input
+          isRequired
+          type='number'
+          label='참석자 티켓 가격'
+          value={String(price)}
+          onValueChange={(value) => setPrice(Number(value))}
+          placeholder='가격을 입력해주세요'
+          description='무료인 경우 0을 입력해주세요'
+          endContent={
+            <div className='pointer-events-none flex items-center'>
+              <span className='text-small text-default-400'>원</span>
+            </div>
+          }
+        />
+        <Select
+          label='이벤트 타입'
+          defaultSelectedKeys={[EventTypeData[0].value]}
+          value={eventType}
+          onChange={(e) => setEventType(e.target.value as EventType)}
+          className='w-full'
+          isRequired
+        >
+          {EventTypeData.map((item) => (
+            <SelectItem key={item.value} value={item.value}>
+              {item.label}
+            </SelectItem>
+          ))}
+        </Select>
+        <Input
+          isRequired
+          type='url'
+          label='링크'
+          value={link}
+          onValueChange={setLink}
+          placeholder='관련 링크를 입력해주세요.'
+          className='w-full'
+        />
+      </div>
+      <hr className='my-4' />
+      <div className='flex items-center justify-between px-3'>
+        <h3 className='text-lg font-bold'>일정</h3>
+        <button
+          onClick={() => {
+            setSchedule((prev) => [
+              ...prev,
+              {
+                id: prev[prev.length - 1].id ? +1 : 1,
+                locationId: prev[prev.length - 1].locationId,
+                startTime: prev[prev.length - 1].startTime,
+                endTime: prev[prev.length - 1].endTime,
+                detailLocation: prev[prev.length - 1].detailLocation,
+                eventDate: prev[prev.length - 1].eventDate,
+                participants: prev[prev.length - 1].participants,
+              },
+            ]);
+          }}
+          className='flex items-center justify-center gap-2 text-sm text-default-500 hover:text-default-900'
+        >
+          + 일정 추가
+        </button>
+      </div>
+      <div className='px-3 py-2'>
+        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ko}>
+          {schedule.map((item, index) => (
+            <div key={item.id} className='flex flex-col gap-1 border p-2'>
+              <div className='flex justify-between'>
+                <p>Location 조회된 이름 자리</p>
+                <button
+                  onClick={() =>
+                    setSchedule((prev) =>
+                      prev.length === 1
+                        ? [initialScheduleSchema]
+                        : prev.filter((deleteItem) => deleteItem.id !== item.id)
+                    )
+                  }
+                >
+                  삭제
+                </button>
+              </div>
+              <div className='flex flex-col gap-2 md:flex-row'>
+                <DatePicker
+                  label='날짜'
+                  value={item.eventDate}
+                  onChange={(newValue) =>
+                    newValue &&
+                    setSchedule((prev) => {
+                      const temp = [...prev];
+                      temp[index].eventDate = newValue;
+                      return [...temp];
+                    })
+                  }
+                />
+                <TimePicker
+                  label='시작 시간'
+                  value={item.startTime}
+                  onChange={(newValue) => {
+                    newValue &&
+                      setSchedule((prev) => {
+                        const temp = [...prev];
+                        temp[index].startTime = newValue;
+                        return [...temp];
+                      });
+                  }}
+                />
+                <TimePicker
+                  label='종료 시간'
+                  value={item.endTime}
+                  onChange={(newValue) => {
+                    newValue &&
+                      setSchedule((prev) => {
+                        const temp = [...prev];
+                        temp[index].endTime = newValue;
+                        return [...temp];
+                      });
+                  }}
+                />
+              </div>
+              참여 예술가
+              <div>
+                <NewParticipantView
+                  schedule={schedule}
+                  setSchedule={setSchedule}
+                  index={index}
+                />
+              </div>
+            </div>
+          ))}
+        </LocalizationProvider>
       </div>
       <div className='h-16'></div>
       <div className='fixed bottom-0 z-50 flex h-16 w-full max-w-[718px] items-center justify-end border-t bg-default-50 px-3'>
         <button
-          onClick={handleSubmitPostButton}
+          onClick={handleCreateSaveButton}
           disabled={isUpload}
           className={`
             h-12 rounded-2xl border-2 border-primary bg-white px-6 py-3 font-bold text-primary transition hover:border-secondary hover:bg-blue-50 hover:text-secondary ${
-              isUpload ? 'opacity-20' : ''
+              isUpload &&
+              'animate-pulse border-gray-200 bg-gray-200 text-default'
             }`}
         >
-          새 포스트 작성
+          새 이벤트 등록
         </button>
       </div>
     </>

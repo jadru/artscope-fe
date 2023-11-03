@@ -13,11 +13,13 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
 } from '@nextui-org/react';
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
 import LoginModal from '@/components/Navbar/LoginModalButton';
+import { menuItems } from '@/components/Navbar/Menus';
 
 import Logo from '@/assets/images/logo_long.svg';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
@@ -33,29 +35,6 @@ export default function Index({
   const { push } = useRouter();
   const { user, isLogin } = useUser();
   const pathname = usePathname();
-
-  const menuItems = [
-    {
-      name: '피드',
-      url: '/',
-    },
-    {
-      name: '작품',
-      url: '/artwork',
-    },
-    {
-      name: '이벤트',
-      url: '/event',
-    },
-    // {
-    //   name: '네트워크',
-    //   url: '/network',
-    // },
-    // {
-    //   name: '매거진',
-    //   url: '/magazine',
-    // },
-  ];
 
   return (
     <Navbar
@@ -91,20 +70,20 @@ export default function Index({
       <NavbarContent className='hidden gap-4 sm:flex' justify='center'>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item.name}-${index}`}>
-            <span
+            <Link
+              href={item.url}
               className={`w-full cursor-pointer text-lg transition hover:font-bold hover:text-black ${
                 index === 0
                   ? pathname === '/'
                     ? 'text-primary'
                     : 'text-default-800'
-                  : pathname.startsWith(item.url.slice(0, -1))
+                  : pathname.startsWith(item.slug)
                   ? 'text-primary'
                   : 'text-default-800'
               }`}
-              onClick={() => push(item.url === '/' ? item.url : item.url + 's')}
             >
               {item.name}
-            </span>
+            </Link>
           </NavbarMenuItem>
         ))}
       </NavbarContent>
@@ -181,40 +160,25 @@ export default function Index({
 
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item.name}-${index}`}>
-            <span
+            <Link
+              href={item.url}
               className={`w-full cursor-pointer text-lg hover:font-bold hover:text-secondary ${
                 index === 0
                   ? pathname === '/'
                     ? 'text-primary'
                     : 'text-default-800'
-                  : pathname.startsWith(item.url.slice(0, -1))
+                  : pathname.startsWith(item.slug)
                   ? 'text-primary'
                   : 'text-default-800'
               }`}
               onClick={() => {
-                push(item.url === '/' ? item.url : item.url + 's');
                 setIsMobileMenuOpen(false);
               }}
             >
               {item.name}
-            </span>
+            </Link>
           </NavbarMenuItem>
         ))}
-        <NavbarMenuItem>
-          <span
-            className={`w-full cursor-pointer text-lg hover:font-bold hover:text-secondary ${
-              pathname.startsWith('/search')
-                ? 'text-primary'
-                : 'text-default-800'
-            }`}
-            onClick={() => {
-              push('search');
-              setIsMobileMenuOpen(false);
-            }}
-          >
-            검색
-          </span>
-        </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
   );

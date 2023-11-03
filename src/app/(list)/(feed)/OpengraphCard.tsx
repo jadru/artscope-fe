@@ -30,7 +30,7 @@ const OpengraphCard = ({ externalUrl }: { externalUrl: string }) => {
     <Link
       href={encodeURI(externalUrl)}
       target='_blank'
-      className='group mt-1.5 animate-appearance-in hover:text-black'
+      className='group mt-1.5 hover:text-black'
       onClick={(e) => e.stopPropagation()}
     >
       <div className='flex h-24 rounded-2xl border transition group-hover:bg-default-200'>
