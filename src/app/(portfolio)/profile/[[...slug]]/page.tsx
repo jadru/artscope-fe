@@ -3,11 +3,25 @@ import React from 'react';
 import { AiOutlineHome, AiOutlineLink } from 'react-icons/ai';
 
 import ASNextImage from '@/components/ASNextImage';
+import ResponsiveGrid from '@/components/ResponsiveGrid';
 
+import ArtworkItem from '@/app/(list)/artworks/ArtworkItem';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
+import { ArtworkApiResponseByUsernameType } from '@/types/artwork';
 import { profileApiType } from '@/types/profile';
+
+const fetchArtwork = async (username: string) =>
+  jxios
+    .get(NEXT_PUBLIC_API_URL + '/api/artworks/member/' + username, {
+      params: {
+        size: 30,
+        page: 0,
+        sortDirection: 'DESC',
+      },
+    })
+    .then((res) => res.data as ArtworkApiResponseByUsernameType);
 
 const fetchProfile = async (username: string) =>
   await jxios
@@ -25,7 +39,11 @@ export default async function ProfilePage({
   params: { slug: string[] };
 }) {
   const data = await fetchProfile(params.slug[0]);
-  // when string data.history meets /n, make <br/>component on array
+  const artworkData = await fetchArtwork(params.slug[0]);
+
+  if (!data || !artworkData) {
+    throw new Error('404');
+  }
   const history = data.history?.split('\n').map((line, index) => {
     if (line === '') {
       return;
@@ -48,7 +66,7 @@ export default async function ProfilePage({
       <div className='flex w-full items-center justify-between py-4'>
         <div className='space-y-3 px-2.5'>
           <div className='flex items-center gap-2'>
-            <h1 className='font-serif text-4xl'>{data.name}</h1>
+            <h1 className='font-serif text-[2.1rem]'>{data.name}</h1>
             <h2 className='my-0 text-2xl'>@{data.username}</h2>
           </div>
 
@@ -105,6 +123,15 @@ export default async function ProfilePage({
         )}
         <hr className='h-0.5 bg-black' />
       </div>
+      <ResponsiveGrid>
+        {artworkData &&
+          artworkData.artworks.map((item) => (
+            <ArtworkItem
+              artwork={{ artwork: item, isLiked: false }}
+              key={item.id}
+            />
+          ))}
+      </ResponsiveGrid>
     </div>
   );
 }

@@ -132,11 +132,11 @@ export default function SettingsPage() {
 
   return data ? (
     <>
-      <Title>회원 정보 설정</Title>
+      <Title title='회원 정보' description='회원 정보를 변경할 수 있습니다.' />
       <div className='flex flex-col items-center justify-between'>
         <button
           onClick={() => inputRef?.current?.click()}
-          className='group relative'
+          className='group relative my-2'
         >
           {data.picture ? (
             <ASNextImage

@@ -19,7 +19,7 @@ export default function SinglePostProfile({ feed }: { feed: SinglePostType }) {
           alt='프로필 사진'
           width={40}
           height={40}
-          className='h-10 w-10 rounded-full object-cover'
+          className='h-10 w-10 rounded-full border object-cover'
         />
         <div className='ml-0.5 flex flex-col transition hover:underline'>
           <p className='inline text-[0.9rem] font-bold'>{feed.authorName}</p>

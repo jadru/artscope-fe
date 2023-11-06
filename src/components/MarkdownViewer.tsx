@@ -6,7 +6,7 @@ import '@/styles/markdown.scss';
 export default function MarkdownVewer({ content }: { content: string }) {
   return (
     <ReactMarkdown
-      className='markdown-viewer'
+      className='markdown-viewer break-all'
       remarkPlugins={[remarkGfm]}
       rehypePlugins={[
         [rehypeExternalLinks, { target: '_blank', rel: 'noreferrer' }],

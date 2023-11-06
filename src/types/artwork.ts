@@ -46,6 +46,11 @@ export type ArtworkType = {
   isLiked: boolean;
 };
 
+export type ArtworkApiResponseByUsernameType = {
+  artworks: DetailedArtworkType[];
+  pageInfo: pageInfoType;
+};
+
 export type DetailedArtworkType = {
   id: number;
   title: string;
@@ -53,6 +58,10 @@ export type DetailedArtworkType = {
   tags: string[];
   likes: number;
   authorUsername: string;
+  authorIntroduction: string | null;
+  authorProfileImage: string | null;
+  authorCompanyName: string | null;
+  authorCompanyRole: string | null;
   comments: number;
   authorName: string;
   thumbnail: {

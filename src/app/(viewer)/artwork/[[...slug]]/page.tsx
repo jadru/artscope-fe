@@ -8,6 +8,7 @@ import ArtworkAction from '@/app/(viewer)/artwork/[[...slug]]/ArtworkAction';
 import ArtworkAuthorProfile from '@/app/(viewer)/artwork/[[...slug]]/ArtworkAuthorProfile';
 import ArtworkComment from '@/app/(viewer)/artwork/[[...slug]]/ArtworkComment';
 import ArtworkEdit from '@/app/(viewer)/artwork/[[...slug]]/ArtworkEdit';
+import ArtworkProfile from '@/app/(viewer)/artwork/[[...slug]]/ArtworkProfile';
 import ArtworkTags from '@/app/(viewer)/artwork/[[...slug]]/ArtworkTags';
 import {
   NEXT_PUBLIC_API_URL,
@@ -79,15 +80,14 @@ export default async function ArtworkPage({
     data.artwork.authorUsername
   );
   return (
-    <div className='space-y-3 py-4 md:border-x'>
+    <div>
       {!isEdit ? (
         <>
-          <h1 className='mx-2 break-words text-left font-serif text-4xl'>
+          <h1 className='break-words px-3 pt-2 text-left font-serif text-4xl'>
             {data.artwork.title}
           </h1>
-          <ArtworkTags data={data} />
-          <div className='h-0.5 bg-default-100'></div>
-          <div className='px-2 md:px-3'>
+          <ArtworkProfile aw={data} />
+          <div className='px-3 py-3 md:px-3'>
             <MarkdownVewer content={data.artwork.description} />
           </div>
           <div>
@@ -118,6 +118,11 @@ export default async function ArtworkPage({
                   )) || (
                     <video
                       className='relative h-auto w-full'
+                      poster={
+                        NEXT_PUBLIC_MEDIA_STORAGE_URL +
+                        '/' +
+                        data.artwork.thumbnail
+                      }
                       src={NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + media.mediaUrl}
                       controls
                     />
@@ -125,6 +130,8 @@ export default async function ArtworkPage({
               </div>
             ))}
           </div>
+          <hr className='h-0.5 bg-default-100'></hr>
+          <ArtworkTags data={data} />
           <hr className='h-0.5 bg-default-100'></hr>
           <ArtworkAuthorProfile author={author} />
           <hr className='h-0.5 bg-default-100'></hr>

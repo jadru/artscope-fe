@@ -7,6 +7,8 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { AiOutlineCoffee } from 'react-icons/ai';
 
+import Title from '@/components/Title';
+
 import { onLogin } from '@/auth/onLogin';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
@@ -43,13 +45,13 @@ const RedirectOAuth2 = () => {
   }, [setUser, router, token, searchParams]);
 
   return (
-    <div>
+    <>
+      <Title title='로그인 성공' description='로그인이 완료되었습니다.' />
       <AiOutlineCoffee size={60} className='drop-shadow-glow text-orange-800' />
-      <h1 className='md:text-6xl mt-8 text-3xl'>로그인이 완료되었습니다.</h1>
       <Link className='my-8' href='/'>
         <Button color='primary'>홈으로 돌아가기</Button>
       </Link>
-    </div>
+    </>
   );
 };
 

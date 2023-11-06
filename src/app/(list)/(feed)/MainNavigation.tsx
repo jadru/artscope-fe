@@ -15,7 +15,7 @@ export default function MainNavigation() {
       <div className='hidden h-max w-full flex-col space-y-2.5 px-3 py-3 md:block'>
         <Link
           href='/'
-          className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-black transition hover:bg-default-100'
+          className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-primary transition hover:bg-default-100'
         >
           <BiSolidHome size={23} className='my-0.5 mr-2' />
           <p className='my-1 text-lg'>홈</p>
