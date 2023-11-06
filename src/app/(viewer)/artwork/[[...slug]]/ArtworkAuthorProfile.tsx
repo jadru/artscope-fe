@@ -14,7 +14,7 @@ export default function ArtworkAuthorProfile({
   const { push } = useRouter();
   return (
     <div
-      className='mx-2 flex cursor-pointer flex-row items-center justify-between rounded-2xl border border-white bg-white px-3 py-3 text-default-900 transition-colors duration-100 hover:border-default-400 hover:bg-default-100 hover:text-default-700'
+      className='mx-2 my-2 flex cursor-pointer flex-row items-center justify-between rounded-2xl border border-white bg-white px-3 py-3 text-default-900 transition-colors duration-100 hover:border-default-400 hover:bg-default-100 hover:text-default-700'
       onClick={() => push('/profile/' + author.username)}
     >
       <div className='flex flex-col items-start justify-center'>
@@ -23,7 +23,7 @@ export default function ArtworkAuthorProfile({
       </div>
       {author.picture ? (
         <ASNextImage
-          src={author.picture}
+          src={author.picture ?? 'prod/images/default.jpg'}
           alt={author.name + "'s profile image"}
           width={60}
           height={60}

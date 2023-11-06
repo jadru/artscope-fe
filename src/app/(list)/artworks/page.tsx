@@ -10,6 +10,7 @@ import { useInView } from 'react-intersection-observer';
 import NewArtworkModal from '@/components/New/Artworks/NewArtworkModalButton';
 import ResponsiveGrid from '@/components/ResponsiveGrid';
 import RootLayout from '@/components/RootLayout';
+import Title from '@/components/Title';
 
 import ArtworkItem from '@/app/(list)/artworks/ArtworkItem';
 import { useUser } from '@/states';
@@ -80,41 +81,47 @@ export default function Page() {
     return <div ref={ref} className='mb-1 h-1' />;
   };
   return (
-    <RootLayout className='w-full md:p-3'>
+    <RootLayout className='w-full'>
+      <Title
+        title='Artworks'
+        description='감각적인 예술 작품들을 살펴보세요.'
+      />
       {user && user.username && (
-        <NewArtworkModal placeholder='감각적인 작품이 있나요?' />
+        <NewArtworkModal placeholder='새로운 작품이 있나요?' />
       )}
-      {isSuccess && (
-        <ResponsiveGrid>
-          {data.pages.map((group) =>
-            group.artworks.map((aw) => (
-              <ArtworkItem artwork={aw} key={aw.artwork.id} />
-            ))
-          )}
-          <div ref={bottom}>
-            <ObservationComponent />
-          </div>
-        </ResponsiveGrid>
-      )}
-      {isLoading && (
-        <ResponsiveGrid>
-          <SkeletonArtwork />
-          <SkeletonArtwork />
-          <SkeletonArtwork />
-          <SkeletonArtwork />
-          <SkeletonArtwork />
-          <SkeletonArtwork />
-          <SkeletonArtwork />
-          <SkeletonArtwork />
-          <SkeletonArtwork />
-          <SkeletonArtwork />
-          <SkeletonArtwork />
-          <SkeletonArtwork />
-        </ResponsiveGrid>
-      )}
-      {data && data.pages[0].artworks.length === 0 && (
-        <h3 className='text-center'>아직 작성된 작품이 없습니다.</h3>
-      )}
+      <div className='md:p-3'>
+        {isSuccess && (
+          <ResponsiveGrid>
+            {data.pages.map((group) =>
+              group.artworks.map((aw) => (
+                <ArtworkItem artwork={aw} key={aw.artwork.id} />
+              ))
+            )}
+            <div ref={bottom}>
+              <ObservationComponent />
+            </div>
+          </ResponsiveGrid>
+        )}
+        {isLoading && (
+          <ResponsiveGrid>
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+            <SkeletonArtwork />
+          </ResponsiveGrid>
+        )}
+        {data && data.pages[0].artworks.length === 0 && (
+          <h3 className='text-center'>아직 작성된 작품이 없습니다.</h3>
+        )}
+      </div>
     </RootLayout>
   );
 }

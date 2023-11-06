@@ -1,10 +1,16 @@
 'use client';
 
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Pagination, Spacer } from '@nextui-org/react';
 import { format } from 'date-fns';
+import { ko } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 
 import 'react-datepicker/dist/react-datepicker.css';
+
+import Title from '@/components/Title';
 
 import EventListItem from '@/app/(list)/events/EventListItem';
 import jxios from '@/utils/jxios';
@@ -13,8 +19,8 @@ import { pageInfoType } from '@/types/default';
 import { EventResponseType, EventViewType } from '@/types/event';
 
 export default function Events() {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
+  const [endDate, setEndDate] = useState<Date | null>(
     new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
   );
   const [data, setData] = useState<EventViewType>([]);
@@ -27,14 +33,17 @@ export default function Events() {
 
   useEffect(() => {
     const fetch = async () =>
-      await jxios
+      startDate &&
+      endDate &&
+      (await jxios
         .get('/api/exhibitions', {
           params: {
-            startDate: format(startDate, 'yyyy-MM-dd'),
-            endDate: format(endDate, 'yyyy-MM-dd'),
             page: page.page,
             size: 10,
             sortDirection: 'DESC',
+            startDate: format(startDate, 'yyyy-MM-dd'),
+            endDate: format(endDate, 'yyyy-MM-dd'),
+            eventType: 'ALL',
           },
         })
         .then((res) => {
@@ -60,22 +69,33 @@ export default function Events() {
             });
           setData(events);
           setPage(eventDatas.pageInfo);
-        });
+        }));
     fetch();
   }, [startDate, page.page, endDate]);
 
   useEffect(() => {
-    setEndDate(new Date(startDate.getTime() + 1000 * 60 * 60 * 24 * 30));
-  }, [startDate]);
+    if (!startDate || !endDate) return;
+    if (startDate > endDate)
+      setEndDate(new Date(startDate.getTime() + 1000 * 60 * 60 * 24 * 30));
+  }, [endDate, startDate]);
 
   return (
-    <div className='p-3'>
-      <input
-        type='date'
-        value={format(startDate, 'yyyy-MM-dd')}
-        onChange={(date) => setStartDate(new Date(date.target.value))}
-        className='rounded-md border-2 border-gray-300 bg-default-100 px-3 py-2'
-      />
+    <div>
+      <Title title='Events' description='다양한 이벤트를 살펴보세요.' />
+      <div className='mt-3 flex flex-col justify-center gap-2 md:flex-row'>
+        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ko}>
+          <DatePicker
+            label='시작일'
+            value={startDate}
+            onChange={(date) => setStartDate(date)}
+          />
+          <DatePicker
+            label='종료일'
+            value={endDate}
+            onChange={(date) => setEndDate(date)}
+          />
+        </LocalizationProvider>
+      </div>
       <Spacer y={5} />
       <div className='relative mx-4'>
         {data.map((date) => (

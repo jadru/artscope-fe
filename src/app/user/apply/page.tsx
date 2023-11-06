@@ -18,7 +18,10 @@ export default function UserApply() {
   }, [user, router]);
   return (
     <>
-      <Title>회원 정보 입력</Title>
+      <Title
+        title='회원 정보 입력'
+        description='작가님, 또는 기획자님의 정보를 입력해주세요.'
+      />
       <ApplyForm />
     </>
   );

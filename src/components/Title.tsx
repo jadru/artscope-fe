@@ -1,17 +1,18 @@
-import { ComponentPropsWithoutRef } from 'react';
 import * as React from 'react';
 
-import clsxm from '@/lib/clsxm';
+type Props = {
+  title: string;
+  description?: string | React.ReactNode;
+  className?: string;
+};
 
-type SkeletonProps = ComponentPropsWithoutRef<'h1'>;
-
-const Title = ({ className, children, ...rest }: SkeletonProps) => (
-  <h1
-    className={clsxm('my-5 block text-center text-3xl font-bold', className)}
-    {...rest}
-  >
-    {children}
-  </h1>
+const Title = ({ title, description, className }: Props) => (
+  <div className={`border-b ${className} px-3 py-3`}>
+    <h1 className='text-3xl font-bold'>{title}</h1>
+    {description && (
+      <h3 className='text-[0.95rem] text-default-700'>{description}</h3>
+    )}
+  </div>
 );
 
 export default Title;

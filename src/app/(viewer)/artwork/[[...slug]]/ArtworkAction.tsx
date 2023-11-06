@@ -50,7 +50,7 @@ export default function ArtworkAction({ aw }: { aw: ArtworkType }) {
   }, [aw.isLiked, aw.artwork.id]);
 
   return (
-    <div className='flex w-full justify-between gap-1 self-start md:w-auto md:justify-items-start'>
+    <div className='flex w-full justify-between gap-1 self-start py-2 md:w-auto md:justify-items-start'>
       <div>
         <Button
           startContent={
