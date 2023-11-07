@@ -21,7 +21,7 @@ import { EventResponseType, EventViewType } from '@/types/event';
 export default function Events() {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(
-    new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
+    new Date(Date.now() + 1000 * 60 * 60 * 24 * 100)
   );
   const [data, setData] = useState<EventViewType>([]);
   const [page, setPage] = useState<pageInfoType>({
@@ -88,11 +88,6 @@ export default function Events() {
             label='시작일'
             value={startDate}
             onChange={(date) => setStartDate(date)}
-          />
-          <DatePicker
-            label='종료일'
-            value={endDate}
-            onChange={(date) => setEndDate(date)}
           />
         </LocalizationProvider>
       </div>

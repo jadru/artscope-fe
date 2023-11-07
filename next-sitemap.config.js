@@ -13,31 +13,26 @@ module.exports = {
   changefreq: 'weekly', // 페이지 주소 변경 빈도 (검색엔진에 제공됨) - always, daily, hourly, monthly, never, weekly, yearly 중 택 1
   priority: 1,
   robotsTxtOptions: {
-    additionalSitemaps: [`${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap-1.xml`],
+    additionalSitemaps: [
+      `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/artwork.xml`,
+      `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/post.xml`,
+      // `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/event.xml`,
+    ],
     policies: [
       {
         userAgent: '*',
         allow: '/',
-        disallow: [
-          '/404',
-          '/admin/**',
-          '/user/**',
-          '/_next/**',
-          '/magazines/**',
-          '/networks/**',
-          '/events/**',
-        ],
+        disallow: ['/404', '/new/**', '/user/**', '/_next/**', '/new/**'],
       },
     ],
   },
   exclude: [
     'https://dev.artscope.kr/**',
     '/404',
-    '/admin/**',
+    '/new/**',
     '/user/**',
     '/_next/**',
-    '/magazines/**',
-    '/networks/**',
-    '/events/**',
+    '/new/**',
+    '/opengraph-image.png',
   ],
 };
