@@ -4,6 +4,9 @@ import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 
 import { ArtWorkApiResponseType } from '@/types/artwork';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600 * 24;
+
 export async function GET(_request: Request) {
   // Method to source urls from cms
   const data: ArtWorkApiResponseType = await fetch(

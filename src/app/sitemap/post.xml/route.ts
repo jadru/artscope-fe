@@ -4,18 +4,18 @@ import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 
 import { PostListResponse } from '@/types/feed';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600 * 24;
+
 export async function GET(_request: Request) {
   // Method to source urls from cms
   const data: PostListResponse = await fetch(
-    NEXT_PUBLIC_API_URL + '/api/posts',
+    NEXT_PUBLIC_API_URL + '/api/posts?size=500&page=0',
     {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        query: JSON.stringify({
-          page: 0,
-          size: 500,
-        }),
+        accept: '*/*',
       },
     }
   ).then((res) => res.json());
