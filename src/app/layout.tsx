@@ -74,7 +74,10 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    title: 'Artscope | 창의적인 예술가들의 성장과 교류 커뮤니티 아트스코프',
+    title: {
+      template: '%s | 창의적인 예술가들의 성장과 교류 커뮤니티 Artscope',
+      default: 'Artscope | 창의적인 예술가들의 성장과 교류 커뮤니티 아트스코프',
+    },
     description:
       'Artscope은 예술가들의 성장과 교류를 위한 플랫폼입니다. ' +
       '작품 등록, 예술가 검색, 소통 기능, 프로젝트 제안, 예술 관련 정보 제공 등 다양한 기능을 제공합니다. ' +

@@ -21,7 +21,12 @@ const fetchArtwork = async (username: string) =>
         sortDirection: 'DESC',
       },
     })
-    .then((res) => res.data as ArtworkApiResponseByUsernameType);
+    .then((res) => {
+      if (res.status !== 200) {
+        throw new Error(res.statusText);
+      }
+      return res.data as ArtworkApiResponseByUsernameType;
+    });
 
 const fetchProfile = async (username: string) =>
   await jxios
@@ -39,11 +44,10 @@ export default async function ProfilePage({
   params: { slug: string[] };
 }) {
   const data = await fetchProfile(params.slug[0]);
-  const artworkData = await fetchArtwork(params.slug[0]);
+  const artworkData = (await fetchArtwork(
+    params.slug[0]
+  )) as ArtworkApiResponseByUsernameType;
 
-  if (!data || !artworkData) {
-    throw new Error('404');
-  }
   const history = data.history?.split('\n').map((line, index) => {
     if (line === '') {
       return;
@@ -114,7 +118,7 @@ export default async function ProfilePage({
         )}
         {data.websiteUrl && data.snsUrl && <hr />}
         {data.snsUrl && (
-          <Link href={data.snsUrl}>
+          <Link href={data.snsUrl} target='_blank'>
             <h4 className='cursor-pointer px-2.5 py-2 text-lg font-bold hover:bg-stone-900/10'>
               <AiOutlineLink className='mb-1 mr-1 inline' size={17} />
               {data.snsUrl}
