@@ -106,10 +106,11 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
     <>
       <div className='sticky top-0 z-50 w-screen border-b bg-white'>
         <div className='mx-auto flex h-16 max-w-[1024px] items-center justify-between px-4'>
-          <div className='group box-border w-24 basis-0 cursor-pointer flex-row flex-nowrap items-center justify-start whitespace-nowrap bg-transparent text-medium no-underline'>
-            <Link href='/' className='inline'>
-              <Logo className='h-20 w-24 overflow-hidden fill-[#22bce0] transition duration-100 group-hover:fill-secondary' />
-            </Link>
+          <div
+            className='group box-border w-24 basis-0 cursor-pointer flex-row flex-nowrap items-center justify-start whitespace-nowrap bg-transparent text-medium no-underline'
+            onClick={() => push('/')}
+          >
+            <Logo className='h-20 w-24 overflow-hidden fill-[#22bce0] transition duration-100 group-hover:fill-secondary' />
           </div>
           <div className='fitems-center hidden justify-center gap-3 md:flex'>
             {menuItems.map((item, index) => (
