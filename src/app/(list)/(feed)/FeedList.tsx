@@ -11,9 +11,10 @@ type feedType = (feedItemType[] | feedItemType)[];
 
 interface FeedListProps {
   data: feedItemType[];
+  index: number;
 }
 
-export default function FeedList({ data }: FeedListProps) {
+export default function FeedList({ data, index }: FeedListProps) {
   const [feeds, setFeeds] = useState<feedType>([]);
 
   useEffect(() => {
@@ -60,12 +61,12 @@ export default function FeedList({ data }: FeedListProps) {
                   ? 'grid-cols-1 md:grid-cols-3'
                   : 'grid-cols-2'
               } gap-0 md:mx-0 md:border-x`}
-              key={feed[0].id + '-artwork'}
+              key={index + feed[0].id + '-artwork'}
             >
               {feed.map((feedItem) => (
                 <FeedListItemArtwork
                   feed={feedItem}
-                  key={'artwork-' + feedItem.id}
+                  key={index + 'artwork-' + feedItem.id}
                 />
               ))}
             </div>

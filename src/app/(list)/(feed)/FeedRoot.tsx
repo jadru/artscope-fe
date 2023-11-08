@@ -101,6 +101,7 @@ export default function Feeds() {
             <FeedList
               data={page.feedItems}
               key={'feed-' + page.feedItems[0].id + index}
+              index={index}
             />
           ))}
           <div ref={bottom} className='mb-8 h-1'>

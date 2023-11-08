@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from '@nextui-org/react';
 import Link from 'next/link';
 import * as React from 'react';
@@ -7,11 +5,11 @@ import { RiAlarmWarningFill } from 'react-icons/ri';
 
 import NavBar from '@/components/Navbar';
 
-export default function NotFoundPage() {
+export default async function NotFoundPage() {
   return (
     <>
       <NavBar theme='light' />
-      <div className='mmin-h-screen flex flex-col items-center justify-center text-center text-black dark:text-gray-200'>
+      <div className='flex min-h-screen flex-col items-center justify-center text-center text-black dark:text-gray-200'>
         <RiAlarmWarningFill
           size={60}
           className='drop-shadow-glow animate-flicker text-red-500'
