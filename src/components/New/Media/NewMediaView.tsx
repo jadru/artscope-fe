@@ -116,6 +116,11 @@ export default function NewMediaView({
         <BiImage className='mb-0.5 mr-1 inline' size={20} />
         {header || '미디어 첨부'} {fileUrls.length}/10
       </p>
+      {!onlyImage && (
+        <p className='text-sm text-gray-500'>
+          하나 이상의 이미지, 동영상을 업로드해야 합니다.
+        </p>
+      )}
       <div className='flex flex-wrap gap-1'>
         {fileUrls.length > 0 &&
           fileUrls.map(

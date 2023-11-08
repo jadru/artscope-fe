@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "yarn start:local",
-    "start:local": "yarn env-cmd -f .env.local next dev --turbo",
-    "start:dev": "yarn env-cmd -f .env.development next dev --turbo",
+    "start:local": "yarn env-cmd -f .env.local next dev",
+    "start:dev": "yarn env-cmd -f .env.development next dev",
     "start:prod": "next start --turbo",
     "build:dev": "yarn postbuild && yarn env-cmd -f .env.development next build",
     "build:prod": "yarn postbuild && yarn env-cmd -f .env.production next build",
@@ -51,6 +51,7 @@
     "react": "^18.2.0",
     "react-cookies": "^0.1.1",
     "react-datepicker": "^4.20.0",
+    "react-daum-postcode": "^3.1.3",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
     "react-html-renderer": "^0.3.3",

@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@nextui-org/react';
 import Link from 'next/link';
 import * as React from 'react';
@@ -5,7 +7,7 @@ import { RiAlarmWarningFill } from 'react-icons/ri';
 
 import NavBar from '@/components/Navbar';
 
-export default async function NotFoundPage() {
+export default function NotFoundPage() {
   return (
     <>
       <NavBar theme='light' />

@@ -20,6 +20,8 @@ import {
   BiBold,
   BiImage,
   BiItalic,
+  BiListOl,
+  BiListUl,
   BiStrikethrough,
   BiUnderline,
 } from 'react-icons/bi';
@@ -213,6 +215,30 @@ const NewPost = () => {
                 insertImage ? 'text-black' : 'text-default'
               }`}
             />
+          </button>
+          <button
+            onClick={() => {
+              if (editor) {
+                editor.chain().focus().toggleBulletList().run();
+              }
+            }}
+            className={`hover:text-primary ${
+              editor?.isActive('bulletList') ? 'text-black' : 'text-default'
+            }`}
+          >
+            <BiListUl size={25} />
+          </button>
+          <button
+            onClick={() => {
+              if (editor) {
+                editor.chain().focus().toggleOrderedList().run();
+              }
+            }}
+            className={`hover:text-primary ${
+              editor?.isActive('orderedList') ? 'text-black' : 'text-default'
+            }`}
+          >
+            <BiListOl size={25} />
           </button>
         </div>
         <div></div>

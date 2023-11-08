@@ -21,6 +21,8 @@ import {
   BiArrowBack,
   BiBold,
   BiItalic,
+  BiListOl,
+  BiListUl,
   BiStrikethrough,
   BiUnderline,
 } from 'react-icons/bi';
@@ -122,9 +124,12 @@ const NewArtwork = () => {
       }
       setIsUpload(true);
       const newState = { ...initialArtWork };
+      const markdownContent = editor?.storage.markdown.getMarkdown() || '';
       newState.dto.title =
         editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4)) || '';
-      newState.dto.description = editor?.storage.markdown.getMarkdown() || '';
+      newState.dto.description = markdownContent.slice(
+        markdownContent.indexOf('\n') + 1
+      );
       newState.dto.tags = tagCount;
       newState.dto.visible = publicType === 'public';
 
@@ -274,6 +279,30 @@ const NewArtwork = () => {
             }`}
           >
             <BiUnderline size={25} />
+          </button>
+          <button
+            onClick={() => {
+              if (editor) {
+                editor.chain().focus().toggleBulletList().run();
+              }
+            }}
+            className={`hover:text-primary ${
+              editor?.isActive('bulletList') ? 'text-black' : 'text-default'
+            }`}
+          >
+            <BiListUl size={25} />
+          </button>
+          <button
+            onClick={() => {
+              if (editor) {
+                editor.chain().focus().toggleOrderedList().run();
+              }
+            }}
+            className={`hover:text-primary ${
+              editor?.isActive('orderedList') ? 'text-black' : 'text-default'
+            }`}
+          >
+            <BiListOl size={25} />
           </button>
         </div>
         <div></div>
