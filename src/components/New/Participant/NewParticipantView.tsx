@@ -59,7 +59,7 @@ export default function NewParticipantView({
       : '';
   };
 
-  const regTagExp = /[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/ ]/gim;
+  const regTagExp = /[`~!#$%^&*()_|+=?;:'",.<>{}[\]\\/ ]/gim;
 
   return (
     <div className='flex flex-wrap'>

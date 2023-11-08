@@ -403,7 +403,10 @@ const NewEvent = () => {
           {schedule.map((item, index) => (
             <div key={item.id} className='flex flex-col gap-3 border p-2'>
               <div className='flex justify-between'>
-                <AddLocation setSchedule={setSchedule} scheduleIndex={index} />
+                <AddLocation
+                  _setSchedule={setSchedule}
+                  _scheduleIndex={index}
+                />
                 <button
                   onClick={() =>
                     setSchedule((prev) =>
@@ -455,7 +458,12 @@ const NewEvent = () => {
                 />
               </div>
               <div>
-                <p>참여 예술가</p>
+                <p>
+                  참여 예술가{' '}
+                  <b className='text-sm text-default-600'>
+                    @으로 Artscope 회원을 찾을 수 있습니다
+                  </b>
+                </p>
                 <NewParticipantView
                   schedule={schedule}
                   setSchedule={setSchedule}

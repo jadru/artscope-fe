@@ -1,4 +1,4 @@
-import { Input, Select, SelectItem } from '@nextui-org/react';
+import { Button, Input, Select, SelectItem } from '@nextui-org/react';
 import { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import { BiPlus, BiSearch } from 'react-icons/bi';
@@ -47,7 +47,7 @@ export default function AddLocation({
               </button>
             </div>
             <div className='relative h-screen overflow-y-scroll border-t px-3 md:h-[502px]'>
-              <div className='border-b py-2'>
+              <div className='cursor-pointer border-b py-2 hover:font-bold hover:underline'>
                 <h5>어디 미술관</h5>
                 <p>주소 1</p>
               </div>
@@ -100,8 +100,8 @@ export default function AddLocation({
                 <HiX size={27} />
               </button>
             </div>
-            <div className='flex h-screen items-center justify-between px-3 md:h-[544px]'>
-              <form className='grid w-full grid-cols-2 gap-2'>
+            <div className='flex h-screen flex-col items-center justify-center gap-2 px-3 md:h-[544px]'>
+              <form className='grid w-full grid-cols-1 gap-2 md:grid-cols-2'>
                 <Input label='장소 이름' />
                 <Select label='장소 타입'>
                   <SelectItem key='univ' value='강의실'>
@@ -115,17 +115,20 @@ export default function AddLocation({
                 <div className='flex justify-stretch gap-1'>
                   <Input disabled value={address} label='주소' />
                   <button
-                    className='flex w-32 items-center rounded-2xl border-2 border-default-700 p-1.5'
+                    className='flex w-32 items-center justify-center rounded-2xl border-2 border-default-700 p-1.5'
                     onClick={() => {
                       setDaumPostCodeVisible(true);
                     }}
                   >
                     <BiSearch size={20} />
-                    <p>장소 찾기</p>
+                    <p>찾기</p>
                   </button>
                 </div>
                 <Input label='상세 주소' />
               </form>
+              <Button type='submit' color='primary'>
+                장소 등록
+              </Button>
             </div>
             {daumPostCodeVisible && (
               <div className='fixed left-0 top-0 z-[52] flex h-screen w-screen items-center bg-black/50'>
