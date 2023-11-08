@@ -26,6 +26,8 @@ import {
   BiArrowBack,
   BiBold,
   BiItalic,
+  BiListOl,
+  BiListUl,
   BiStrikethrough,
   BiUnderline,
 } from 'react-icons/bi';
@@ -43,6 +45,7 @@ import {
   initialEventSchema,
   initialScheduleSchema,
 } from '@/app/new/event/initialEventSchema';
+import AddLocation from '@/app/new/event/location/AddLocation';
 import jxios from '@/utils/jxios';
 
 import { ArtWorkMediaType } from '@/types/artwork';
@@ -133,9 +136,12 @@ const NewEvent = () => {
       }
       setIsUpload(true);
       const newState = { ...initialEventSchema };
+      const markdownContent = editor?.storage.markdown.getMarkdown() || '';
       newState.dto.title =
         editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4)) || '';
-      newState.dto.description = editor?.storage.markdown.getMarkdown() || '';
+      newState.dto.description = markdownContent.slice(
+        markdownContent.indexOf('\n') + 1
+      );
       newState.dto.link = link;
       newState.dto.eventType = eventType;
       newState.dto.price = price;
@@ -291,6 +297,30 @@ const NewEvent = () => {
           >
             <BiUnderline size={25} />
           </button>
+          <button
+            onClick={() => {
+              if (editor) {
+                editor.chain().focus().toggleBulletList().run();
+              }
+            }}
+            className={`hover:text-primary ${
+              editor?.isActive('bulletList') ? 'text-black' : 'text-default'
+            }`}
+          >
+            <BiListUl size={25} />
+          </button>
+          <button
+            onClick={() => {
+              if (editor) {
+                editor.chain().focus().toggleOrderedList().run();
+              }
+            }}
+            className={`hover:text-primary ${
+              editor?.isActive('orderedList') ? 'text-black' : 'text-default'
+            }`}
+          >
+            <BiListOl size={25} />
+          </button>
         </div>
         <div></div>
       </div>
@@ -371,9 +401,9 @@ const NewEvent = () => {
       <div className='px-3 py-2'>
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ko}>
           {schedule.map((item, index) => (
-            <div key={item.id} className='flex flex-col gap-1 border p-2'>
+            <div key={item.id} className='flex flex-col gap-3 border p-2'>
               <div className='flex justify-between'>
-                <p>Location 조회된 이름 자리</p>
+                <AddLocation setSchedule={setSchedule} scheduleIndex={index} />
                 <button
                   onClick={() =>
                     setSchedule((prev) =>
@@ -424,8 +454,8 @@ const NewEvent = () => {
                   }}
                 />
               </div>
-              참여 예술가
               <div>
+                <p>참여 예술가</p>
                 <NewParticipantView
                   schedule={schedule}
                   setSchedule={setSchedule}
@@ -437,7 +467,7 @@ const NewEvent = () => {
         </LocalizationProvider>
       </div>
       <div className='h-16'></div>
-      <div className='fixed bottom-0 z-50 flex h-16 w-full max-w-[718px] items-center justify-end border-t bg-default-50 px-3'>
+      <div className='fixed bottom-0 z-40 flex h-16 w-full max-w-[718px] items-center justify-end border-t bg-default-50 px-3'>
         <button
           onClick={handleCreateSaveButton}
           disabled={isUpload}

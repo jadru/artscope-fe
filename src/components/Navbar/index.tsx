@@ -139,7 +139,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
             {!isMobileMenuOpen ? (
               <>
                 {isLogin === undefined ? (
-                  <></>
+                  <div className='h-1 w-1'></div>
                 ) : !isLogin ? (
                   <LoginModal
                     btnText='시작하기'
@@ -153,7 +153,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
                   </>
                 )}
                 <button
-                  className='flex h-10 w-10 items-center justify-center rounded-lg border-1.5 border-default-700 text-default-700 hover:bg-default-100 md:hidden'
+                  className='flex h-10 w-10 items-center justify-center rounded-lg border-1.5 border-default-700 text-default-700 md:hidden'
                   onClick={() => setIsMobileMenuOpen(true)}
                 >
                   <AiOutlineMenu size={23} />
@@ -161,7 +161,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
               </>
             ) : (
               <button
-                className='flex h-10 w-10 items-center justify-center rounded-lg border-1.5 border-default-700 text-default-700 hover:bg-default-100 md:hidden'
+                className='flex h-10 w-10 items-center justify-center rounded-lg border-1.5 border-default-700 text-default-700 md:hidden'
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <AiOutlineClose size={23} />

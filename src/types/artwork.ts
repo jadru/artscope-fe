@@ -1,4 +1,5 @@
 import { MediaType, pageInfoType } from '@/types/default';
+import { MediaTypeInfoWithDescription } from '@/types/media';
 
 export type ArtWorkMediaType = {
   mediaType: MediaType;
@@ -64,22 +65,8 @@ export type DetailedArtworkType = {
   authorCompanyRole: string | null;
   comments: number;
   authorName: string;
-  thumbnail: {
-    id: number;
-    mediaType: MediaType;
-    mediaUrl: string;
-    imageHeight: number;
-    imageWidth: number;
-    description: string;
-  };
-  artworkMedias: {
-    id: number;
-    mediaType: MediaType;
-    mediaUrl: string;
-    imageHeight: number;
-    imageWidth: number;
-    description: string;
-  }[];
+  thumbnail: MediaTypeInfoWithDescription;
+  artworkMedias: MediaTypeInfoWithDescription[];
   artworkComments: artworkCommentType[];
   createdTime: Date;
   updatedTime: Date | null;
