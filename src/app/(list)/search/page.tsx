@@ -51,7 +51,7 @@ export default function Search() {
           }}
           autoFocus={!searchKeyword}
           placeholder='예술을 검색하세요'
-          className='inline h-full w-full text-2xl'
+          className='inline h-full w-full border-0 bg-white text-2xl focus:border-0 focus:outline-none focus:ring-0'
         />
         <Kbd keys={['enter']} className='h-6'>
           Enter
