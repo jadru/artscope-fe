@@ -9,7 +9,7 @@ export default function UserInfo() {
   return user ? (
     <div className='flex flex-col items-center justify-center'>
       <ASNextImage
-        src={user.picture || ''}
+        src={user.picture ?? 'prod/images/default.jpg'}
         alt='프로필 사진'
         width={48}
         height={48}

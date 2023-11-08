@@ -14,6 +14,7 @@ module.exports = {
   priority: 1,
   robotsTxtOptions: {
     additionalSitemaps: [
+      `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap-0.xml`,
       `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/artwork.xml`,
       `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/post.xml`,
       // `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/event.xml`,
