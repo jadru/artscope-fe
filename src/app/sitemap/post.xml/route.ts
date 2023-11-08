@@ -22,7 +22,7 @@ export async function GET(_request: Request) {
 
   return getServerSideSitemap(
     data.posts.map((post) => ({
-      loc: `${NEXT_PUBLIC_API_URL}/artwork/${post.id}`,
+      loc: `${NEXT_PUBLIC_API_URL}/post/${post.id}`,
       changefreq: 'daily',
       priority: 0.9,
       lastmod: String(post.updatedTime ?? post.createdTime),
