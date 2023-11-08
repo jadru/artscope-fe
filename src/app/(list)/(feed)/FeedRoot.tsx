@@ -2,7 +2,7 @@
 
 import { Skeleton } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { notFound } from 'next/navigation';
+import { notFound, usePathname } from 'next/navigation';
 import { ReactElement, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
@@ -54,6 +54,7 @@ const fetchFeeds = async ({ pageParam = 0 }) =>
 export default function Feeds() {
   const bottom = useRef(null);
   const { user } = useUser();
+  const pathname = usePathname();
 
   const { data, fetchNextPage, isLoading, refetch, isError } = useInfiniteQuery(
     {
@@ -65,6 +66,10 @@ export default function Feeds() {
       },
     }
   );
+
+  useEffect(() => {
+    refetch();
+  }, [pathname, refetch]);
 
   const FeedObservationComponent = (): ReactElement => {
     const [ref, inView] = useInView();
