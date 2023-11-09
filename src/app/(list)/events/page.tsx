@@ -51,19 +51,20 @@ export default function Events() {
           const events = [] as EventViewType;
           eventDatas.exhibitions.length > 0 &&
             eventDatas.exhibitions.forEach((event) => {
-              const date = format(new Date(event.startDate), 'yyyy-MM-dd');
-              if (events.find((ii) => ii.date === date, 'yyyy-MM-dd')) {
+              if (
+                events.find(
+                  (ii) => ii.date === event.eventSchedule[0].eventDate
+                )
+              ) {
                 events.forEach((ii) => {
-                  if (
-                    ii.date === format(new Date(event.startDate), 'yyyy-MM-dd')
-                  ) {
+                  if (ii.date === event.eventSchedule[0].eventDate) {
                     ii.event.push(event);
                   }
                 });
               } else {
                 events.push({
                   event: [event],
-                  date: format(new Date(event.startDate), 'yyyy-MM-dd'),
+                  date: event.eventSchedule[0].eventDate,
                 });
               }
             });
@@ -93,19 +94,20 @@ export default function Events() {
       </div>
       <Spacer y={5} />
       <div className='relative mx-4'>
-        {data.map((date) => (
-          <div className='' key={date.date}>
-            <h2 className='sticky top-16 bg-white py-1 text-3xl md:bg-transparent'>
-              {date.date}
-            </h2>
-            <div className='flex flex-col space-y-1'>
-              {date.event &&
-                date.event.map((exhibition) => (
-                  <EventListItem event={exhibition} key={exhibition.id} />
-                ))}
+        {data &&
+          data.map((date) => (
+            <div className='' key={date.date}>
+              <h2 className='sticky top-16 bg-white py-1 text-3xl md:bg-transparent'>
+                {date.date}
+              </h2>
+              <div className='flex flex-col space-y-1'>
+                {date.event &&
+                  date.event.map((exhibition) => (
+                    <EventListItem event={exhibition} key={exhibition.id} />
+                  ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
         {page.totalPages > 1 && (
           <div className='flex items-center justify-center py-3'>
             <Pagination

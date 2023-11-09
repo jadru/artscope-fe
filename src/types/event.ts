@@ -8,12 +8,16 @@ export type SingleEventType = {
     mediaType: 'image' | 'video';
     mediaUrl: string;
   };
+  medias: {
+    mediaType: 'image' | 'video';
+    mediaUrl: string;
+  }[];
+  eventType: EventType;
   link: string;
-  startDate: Date;
-  endDate: Date;
   createdTime: Date;
   updatedTime: Date | null;
   author: string;
+  eventSchedule: ScheduleResponseType[];
 };
 
 export type EventType =
@@ -73,10 +77,24 @@ export type ScheduleType = {
   id?: number;
   locationId: number;
   detailLocation: string;
-  startTime: Date; // '20:00'
-  endTime: Date; // '20:00'
-  eventDate: Date; // '2021-08-01'
+  startTime: string; // '20:00'
+  endTime: string; // '20:00'
+  eventDate: string; // '2021-08-01'
   participants: ParticipantType[];
+};
+
+export type ScheduleResponseType = {
+  id: number;
+  locationId: number;
+  detailLocation: string;
+  startTime: string; // '20:00'
+  endTime: string; // '20:00'
+  eventDate: string; // '2021-08-01'
+  participants: ParticipantType[];
+  locationAddress: string;
+  locationName: string;
+  updatedTime?: Date;
+  createdTime: Date;
 };
 
 export type ParticipantType = {

@@ -1681,6 +1681,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cronitorio/cronitor-rum@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "@cronitorio/cronitor-rum@npm:0.4.1"
+  dependencies:
+    web-vitals: "npm:^3.3.0"
+  checksum: 4f2cf2499b8208ab2f45b354dea678e54142e739d229ac91a1c2b0420ce1ed31367363de83c284e95ef5413b02c641eb1366dfd2cac616ac154e07777a1f3481
+  languageName: node
+  linkType: hard
+
 "@cspotcode/source-map-support@npm:^0.8.0":
   version: 0.8.1
   resolution: "@cspotcode/source-map-support@npm:0.8.1"
@@ -15995,6 +16004,7 @@ __metadata:
   dependencies:
     "@commitlint/cli": "npm:^16.3.0"
     "@commitlint/config-conventional": "npm:^16.2.4"
+    "@cronitorio/cronitor-rum": "npm:^0.4.1"
     "@emotion/react": "npm:^11.11.1"
     "@emotion/styled": "npm:^11.11.0"
     "@hocuspocus/provider": "npm:^2.0.4"
@@ -16742,6 +16752,13 @@ __metadata:
     glob-to-regexp: "npm:^0.4.1"
     graceful-fs: "npm:^4.1.2"
   checksum: c5e35f9fb9338d31d2141d9835643c0f49b5f9c521440bb648181059e5940d93dd8ed856aa8a33fbcdd4e121dad63c7e8c15c063cf485429cd9d427be197fe62
+  languageName: node
+  linkType: hard
+
+"web-vitals@npm:^3.3.0":
+  version: 3.5.0
+  resolution: "web-vitals@npm:3.5.0"
+  checksum: 9409011cf6cf405796aba919cd0f6957eb59f1170481f948e4f70e34a0cc461103accc8ce80fa0ceaf3c68d4c8d2b92788454323cfda08722eaa1ec9c36159d5
   languageName: node
   linkType: hard
 
