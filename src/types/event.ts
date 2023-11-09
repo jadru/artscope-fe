@@ -1,4 +1,14 @@
 import { MediaType, pageInfoType } from '@/types/default';
+import { LocationType } from '@/types/location';
+
+export type EventDetailType = {
+  exhibitionList: SingleEventType;
+  detailLocation: string;
+  price: number;
+  updatedTime: Date | null;
+  createdTime: Date;
+  location: LocationType;
+};
 
 export type SingleEventType = {
   id: number;

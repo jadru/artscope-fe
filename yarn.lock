@@ -2414,6 +2414,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@kurkle/color@npm:^0.3.0":
+  version: 0.3.2
+  resolution: "@kurkle/color@npm:0.3.2"
+  checksum: a9e8e3e35dcd59dec4dd4f0105919c05e24823a96347bcf152965c29e48d6290b66d5fb96c071875db752e10930724c48ce6d338fefbd65e0ce5082d5c78970e
+  languageName: node
+  linkType: hard
+
 "@lifeomic/attempt@npm:^3.0.2":
   version: 3.0.3
   resolution: "@lifeomic/attempt@npm:3.0.3"
@@ -7305,6 +7312,15 @@ __metadata:
   version: 0.7.0
   resolution: "chardet@npm:0.7.0"
   checksum: 96e4731b9ec8050cbb56ab684e8c48d6c33f7826b755802d14e3ebfdc51c57afeece3ea39bc6b09acc359e4363525388b915e16640c1378053820f5e70d0f27d
+  languageName: node
+  linkType: hard
+
+"chart.js@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "chart.js@npm:4.4.0"
+  dependencies:
+    "@kurkle/color": "npm:^0.3.0"
+  checksum: a81a65ef4767c79b4645703a08947811966d231824868c2483172a6a2dffcb269fae32a3ffd692cb0dee6ff982d4b15e2cfb1d56373f0f0d3ea51d7e9b7b96cd
   languageName: node
   linkType: hard
 
@@ -13963,6 +13979,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-chartjs-2@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "react-chartjs-2@npm:5.2.0"
+  peerDependencies:
+    chart.js: ^4.1.1
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 437e443a268b7eebab3f1a6f0f5d936e58caf650fca55f568a612a46c563d22af683a64185eac8005aa644e4960a5a72cc1075a2574b89ec46c7653aaf4025e2
+  languageName: node
+  linkType: hard
+
 "react-cookies@npm:^0.1.1":
   version: 0.1.1
   resolution: "react-cookies@npm:0.1.1"
@@ -16038,6 +16064,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^5.56.0"
     autoprefixer: "npm:^10.4.14"
     axios: "npm:^1.6.0"
+    chart.js: "npm:^4.4.0"
     clsx: "npm:^1.2.1"
     date-fns: "npm:^2.30.0"
     env-cmd: "npm:^10.1.0"
@@ -16061,6 +16088,7 @@ __metadata:
     prettier: "npm:^2.8.7"
     prettier-plugin-tailwindcss: "npm:^0.1.13"
     react: "npm:^18.2.0"
+    react-chartjs-2: "npm:^5.2.0"
     react-cookies: "npm:^0.1.1"
     react-datepicker: "npm:^4.20.0"
     react-daum-postcode: "npm:^3.1.3"

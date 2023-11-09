@@ -1,4 +1,3 @@
-import { Card, CardBody, CardFooter } from '@nextui-org/react';
 import Link from 'next/link';
 
 import ASNextImage from '@/components/ASNextImage';
@@ -8,8 +7,8 @@ import { feedItemType } from '@/types/feed';
 const FeedListItemArtwork = ({ feed }: { feed: feedItemType }) => {
   return (
     <Link href={`/artwork/${feed.id}`} className='group cursor-pointer'>
-      <Card shadow='sm' className='m-0 rounded-none'>
-        <CardBody className='overflow-visible rounded-none p-0 transition duration-100 group-hover:bg-default-100'>
+      <div>
+        <div className='overflow-visible rounded-none p-0 transition duration-100'>
           <ASNextImage
             src={feed.thumbnailUrl || 'https://via.placeholder.com/300'}
             alt={feed.title ?? 'Artworks'}
@@ -19,14 +18,14 @@ const FeedListItemArtwork = ({ feed }: { feed: feedItemType }) => {
             width='150'
             height='150'
           />
-        </CardBody>
-        <CardFooter className='justify-between space-x-0.5 rounded-none text-small transition duration-100 group-hover:bg-default-100'>
-          <b className='w-2/3 truncate text-[0.86rem]'>{feed.title}</b>
-          <p className='w-1/3 truncate text-right text-[0.86rem] text-default-500'>
+        </div>
+        <div className='space-x-0.5 rounded-none px-3 py-2 text-small transition duration-100 group-hover:underline'>
+          <h3 className='truncate text-[0.86rem]'>{feed.title}</h3>
+          <h4 className='truncate text-[0.86rem] text-default-500'>
             {feed.authorName}
-          </p>
-        </CardFooter>
-      </Card>
+          </h4>
+        </div>
+      </div>
     </Link>
   );
 };
