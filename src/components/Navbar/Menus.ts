@@ -39,7 +39,7 @@ export const menuItems = [
   {
     name: '아고라',
     slug: '/agora',
-    url: '/agora',
+    url: '/agoras',
     icon: BiSolidNetworkChart,
   },
   // {
