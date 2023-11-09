@@ -60,7 +60,7 @@ export default function FeedList({ data, index }: FeedListProps) {
                   : feed.length % 3 === 0
                   ? 'grid-cols-1 md:grid-cols-3'
                   : 'grid-cols-2'
-              } gap-0 md:mx-0 md:border-x`}
+              } gap-0 md:mx-0`}
               key={index + feed[0].id + '-artwork'}
             >
               {feed.map((feedItem) => (

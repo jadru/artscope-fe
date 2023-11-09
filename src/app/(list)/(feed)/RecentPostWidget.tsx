@@ -19,11 +19,11 @@ export default function RecentPostWidget() {
   const { push } = useRouter();
   return post.data ? (
     post.data.length > 0 ? (
-      <div className='w-full border-b p-4'>
+      <div className='w-full rounded-2xl bg-default-100 p-4'>
         <h4 className='mb-1.5 pl-1.5'>인기있는 포스트</h4>
         {post.data?.map((p) => (
           <button
-            className='w-full truncate rounded-md px-2 py-1.5 text-left transition-colors hover:bg-default-100'
+            className='w-full truncate rounded-md px-2 py-1.5 text-left transition-colors hover:underline'
             key={p.id}
             onClick={() => push('/post/' + p.id)}
           >
@@ -35,7 +35,7 @@ export default function RecentPostWidget() {
       <></>
     )
   ) : (
-    <div className='space-y-5 border-b border-r p-4'>
+    <div className='space-y-5 p-4'>
       <Skeleton className='h-4 w-32 rounded-full' />
       <Skeleton className='h-4 w-full rounded-full' />
       <Skeleton className='h-4 w-full rounded-full' />

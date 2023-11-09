@@ -104,7 +104,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
 
   return (
     <>
-      <div className='sticky top-0 z-50 w-screen border-b bg-white'>
+      <div className='sticky top-0 z-50 w-screen bg-white'>
         <div className='mx-auto flex h-16 max-w-[1024px] items-center justify-between px-4'>
           <div
             className='group box-border w-24 basis-0 cursor-pointer flex-row flex-nowrap items-center justify-start whitespace-nowrap bg-transparent text-medium no-underline'

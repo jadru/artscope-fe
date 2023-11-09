@@ -15,7 +15,7 @@ export default function Page() {
         <div className='w-full md:w-[calc(100%-24rem)] lg:w-[calc(100%-33rem)]'>
           <FeedRoot />
         </div>
-        <div className='sticky top-16 hidden h-max md:block md:w-60 lg:w-80'>
+        <div className='sticky top-16 hidden h-max pl-2 md:block md:w-60 lg:w-80'>
           <RecentPostWidget />
           <RecentArtworkWidget />
         </div>
