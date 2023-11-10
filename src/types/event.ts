@@ -87,9 +87,9 @@ export type ScheduleType = {
   id?: number;
   locationId: number;
   detailLocation: string;
-  startTime: string; // '20:00'
-  endTime: string; // '20:00'
-  eventDate: string; // '2021-08-01'
+  startTime: Date; // '20:00'
+  endTime: Date; // '20:00'
+  eventDate: Date; // '2021-08-01'
   participants: ParticipantType[];
 };
 

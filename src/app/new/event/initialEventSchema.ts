@@ -18,9 +18,9 @@ export const initialEventSchema: EventApiRequestType = {
 export const initialScheduleSchema: ScheduleType = {
   id: 0,
   locationId: 1,
-  startTime: new Date(Date.now()),
-  endTime: new Date(Date.now() + 4 * 60 * 60 * 1000),
+  startTime: new Date(),
+  endTime: new Date(),
   detailLocation: '',
-  eventDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+  eventDate: new Date(),
   participants: [],
 };
