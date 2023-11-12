@@ -8,7 +8,7 @@ import { SingleEventType } from '@/types/event';
 export default function EventListItem({ event }: { event: SingleEventType }) {
   return (
     <Link
-      className='group flex flex-row justify-between bg-white py-4 pl-8 hover:bg-default-100 group-hover:bg-default-100 md:pl-52'
+      className='group flex flex-row justify-between rounded-2xl bg-white px-4 py-4 pl-8 transition hover:bg-default-100 group-hover:bg-default-100 md:pl-40'
       href={`/event/${event.id}?scheduleId=${event.eventSchedule[0].id}`}
     >
       <div>
@@ -22,7 +22,7 @@ export default function EventListItem({ event }: { event: SingleEventType }) {
         </h5>
       </div>
       <ASNextImage
-        src={event.thumbnail.mediaUrl}
+        src={event.thumbnail?.mediaUrl ?? 'prod/images/default.jpg'}
         alt='thumbnail'
         width={100}
         height={100}

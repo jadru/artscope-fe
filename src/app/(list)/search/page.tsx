@@ -93,7 +93,7 @@ export default function Search() {
           (data.searchPosts.posts.length > 0 ? (
             <div className='border-t p-4'>
               <h3 className='mb-1'>포스트 검색 결과</h3>
-              <div className='mt-1 border-x border-t md:border-x-0'>
+              <div className='mt-1 border-t'>
                 {data.searchPosts.posts.map((item) => (
                   <FeedListItemPost feed={item} key={item.id} />
                 ))}

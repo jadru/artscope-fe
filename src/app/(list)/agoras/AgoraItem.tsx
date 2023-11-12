@@ -18,14 +18,14 @@ export default function AgoraItem({ agora }: { agora: AgoraType }) {
         <MarkdownVewer content={agora.content} />
       </div>
       <div className='mt-1 flex justify-between'>
-        <p className='truncate bg-default-200 px-2 font-bold'>
-          {agora.agreeText} : {agora.agreeCount}
+        <p className='truncate rounded-r-lg border-l-3 border-red-600 bg-default-200 px-2 font-bold'>
+          {agora.disagreeText} : {agora.disagreeCount}
         </p>
-        <p className='truncate bg-default-200 px-2 font-bold'>
+        <p className='truncate rounded-r-lg border-l-3 border-yellow-400 bg-default-200 px-2 font-bold'>
           {agora.naturalText} : {agora.naturalCount}
         </p>
-        <p className='truncate bg-default-200 px-2 font-bold'>
-          {agora.disagreeText} : {agora.disagreeCount}
+        <p className='truncate rounded-r-lg border-l-3 border-blue-600 bg-default-200 px-2 font-bold'>
+          {agora.agreeText} : {agora.agreeCount}
         </p>
       </div>
     </div>

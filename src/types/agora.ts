@@ -36,8 +36,8 @@ export type AgoraOpinionType = {
   content: string;
   vote: string;
   author: AgoraAuthorType;
-  createdTime: string;
-  updatedTime: string | null;
+  createdTime: Date;
+  updatedTime: Date | null;
 };
 
 export type AgoraAuthorType = {
@@ -62,6 +62,6 @@ export type AgoraType = {
   author: AgoraAuthorType;
   thumbnail: MediaTypeInfo;
   medias: MediaTypeInfo[];
-  createdTime: string;
-  updatedTime: string | null;
+  createdTime: Date;
+  updatedTime: Date | null;
 };

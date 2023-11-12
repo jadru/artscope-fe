@@ -16,11 +16,11 @@ export type SingleEventType = {
   description: string;
   thumbnail: {
     mediaType: 'image' | 'video';
-    mediaUrl: string;
+    mediaUrl: string | null;
   };
   medias: {
     mediaType: 'image' | 'video';
-    mediaUrl: string;
+    mediaUrl: string | null;
   }[];
   eventType: EventType;
   link: string;
