@@ -37,7 +37,7 @@ export default function ArtworkEdit({ data }: { data: ArtworkType }) {
   };
 
   return (
-    <div className='mb-2 space-y-2 border-b border-default-200 bg-white p-3 transition-colors md:mx-0 md:border-x'>
+    <div className='mb-2 space-y-2 border-b border-default-200 bg-white p-3 transition-colors md:mx-0'>
       <div className='w-full px-3 pt-3'>
         <div>
           <User

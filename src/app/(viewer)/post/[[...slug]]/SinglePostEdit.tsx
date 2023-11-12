@@ -25,7 +25,7 @@ export default function SinglePostEdit({ feed }: { feed: SinglePostType }) {
     });
 
   return (
-    <div className='mb-2 border-b border-default-200 bg-white transition-colors md:mx-0 md:border-x'>
+    <div className='mb-2 border-b border-default-200 bg-white transition-colors md:mx-0'>
       <div className='w-full px-3 pt-3'>
         <div>
           <User

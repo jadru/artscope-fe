@@ -1,9 +1,13 @@
 'use client';
 
 import { Button } from '@nextui-org/react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { BiCircle, BiQuestionMark, BiX } from 'react-icons/bi';
+import { toast } from 'react-toastify';
 
+import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
 import { AgoraDetailType } from '@/types/agora';
@@ -12,6 +16,7 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
   const [button, setButton] = useState<
     'agree' | 'disagree' | 'natural' | undefined
   >();
+  const { isLogin } = useUser();
   const [agreeCount, setAgreeCount] = useState<number>(data.agora.agreeCount);
   const [disagreeCount, setDisagreeCount] = useState<number>(
     data.agora.disagreeCount
@@ -21,6 +26,7 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
   );
   const [modal, setModal] = useState<boolean>(false);
   const [opinion, setOpinion] = useState<string>('');
+  const { push } = useRouter();
 
   useEffect(() => {
     if (data.agora.userVoteStatus === data.agora.agreeText) setButton('agree');
@@ -90,26 +96,36 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
 
   const handleSetOpinion = async () => {
     setModal(false);
-    jxios.post('/api/agoras/' + data.agora.id + '/opinions', opinion, {
-      headers: {
-        'Content-Type': 'text/plain',
-      },
-    });
+    jxios
+      .post('/api/agoras/' + data.agora.id + '/opinions', {
+        content: opinion,
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          toast('의견이 등록되었습니다.');
+          setOpinion('');
+          push('/agora/' + data.agora.id);
+        }
+      });
   };
 
-  return (
+  return isLogin ? (
     <>
-      <div className='mt-1 flex w-full'>
+      <div className='mx-1 mt-1 grid grid-cols-3 gap-1 md:gap-2'>
         <button
           className={`${
             button === 'disagree' || button === undefined
               ? 'bg-red-600'
               : 'bg-default-500'
-          } flex h-16 w-1/3 items-center justify-center gap-1 font-bold text-white`}
+          } flex h-16 w-full items-center justify-center gap-1 rounded-2xl font-bold text-white transition hover:opacity-90`}
           onClick={() => {
-            if (button === 'disagree' && confirm('의견을 취소하시나요?'))
-              handleUnvote('disagree');
-            else handleVote('disagree');
+            if (button === 'disagree') {
+              if (confirm('의견을 취소하시나요?')) {
+                handleUnvote('disagree');
+              }
+            } else {
+              handleVote('disagree');
+            }
           }}
           disabled={button !== undefined && button !== 'disagree'}
         >
@@ -123,11 +139,15 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
             button === 'natural' || button === undefined
               ? 'bg-yellow-400'
               : 'bg-default-500'
-          } flex h-16 w-1/3 items-center justify-center gap-1 font-bold text-white`}
+          } flex h-16 w-full items-center justify-center gap-1 rounded-2xl font-bold text-white transition hover:opacity-90`}
           onClick={() => {
-            if (button === 'natural' && confirm('의견을 취소하시나요?'))
-              handleUnvote('natural');
-            else handleVote('natural');
+            if (button === 'natural') {
+              if (confirm('의견을 취소하시나요?')) {
+                handleUnvote('natural');
+              }
+            } else {
+              handleVote('natural');
+            }
           }}
           disabled={button !== undefined && button !== 'natural'}
         >
@@ -141,11 +161,15 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
             button === 'agree' || button === undefined
               ? 'bg-blue-600'
               : 'bg-default-500'
-          } flex h-16 w-1/3 items-center justify-center gap-1 font-bold text-white`}
+          } flex h-16 w-full items-center justify-center gap-1 rounded-2xl font-bold text-white transition hover:opacity-90`}
           onClick={() => {
-            if (button === 'agree' && confirm('의견을 취소하시나요?'))
-              handleUnvote('agree');
-            else handleVote('agree');
+            if (button === 'agree') {
+              if (confirm('의견을 취소하시나요?')) {
+                handleUnvote('agree');
+              }
+            } else {
+              handleVote('agree');
+            }
           }}
           disabled={button !== undefined && button !== 'agree'}
         >
@@ -187,5 +211,15 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
         </div>
       )}
     </>
+  ) : (
+    <Link href='/user/login' className='w-full px-2'>
+      <button className='my-2 h-16 w-[calc(100%-1rem)] rounded-2xl border border-black bg-indigo-200 transition hover:bg-amber-100'>
+        <p>
+          <b className='font-bold text-black '>
+            의견을 남기려면 로그인이 필요합니다.
+          </b>
+        </p>
+      </button>
+    </Link>
   );
 }

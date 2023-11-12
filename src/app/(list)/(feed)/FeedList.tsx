@@ -48,35 +48,41 @@ export default function FeedList({ data, index }: FeedListProps) {
 
   return (
     <div className='flex max-w-full flex-col'>
-      {feeds.map((feed) =>
-        Array.isArray(feed) ? (
-          feed.length > 0 && (
-            <div
-              className={`grid ${
-                feed.length === 1
-                  ? 'grid-cols-1'
-                  : feed.length % 2 === 0
-                  ? 'grid-cols-2'
-                  : feed.length % 3 === 0
-                  ? 'grid-cols-1 md:grid-cols-3'
-                  : 'grid-cols-2'
-              } gap-0 md:mx-0`}
-              key={index + feed[0].id + '-artwork'}
-            >
-              {feed.map((feedItem) => (
-                <FeedListItemArtwork
-                  feed={feedItem}
-                  key={index + 'artwork-' + feedItem.id}
-                />
-              ))}
-            </div>
-          )
-        ) : feed.type === 'post' ? (
-          <FeedListItemPost feed={feed} key={feed.id} />
-        ) : (
-          <FeedListItemEvent feed={feed} key={feed.id} />
-        )
-      )}
+      {feeds.map((feed) => (
+        <div
+          key={
+            index + (Array.isArray(feed) ? feed[0]?.id : feed.id) + '-artwork'
+          }
+        >
+          {Array.isArray(feed) ? (
+            feed.length > 0 && (
+              <div
+                className={`grid ${
+                  feed.length === 1
+                    ? 'grid-cols-1'
+                    : feed.length % 2 === 0
+                    ? 'grid-cols-2'
+                    : feed.length % 3 === 0
+                    ? 'grid-cols-1 md:grid-cols-3'
+                    : 'grid-cols-2'
+                } gap-0 md:mx-0`}
+              >
+                {feed.map((feedItem) => (
+                  <FeedListItemArtwork
+                    feed={feedItem}
+                    key={index + 'artwork-' + feedItem.id}
+                  />
+                ))}
+              </div>
+            )
+          ) : feed.type === 'post' ? (
+            <FeedListItemPost feed={feed} />
+          ) : (
+            <FeedListItemEvent feed={feed} />
+          )}
+          <hr />
+        </div>
+      ))}
       {feeds.length === 0 && <p className='m-12'>데이터가 없습니다.</p>}
     </div>
   );
