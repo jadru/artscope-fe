@@ -9,59 +9,59 @@ import {
   BiSolidZap,
 } from 'react-icons/bi';
 
+const menuItems = [
+  { href: '/', text: '홈', icon: <BiSolidHome size={23} />, active: true },
+  {
+    href: '/search',
+    text: '검색',
+    icon: <BiSearch size={23} />,
+    active: true,
+  },
+  {
+    href: '/artworks',
+    text: '작품',
+    icon: <BiSolidZap size={23} />,
+    active: true,
+  },
+  {
+    href: '/events',
+    text: '이벤트',
+    icon: <BiSolidCalendar size={23} />,
+    active: true,
+  },
+  {
+    href: '/agoras',
+    text: '아고라',
+    icon: <BiSolidNetworkChart size={23} />,
+    active: true,
+  },
+  {
+    href: '/',
+    text: '네트워크',
+    icon: <BiSolidPlanet size={23} />,
+    active: false,
+  },
+  { href: '/', text: '매거진', icon: <BiSolidNews size={23} />, active: false },
+];
+
 export default function MainNavigation() {
   return (
     <>
-      <div className='hidden h-max w-full flex-col space-y-2.5 px-3 py-3 md:block'>
-        <Link
-          href='/'
-          className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-primary transition hover:bg-default-100'
-        >
-          <BiSolidHome size={23} className='my-0.5 mr-2' />
-          <p className='my-1 text-lg'>홈</p>
-        </Link>
-        <Link
-          href='/search'
-          className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-black transition hover:bg-default-100'
-        >
-          <BiSearch size={23} className='my-0.5 mr-2' />
-          <p className='my-1 text-lg'>검색</p>
-        </Link>
-        <Link
-          href='/artworks'
-          className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-black transition hover:bg-default-100'
-        >
-          <BiSolidZap size={23} className='my-0.5 mr-2' />
-          <p className='my-1 text-lg'>작품</p>
-        </Link>
-        <Link
-          href='/events'
-          className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-black transition hover:bg-default-100'
-        >
-          <BiSolidCalendar size={23} className='my-0.5 mr-2' />
-          <p className='my-1 text-lg'>이벤트</p>
-        </Link>
-        <Link
-          href='/agora'
-          className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-black transition hover:bg-default-100'
-        >
-          <BiSolidNetworkChart size={23} className='my-0.5 mr-2' />
-          <p className='my-1 text-lg'>아고라</p>
-        </Link>
-        <Link
-          href='/'
-          className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-default-500 transition'
-        >
-          <BiSolidPlanet size={23} className='my-0.5 mr-2' />
-          <p className='my-1 text-lg'>네트워크</p>
-        </Link>
-        <Link
-          href='/'
-          className='flex w-full rounded-3xl px-4 pb-1 pt-2 text-left text-default-500 transition'
-        >
-          <BiSolidNews size={23} className='my-0.5 mr-2' />
-          <p className='my-1 text-lg'>매거진</p>
-        </Link>
+      <div className='hidden h-max w-full flex-col space-y-2.5 px-3 md:block'>
+        {menuItems.map((item) => (
+          <Link
+            key={item.text}
+            href={item.href}
+            className={`flex w-full rounded-3xl px-4 py-2.5 text-left ${
+              item.active ? 'text-default-800' : 'text-default-400'
+            } ${
+              item.text === '홈' ? 'underline underline-offset-4' : ''
+            } gap-2 font-bold decoration-2 transition hover:bg-default-100 hover:underline`}
+          >
+            {item.icon}
+            <p className='text-lg'>{item.text}</p>
+          </Link>
+        ))}
       </div>
     </>
   );

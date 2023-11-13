@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, Skeleton } from '@nextui-org/react';
+import { Skeleton } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { notFound } from 'next/navigation';
@@ -18,13 +18,16 @@ import { useUser } from '@/states';
 import { ArtWorkApiResponseType } from '@/types/artwork';
 
 const SkeletonArtwork = () => (
-  <Card className='w-full gap-2'>
-    <Skeleton className='h-[180px] w-full rounded-2xl' />
-    <div className='mx-3 mb-3 mt-2 flex h-4 justify-between'>
-      <Skeleton className=' w-[140px] rounded-full' />
-      <Skeleton className=' w-[70px] rounded-full' />
+  <div className='w-full'>
+    <Skeleton className='h-[190px] w-full' />
+    <div className='flex w-full items-center justify-between px-3 pb-3 pt-3'>
+      <div>
+        <Skeleton className='h-3 w-[140px] rounded-full' />
+        <Skeleton className='mt-2 h-3 w-[140px] rounded-full' />
+      </div>
+      <Skeleton className='h-4 w-[70px] rounded-full' />
     </div>
-  </Card>
+  </div>
 );
 export default function Page() {
   const bottom = useRef(null);
