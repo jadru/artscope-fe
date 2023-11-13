@@ -8,16 +8,14 @@ import { SingleEventType } from '@/types/event';
 export default function EventListItem({ event }: { event: SingleEventType }) {
   return (
     <Link
-      className='group flex flex-row justify-between rounded-2xl bg-white px-4 py-4 pl-8 transition hover:bg-default-100 group-hover:bg-default-100 md:pl-40'
+      className='group flex flex-row items-center justify-between rounded-2xl bg-white px-4 py-4 pl-8 transition hover:bg-default-100 group-hover:bg-default-100 md:pl-40'
       href={`/event/${event.id}?scheduleId=${event.eventSchedule[0].id}`}
     >
       <div>
         <h3>{event.title}</h3>
         <h4>{event.description}</h4>
         <h5>
-          {format(new Date(event.eventSchedule[0].eventDate), 'yyyy-MM-dd')}
-        </h5>
-        <h5>
+          {format(new Date(event.eventSchedule[0].eventDate), 'yyyy-MM-dd')}{' '}
           {event.eventSchedule[0].startTime} - {event.eventSchedule[0].endTime}
         </h5>
       </div>

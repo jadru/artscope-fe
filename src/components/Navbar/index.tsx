@@ -117,17 +117,13 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
               <Link
                 href={item.url}
                 key={`${item.name}-${index}`}
-                className={`pt-0.5 transition hover:text-default-400 ${
+                className={`pt-0.5 font-bold decoration-2 underline-offset-4 transition hover:underline ${
                   index === 0
                     ? pathname === '/'
-                      ? theme === 'light'
-                        ? 'text-primary'
-                        : 'text-secondary'
+                      ? 'underline'
                       : ''
                     : pathname.startsWith(item.slug)
-                    ? theme === 'light'
-                      ? 'text-primary'
-                      : 'text-secondary'
+                    ? 'underline'
                     : ''
                 }`}
               >
