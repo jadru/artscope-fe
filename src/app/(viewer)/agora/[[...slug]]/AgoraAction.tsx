@@ -33,6 +33,7 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
       const newData = await jxios
         .get(`/api/agoras/${data.agora.id}`)
         .then((res) => res.data as AgoraDetailType);
+      data.userVoteStatus = newData.userVoteStatus;
       if (newData.userVoteStatus === newData.agora.agreeText)
         setButton('agree');
       else if (newData.userVoteStatus === newData.agora.disagreeText)
@@ -41,7 +42,7 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
         setButton('natural');
     };
     setStatus();
-  }, [data.agora.id]);
+  }, [data]);
 
   const handleVote = async (status: 'agree' | 'disagree' | 'natural') => {
     setButton(status);
