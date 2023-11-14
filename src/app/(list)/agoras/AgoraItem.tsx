@@ -13,9 +13,14 @@ export default function AgoraItem({ agora }: { agora: AgoraType }) {
       className='cursor-pointer border-b p-4 hover:bg-default-100'
       onClick={() => push('/agora/' + agora.id)}
     >
-      <h2>{agora.title}</h2>
-      <div className='line-clamp-2'>
-        <MarkdownVewer content={agora.content} />
+      <div className='flex justify-between'>
+        <div className='w-4/5'>
+          <h2>{agora.title}</h2>
+          <div className='line-clamp-2'>
+            <MarkdownVewer content={agora.content} />
+          </div>
+        </div>
+        <h3 className='w-1/5 text-right'>{agora.participantCount}명 참여</h3>
       </div>
       <div className='mt-1 flex justify-between'>
         <p className='truncate rounded-r-lg border-l-3 border-red-600 bg-default-200 px-2 font-bold'>

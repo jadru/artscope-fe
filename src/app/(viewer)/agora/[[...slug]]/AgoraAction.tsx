@@ -29,12 +29,19 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
   const { push } = useRouter();
 
   useEffect(() => {
-    if (data.agora.userVoteStatus === data.agora.agreeText) setButton('agree');
-    else if (data.agora.userVoteStatus === data.agora.disagreeText)
-      setButton('disagree');
-    else if (data.agora.userVoteStatus === data.agora.naturalText)
-      setButton('natural');
-  }, [data]);
+    const setStatus = async () => {
+      const newData = await jxios
+        .get(`/api/agoras/${data.agora.id}`)
+        .then((res) => res.data as AgoraDetailType);
+      if (newData.userVoteStatus === newData.agora.agreeText)
+        setButton('agree');
+      else if (newData.userVoteStatus === newData.agora.disagreeText)
+        setButton('disagree');
+      else if (newData.userVoteStatus === newData.agora.naturalText)
+        setButton('natural');
+    };
+    setStatus();
+  }, [data.agora.id]);
 
   const handleVote = async (status: 'agree' | 'disagree' | 'natural') => {
     setButton(status);
@@ -62,7 +69,6 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
   };
 
   const handleUnvote = async (status: 'agree' | 'disagree' | 'natural') => {
-    unVoteCount(status);
     let statusText = '';
     if (status === 'agree') {
       statusText = data.agora.agreeText;
@@ -79,7 +85,9 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
       })
       .then((res) => {
         if (res.status === 200) setModal(true);
-        else if (res.status === 204) unVoteCount(status);
+        else if (res.status === 204) {
+          unVoteCount(status);
+        }
       });
   };
 
@@ -179,6 +187,7 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
           </p>
         </button>
       </div>
+      <p>{data.userVoteStatus}</p>
       {modal && (
         <div
           className='fixed left-0 top-0 z-[51] mx-auto flex h-screen w-screen items-center justify-center bg-black/50'
@@ -213,7 +222,7 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
     </>
   ) : (
     <Link href='/user/login' className='w-full px-2'>
-      <button className='my-2 h-16 w-[calc(100%-1rem)] rounded-2xl border border-black bg-indigo-200 transition hover:bg-amber-100'>
+      <button className='my-2 h-16 w-[calc(100%-1rem)] rounded-2xl border border-black transition hover:bg-default-200'>
         <p>
           <b className='font-bold text-black '>
             의견을 남기려면 로그인이 필요합니다.

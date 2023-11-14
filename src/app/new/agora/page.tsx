@@ -106,6 +106,18 @@ const NewArtwork = () => {
   const handleCreateSaveButton = useDebounce(async () => {
     if (isUpload) return;
     try {
+      if (buttonText.disagreeText.length === 0) {
+        toast.warn('반대 의견 텍스트를 입력해주세요.');
+        return;
+      }
+      if (buttonText.agreeText.length === 0) {
+        toast.warn('찬성 의견 텍스트를 입력해주세요.');
+        return;
+      }
+      if (buttonText.naturalText.length === 0) {
+        toast.warn('중립 의견 텍스트를 입력해주세요.');
+        return;
+      }
       if (fileUrls.length === 0) {
         toast.warn('이미지, 영상 또는 썸네일을 업로드해주세요.');
         return;
@@ -135,7 +147,7 @@ const NewArtwork = () => {
       newState.dto.title =
         editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4)) || '';
       newState.dto.content = markdownContent.slice(
-        markdownContent.indexOf('\n') + 1
+        markdownContent.indexOf('\n') + 3
       );
       newState.dto.agreeText = buttonText.agreeText;
       newState.dto.disagreeText = buttonText.disagreeText;
@@ -299,6 +311,7 @@ const NewArtwork = () => {
         <Input
           label='찬성 의견 텍스트'
           placeholder='동의'
+          isRequired
           value={buttonText.agreeText}
           onValueChange={(value) =>
             setButtonText((prev) => {
@@ -312,6 +325,7 @@ const NewArtwork = () => {
         <Input
           label='중립 의견 텍스트'
           placeholder='고민해봐야'
+          isRequired
           value={buttonText.naturalText}
           onValueChange={(value) =>
             setButtonText((prev) => {
@@ -325,6 +339,7 @@ const NewArtwork = () => {
         <Input
           label='반대 의견 텍스트'
           placeholder='반대'
+          isRequired
           value={buttonText.disagreeText}
           onValueChange={(value) =>
             setButtonText((prev) => {

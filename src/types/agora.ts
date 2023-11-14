@@ -27,6 +27,7 @@ export type AgoraListType = {
 
 export type AgoraDetailType = {
   agora: AgoraType;
+  userVoteStatus: string;
   agreeOpinions: AgoraOpinionType[];
   naturalOpinions: AgoraOpinionType[];
   disagreeOpinions: AgoraOpinionType[];
@@ -35,6 +36,7 @@ export type AgoraDetailType = {
 export type AgoraOpinionType = {
   content: string;
   vote: string;
+  isMine: boolean;
   author: AgoraAuthorType;
   createdTime: Date;
   updatedTime: Date | null;
@@ -50,7 +52,6 @@ export type AgoraType = {
   id: number;
   title: string;
   content: string;
-  userVoteStatus: string;
   agreeCount: number;
   naturalCount: number;
   disagreeCount: number;

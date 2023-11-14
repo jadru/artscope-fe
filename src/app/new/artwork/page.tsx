@@ -128,7 +128,7 @@ const NewArtwork = () => {
       newState.dto.title =
         editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4)) || '';
       newState.dto.description = markdownContent.slice(
-        markdownContent.indexOf('\n') + 1
+        markdownContent.indexOf('\n') + 3
       );
       newState.dto.tags = tagCount;
       newState.dto.visible = publicType === 'public';

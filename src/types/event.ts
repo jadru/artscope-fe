@@ -53,13 +53,33 @@ export type SearchEventType =
   | 'STANDARD';
 
 export type EventResponseType = {
-  exhibitions: SingleEventType[];
+  exhibitions: SingleEventTypeOnList[];
   pageInfo: pageInfoType;
+};
+
+export type SingleEventTypeOnList = {
+  id: number;
+  title: string;
+  description: string;
+  thumbnail: {
+    mediaType: 'image' | 'video';
+    mediaUrl: string | null;
+  };
+  medias: {
+    mediaType: 'image' | 'video';
+    mediaUrl: string | null;
+  }[];
+  eventType: EventType;
+  link: string;
+  createdTime: Date;
+  updatedTime: Date | null;
+  author: string;
+  eventSchedule: ScheduleResponseType;
 };
 
 export type EventViewType = {
   date: string;
-  event: SingleEventType[];
+  event: SingleEventTypeOnList[];
 }[];
 
 export type EventApiRequestType = {
@@ -84,8 +104,18 @@ export type EventApiRequestType = {
 };
 
 export type ScheduleType = {
-  id?: number;
   locationId: number;
+  detailLocation: string;
+  startTime: `${number}:${number}`; // '20:00'
+  endTime: `${number}:${number}`; // '20:00'
+  eventDate: `${number}-${number}-${number}`; // '2021-08-01'
+  participants: ParticipantType[];
+};
+
+export type CreateScheduleType = {
+  id: number;
+  locationId: number | undefined;
+  locationName: string;
   detailLocation: string;
   startTime: Date; // '20:00'
   endTime: Date; // '20:00'

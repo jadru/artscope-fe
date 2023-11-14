@@ -1,5 +1,5 @@
 import { Metadata, Viewport } from 'next';
-import { Nanum_Myeongjo, Noto_Sans_KR } from 'next/font/google';
+import { IBM_Plex_Sans_KR, Noto_Serif_KR } from 'next/font/google';
 import Script from 'next/script';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -11,17 +11,18 @@ import { Providers } from '@/app/providers';
 import { GA_TRACKING_ID, NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 import { cls } from '@/utils';
 
-const noto_Sans_KR = Noto_Sans_KR({
+const ibm_flex_Sans_KR = IBM_Plex_Sans_KR({
   weight: ['200', '400', '700'],
-  variable: '--noto-sans-kr',
+  variable: '--ibm-plex-sans-kr',
   subsets: ['latin'],
   display: 'swap',
 });
 
-const nanum_Myeongjo = Nanum_Myeongjo({
-  preload: false,
-  weight: ['400'],
-  variable: '--nanum-myeongjo',
+const noto_Serif_KR = Noto_Serif_KR({
+  weight: ['200', '400', '700'],
+  variable: '--noto-serif-kr',
+  subsets: ['latin'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -115,8 +116,8 @@ export default function RootLayout({
     <html lang='ko' className='light'>
       <body
         className={cls(
-          noto_Sans_KR.className,
-          nanum_Myeongjo.className,
+          ibm_flex_Sans_KR.className,
+          noto_Serif_KR.className,
           'min-h-screen'
         )}
       >
@@ -140,6 +141,7 @@ export default function RootLayout({
           `,
           }}
         />
+
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -2,28 +2,36 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 
 import ASNextImage from '@/components/ASNextImage';
+import MarkdownVewer from '@/components/MarkdownViewer';
 
-import { SingleEventType } from '@/types/event';
+import { SingleEventTypeOnList } from '@/types/event';
 
-export default function EventListItem({ event }: { event: SingleEventType }) {
+export default function EventListItem({
+  event,
+}: {
+  event: SingleEventTypeOnList;
+}) {
   return (
     <Link
-      className='group flex flex-row items-center justify-between rounded-2xl bg-white px-4 py-4 pl-8 transition hover:bg-default-100 group-hover:bg-default-100 md:pl-40'
-      href={`/event/${event.id}?scheduleId=${event.eventSchedule[0].id}`}
+      className='group flex h-44 flex-row items-center justify-between rounded-2xl bg-white px-4 py-4 pl-8 transition hover:bg-default-100 group-hover:bg-default-100 md:pl-52'
+      href={`/event/${event.id}?scheduleId=${event.eventSchedule.id}`}
     >
       <div>
         <h3>{event.title}</h3>
-        <h4>{event.description}</h4>
+        <div className='line-clamp-2'>
+          <MarkdownVewer content={event.description} />
+        </div>
         <h5>
-          {format(new Date(event.eventSchedule[0].eventDate), 'yyyy-MM-dd')}{' '}
-          {event.eventSchedule[0].startTime} - {event.eventSchedule[0].endTime}
+          {format(new Date(event.eventSchedule.eventDate), 'yyyy-MM-dd')}{' '}
+          {event.eventSchedule.startTime} - {event.eventSchedule.endTime}
         </h5>
       </div>
       <ASNextImage
+        className='h-full'
         src={event.thumbnail?.mediaUrl ?? 'prod/images/default.jpg'}
         alt='thumbnail'
-        width={100}
-        height={100}
+        width={130}
+        height={130}
       />
     </Link>
   );

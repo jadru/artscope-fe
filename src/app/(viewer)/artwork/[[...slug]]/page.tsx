@@ -83,7 +83,7 @@ export default async function ArtworkPage({
     <div>
       {!isEdit ? (
         <>
-          <h1 className='break-words px-3 pt-2 text-left font-serif text-4xl'>
+          <h1 className='break-words px-3 pt-2 text-left text-4xl'>
             {data.artwork.title}
           </h1>
           <ArtworkProfile aw={data} />

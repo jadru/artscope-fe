@@ -10,7 +10,7 @@ export default function AgoraCommentMessage({
   voteStatus: 'agree' | 'natural' | 'disagree';
 }) {
   return (
-    <div className='rounded-xl bg-default-100 p-2'>
+    <div className='my-1 rounded-xl bg-default-100 p-2'>
       <div className='flex justify-between'>
         <p className='font-bold text-default-700'>
           {comment.author.name}{' '}

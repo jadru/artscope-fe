@@ -1,3 +1,4 @@
+import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import React from 'react';
 import { AiOutlineHome, AiOutlineLink } from 'react-icons/ai';
@@ -38,6 +39,37 @@ const fetchProfile = async (username: string) =>
       return res.data as profileApiType;
     });
 
+export async function generateMetadata(
+  {
+    params,
+  }: {
+    params: { slug: string[] };
+  },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const id = params.slug[0];
+  const data = await fetchProfile(id);
+  // const thumbnail = (await parent).openGraph?.images || [];
+  const previousImages = (await parent).openGraph?.images || [];
+  return {
+    title: `${data.name.replace(/<[^>]*>?/g, '').slice(0, 20)} Portfolio`,
+    description: data.introduction
+      ? data.introduction.replace(/<[^>]*>?/g, '')
+      : data.name + '님의 포트폴리오입니다.',
+    openGraph: {
+      title: `${data.name.slice(0, 20)} 이벤트 | Artscope`,
+      description: data.introduction
+        ? data.introduction.replace(/<[^>]*>?/g, '').slice(0, 100)
+        : data.name + '님의 포트폴리오입니다.',
+      url: 'https://www.artscope.kr/profile/' + id,
+      authors: [data.name],
+      images: [data.picture, ...previousImages],
+    },
+    publisher: 'Artscope',
+  };
+}
+
 export default async function ProfilePage({
   params,
 }: {
@@ -66,11 +98,11 @@ export default async function ProfilePage({
   });
 
   return (
-    <div className='mx-auto my-6 max-w-4xl space-y-3 px-4 font-serif'>
-      <div className='flex w-full items-center justify-between py-4'>
-        <div className='space-y-3 px-2.5'>
+    <div className='mx-auto my-6 space-y-3 px-2 md:px-0'>
+      <div className='flex w-full items-center justify-between md:py-4'>
+        <div className='space-y-3 md:px-2.5'>
           <div className='flex items-center gap-2'>
-            <h1 className='font-serif text-[2.1rem]'>{data.name}</h1>
+            <h1 className='text-[2rem]'>{data.name}</h1>
             <h2 className='my-0 text-2xl'>@{data.username}</h2>
           </div>
 
@@ -92,7 +124,7 @@ export default async function ProfilePage({
       <hr className='h-0.5 bg-black' />
       {data.introduction && (
         <>
-          <h2 className='mb-4 border-b-1 border-black px-2.5 pb-2 text-xl'>
+          <h2 className='mb-4 border-b-1 border-black px-2.5 pb-3 text-xl'>
             {data.introduction}
           </h2>
         </>

@@ -1,4 +1,5 @@
 import { contentType, MediaType, pageInfoType } from '@/types/default';
+import { EventType } from '@/types/event';
 
 export type feedApiResponseType = {
   feedItems: feedItemType[];
@@ -17,6 +18,8 @@ export type feedItemType = {
   authorName: string;
   authorDescription: string | null;
   authorProfileImageUrl: string | null;
+  authorCompanyName: string | null;
+  authorCompanyRole: string | null;
   tags: string[] | null;
   categoryId: string;
   views: number;
@@ -25,6 +28,26 @@ export type feedItemType = {
   comments: number;
   createdTime: Date;
   updatedTime: Date | null;
+
+  // only for exhibition
+  event: {
+    eventType: EventType;
+    startTime: `${number}:${number}`;
+    endTime: `${number}:${number}`;
+    eventDate: `${number}-${number}-${number}`;
+    locationName: string;
+    locationAddress: string;
+    detailLocation: string;
+  };
+
+  // only for agora
+  agoraAgreeCount: number;
+  agoraDisagreeCount: number;
+  agoraNaturalCount: number;
+  agreeText: string;
+  disagreeText: string;
+  naturalText: string;
+  participantCount: number;
 };
 
 export type SinglePostType = {

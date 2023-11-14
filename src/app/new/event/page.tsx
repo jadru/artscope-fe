@@ -19,6 +19,7 @@ import { Text } from '@tiptap/extension-text';
 import { Underline } from '@tiptap/extension-underline';
 import { EditorContent, useEditor } from '@tiptap/react';
 import { useDebounce } from '@toss/react';
+import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -38,7 +39,6 @@ import '@/styles/editor.scss';
 
 import getVideoCoverFromLocal from '@/components/New/Artworks/getVideoCoverFromLocal';
 import NewMediaView from '@/components/New/Media/NewMediaView';
-import NewParticipantView from '@/components/New/Participant/NewParticipantView';
 
 import { EventTypeData } from '@/app/new/event/EventTypeData';
 import {
@@ -49,7 +49,7 @@ import AddLocation from '@/app/new/event/location/AddLocation';
 import jxios from '@/utils/jxios';
 
 import { ArtWorkMediaType } from '@/types/artwork';
-import { EventType, ScheduleType } from '@/types/event';
+import { CreateScheduleType, EventType, ScheduleType } from '@/types/event';
 
 const NewEvent = () => {
   const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
@@ -57,7 +57,7 @@ const NewEvent = () => {
   const [eventType, setEventType] = useState<EventType>('STANDARD');
   const [price, setPrice] = useState<number>(0);
   const [imgs, setImgs] = useState<string[]>([]);
-  const [schedule, setSchedule] = useState<ScheduleType[]>([
+  const [schedule, setSchedule] = useState<CreateScheduleType[]>([
     initialScheduleSchema,
   ]);
   const { push } = useRouter();
@@ -130,29 +130,32 @@ const NewEvent = () => {
           1000000 >
         100
       ) {
-        setIsUpload(false);
         toast.warn('파일 용량이 너무 큽니다.');
         return;
       }
+      if (!schedule[0].locationId) return toast.warn('장소를 선택해주세요.');
       setIsUpload(true);
       const newState = { ...initialEventSchema };
       const markdownContent = editor?.storage.markdown.getMarkdown() || '';
       newState.dto.title =
         editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4)) || '';
       newState.dto.description = markdownContent.slice(
-        markdownContent.indexOf('\n') + 1
+        markdownContent.indexOf('\n') + 3
       );
       newState.dto.link = link;
       newState.dto.eventType = eventType;
       newState.dto.price = price;
       newState.dto.schedule = schedule.reduce((acc, cur) => {
         acc.push({
-          locationId: cur.locationId,
-          startTime: cur.startTime,
-          endTime: cur.endTime,
-          detailLocation: cur.detailLocation,
-          eventDate: cur.eventDate,
+          locationId: Number(cur.locationId),
+          startTime: format(cur.startTime, 'HH:mm') as `${number}:${number}`,
+          endTime: format(cur.endTime, 'HH:mm') as `${number}:${number}`,
+          eventDate: format(
+            new Date(cur.eventDate),
+            'yyyy-MM-dd'
+          ) as `${number}-${number}-${number}`,
           participants: cur.participants,
+          detailLocation: cur.detailLocation,
         });
         return acc;
       }, [] as ScheduleType[]);
@@ -333,6 +336,7 @@ const NewEvent = () => {
           setImgs={setImgs}
           imgs={imgs}
           header='미디어 또는 링크 업로드'
+          onlyImage
         />
       </div>
       <hr className='my-4' />
@@ -383,13 +387,8 @@ const NewEvent = () => {
             setSchedule((prev) => [
               ...prev,
               {
-                id: prev[prev.length - 1].id ? +1 : 1,
-                locationId: prev[prev.length - 1].locationId,
-                startTime: prev[prev.length - 1].startTime,
-                endTime: prev[prev.length - 1].endTime,
-                detailLocation: prev[prev.length - 1].detailLocation,
-                eventDate: prev[prev.length - 1].eventDate,
-                participants: prev[prev.length - 1].participants,
+                ...initialScheduleSchema,
+                id: prev[prev.length - 1].id + 1,
               },
             ]);
           }}
@@ -403,10 +402,26 @@ const NewEvent = () => {
           {schedule.map((item, index) => (
             <div key={item.id} className='flex flex-col gap-3 border p-2'>
               <div className='flex justify-between'>
-                <AddLocation
-                  _setSchedule={setSchedule}
-                  _scheduleIndex={index}
-                />
+                <div className='flex justify-start gap-1'>
+                  <AddLocation
+                    setSchedule={setSchedule}
+                    scheduleIndex={index}
+                    schedule={schedule}
+                  />
+                  <Input
+                    className='h-12'
+                    label='상세 이벤트 장소'
+                    placeholder='예) 1층 101호'
+                    onValueChange={(value) =>
+                      setSchedule((prev) => {
+                        const temp = [...prev];
+                        temp[index].detailLocation = value;
+                        return [...temp];
+                      })
+                    }
+                    variant='bordered'
+                  />
+                </div>
                 <button
                   onClick={() =>
                     setSchedule((prev) =>
@@ -457,19 +472,19 @@ const NewEvent = () => {
                   }}
                 />
               </div>
-              <div>
-                <p>
-                  참여 예술가{' '}
-                  <b className='text-sm text-default-600'>
-                    @으로 Artscope 회원을 찾을 수 있습니다
-                  </b>
-                </p>
-                <NewParticipantView
-                  schedule={schedule}
-                  setSchedule={setSchedule}
-                  index={index}
-                />
-              </div>
+              {/* <div> */}
+              {/*   <p> */}
+              {/*     참여 예술가{' '} */}
+              {/*     <b className='text-sm text-default-600'> */}
+              {/*       @으로 Artscope 회원을 찾을 수 있습니다 */}
+              {/*     </b> */}
+              {/*   </p> */}
+              {/*   <NewParticipantView */}
+              {/*     schedule={schedule} */}
+              {/*     setSchedule={setSchedule} */}
+              {/*     index={index} */}
+              {/*   /> */}
+              {/* </div> */}
             </div>
           ))}
         </LocalizationProvider>
