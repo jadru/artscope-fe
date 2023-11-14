@@ -12,18 +12,18 @@ type CalendarButtonProps = {
 const CalendarButton = ({ ...props }: CalendarButtonProps) => {
   const handleIcs = async () => {
     const startTime = new Date(
-      props.data.exhibitionList.eventSchedule[0].eventDate +
+      props.data.eventSchedules[0].eventDate +
         ' ' +
-        props.data.exhibitionList.eventSchedule[0].startTime
+        props.data.eventSchedules[0].startTime
     );
     const endTime = new Date(
-      props.data.exhibitionList.eventSchedule[0].eventDate +
+      props.data.eventSchedules[0].eventDate +
         ' ' +
-        props.data.exhibitionList.eventSchedule[0].endTime
+        props.data.eventSchedules[0].endTime
     );
     ics.createEvent(
       {
-        title: props.data.exhibitionList.title,
+        title: props.data.title,
         start: [
           startTime.getFullYear(),
           startTime.getMonth() + 1,
@@ -31,7 +31,7 @@ const CalendarButton = ({ ...props }: CalendarButtonProps) => {
           startTime.getHours(),
           startTime.getMinutes(),
         ],
-        description: props.data.exhibitionList.description,
+        description: props.data.description,
         end: [
           endTime.getFullYear(),
           endTime.getMonth() + 1,
@@ -41,7 +41,7 @@ const CalendarButton = ({ ...props }: CalendarButtonProps) => {
         ],
         location:
           props.data.location.address +
-          props.data.exhibitionList.eventSchedule[0].detailLocation +
+          props.data.eventSchedules[0].detailLocation +
           ' ' +
           props.data.location.name,
         geo: {
@@ -49,8 +49,8 @@ const CalendarButton = ({ ...props }: CalendarButtonProps) => {
           lon: props.data.location.longitude,
         },
 
-        categories: [props.data.exhibitionList.eventType],
-        attendees: props.data.exhibitionList.eventSchedule[0].participants.map(
+        categories: [props.data.eventType],
+        attendees: props.data.eventSchedules[0].participants.map(
           (participant) => {
             return {
               name: participant.name ?? '',
@@ -60,7 +60,7 @@ const CalendarButton = ({ ...props }: CalendarButtonProps) => {
             };
           }
         ),
-        url: 'https://www.artscope.kr/event/' + props.data.exhibitionList.id,
+        url: 'https://www.artscope.kr/event/' + props.data.id,
         alarms: [
           {
             action: 'display',
