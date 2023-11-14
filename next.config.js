@@ -17,7 +17,7 @@ const config = {
       },
       {
         source: '/kakaomap/:path*',
-        destination: 'ht  tps://dapi.kakao.com/v2' + '/:path*',
+        destination: 'https://dapi.kakao.com/v2' + '/:path*',
       },
     ];
   },
