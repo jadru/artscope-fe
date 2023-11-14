@@ -1,5 +1,5 @@
 import { Metadata, Viewport } from 'next';
-import { IBM_Plex_Sans_KR, Noto_Serif_KR } from 'next/font/google';
+import { IBM_Plex_Sans_KR } from 'next/font/google';
 import Script from 'next/script';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -14,13 +14,6 @@ import { cls } from '@/utils';
 const ibm_flex_Sans_KR = IBM_Plex_Sans_KR({
   weight: ['200', '400', '700'],
   variable: '--ibm-plex-sans-kr',
-  subsets: ['latin'],
-  display: 'swap',
-});
-
-const noto_Serif_KR = Noto_Serif_KR({
-  weight: ['200', '400', '700'],
-  variable: '--noto-serif-kr',
   subsets: ['latin'],
   display: 'swap',
 });
@@ -114,13 +107,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='ko' className='light'>
-      <body
-        className={cls(
-          ibm_flex_Sans_KR.className,
-          noto_Serif_KR.className,
-          'min-h-screen'
-        )}
-      >
+      <body className={cls(ibm_flex_Sans_KR.className, 'min-h-screen')}>
         <ToastContainer limit={2} hideProgressBar />
         <link rel='manifest' href='/manifest.json' />
         <Script
