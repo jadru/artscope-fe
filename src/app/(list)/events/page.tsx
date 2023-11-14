@@ -62,7 +62,17 @@ export default function Events() {
                 });
               }
             });
-          setData(events);
+          setData(
+            events.map((event) => {
+              return {
+                date: (event.date = format(
+                  new Date(event.date),
+                  'yyyy년 MM월 dd일'
+                )),
+                event: event.event,
+              };
+            })
+          );
           setPage(eventDatas.pageInfo);
           setIsLoading(false);
         }));
@@ -92,7 +102,7 @@ export default function Events() {
               data.map((date) => (
                 <div className='' key={date.date}>
                   <h2 className='sticky top-16 bg-white py-1 text-3xl md:bg-transparent'>
-                    {format(new Date(date.date), 'yyyy년 MM월 dd일')}
+                    {date.date}
                   </h2>
                   <div className='flex flex-col space-y-1'>
                     {date.event &&

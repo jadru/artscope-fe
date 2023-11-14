@@ -1681,19 +1681,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cronitorio/cronitor-rum-nextjs@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "@cronitorio/cronitor-rum-nextjs@npm:0.4.0"
-  dependencies:
-    "@cronitorio/cronitor-rum": "npm:^0.4.0"
-  peerDependencies:
-    next: ^13
-    react: ^18
-  checksum: 7aed802ade4fe25c4d682e9e04651f20e00f003f32055d4b592f702889a3266342eac655866892aabb80f2343fcbae3692e26b791ed60243adefec2abfb46746
-  languageName: node
-  linkType: hard
-
-"@cronitorio/cronitor-rum@npm:^0.4.0":
+"@cronitorio/cronitor-rum@npm:^0.4.1":
   version: 0.4.1
   resolution: "@cronitorio/cronitor-rum@npm:0.4.1"
   dependencies:
@@ -16294,7 +16282,7 @@ __metadata:
   dependencies:
     "@commitlint/cli": "npm:^16.3.0"
     "@commitlint/config-conventional": "npm:^16.2.4"
-    "@cronitorio/cronitor-rum-nextjs": "npm:^0.4.0"
+    "@cronitorio/cronitor-rum": "npm:^0.4.1"
     "@emotion/react": "npm:^11.11.1"
     "@emotion/styled": "npm:^11.11.0"
     "@hocuspocus/provider": "npm:^2.0.4"
