@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 import { onSuccess } from '@/app/user/onSuccess';
@@ -29,7 +30,7 @@ export const onGetProfile = async (
   setUser: (user: profileApiResponseType | undefined) => void
 ) => {
   if (await getRefreshToken()) {
-    const res = await jxios.get('/api/members/profile', {
+    const res = await axios.get('/api/members/profile', {
       headers: {
         'Content-Type': 'application/json',
       },
