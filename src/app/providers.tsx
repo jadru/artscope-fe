@@ -1,6 +1,6 @@
 'use client';
 
-import { load } from '@cronitorio/cronitor-rum';
+import { useCronitor } from '@cronitorio/cronitor-rum-nextjs';
 import { NextUIProvider } from '@nextui-org/react';
 import {
   QueryCache,
@@ -8,16 +8,18 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import useUserHook from '@/hooks/useUser';
 
+import { CRONITOR_ANALYTICS_KEY } from '@/constant/env';
+
 export function Providers({ children }: { children: React.ReactNode }) {
   useUserHook();
-  useEffect(() => {
-    load('YOUR_SITE_ID');
-  }, []);
+  useCronitor(CRONITOR_ANALYTICS_KEY ?? '', {
+    debug: process.env.NODE_ENV === 'development',
+  });
   const [queryClient] = useState(
     new QueryClient({
       queryCache: new QueryCache({

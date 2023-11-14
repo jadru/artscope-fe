@@ -56,7 +56,7 @@ export default function NewLocationModal({
     jxios
       .get(`/kakaomap/local/search/address.json?query=${data.address}`, {
         headers: {
-          Authorization: 'KakaoAK fe4ef4b5a5ff051e353f4b5e9f6ef4a9',
+          Authorization: 'KakaoAK ' + process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY,
         },
       })
       .then((res) => {

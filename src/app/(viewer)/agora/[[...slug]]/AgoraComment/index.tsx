@@ -1,16 +1,21 @@
 'use client';
 
 import { Input, Kbd } from '@nextui-org/react';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import AgoraCommentMessage from '@/app/(viewer)/agora/[[...slug]]/AgoraComment/AgoraCommentMessage';
 import { useUser } from '@/states';
+import jxios from '@/utils/jxios';
 
 import { AgoraDetailType, AgoraOpinionType } from '@/types/agora';
 
 export default function Index({ data }: { data: AgoraDetailType }) {
   const [opinion, setOpinion] = useState<AgoraOpinionType[]>();
+  const [newOpinion, setNewOpinion] = useState<string>('');
   const { isLogin } = useUser();
+  const { push } = useRouter();
   useEffect(() => {
     setOpinion(
       [
@@ -24,16 +29,34 @@ export default function Index({ data }: { data: AgoraDetailType }) {
       })
     );
   }, [data]);
+
+  const handleSetOpinion = async () => {
+    jxios
+      .post('/api/agoras/' + data.agora.id + '/opinions', {
+        content: newOpinion,
+      })
+      .then((res) => {
+        if (res.status === 201) {
+          toast('의견이 등록되었습니다.');
+          setNewOpinion('');
+          push('/agora/' + data.agora.id);
+        }
+      });
+  };
+
   return (
     <div className='mx-2 my-2 space-y-1.5'>
-      {isLogin && data.agora.userVoteStatus !== undefined && (
+      {isLogin && data.userVoteStatus !== undefined && (
         <Input
           variant='bordered'
           type='text'
-          placeholder={
-            data.agora.userVoteStatus + '에 대한 추가 의견을 입력하세요'
-          }
+          placeholder='추가 의견을 입력하세요'
           endContent={<Kbd keys={['enter']}>Enter</Kbd>}
+          value={newOpinion}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') handleSetOpinion();
+          }}
+          onValueChange={setNewOpinion}
         />
       )}
       <div className='hidden grid-cols-3 gap-2 md:grid'>

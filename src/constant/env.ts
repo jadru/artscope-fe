@@ -13,3 +13,5 @@ export const NEXT_PUBLIC_ROOT_URL = process.env.NEXT_PUBLIC_ROOT_URL;
 
 export const NEXT_PUBLIC_MEDIA_STORAGE_URL =
   'https://' + process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL;
+
+export const CRONITOR_ANALYTICS_KEY = process.env.NEXT_PUBLIC_ANALYTICS_ID;
