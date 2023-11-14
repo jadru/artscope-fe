@@ -1,4 +1,4 @@
-import { EventApiRequestType, ScheduleType } from '@/types/event';
+import { CreateScheduleType, EventApiRequestType } from '@/types/event';
 
 export const initialEventSchema: EventApiRequestType = {
   dto: {
@@ -15,9 +15,10 @@ export const initialEventSchema: EventApiRequestType = {
   thumbnailFile: undefined,
 };
 
-export const initialScheduleSchema: ScheduleType = {
+export const initialScheduleSchema: CreateScheduleType = {
   id: 0,
-  locationId: 1,
+  locationId: undefined,
+  locationName: '',
   startTime: new Date(),
   endTime: new Date(),
   detailLocation: '',

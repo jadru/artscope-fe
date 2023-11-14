@@ -55,8 +55,8 @@ export default function MainNavigation() {
             className={`flex w-full rounded-3xl px-4 py-2.5 text-left ${
               item.active ? 'text-default-800' : 'text-default-400'
             } ${
-              item.text === '홈' ? 'underline underline-offset-4' : ''
-            } gap-2 font-bold decoration-2 transition hover:bg-default-100 hover:underline`}
+              item.text === '홈' ? 'underline' : ''
+            } gap-2 font-bold decoration-2 underline-offset-4 transition hover:bg-default-100 hover:underline`}
           >
             {item.icon}
             <p className='text-lg'>{item.text}</p>

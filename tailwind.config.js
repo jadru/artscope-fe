@@ -21,8 +21,8 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        primary: ['var(--noto-sans-kr)', ...fontFamily.sans],
-        serif: ['var(--nanum-myeongjo)', ...fontFamily.serif],
+        primary: ['var(--ibm-plex-sans-kr)', ...fontFamily.sans],
+        secondary: ['var(--noto-serif-kr)', ...fontFamily.serif],
       },
       animation: {
         fade: 'fadeOut 1s ease-in-out',

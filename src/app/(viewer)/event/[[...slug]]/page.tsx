@@ -9,10 +9,11 @@ import ASNextImage from '@/components/ASNextImage';
 import MarkdownVewer from '@/components/MarkdownViewer';
 
 import CalendarButton from '@/app/(viewer)/event/[[...slug]]/CalendarButton';
+import eventTypeToKO from '@/app/(viewer)/event/[[...slug]]/eventTypeToKO';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
-import { EventDetailType, EventType } from '@/types/event';
+import { EventDetailType } from '@/types/event';
 
 const fetchEvent = async (id: string) =>
   jxios
@@ -35,7 +36,7 @@ export async function generateMetadata(
   return {
     title: `${data.exhibitionList.title
       .replace(/<[^>]*>?/g, '')
-      .slice(0, 20)} 이벤트 정보`,
+      .slice(0, 20)} 정보`,
     description: data.exhibitionList.description.replace(/<[^>]*>?/g, ''),
     openGraph: {
       title: `${data.exhibitionList.title.slice(0, 20)} 이벤트 | Artscope`,
@@ -60,39 +61,16 @@ export default async function Event(
   parent: ResolvingMetadata
 ) {
   const id = params.slug[0];
-  // eslint-disable-next-line
-  const data = await fetchEvent(id);
-  if (!data) throw new Error('Failed to fetch data');
 
-  const EventTypeKO: {
-    label: string;
-    value: EventType;
-  }[] = [
-    {
-      label: '전시',
-      value: 'EXHIBITION',
-    },
-    {
-      label: '강의',
-      value: 'LECTURE',
-    },
-    {
-      label: '워크샵',
-      value: 'WORKSHOP',
-    },
-    {
-      label: '스페셜 이벤트',
-      value: 'SPECIAL',
-    },
-    {
-      label: '콘서트',
-      value: 'CONCERT',
-    },
-    {
-      label: '기타',
-      value: 'STANDARD',
-    },
-  ];
+  const data = await fetchEvent(id);
+  const futureEvents = data.exhibitionList.eventSchedule.filter((ii) => {
+    if (new Date(ii.eventDate + 'T' + ii.endTime) >= new Date()) return ii;
+  });
+  const previousEvents = data.exhibitionList.eventSchedule.filter((ii) => {
+    if (new Date(ii.eventDate + 'T' + ii.endTime) < new Date()) return ii;
+  });
+
+  if (!data) throw new Error('Failed to fetch data');
 
   return (
     <div>
@@ -110,29 +88,62 @@ export default async function Event(
           </h3>
           <h3>{data.location.name}</h3>
           <div className='w-auto cursor-pointer rounded-lg border-2 bg-default-200 px-2 py-0.5 font-bold transition hover:bg-default-400'>
-            {EventTypeKO.find((e) => e.value === data.exhibitionList.eventType)
-              ?.label || '기타'}{' '}
-            {data.exhibitionList.eventType}
+            {eventTypeToKO(data.exhibitionList.eventType)}
           </div>
           <MarkdownVewer content={data.exhibitionList.description} />
-          <hr />
-          <Link href={data.exhibitionList.link} target='_blank'>
+
+          <div className='my-3'>
+            <Link href={data.exhibitionList.link} target='_blank'>
+              <button className='flex items-center gap-1 hover:font-bold hover:underline'>
+                <BsInfoLg size={20} />
+                자세한 정보 보기
+              </button>
+            </Link>
+            <CalendarButton
+              className='flex items-center gap-1 hover:font-bold hover:underline'
+              data={data}
+            >
+              <BiCalendar size={20} />
+              캘린더에 추가하기
+            </CalendarButton>
             <button className='flex items-center gap-1 hover:font-bold hover:underline'>
-              <BsInfoLg size={20} />
-              자세한 정보 보기
+              <BiShare size={20} />
+              공유하기
             </button>
-          </Link>
-          <CalendarButton
-            className='flex items-center gap-1 hover:font-bold hover:underline'
-            data={data}
-          >
-            <BiCalendar size={20} />
-            캘린더에 추가하기
-          </CalendarButton>
-          <button className='flex items-center gap-1 hover:font-bold hover:underline'>
-            <BiShare size={20} />
-            공유하기
-          </button>
+          </div>
+
+          <div>
+            {futureEvents &&
+              futureEvents.map((schedule) => (
+                <div key={schedule.id} className='flex flex-col py-3'>
+                  <h3>
+                    {format(new Date(schedule.eventDate), 'yyyy년 MM월 dd일')}{' '}
+                    {schedule.startTime} - {schedule.endTime}
+                  </h3>
+                  <h4 className='font-normal text-default-700'>
+                    {data.location.name} {schedule.detailLocation}
+                  </h4>
+                </div>
+              ))}
+          </div>
+
+          <div>
+            {previousEvents &&
+              previousEvents.map((schedule) => (
+                <div
+                  key={schedule.id}
+                  className='flex flex-col py-3 text-default-400'
+                >
+                  <h3>
+                    {format(new Date(schedule.eventDate), 'yyyy년 MM월 dd일')}{' '}
+                    {schedule.startTime} - {schedule.endTime}
+                  </h3>
+                  <h4 className='font-normal text-default-700'>
+                    {data.location.name} {schedule.detailLocation}
+                  </h4>
+                </div>
+              ))}
+          </div>
         </div>
         {data.exhibitionList.thumbnail?.mediaUrl && (
           <ASNextImage

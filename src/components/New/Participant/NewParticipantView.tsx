@@ -1,11 +1,11 @@
 import { Chip, Kbd } from '@nextui-org/react';
 import React from 'react';
 
-import { ScheduleType } from '@/types/event';
+import { CreateScheduleType } from '@/types/event';
 
 type Props = {
-  schedule: ScheduleType[];
-  setSchedule: React.Dispatch<React.SetStateAction<ScheduleType[]>>;
+  schedule: CreateScheduleType[];
+  setSchedule: React.Dispatch<React.SetStateAction<CreateScheduleType[]>>;
   index: number;
 };
 

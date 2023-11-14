@@ -1,6 +1,7 @@
 import {} from '@toss/react';
 import React, { useEffect, useState } from 'react';
 
+import FeedListItemAgora from '@/app/(list)/(feed)/FeedListItem/FeedListItemAgora';
 import FeedListItemArtwork from '@/app/(list)/(feed)/FeedListItem/FeedListItemArtwork';
 import FeedListItemEvent from '@/app/(list)/(feed)/FeedListItem/FeedListItemEvent';
 import FeedListItemPost from '@/app/(list)/(feed)/FeedListItem/FeedListItemPost';
@@ -77,8 +78,10 @@ export default function FeedList({ data, index }: FeedListProps) {
             )
           ) : feed.type === 'post' ? (
             <FeedListItemPost feed={feed} />
-          ) : (
+          ) : feed.type === 'exhibition' ? (
             <FeedListItemEvent feed={feed} />
+          ) : (
+            <FeedListItemAgora feed={feed} />
           )}
           <hr />
         </div>

@@ -25,7 +25,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
   const { user, isLogin } = useUser();
   const { push } = useRouter();
   const pathname = usePathname();
-
+  const _theme = theme;
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
@@ -105,7 +105,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
   return (
     <>
       <div className='sticky top-0 z-50 w-screen bg-white'>
-        <div className='mx-auto flex h-16 max-w-[1024px] items-center justify-between px-4 lg:px-0'>
+        <div className='mx-auto flex h-16 max-w-[1024px] items-center justify-between px-2 lg:px-0'>
           <div
             className='group box-border w-24 basis-0 cursor-pointer flex-row flex-nowrap items-center justify-start whitespace-nowrap bg-transparent text-medium no-underline'
             onClick={() => push('/')}
@@ -177,17 +177,13 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
               <Link
                 key={`${item.name}-${index}`}
                 href={item.url}
-                className={`flex w-full items-center text-left font-bold transition hover:text-default-400 ${
+                className={`flex w-full items-center text-left font-bold decoration-2 underline-offset-4 transition hover:underline ${
                   index === 0
                     ? pathname === '/'
-                      ? theme === 'light'
-                        ? 'text-primary'
-                        : 'text-secondary'
+                      ? 'underline'
                       : ''
                     : pathname.startsWith(item.slug)
-                    ? theme === 'light'
-                      ? 'text-primary'
-                      : 'text-secondary'
+                    ? 'underline'
                     : ''
                 }`}
               >

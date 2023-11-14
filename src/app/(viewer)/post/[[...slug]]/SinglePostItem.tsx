@@ -39,7 +39,6 @@ export default function SinglePostItem({
         <div className='flex w-full flex-col justify-between text-left md:flex-row'>
           <div className='w-full'>
             <SinglePostProfile feed={feed} />
-            <hr />
 
             <div className='flex flex-col justify-start px-1.5'>
               <div className='flex w-full flex-col gap-1 break-keep p-3 text-xl leading-relaxed tracking-wide'>

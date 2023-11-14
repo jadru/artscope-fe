@@ -95,7 +95,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
   };
 
   return (
-    <div className='space-y-2 border-t px-2 py-4'>
+    <div className='space-y-2 px-2 py-4'>
       <h4 className='px-2 text-3xl'>댓글 {commentCount}</h4>
       {isLogin ? (
         <div className='flex px-2'>

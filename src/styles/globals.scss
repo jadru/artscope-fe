@@ -5,6 +5,7 @@
 html {
   @apply dark:bg-dark bg-white;
 }
+
 @layer base {
   .h0 {
     @apply font-primary text-3xl font-bold md:text-5xl;

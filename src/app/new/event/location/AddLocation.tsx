@@ -1,150 +1,145 @@
-import { Button, Input, Select, SelectItem } from '@nextui-org/react';
-import { useState } from 'react';
-import DaumPostcode from 'react-daum-postcode';
-import { BiPlus, BiSearch } from 'react-icons/bi';
-import { HiX } from 'react-icons/hi';
+import {
+  Input,
+  Kbd,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  Pagination,
+  useDisclosure,
+} from '@nextui-org/react';
+import { useDebounce } from '@toss/react';
+import React, { useEffect, useState } from 'react';
+import { BiPlus } from 'react-icons/bi';
 
-import { ScheduleType } from '@/types/event';
+import NewLocationModal from '@/app/new/event/location/NewLocationModal';
+import jxios from '@/utils/jxios';
+
+import { CreateScheduleType } from '@/types/event';
+import { LocationDataType, LocationResponseType } from '@/types/location';
 
 export default function AddLocation({
-  _setSchedule,
-  _scheduleIndex,
+  schedule,
+  setSchedule,
+  scheduleIndex,
 }: {
-  _setSchedule: React.Dispatch<React.SetStateAction<ScheduleType[]>>;
-  _scheduleIndex: number;
+  schedule: CreateScheduleType[];
+  setSchedule: React.Dispatch<React.SetStateAction<CreateScheduleType[]>>;
+  scheduleIndex: number;
 }) {
-  const [locationModalVisible, setLocationModalVisible] = useState(false);
-  const [addressSelectorVisible, setAddressSelectorVisible] = useState(false);
-  const [daumPostCodeVisible, setDaumPostCodeVisible] = useState(false);
-  const [address, setAddress] = useState<undefined | string>();
+  const [data, setData] = useState<LocationDataType[]>();
+  const [keyword, setKeyword] = useState<string>('');
+  const [page, setPage] = useState<number>(-1);
+  const [totalPage, setTotalPage] = useState<number>(0);
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const {
+    isOpen: NewLocationisOpen,
+    onOpen: NewLocationOnOpen,
+    onOpenChange: NewLocationOnOpenChange,
+    onClose: NewLocationOnClose,
+  } = useDisclosure();
+
+  const fetchLocations = useDebounce(
+    async () =>
+      jxios
+        .get('/api/location/search', {
+          params: {
+            keyword,
+            page: page + 1,
+          },
+        })
+        .then((res) => {
+          const data = res.data as LocationResponseType;
+          setData(data.locations);
+          setTotalPage(data.pageInfo.totalPages);
+        }),
+    500
+  );
+
+  const handleLocationClick = (location: LocationDataType) => {
+    setSchedule((prev) => {
+      const newSchedule = [...prev];
+      newSchedule[scheduleIndex].locationId = location.locationId;
+      newSchedule[scheduleIndex].locationName = location.name;
+      return newSchedule;
+    });
+    onClose();
+  };
+
+  useEffect(() => {
+    fetchLocations();
+  }, [keyword, fetchLocations, page]);
 
   return (
     <>
-      <button
-        className='flex h-12 w-32 items-center justify-center rounded-xl border hover:bg-default-100'
-        onClick={() => setLocationModalVisible(true)}
-      >
-        <BiPlus size={23} />
-        <p className='ml-1 mt-0.5'>장소 선택</p>
-      </button>
-      {locationModalVisible && (
-        <div className='fixed left-0 top-0 z-50 flex h-screen w-screen items-center bg-black/30'>
-          <div className='mx-auto my-auto h-screen w-screen bg-white md:max-h-[600px] md:max-w-[824px]'>
-            <div className='flex h-14 w-full items-center justify-between border-b px-4'>
-              <h3 className='text-center'>주소 선택</h3>
-              <button onClick={() => setLocationModalVisible(false)}>
-                <HiX size={27} />
-              </button>
-            </div>
-            <div className='flex items-center justify-between px-3'>
-              <input className='h-12 w-1/2' placeholder='장소를 검색하세요.' />
-              <button
-                className='flex h-10 items-center gap-1 rounded-xl border-2 border-default-500 px-3 hover:bg-default-100'
-                onClick={() => setAddressSelectorVisible(true)}
-              >
-                <BiPlus size={25} />
-                <p className='mt-1'>장소 추가</p>
-              </button>
-            </div>
-            <div className='relative h-screen overflow-y-scroll border-t px-3 md:h-[502px]'>
-              <div className='cursor-pointer border-b py-2 hover:font-bold hover:underline'>
-                <h5>어디 미술관</h5>
-                <p>주소 1</p>
-              </div>
-              <div className='border-b py-2'>
-                <h5>어디 미술관</h5>
-                <p>주소 1</p>
-              </div>
-              <div className='border-b py-2'>
-                <h5>어디 미술관</h5>
-                <p>주소 1</p>
-              </div>
-              <div className='border-b py-2'>
-                <h5>어디 미술관</h5>
-                <p>주소 1</p>
-              </div>
-              <div className='border-b py-2'>
-                <h5>어디 미술관</h5>
-                <p>주소 1</p>
-              </div>
-              <div className='border-b py-2'>
-                <h5>어디 미술관</h5>
-                <p>주소 1</p>
-              </div>
-              <div className='border-b py-2'>
-                <h5>어디 미술관</h5>
-                <p>주소 1</p>
-              </div>
-              <div className='border-b py-2'>
-                <h5>어디 미술관</h5>
-                <p>주소 1</p>
-              </div>
-              <div className='border-b py-2'>
-                <h5>어디 미술관</h5>
-                <p>주소 1</p>
-              </div>
-              <div className='border-b py-2'>
-                <h5>어디 미술관</h5>
-                <p>주소 1</p>
-              </div>
-            </div>
-          </div>
-        </div>
+      {schedule[scheduleIndex].locationId ? (
+        <button
+          className='flex h-12 w-32 items-center justify-center rounded-xl border hover:bg-default-100'
+          onClick={() => onOpen()}
+        >
+          <p className='ml-1 mt-0.5'>{schedule[scheduleIndex].locationName}</p>
+        </button>
+      ) : (
+        <button
+          className='flex h-12 w-40 items-center justify-center rounded-xl border hover:bg-default-100'
+          onClick={() => onOpen()}
+        >
+          <BiPlus size={23} />
+          <p className='ml-1 mt-0.5'>장소 선택</p>
+        </button>
       )}
-      {addressSelectorVisible && (
-        <div className='fixed left-0 top-0 z-[51] flex h-screen w-screen items-center bg-black/50'>
-          <div className='mx-auto my-auto h-screen w-screen bg-white md:max-h-[600px] md:max-w-[824px]'>
-            <div className='flex h-14 w-full items-center justify-between border-b px-4'>
-              <h3 className='text-center'>주소 추가</h3>
-              <button onClick={() => setAddressSelectorVisible(false)}>
-                <HiX size={27} />
-              </button>
-            </div>
-            <div className='flex h-screen flex-col items-center justify-center gap-2 px-3 md:h-[544px]'>
-              <form className='grid w-full grid-cols-1 gap-2 md:grid-cols-2'>
-                <Input label='장소 이름' />
-                <Select label='장소 타입'>
-                  <SelectItem key='univ' value='강의실'>
-                    강의실
-                  </SelectItem>
-                </Select>
-                <Input label='장소 영어 이름' />
-                <Input label='장소 링크' placeholder='홈페이지 등 관련 링크' />
-                <Input label='SNS 주소' />
-                <Input label='장소 전화번호' />
-                <div className='flex justify-stretch gap-1'>
-                  <Input disabled value={address} label='주소' />
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
+        <ModalContent>
+          {() => (
+            <>
+              <ModalHeader>주소 선택</ModalHeader>
+              <ModalBody>
+                <div className='flex items-center justify-between gap-1 px-3'>
+                  <Input
+                    className='h-12'
+                    placeholder='장소를 검색하세요.'
+                    onValueChange={setKeyword}
+                    endContent={<Kbd keys={['enter']} />}
+                  />
                   <button
-                    className='flex w-32 items-center justify-center rounded-2xl border-2 border-default-700 p-1.5'
-                    onClick={() => {
-                      setDaumPostCodeVisible(true);
-                    }}
+                    className='order-default-500 flex items-center gap-1 break-keep rounded-xl border-2 px-3 py-2 hover:bg-default-100'
+                    onClick={NewLocationOnOpen}
                   >
-                    <BiSearch size={20} />
-                    <p>찾기</p>
+                    <BiPlus size={23} />
+                    <p>장소추가</p>
                   </button>
                 </div>
-                <Input label='상세 주소' />
-              </form>
-              <Button type='submit' color='primary'>
-                장소 등록
-              </Button>
-            </div>
-            {daumPostCodeVisible && (
-              <div className='fixed left-0 top-0 z-[52] flex h-screen w-screen items-center bg-black/50'>
-                <div className='mx-auto my-auto h-screen w-screen bg-white md:max-h-[400px] md:max-w-[424px]'>
-                  <DaumPostcode
-                    onComplete={(data) => {
-                      setAddress(data.address);
-                      setDaumPostCodeVisible(false);
-                    }}
-                  />
+                <div className='relative min-h-[200px] overflow-y-scroll px-3'>
+                  {data &&
+                    data?.map((location) => (
+                      <div
+                        className='cursor-pointer border-b py-2 hover:underline'
+                        key={location.locationId}
+                        onClick={() => handleLocationClick(location)}
+                      >
+                        <h5>
+                          <b>{location.name}</b>
+                        </h5>
+                        <p>{location.address}</p>
+                      </div>
+                    ))}
+                  {totalPage > 1 && (
+                    <Pagination total={totalPage} onChange={setPage} />
+                  )}
                 </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+      <NewLocationModal
+        setSchedule={setSchedule}
+        scheduleIndex={scheduleIndex}
+        NewLocationisOpen={NewLocationisOpen}
+        NewLocationOnOpenChange={NewLocationOnOpenChange}
+        NewLocationOnClose={NewLocationOnClose}
+        AddLocationModalOnClose={onClose}
+      />
     </>
   );
 }
