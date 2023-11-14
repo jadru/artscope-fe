@@ -2,7 +2,21 @@ import { MediaType, pageInfoType } from '@/types/default';
 import { LocationType } from '@/types/location';
 
 export type EventDetailType = {
-  exhibitionList: SingleEventType;
+  id: number;
+  title: string;
+  description: string;
+  author: string;
+  thumbnail: {
+    mediaType: 'image' | 'video';
+    mediaUrl: string | null;
+  };
+  medias: {
+    mediaType: 'image' | 'video';
+    mediaUrl: string | null;
+  }[];
+  link: string;
+  eventType: EventType;
+  eventSchedules: ScheduleResponseType[];
   detailLocation: string;
   price: number;
   updatedTime: Date | null;
