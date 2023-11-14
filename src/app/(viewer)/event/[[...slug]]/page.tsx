@@ -34,21 +34,17 @@ export async function generateMetadata(
   // const thumbnail = (await parent).openGraph?.images || [];
   const previousImages = (await parent).openGraph?.images || [];
   return {
-    title: `${data.exhibitionList.title
-      .replace(/<[^>]*>?/g, '')
-      .slice(0, 20)} 정보`,
-    description: data.exhibitionList.description.replace(/<[^>]*>?/g, ''),
+    title: `${data.title.replace(/<[^>]*>?/g, '').slice(0, 20)} 정보`,
+    description: data.description.replace(/<[^>]*>?/g, ''),
     openGraph: {
-      title: `${data.exhibitionList.title.slice(0, 20)} 이벤트 | Artscope`,
-      description: data.exhibitionList.description
-        .replace(/<[^>]*>?/g, '')
-        .slice(0, 100),
+      title: `${data.title.slice(0, 20)} 이벤트 | Artscope`,
+      description: data.description.replace(/<[^>]*>?/g, '').slice(0, 100),
       url: 'https://www.artscope.kr/event/' + id,
       type: 'article',
-      authors: [data.exhibitionList.author],
+      authors: [data.author],
       images: [...previousImages],
     },
-    publisher: data.exhibitionList.author,
+    publisher: data.author,
   };
 }
 export default async function Event(
@@ -63,37 +59,37 @@ export default async function Event(
   const id = params.slug[0];
 
   const data = await fetchEvent(id);
-  const futureEvents = data.exhibitionList.eventSchedule.filter((ii) => {
+  const futureEvents = data.eventSchedules.filter((ii) => {
     if (new Date(ii.eventDate + 'T' + ii.endTime) >= new Date()) return ii;
   });
-  const previousEvents = data.exhibitionList.eventSchedule.filter((ii) => {
+  const previousEvents = data.eventSchedules.filter((ii) => {
     if (new Date(ii.eventDate + 'T' + ii.endTime) < new Date()) return ii;
   });
 
   if (!data) throw new Error('Failed to fetch data');
 
+  // TODO 이벤트 scheduleId로 페이지 접근시 문제 해결
   return (
     <div>
       <div className='flex flex-col-reverse justify-between md:flex-row'>
         <div className='flex flex-col items-start justify-start gap-1 px-3 py-2 pb-2 md:w-1/2'>
-          <h1>{data.exhibitionList.title}</h1>
+          <h1>{data.title}</h1>
 
           <h3>
             {format(
-              new Date(data.exhibitionList.eventSchedule[0].eventDate),
+              new Date(data.eventSchedules[0].eventDate),
               'yyyy년 MM월 dd일'
             )}{' '}
-            {data.exhibitionList.eventSchedule[0].startTime} -
-            {data.exhibitionList.eventSchedule[0].endTime}
+            {data.eventSchedules[0].startTime} -{data.eventSchedules[0].endTime}
           </h3>
           <h3>{data.location.name}</h3>
           <div className='w-auto cursor-pointer rounded-lg border-2 bg-default-200 px-2 py-0.5 font-bold transition hover:bg-default-400'>
-            {eventTypeToKO(data.exhibitionList.eventType)}
+            {eventTypeToKO(data.eventType)}
           </div>
-          <MarkdownVewer content={data.exhibitionList.description} />
+          <MarkdownVewer content={data.description} />
 
           <div className='my-3'>
-            <Link href={data.exhibitionList.link} target='_blank'>
+            <Link href={data.link} target='_blank'>
               <button className='flex items-center gap-1 hover:font-bold hover:underline'>
                 <BsInfoLg size={20} />
                 자세한 정보 보기
@@ -145,9 +141,9 @@ export default async function Event(
               ))}
           </div>
         </div>
-        {data.exhibitionList.thumbnail?.mediaUrl && (
+        {data.thumbnail?.mediaUrl && (
           <ASNextImage
-            src={data.exhibitionList.thumbnail.mediaUrl}
+            src={data.thumbnail.mediaUrl}
             alt='thumbnail'
             className='w-full md:w-1/2'
             width={400}
