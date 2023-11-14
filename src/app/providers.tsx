@@ -1,6 +1,5 @@
 'use client';
-
-import { useCronitor } from '@cronitorio/cronitor-rum-nextjs';
+import * as Cronitor from '@cronitorio/cronitor-rum';
 import { NextUIProvider } from '@nextui-org/react';
 import {
   QueryCache,
@@ -16,10 +15,10 @@ import useUserHook from '@/hooks/useUser';
 import { CRONITOR_ANALYTICS_KEY } from '@/constant/env';
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  useCronitor(CRONITOR_ANALYTICS_KEY ?? '', {
+  useUserHook();
+  Cronitor.load(CRONITOR_ANALYTICS_KEY ?? '', {
     debug: process.env.NODE_ENV === 'development',
   });
-  useUserHook();
   const [queryClient] = useState(
     new QueryClient({
       queryCache: new QueryCache({
