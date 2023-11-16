@@ -15,7 +15,7 @@ COPY --from=deps /app/.yarn ./.yarn
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN yarn build:dev
+RUN yarn build:prod
 
 RUN yarn workspaces focus
 RUN rm -rf ./.next/cache
