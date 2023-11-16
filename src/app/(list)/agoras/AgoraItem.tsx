@@ -1,0 +1,44 @@
+import Link from 'next/link';
+import { BiConfused, BiHappy, BiMeh } from 'react-icons/bi';
+
+import ASNextImage from '@/components/ASNextImage';
+import MarkdownVewer from '@/components/MarkdownViewer';
+
+import { AgoraType } from '@/types/agora';
+
+export default function AgoraItem({ agora }: { agora: AgoraType }) {
+  return (
+    <Link href={'/agora/' + agora.id}>
+      <div className='flex justify-between rounded-2xl p-4 transition hover:bg-default-100'>
+        <div className='flex w-4/5 flex-col justify-between'>
+          <div>
+            <h3>{agora.title}</h3>
+            <div className='line-clamp-2'>
+              <MarkdownVewer content={agora.content} />
+            </div>
+          </div>
+          <div className='mt-1 flex justify-start gap-3'>
+            <p className='flex items-center gap-1 text-lg text-red-600'>
+              <BiConfused size={20} /> {agora.disagreeCount}
+            </p>
+            <p className='flex items-center gap-1 text-lg text-yellow-600'>
+              <BiMeh size={20} /> {agora.naturalCount}
+            </p>
+            <p className='flex items-center gap-1 text-lg text-blue-500'>
+              <BiHappy size={20} /> {agora.agreeCount}
+            </p>
+          </div>
+        </div>
+        <div className='flex'>
+          <ASNextImage
+            className='ml-2 h-28 w-28 rounded-lg border object-cover drop-shadow-xl'
+            src={agora.thumbnail.mediaUrl}
+            alt={agora.title}
+            width={112}
+            height={112}
+          />
+        </div>
+      </div>
+    </Link>
+  );
+}

@@ -28,4 +28,5 @@ export type roleType = (
   | 'ROLE_USER'
   | 'ROLE_ARTIST'
   | 'ROLE_ADMIN'
+  | 'ROLE_CURATOR'
 )[];

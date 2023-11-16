@@ -7,6 +7,7 @@ const config = {
   },
   experimental: {
     scrollRestoration: true,
+    webpackBuildWorker: true,
   },
   async rewrites() {
     return [
@@ -14,10 +15,15 @@ const config = {
         source: '/api/:path*',
         destination: process.env.NEXT_PUBLIC_API_URL + '/api/:path*',
       },
+      {
+        source: '/kakaomap/:path*',
+        destination: 'https://dapi.kakao.com/v2' + '/:path*',
+      },
     ];
   },
 
   reactStrictMode: false,
+  swcMinify: true,
 
   images: {
     domains: [process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL],

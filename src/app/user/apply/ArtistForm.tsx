@@ -76,8 +76,8 @@ export default function ArtistForm({
         {...register('introduction')}
       />
       <Textarea
-        label='활동 정보 입력'
-        placeholder='OO전시 참여, OO상 수상 등 (엔터키로 구분)'
+        label='활동 정보 입력 (엔터키로 구분)'
+        placeholder='OO전시 참여, OO상 수상 등'
         defaultValue={isEdit?.history}
         errorMessage={errors.history?.message}
         required

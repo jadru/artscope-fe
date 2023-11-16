@@ -1,12 +1,16 @@
 'use client';
 
 import { Button, Input } from '@nextui-org/react';
+import { useDebounce } from '@toss/react';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import ASNextImage from '@/components/ASNextImage';
 import Title from '@/components/Title';
 
 import ArtistForm from '@/app/user/apply/ArtistForm';
+import CuratorForm from '@/app/user/apply/CuratorForm';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
@@ -20,7 +24,13 @@ const fetchProfile = async (): Promise<profileApiResponseType> =>
 export default function SettingsPage() {
   const { user, isLogin } = useUser();
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const [usernameEdit, setUsernameEdit] = useState<string>('');
+  const [usernameVerify, setUsernameVerify] = useState<boolean | undefined>(
+    undefined
+  );
+  const [nameEdit, setNameEdit] = useState<string>('');
   const [data, setData] = useState<profileApiResponseType>();
+  const { push } = useRouter();
 
   useEffect(() => {
     if (!isLogin) return;
@@ -47,16 +57,86 @@ export default function SettingsPage() {
     if (res.status === 200) {
       const profile = res.data as profileApiResponseType;
       setData(profile);
+      toast.success('프로필 사진이 변경되었습니다.');
     }
   };
 
+  useEffect(() => {
+    if (!data) return;
+    setUsernameEdit(data.username);
+    setNameEdit(data.name);
+  }, [data]);
+
+  const checkUsername = useDebounce(async () => {
+    if (data?.username === usernameEdit || !usernameEdit) {
+      setUsernameVerify(undefined);
+      return;
+    }
+    if (!usernameEdit.match(/^[a-z-_.]+[a-z0-9]{4,17}$/g)) {
+      toast.error(
+        '아이디는 영문 소문자와 숫자 (5 ~ 18자) 만 사용할 수 있습니다.'
+      );
+      setUsernameVerify(false);
+      return;
+    }
+    await jxios
+      .get('/api/members/username/' + usernameEdit)
+      .then((res) => {
+        setUsernameVerify(true);
+        toast.success(res.data as string);
+      })
+      .catch((err) => {
+        setUsernameVerify(false);
+        toast.error(err.response.data);
+      });
+  }, 500);
+
+  const changeUsername = useDebounce(
+    async () =>
+      await jxios
+        .put(`/api/members/${user?.username}/username`, {
+          newUsername: usernameEdit,
+          username: user?.username,
+        })
+        .then(() => {
+          toast.success(
+            '아이디가 변경되었습니다. 안전한 사용을 위해 로그아웃됩니다.'
+          );
+          push('/user/signout');
+        })
+        .catch((err) => {
+          toast.error(err.response.data);
+        }),
+    500
+  );
+
+  const changeName = useDebounce(
+    async () =>
+      await jxios
+        .put('/api/members/' + data?.username, {
+          name: nameEdit,
+        })
+        .then((res) => {
+          toast.success('활동명이 변경되었습니다.');
+          setData(res.data as profileApiResponseType);
+        })
+        .catch((err) => {
+          toast.error(err.response.data);
+        }),
+    500
+  );
+
+  useEffect(() => {
+    checkUsername();
+  }, [checkUsername, usernameEdit]);
+
   return data ? (
     <>
-      <Title>회원 정보 설정</Title>
+      <Title title='회원 정보' description='회원 정보를 변경할 수 있습니다.' />
       <div className='flex flex-col items-center justify-between'>
         <button
           onClick={() => inputRef?.current?.click()}
-          className='group relative'
+          className='group relative my-2'
         >
           {data.picture ? (
             <ASNextImage
@@ -82,20 +162,66 @@ export default function SettingsPage() {
         />
       </div>
       <div className='flex justify-stretch gap-1'>
-        <Input disabled value={data.username} />
-        <Button color='primary'>아이디 변경</Button>
+        <Input disabled value={data.email} label='이메일' variant='flat' />
       </div>
       <hr />
-      <div className='flex justify-stretch gap-1'>
-        <Input disabled value={data.email} />
-        <Button>이메일 변경</Button>
+      <div className='flex items-center justify-stretch gap-1'>
+        <Input
+          label='아이디'
+          variant='bordered'
+          value={usernameEdit}
+          color={
+            usernameVerify === undefined
+              ? 'default'
+              : usernameVerify
+              ? 'success'
+              : 'danger'
+          }
+          errorMessage={
+            usernameVerify === false && '아이디를 사용할 수 없습니다.'
+          }
+          onValueChange={setUsernameEdit}
+        />
+        <Button
+          color={usernameVerify ? 'primary' : 'default'}
+          disabled={!usernameVerify}
+          onClick={changeUsername}
+        >
+          아이디 변경
+        </Button>
       </div>
-      <div className='flex justify-stretch gap-1'>
-        <Input disabled value={data.name} />
-        <Button>활동명 변경</Button>
+      <div className='flex items-center justify-stretch gap-1'>
+        <Input
+          label='활동명'
+          value={nameEdit}
+          onValueChange={setNameEdit}
+          variant='bordered'
+        />
+        <Button
+          color={data.name === nameEdit ? 'default' : 'primary'}
+          disabled={data.name === nameEdit}
+          onClick={changeName}
+        >
+          활동명 변경
+        </Button>
       </div>
       <hr />
-      {user?.artistStatus !== 'NONE' && (
+      {user?.roleStatus === 'NONE' ? (
+        <Button color='primary' onClick={() => push('/user/apply')} fullWidth>
+          아티스트 / 기획자 추가 정보 기입
+        </Button>
+      ) : user?.roleStatus.startsWith('CURATOR') ? (
+        <CuratorForm
+          isEdit={{
+            introduction: data.introduction,
+            history: data.history,
+            snsUrl: data.snsUrl,
+            websiteUrl: data.websiteUrl,
+            companyName: data.companyName,
+            companyRole: data.companyRole,
+          }}
+        />
+      ) : (
         <ArtistForm
           isEdit={{
             introduction: data.introduction,
