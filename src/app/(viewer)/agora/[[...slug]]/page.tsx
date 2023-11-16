@@ -30,6 +30,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const id = params.slug[0];
   const data = await fetchAgoraDetail(id);
+  if (!data) throw new Error('Failed to fetch data');
   // const thumbnail = (await parent).openGraph?.images || [];
   const previousImages = (await parent).openGraph?.images || [];
   return {

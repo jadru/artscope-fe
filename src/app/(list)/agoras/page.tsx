@@ -15,7 +15,8 @@ const fetchAgora = async (page: number) =>
         size: 10,
       },
     })
-    .then((res) => res.data as AgoraListType);
+    .then((res) => res.data as AgoraListType)
+    .catch(() => null);
 
 export default async function AgoraListPage({
   searchParams,
@@ -26,6 +27,7 @@ export default async function AgoraListPage({
   const data = await fetchAgora(
     Number(searchParams?.page ? searchParams.page : 1)
   );
+  if (!data) throw new Error('Failed to fetch data');
   return (
     <div>
       <Title

@@ -79,7 +79,7 @@ export default async function ProfilePage({
   const artworkData = (await fetchArtwork(
     params.slug[0]
   )) as ArtworkApiResponseByUsernameType;
-
+  if (!data || !artworkData) throw new Error('Failed to fetch data');
   const history = data.history?.split('\n').map((line) => {
     if (line === '') {
       return;
