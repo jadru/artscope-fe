@@ -12,21 +12,26 @@ type OgData = {
   ogDescription?: string;
 };
 
-const OpengraphCard = ({ externalUrl }: { externalUrl: string }) => {
+const OpengraphCard = ({
+  externalUrl,
+}: {
+  externalUrl: string | undefined;
+}) => {
   const [ogData, setOgData] = useState<OgData | undefined>();
 
   useEffect(() => {
     const getOgData = async () => {
-      const data = await jxios
-        .get(`/api/opengraph?url=${encodeURI(externalUrl)}`)
-        .then((res) => res.data);
-
-      setOgData(data);
+      if (externalUrl) {
+        const data = await jxios
+          .get(`/api/opengraph?url=${encodeURI(externalUrl)}`)
+          .then((res) => res.data);
+        setOgData(data);
+      }
     };
     getOgData();
   }, [externalUrl]);
 
-  return ogData ? (
+  return ogData && externalUrl ? (
     <Link
       href={encodeURI(externalUrl)}
       target='_blank'

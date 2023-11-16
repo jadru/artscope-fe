@@ -96,7 +96,7 @@ export default function ArtworkAction({ aw }: { aw: ArtworkType }) {
         {aw.artwork.authorUsername === user?.username && (
           <>
             <Button
-              onClick={() => push(`/artwork/${aw.artwork.id}?edit=true`)}
+              onClick={() => push(`/edit/artwork/${aw.artwork.id}`)}
               startContent={<AiOutlineEdit className='h-5 w-5' />}
               variant='light'
               size='sm'

@@ -7,7 +7,6 @@ import MarkdownVewer from '@/components/MarkdownViewer';
 import ArtworkAction from '@/app/(viewer)/artwork/[[...slug]]/ArtworkAction';
 import ArtworkAuthorProfile from '@/app/(viewer)/artwork/[[...slug]]/ArtworkAuthorProfile';
 import ArtworkComment from '@/app/(viewer)/artwork/[[...slug]]/ArtworkComment';
-import ArtworkEdit from '@/app/(viewer)/artwork/[[...slug]]/ArtworkEdit';
 import ArtworkProfile from '@/app/(viewer)/artwork/[[...slug]]/ArtworkProfile';
 import ArtworkTags from '@/app/(viewer)/artwork/[[...slug]]/ArtworkTags';
 import {
@@ -68,80 +67,67 @@ export async function generateMetadata(
 
 export default async function ArtworkPage({
   params,
-  searchParams,
 }: {
   params: { slug: string[] };
-  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const data: ArtworkType = await fetchArtwork(params.slug[0]);
-  const isEdit = Boolean(searchParams?.edit) ?? false;
   const author: profileApiResponseType = await fetchAuthorProfile(
     data.artwork.authorUsername
   );
   if (!data || !author) throw new Error('Failed to fetch data');
   return (
     <div>
-      {!isEdit ? (
-        <>
-          <h1 className='break-words px-3 pt-2 text-left text-4xl'>
-            {data.artwork.title}
-          </h1>
-          <ArtworkProfile aw={data} />
-          <div className='px-3 py-3 md:px-3'>
-            <MarkdownVewer content={data.artwork.description} />
+      <h1 className='break-words px-3 pt-2 text-left text-4xl'>
+        {data.artwork.title}
+      </h1>
+      <ArtworkProfile aw={data} />
+      <div className='px-3 py-3 md:px-3'>
+        <MarkdownVewer content={data.artwork.description} />
+      </div>
+      <div>
+        {data.artwork.artworkMedias.map((media, mediaIndex) => (
+          <div key={media.id}>
+            {(media.mediaType === 'image' && (
+              <ASNextImage
+                className='relative h-auto w-full'
+                src={media.mediaUrl}
+                alt={'artworkMedia' + mediaIndex}
+                width={700}
+                height={700}
+              />
+            )) ||
+              (media.mediaType === 'url' && (
+                <iframe
+                  className='aspect-video w-full'
+                  src={
+                    'https://www.youtube.com/embed/' +
+                    media.mediaUrl.substring(media.mediaUrl.indexOf('=') + 1)
+                  }
+                  title='YouTube video player'
+                  allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                  allowFullScreen
+                ></iframe>
+              )) || (
+                <video
+                  className='relative h-auto w-full'
+                  poster={
+                    NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + data.artwork.thumbnail
+                  }
+                  src={NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + media.mediaUrl}
+                  controls
+                />
+              )}
           </div>
-          <div>
-            {data.artwork.artworkMedias.map((media, mediaIndex) => (
-              <div key={media.id}>
-                {(media.mediaType === 'image' && (
-                  <ASNextImage
-                    className='relative h-auto w-full'
-                    src={media.mediaUrl}
-                    alt={'artworkMedia' + mediaIndex}
-                    width={700}
-                    height={700}
-                  />
-                )) ||
-                  (media.mediaType === 'url' && (
-                    <iframe
-                      className='aspect-video w-full'
-                      src={
-                        'https://www.youtube.com/embed/' +
-                        media.mediaUrl.substring(
-                          media.mediaUrl.indexOf('=') + 1
-                        )
-                      }
-                      title='YouTube video player'
-                      allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                      allowFullScreen
-                    ></iframe>
-                  )) || (
-                    <video
-                      className='relative h-auto w-full'
-                      poster={
-                        NEXT_PUBLIC_MEDIA_STORAGE_URL +
-                        '/' +
-                        data.artwork.thumbnail
-                      }
-                      src={NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + media.mediaUrl}
-                      controls
-                    />
-                  )}
-              </div>
-            ))}
-          </div>
-          <hr className='h-0.5 bg-default-100'></hr>
-          <ArtworkTags data={data} />
-          <hr className='h-0.5 bg-default-100'></hr>
-          <ArtworkAuthorProfile author={author} />
-          <hr className='h-0.5 bg-default-100'></hr>
-          <ArtworkAction aw={data} />
-          <hr className='h-0.5 bg-default-100'></hr>
-          <ArtworkComment aw={data} />
-        </>
-      ) : (
-        <ArtworkEdit data={data} />
-      )}
+        ))}
+      </div>
+      <hr className='h-0.5 bg-default-100'></hr>
+      <ArtworkTags data={data} />
+      <hr className='h-0.5 bg-default-100'></hr>
+      <ArtworkAuthorProfile author={author} />
+      <hr className='h-0.5 bg-default-100'></hr>
+      <ArtworkAction aw={data} />
+      <hr className='h-0.5 bg-default-100'></hr>
+      <ArtworkComment aw={data} />
     </div>
   );
 }
