@@ -1,4 +1,5 @@
-import { contentType, pageInfoType } from '@/types/default';
+import { contentType, MediaType, pageInfoType } from '@/types/default';
+import { EventType } from '@/types/event';
 
 export type feedApiResponseType = {
   feedItems: feedItemType[];
@@ -12,11 +13,13 @@ export type feedItemType = {
   content: string;
   type: contentType;
   thumbnailUrl: string | null;
-  mediaUrls: string | null;
+  mediaUrls: string[] | null;
   authorUsername: string;
   authorName: string;
   authorDescription: string | null;
   authorProfileImageUrl: string | null;
+  authorCompanyName: string | null;
+  authorCompanyRole: string | null;
   tags: string[] | null;
   categoryId: string;
   views: number;
@@ -25,6 +28,26 @@ export type feedItemType = {
   comments: number;
   createdTime: Date;
   updatedTime: Date | null;
+
+  // only for exhibition
+  event: {
+    eventType: EventType;
+    startTime: `${number}:${number}`;
+    endTime: `${number}:${number}`;
+    eventDate: `${number}-${number}-${number}`;
+    locationName: string;
+    locationAddress: string;
+    detailLocation: string;
+  };
+
+  // only for agora
+  agoraAgreeCount: number;
+  agoraDisagreeCount: number;
+  agoraNaturalCount: number;
+  agreeText: string;
+  disagreeText: string;
+  naturalText: string;
+  participantCount: number;
 };
 
 export type SinglePostType = {
@@ -40,6 +63,13 @@ export type SinglePostType = {
   authorDescription: string | null;
   authorProfileImageUrl: string | null;
   likeMembers: { username: string; name: string; likedTime: Date }[];
+  medias: {
+    id: number;
+    mediaType: MediaType;
+    mediaUrl: string;
+    imageHeight: number;
+    imageWidth: number;
+  }[];
   createdTime: Date;
   updatedTime: Date | null;
   parentPostId: number | null;
@@ -63,4 +93,20 @@ export type CommentPostType = {
 export type PostListResponse = {
   posts: SinglePostType[];
   pageInfo: pageInfoType;
+};
+
+export type PostApiRequestType = {
+  dto: {
+    content: string;
+    medias:
+      | {
+          mediaType: MediaType;
+        }[]
+      | null;
+    thumbnail: {
+      mediaType: MediaType;
+    } | null;
+  };
+  mediaFiles: File[] | null;
+  thumbnailFile?: File | null;
 };

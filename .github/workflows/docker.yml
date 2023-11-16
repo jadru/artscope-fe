@@ -1,12 +1,10 @@
-name: Docker Image CI
+name: Docker Image CI for Production w/ AWS CodeDeploy
 
 on:
   push:
     branches: ["main"]
     # Publish semver tags as releases.
     tags: ["*.*"]
-  pull_request:
-    branches: ["main"]
 
 env:
   # Use docker.io for Docker Hub if empty

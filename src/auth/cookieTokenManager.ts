@@ -27,6 +27,12 @@ export const getAccessToken = async () => await cookie.load('access-token');
 
 export const getRefreshToken = async () => await cookie.load('refresh-token');
 
-export const removeAccessToken = () => cookie.remove('access-token');
+export const removeAccessToken = () =>
+  cookie.remove('access-token', {
+    path: '/',
+  });
 
-export const removeRefreshToken = () => cookie.remove('refresh-token');
+export const removeRefreshToken = () =>
+  cookie.remove('refresh-token', {
+    path: '/',
+  });

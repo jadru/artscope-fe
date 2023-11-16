@@ -398,7 +398,7 @@ Snippets: `urf`
 const someRef = React.useRef();
 ```
 
-#### Region Index
+#### Region IndexLegacy
 
 It is really useful when we need to group code. It is also collapsible in VSCode
 

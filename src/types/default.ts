@@ -7,10 +7,13 @@ export type pageInfoType = {
   totalElements: number;
 };
 
+export type sortDirectionType = 'ASC' | 'DESC';
+
 export type contentType =
   | 'post'
   | 'artwork'
   | 'exhibition'
+  | 'agora'
   | 'notice'
   | 'event'
   | 'faq'

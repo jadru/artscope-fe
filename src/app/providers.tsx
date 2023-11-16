@@ -1,5 +1,5 @@
 'use client';
-
+import * as Cronitor from '@cronitorio/cronitor-rum';
 import { NextUIProvider } from '@nextui-org/react';
 import {
   QueryCache,
@@ -7,15 +7,20 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import useUserHook from '@/hooks/useUser';
 
-import NavBar from '@/app/(feed)/Navbar';
+import { CRONITOR_ANALYTICS_KEY } from '@/constant/env';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   useUserHook();
+  useEffect(() => {
+    Cronitor.load(CRONITOR_ANALYTICS_KEY ?? '', {
+      debug: process.env.NODE_ENV === 'development',
+    });
+  }, []);
   const [queryClient] = useState(
     new QueryClient({
       queryCache: new QueryCache({
@@ -26,10 +31,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
   return (
     <QueryClientProvider client={queryClient}>
-      <NextUIProvider>
-        <NavBar theme='light' />
-        {children}
-      </NextUIProvider>
+      <NextUIProvider>{children}</NextUIProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

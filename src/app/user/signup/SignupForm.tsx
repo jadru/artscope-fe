@@ -2,6 +2,7 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Checkbox, Input } from '@nextui-org/react';
+import { useDebounce } from '@toss/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -21,21 +22,54 @@ const SignupForm = () => {
     setError,
     getValues,
     setValue,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<SignupInputs>({
     resolver: yupResolver<SignupInputs>(signupSchema),
     mode: 'onBlur',
   });
   const { push } = useRouter();
-  const [emailCheck, setEmailCheck] = React.useState<boolean>(false);
-  const [usernameCheck, setUsernameCheck] = React.useState<boolean>(false);
+  const [emailRegexCheck, setEmailRegexCheck] = React.useState<boolean>(false);
+  const [emailDuplicateCheck, setEmailDuplicateCheck] =
+    React.useState<boolean>(false);
+  const [usernameRegexCheck, setUsernameRegexCheck] =
+    React.useState<boolean>(false);
+  const [usernameDuplicateCheck, setUsernameDuplicateCheck] =
+    React.useState<boolean>(false);
 
   const onSubmit: SubmitHandler<SignupInputs> = async (data) => {
     if (isSubmitting) return;
-    if (!emailCheck) toast.warn('이메일이 중복됩니다.');
-    if (!usernameCheck) toast.warn('아이디가 중복됩니다.');
-    if (!isSubmitting && emailCheck && usernameCheck) {
+    if (!emailRegexCheck) {
+      setError('email', {
+        type: 'manual',
+        message: '이메일 형식을 확인해주세요.',
+      });
+    }
+    if (!emailDuplicateCheck) {
+      setError('email', {
+        type: 'manual',
+        message: '이미 사용중인 이메일입니다.',
+      });
+    }
+    if (!usernameRegexCheck) {
+      setError('username', {
+        type: 'manual',
+        message: '아이디는 영문, 숫자 4~12자리로 입력해주세요.',
+      });
+    }
+    if (!usernameDuplicateCheck) {
+      setError('username', {
+        type: 'manual',
+        message: '이미 사용중인 아이디입니다.',
+      });
+    }
+    if (
+      !emailRegexCheck ||
+      !emailDuplicateCheck ||
+      !usernameRegexCheck ||
+      !usernameDuplicateCheck
+    )
+      return;
+    if (!isSubmitting) {
       delete data.passwordCheck;
       delete data.agree;
       clearErrors();
@@ -52,15 +86,17 @@ const SignupForm = () => {
     }
   };
 
-  const checkEmailDuplication = () => {
-    const regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
+  const checkEmailDuplication = useDebounce(() => {
+    setEmailDuplicateCheck(false);
+    setEmailRegexCheck(false);
+    const regex = new RegExp('[a-z0-9]+@[a-z]+\\.[a-z]{2,3}');
     if (regex.test(getValues('email'))) {
+      setEmailRegexCheck(true);
       jxios
         .get('/api/members/email/' + getValues('email'))
         .then((response) => {
           if (response.status === 200) {
-            setEmailCheck(true);
-            toast.success('사용 가능한 이메일입니다.');
+            setEmailDuplicateCheck(true);
             clearErrors('email');
           }
         })
@@ -69,26 +105,28 @@ const SignupForm = () => {
             type: 'manual',
             message: '이미 사용중인 이메일입니다.',
           });
-          toast.warn('이미 사용중인 이메일입니다.');
-          setEmailCheck(false);
+          setEmailDuplicateCheck(false);
         });
     } else {
+      setEmailRegexCheck(false);
       setError('email', {
         type: 'manual',
         message: '이메일 형식이 아닙니다.',
       });
     }
-  };
+  }, 500);
 
   const checkUsernameDuplication = () => {
+    setUsernameDuplicateCheck(false);
+    setUsernameRegexCheck(false);
     const regex = new RegExp('^[a-zA-Z0-9]{4,12}$');
     if (regex.test(getValues('username'))) {
+      setUsernameRegexCheck(true);
       jxios
         .get('/api/members/username/' + getValues('username'))
         .then((response) => {
           if (response.status === 200) {
-            setUsernameCheck(true);
-            toast.success('사용 가능한 아이디입니다.');
+            setUsernameDuplicateCheck(true);
             clearErrors('username');
           }
         })
@@ -97,11 +135,14 @@ const SignupForm = () => {
             type: 'manual',
             message: '이미 사용중인 아이디입니다.',
           });
-          toast.warn('이미 사용중인 아이디입니다.');
-          setUsernameCheck(false);
+          setUsernameDuplicateCheck(false);
         });
     } else {
-      toast.warn('아이디는 영문, 숫자 4~12자리로 입력해주세요.');
+      setUsernameRegexCheck(false);
+      setError('username', {
+        type: 'manual',
+        message: '아이디는 영문, 숫자 4~12자리로 입력해주세요.',
+      });
     }
   };
 
@@ -113,10 +154,9 @@ const SignupForm = () => {
         variant='bordered'
         placeholder='asdf@asdf.com'
         errorMessage={errors.email?.message}
-        onFocusChange={(isFocus) => {
-          if (!isFocus) {
-            checkEmailDuplication();
-          }
+        onValueChange={(value) => {
+          setValue('email', value);
+          checkEmailDuplication();
         }}
         isInvalid={!!errors.email}
         {...register('email')}
@@ -135,14 +175,9 @@ const SignupForm = () => {
         label='아이디'
         variant='bordered'
         placeholder='gil-dong-hong'
-        onFocusChange={(isFocused) => {
-          if (
-            !isFocused &&
-            watch('username') &&
-            errors.username === undefined
-          ) {
-            checkUsernameDuplication();
-          }
+        onValueChange={(value) => {
+          setValue('username', value);
+          checkUsernameDuplication();
         }}
         errorMessage={errors.username?.message}
         isInvalid={!!errors.username}
@@ -195,7 +230,14 @@ const SignupForm = () => {
           {errors.agree ? errors.agree.message : ''}
         </ErrorMessageInput>
       </div>
-      <Button type='submit' variant='shadow' color='primary' fullWidth>
+      <Button
+        type='submit'
+        variant='shadow'
+        color='primary'
+        fullWidth
+        disabled={isSubmitting}
+        isLoading={isSubmitting}
+      >
         회원가입
       </Button>
     </form>

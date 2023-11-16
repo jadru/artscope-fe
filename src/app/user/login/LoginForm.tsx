@@ -1,9 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Input } from '@nextui-org/react';
-import { EyeFilledIcon, EyeSlashFilledIcon } from '@nextui-org/shared-icons';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 
 import { loginInputs, loginSchema } from '@/app/user/login/loginSchema';
@@ -59,9 +59,9 @@ export default function LoginForm() {
             onClick={togglePwInputVisible}
           >
             {pwInputVisible ? (
-              <EyeSlashFilledIcon className='pointer-events-none text-2xl text-default-400' />
+              <AiFillEyeInvisible className='pointer-events-none text-2xl text-default-400' />
             ) : (
-              <EyeFilledIcon className='pointer-events-none text-2xl text-default-400' />
+              <AiFillEye className='pointer-events-none text-2xl text-default-400' />
             )}
           </button>
         }

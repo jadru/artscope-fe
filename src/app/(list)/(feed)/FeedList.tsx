@@ -1,0 +1,95 @@
+import {} from '@toss/react';
+import React, { useEffect, useState } from 'react';
+
+import FeedListItemAgora from '@/app/(list)/(feed)/FeedListItem/FeedListItemAgora';
+import FeedListItemArtwork from '@/app/(list)/(feed)/FeedListItem/FeedListItemArtwork';
+import FeedListItemEvent from '@/app/(list)/(feed)/FeedListItem/FeedListItemEvent';
+import FeedListItemPost from '@/app/(list)/(feed)/FeedListItem/FeedListItemPost';
+
+import { feedItemType } from '@/types/feed';
+
+type feedType = (feedItemType[] | feedItemType)[];
+
+interface FeedListProps {
+  data: feedItemType[];
+  index: number;
+}
+
+export default function FeedList({ data, index }: FeedListProps) {
+  const [feeds, setFeeds] = useState<feedType>([]);
+
+  useEffect(() => {
+    const newFeeds: feedType = [];
+    let finalArtworkIndex = 0;
+
+    for (let index = 0; index < data.length; index++) {
+      if (finalArtworkIndex > index) continue;
+
+      if (data[index].type === 'artwork') {
+        finalArtworkIndex = index;
+        for (let i = index + 1; i < data.length; i++) {
+          if (data[i].type === 'artwork') {
+            finalArtworkIndex = i + 1;
+          } else {
+            break;
+          }
+        }
+        newFeeds.push(data.slice(index, finalArtworkIndex));
+      } else {
+        newFeeds.push(data[index]);
+        finalArtworkIndex = index;
+      }
+    }
+
+    if (finalArtworkIndex < data.length - 1) {
+      newFeeds.push(data.slice(finalArtworkIndex + 1));
+    }
+    setFeeds(newFeeds);
+  }, [data, setFeeds]);
+
+  return (
+    <div className='flex max-w-full flex-col'>
+      {feeds.map((feed) => (
+        <div
+          key={
+            index + (Array.isArray(feed) ? feed[0]?.id : feed.id) + '-artwork'
+          }
+        >
+          {Array.isArray(feed) ? (
+            feed.length > 0 && (
+              <div
+                className={`grid ${
+                  feed.length === 1
+                    ? 'grid-cols-1'
+                    : feed.length % 2 === 0
+                    ? 'grid-cols-2'
+                    : feed.length % 3 === 0
+                    ? 'grid-cols-1 md:grid-cols-3'
+                    : 'grid-cols-2'
+                } gap-1 p-1 md:mx-0`}
+              >
+                {feed.map((feedItem) => (
+                  <FeedListItemArtwork
+                    feed={feedItem}
+                    key={index + 'artwork-' + feedItem.id}
+                  />
+                ))}
+              </div>
+            )
+          ) : feed.type === 'post' ? (
+            <FeedListItemPost feed={feed} />
+          ) : feed.type === 'exhibition' ? (
+            <FeedListItemEvent feed={feed} />
+          ) : (
+            feed.type === 'agora' && <FeedListItemAgora feed={feed} />
+          )}
+          {/* {((Array.isArray(feed) && feed.length > 0) || */}
+          {/*   (!Array.isArray(feed) && feed.type)) && ( */}
+          {/*   <hr className='mx-3 rounded-xl border-default-200' /> */}
+          {/* )} */}
+        </div>
+      ))}
+      {feeds.length === 0 && <p className='m-12'>데이터가 없습니다.</p>}
+    </div>
+  );
+}
