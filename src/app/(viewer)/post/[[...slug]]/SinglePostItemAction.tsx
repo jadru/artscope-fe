@@ -110,7 +110,7 @@ export default function SinglePostItemAction({
                   className='text-md text-gray-500 hover:text-purple-500'
                   onClick={(e) => {
                     e.stopPropagation();
-                    push(`/post/${feed.id}?edit=true`);
+                    push(`/edit/post/${feed.id}`);
                   }}
                 >
                   수정
