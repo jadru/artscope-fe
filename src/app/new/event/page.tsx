@@ -19,7 +19,7 @@ import { Text } from '@tiptap/extension-text';
 import { Underline } from '@tiptap/extension-underline';
 import { EditorContent, useEditor } from '@tiptap/react';
 import { useDebounce } from '@toss/react';
-import { format } from 'date-fns';
+import { add, format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -386,10 +386,17 @@ const NewEvent = () => {
           onClick={() => {
             setSchedule((prev) => [
               ...prev,
-              {
-                ...initialScheduleSchema,
-                id: prev[prev.length - 1].id + 1,
-              },
+              prev.length === 0
+                ? initialScheduleSchema
+                : {
+                    ...prev[prev.length - 1],
+                    id: prev[prev.length - 1].id + 1,
+                    locationId: prev[prev.length - 1].locationId,
+                    locationName: prev[prev.length - 1].locationName,
+                    eventDate: add(prev[prev.length - 1].eventDate, {
+                      weeks: 1,
+                    }),
+                  },
             ]);
           }}
           className='flex items-center justify-center gap-2 text-sm text-default-500 hover:text-default-900'
@@ -397,12 +404,15 @@ const NewEvent = () => {
           + 일정 추가
         </button>
       </div>
-      <div className='px-3 py-2'>
+      <div className='flex flex-col items-stretch gap-2 px-3 py-2'>
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ko}>
           {schedule.map((item, index) => (
-            <div key={item.id} className='flex flex-col gap-3 border p-2'>
+            <div
+              key={item.id}
+              className='flex flex-col gap-3 rounded-xl border p-2'
+            >
               <div className='flex justify-between'>
-                <div className='flex justify-start gap-1'>
+                <div className='flex items-center justify-start gap-1'>
                   <AddLocation
                     setSchedule={setSchedule}
                     scheduleIndex={index}
@@ -411,6 +421,7 @@ const NewEvent = () => {
                   <Input
                     className='h-12'
                     label='상세 이벤트 장소'
+                    value={item.detailLocation}
                     placeholder='예) 1층 101호'
                     onValueChange={(value) =>
                       setSchedule((prev) => {
@@ -436,7 +447,7 @@ const NewEvent = () => {
               </div>
               <div className='flex flex-col gap-2 md:flex-row'>
                 <DatePicker
-                  label='날짜'
+                  label='시작 날짜'
                   value={item.eventDate}
                   onChange={(newValue) =>
                     newValue &&

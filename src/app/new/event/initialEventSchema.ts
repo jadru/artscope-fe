@@ -1,3 +1,5 @@
+import { add } from 'date-fns';
+
 import { CreateScheduleType, EventApiRequestType } from '@/types/event';
 
 export const initialEventSchema: EventApiRequestType = {
@@ -20,7 +22,9 @@ export const initialScheduleSchema: CreateScheduleType = {
   locationId: undefined,
   locationName: '',
   startTime: new Date(),
-  endTime: new Date(),
+  endTime: add(new Date(), {
+    hours: 4,
+  }),
   detailLocation: '',
   eventDate: new Date(),
   participants: [],
