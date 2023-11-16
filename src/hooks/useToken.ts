@@ -34,15 +34,9 @@ export default function useToken() {
       .then(async (res) => {
         await onLogin(res.data, router, setUser);
       })
-      .catch((err) => {
-        if (
-          err.response.status === 400 ||
-          err.response.status === 401 ||
-          err.response.status === 403
-        ) {
-          removeRefreshToken();
-          setNotLogin();
-        }
+      .catch(() => {
+        removeRefreshToken();
+        setNotLogin();
       });
   }, []);
 

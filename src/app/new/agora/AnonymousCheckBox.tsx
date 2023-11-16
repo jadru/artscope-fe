@@ -28,8 +28,9 @@ const AnonymousCheckBox = ({
     startContent={!anonymousType ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
     defaultSelectedKeys={['true']}
     className='mb-1.5 w-[200px]'
-    onChange={(e) => {
-      setAnonymousType(Boolean(e.target.value));
+    onSelectionChange={(select) => {
+      if (Array.from(select)[0] === 'true') setAnonymousType(true);
+      else setAnonymousType(false);
     }}
   >
     {AnonymousSelectItems.map((item) => (

@@ -8,21 +8,21 @@ const ArtworkItem = ({ artwork: aw }: { artwork: ArtworkType }) => {
   return (
     <Link
       href={'/artwork/' + aw.artwork.id}
-      className='group cursor-pointer transition'
+      className='group cursor-pointer rounded-xl transition'
     >
-      <div className='transition group-hover:opacity-70'>
-        <div className='overflow-visible p-0'>
+      <div>
+        <div className='overflow-visible rounded-t-xl bg-black p-0'>
           <ASNextImage
             src={aw.artwork.thumbnail.mediaUrl}
             alt={aw.artwork.title}
-            className='h-[190px] w-full object-cover '
+            className='h-[230px] w-full rounded-t-xl object-cover transition group-hover:opacity-60 group-hover:drop-shadow-sm'
             placeholder='blur'
             blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=='
-            width='300'
-            height='300'
+            width='230'
+            height='230'
           />
         </div>
-        <div className='flex items-center justify-between space-x-0.5 px-3 py-2 text-small group-hover:bg-default-100'>
+        <div className='flex items-center justify-between space-x-0.5 rounded-b-xl px-3 py-2 text-small transition group-hover:bg-default-200'>
           <div className='w-2/3 truncate'>
             <b className='w-full truncate'>{aw.artwork.title}</b>
             <p className='space-x-2 text-sm text-default-500'>

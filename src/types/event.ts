@@ -8,12 +8,14 @@ export type EventDetailType = {
   author: string;
   thumbnail: {
     mediaType: 'image' | 'video';
-    mediaUrl: string | null;
-  };
-  medias: {
-    mediaType: 'image' | 'video';
-    mediaUrl: string | null;
-  }[];
+    mediaUrl: string;
+  } | null;
+  medias:
+    | {
+        mediaType: 'image' | 'video';
+        mediaUrl: string;
+      }[]
+    | null;
   link: string;
   eventType: EventType;
   eventSchedules: ScheduleResponseType[];
@@ -74,17 +76,11 @@ export type EventResponseType = {
 export type SingleEventTypeOnList = {
   id: number;
   title: string;
-  description: string;
   thumbnail: {
     mediaType: 'image' | 'video';
     mediaUrl: string | null;
   };
-  medias: {
-    mediaType: 'image' | 'video';
-    mediaUrl: string | null;
-  }[];
   eventType: EventType;
-  link: string;
   createdTime: Date;
   updatedTime: Date | null;
   author: string;
@@ -93,6 +89,8 @@ export type SingleEventTypeOnList = {
 
 export type EventViewType = {
   date: string;
+  dayOfWeek: string;
+  dayOfWeekKor: string;
   event: SingleEventTypeOnList[];
 }[];
 

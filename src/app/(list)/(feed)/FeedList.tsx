@@ -66,7 +66,7 @@ export default function FeedList({ data, index }: FeedListProps) {
                     : feed.length % 3 === 0
                     ? 'grid-cols-1 md:grid-cols-3'
                     : 'grid-cols-2'
-                } gap-0 md:mx-0`}
+                } gap-1 p-1 md:mx-0`}
               >
                 {feed.map((feedItem) => (
                   <FeedListItemArtwork
@@ -81,9 +81,12 @@ export default function FeedList({ data, index }: FeedListProps) {
           ) : feed.type === 'exhibition' ? (
             <FeedListItemEvent feed={feed} />
           ) : (
-            <FeedListItemAgora feed={feed} />
+            feed.type === 'agora' && <FeedListItemAgora feed={feed} />
           )}
-          <hr />
+          {((Array.isArray(feed) && feed.length > 0) ||
+            (!Array.isArray(feed) && feed.type)) && (
+            <hr className='mx-3 rounded-xl border-default-200' />
+          )}
         </div>
       ))}
       {feeds.length === 0 && <p className='m-12'>데이터가 없습니다.</p>}

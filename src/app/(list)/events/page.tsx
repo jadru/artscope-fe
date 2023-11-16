@@ -3,7 +3,7 @@
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Pagination, Spacer } from '@nextui-org/react';
+import { Pagination } from '@nextui-org/react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
@@ -58,6 +58,8 @@ export default function Events() {
               } else {
                 events.push({
                   event: [event],
+                  dayOfWeek: '',
+                  dayOfWeekKor: '',
                   date: event.eventSchedule.eventDate,
                 });
               }
@@ -65,10 +67,11 @@ export default function Events() {
           setData(
             events.map((event) => {
               return {
-                date: (event.date = format(
-                  new Date(event.date),
-                  'yyyy년 MM월 dd일'
-                )),
+                date: format(new Date(event.date), 'MMM do'),
+                dayOfWeek: format(new Date(event.date), 'EEE'),
+                dayOfWeekKor: format(new Date(event.date), 'EEE', {
+                  locale: ko,
+                }),
                 event: event.event,
               };
             })
@@ -81,29 +84,29 @@ export default function Events() {
 
   return (
     <div>
-      <Title title='Events' description='다양한 이벤트를 살펴보세요.' />
+      <Title title='Events' description='다양한 이벤트를 살펴보세요.'>
+        <div className='mt-3 flex flex-col justify-start gap-2 px-3 md:flex-row'>
+          <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ko}>
+            <DatePicker
+              label='시작일'
+              value={startDate}
+              onChange={(date) => setStartDate(date)}
+            />
+          </LocalizationProvider>
+        </div>
+      </Title>
       {!isLoading ? (
         <>
-          <div className='mt-3 flex flex-col justify-start gap-2 px-3 md:flex-row'>
-            <LocalizationProvider
-              dateAdapter={AdapterDateFns}
-              adapterLocale={ko}
-            >
-              <DatePicker
-                label='시작일'
-                value={startDate}
-                onChange={(date) => setStartDate(date)}
-              />
-            </LocalizationProvider>
-          </div>
-          <Spacer y={5} />
           <div className='relative mx-4'>
             {data &&
               data.map((date) => (
                 <div className='' key={date.date}>
-                  <h2 className='sticky top-16 bg-white py-1 text-3xl md:bg-transparent'>
-                    {date.date}
-                  </h2>
+                  <div className='sticky top-16 flex items-center gap-3 bg-white md:flex-col md:items-start md:gap-0 md:bg-transparent'>
+                    <h2 className='py-1 text-[2.4rem]'>{date.date}</h2>
+                    <span className='text-2xl text-default-500'>
+                      {date.dayOfWeek} / {date.dayOfWeekKor}요일
+                    </span>
+                  </div>
                   <div className='flex flex-col space-y-1'>
                     {date.event &&
                       date.event.map((exhibition) => (

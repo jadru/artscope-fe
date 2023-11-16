@@ -9,7 +9,7 @@ export const initialAgoraSchema: CreateAgoraType = {
     naturalText: '',
     disagreeText: '',
     thumbnail: undefined,
-    medias: [],
+    medias: undefined,
   },
   mediaFiles: [],
   thumbnailFile: undefined,

@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import {
   AiFillCloseCircle,
@@ -12,9 +14,9 @@ import ASNextImage from '@/components/ASNextImage';
 
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 
-import { SinglePostType } from '@/types/feed';
+import { AgoraDetailType } from '@/types/agora';
 
-export default function SinglePostMedia({ feed }: { feed: SinglePostType }) {
+export default function AgoraMedia({ feed }: { feed: AgoraDetailType }) {
   const [detailedImage, setDetailedImage] = useState<string>('');
   return (
     <>
@@ -30,8 +32,8 @@ export default function SinglePostMedia({ feed }: { feed: SinglePostType }) {
             <AiOutlineArrowRight size={30} className='mr-2 bg-white/50' />
           }
         >
-          {feed.medias &&
-            feed.medias.slice(1).map((item) => (
+          {feed.agora.medias &&
+            feed.agora.medias.slice(2).map((item) => (
               <div
                 className='flex h-96 cursor-pointer items-center justify-center bg-contain bg-center bg-no-repeat md:h-[500px]'
                 style={{
@@ -40,7 +42,7 @@ export default function SinglePostMedia({ feed }: { feed: SinglePostType }) {
                   })`,
                 }}
                 onClick={() => setDetailedImage(item.mediaUrl)}
-                key={item.id}
+                key={item.mediaUrl}
               ></div>
             ))}
         </Slide>
@@ -53,7 +55,7 @@ export default function SinglePostMedia({ feed }: { feed: SinglePostType }) {
             fill
             className='h-full w-full object-contain'
           />
-          <button className='absolute right-3 top-3 mr-6 mt-6 rounded-full border-2 bg-default-200 text-white'>
+          <button className='absolute right-3 top-3 z-[52] mr-6 mt-6 rounded-full border-2 bg-default-200 text-white'>
             <AiFillCloseCircle size={40} onClick={() => setDetailedImage('')} />
           </button>
         </div>

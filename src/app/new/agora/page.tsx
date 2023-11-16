@@ -118,10 +118,6 @@ const NewArtwork = () => {
         toast.warn('중립 의견 텍스트를 입력해주세요.');
         return;
       }
-      if (fileUrls.length === 0) {
-        toast.warn('이미지, 영상 또는 썸네일을 업로드해주세요.');
-        return;
-      }
       if (
         editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4))
           .length === 0
@@ -130,12 +126,13 @@ const NewArtwork = () => {
         return;
       }
       if (
+        fileUrls.length > 0 &&
         fileUrls.reduce(
           (acc, cur) => (cur.file ? cur.file.size + acc : acc),
           0
         ) /
           1000000 >
-        100
+          100
       ) {
         setIsUpload(false);
         toast.warn('파일 용량이 너무 큽니다.');
@@ -147,7 +144,7 @@ const NewArtwork = () => {
       newState.dto.title =
         editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4)) || '';
       newState.dto.content = markdownContent.slice(
-        markdownContent.indexOf('\n') + 3
+        markdownContent.indexOf('\n') + 1
       );
       newState.dto.agreeText = buttonText.agreeText;
       newState.dto.disagreeText = buttonText.disagreeText;
@@ -155,17 +152,19 @@ const NewArtwork = () => {
       newState.dto.isAnonymous = anonymousType;
 
       const formData = new FormData();
-      formData.append('thumbnailFile', fileUrls[0].file as File);
-      newState.dto.thumbnail = {
-        mediaType: 'image',
-      };
-      newState.dto.medias = [];
-      fileUrls.forEach((media) => {
-        formData.append('mediaFiles', media.file as File);
-        newState.dto.medias?.push({
-          mediaType: media.mediaType,
+      if (fileUrls.length > 0) {
+        formData.append('thumbnailFile', fileUrls[0].file as File);
+        newState.dto.thumbnail = {
+          mediaType: 'image',
+        };
+        newState.dto.medias = [];
+        fileUrls.forEach((media) => {
+          formData.append('mediaFiles', media.file as File);
+          newState.dto.medias?.push({
+            mediaType: media.mediaType,
+          });
         });
-      });
+      }
       formData.append(
         'dto',
         new Blob([JSON.stringify(newState.dto)], { type: 'application/json' })
@@ -309,15 +308,15 @@ const NewArtwork = () => {
       </div>
       <div className='flex w-full flex-col gap-2 p-3 md:flex-row'>
         <Input
-          label='찬성 의견 텍스트'
-          placeholder='동의'
+          label='반대 의견 텍스트'
+          placeholder='반대'
           isRequired
-          value={buttonText.agreeText}
+          value={buttonText.disagreeText}
           onValueChange={(value) =>
             setButtonText((prev) => {
               return {
                 ...prev,
-                agreeText: value,
+                disagreeText: value,
               };
             })
           }
@@ -337,15 +336,15 @@ const NewArtwork = () => {
           }
         />
         <Input
-          label='반대 의견 텍스트'
-          placeholder='반대'
+          label='찬성 의견 텍스트'
+          placeholder='동의'
           isRequired
-          value={buttonText.disagreeText}
+          value={buttonText.agreeText}
           onValueChange={(value) =>
             setButtonText((prev) => {
               return {
                 ...prev,
-                disagreeText: value,
+                agreeText: value,
               };
             })
           }

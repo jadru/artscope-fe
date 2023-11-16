@@ -1,11 +1,13 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import React from 'react';
 
+import ASNextImage from '@/components/ASNextImage';
 import MarkdownVewer from '@/components/MarkdownViewer';
 
 import AgoraAction from '@/app/(viewer)/agora/[[...slug]]/AgoraAction';
 import AgoraChart from '@/app/(viewer)/agora/[[...slug]]/AgoraChart';
 import AgoraComments from '@/app/(viewer)/agora/[[...slug]]/AgoraComment';
+import AgoraMedia from '@/app/(viewer)/agora/[[...slug]]/AgoraMedia';
 import AgoraProfile from '@/app/(viewer)/agora/[[...slug]]/AgoraProfile';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
@@ -64,12 +66,20 @@ export default async function AgoraDetailPage({
       ) : (
         <AgoraProfile agora={data} />
       )}
-      <div className='mt-3 flex w-full justify-center px-3'>
+      <div className='mt-3 flex w-full flex-col-reverse items-center justify-between gap-2 px-3 md:flex-row'>
         <AgoraChart agora={data} />
+        <ASNextImage
+          src={data.agora.thumbnail.mediaUrl}
+          alt={data.agora.title}
+          width={400}
+          height={400}
+          className='h-96 w-full rounded-xl object-cover md:w-1/2'
+        />
       </div>
       <div className='px-3 md:px-3'>
         <MarkdownVewer content={data.agora.content} />
       </div>
+      {data.agora.medias.length > 2 && <AgoraMedia feed={data} />}
       <div className='px-2'>
         {data.agora.updatedTime && (
           <p>

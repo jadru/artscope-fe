@@ -2,7 +2,11 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import { toast } from 'react-toastify';
 
-import { setAccessToken, setRefreshToken } from '@/auth/cookieTokenManager';
+import {
+  removeRefreshToken,
+  setAccessToken,
+  setRefreshToken,
+} from '@/auth/cookieTokenManager';
 
 import { loginResponseType } from '@/types/auth';
 
@@ -24,7 +28,6 @@ export const getRefreshToken = async () => {
     })
     .then((res) => {
       const tokenData: loginResponseType = res.data;
-
       Jxios.defaults.headers.common[
         'Authorization'
       ] = `Bearer ${tokenData.accessToken}`;
@@ -32,7 +35,7 @@ export const getRefreshToken = async () => {
       setRefreshToken(tokenData.refreshToken, tokenData.refreshExpiresIn);
     })
     .catch(() => {
-      cookie.remove('refresh-token');
+      removeRefreshToken();
     });
 };
 Jxios.interceptors.response.use(
