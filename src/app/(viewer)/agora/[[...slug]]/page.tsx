@@ -88,6 +88,7 @@ export default async function AgoraDetailPage({
         )}
         <p>{new Date(data.agora.createdTime).toLocaleString('ko-KR')} 작성됨</p>
       </div>
+
       <AgoraAction data={data} />
       <AgoraComments data={data} />
     </div>

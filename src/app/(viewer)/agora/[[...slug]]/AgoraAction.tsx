@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
+import AgoraEditDelete from '@/app/(viewer)/agora/[[...slug]]/AgoraEditDelete';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
@@ -15,6 +16,7 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
   const [button, setButton] = useState<
     'agree' | 'disagree' | 'natural' | undefined
   >();
+  const [updatedData, setNewData] = useState<AgoraDetailType>(data);
   const { isLogin } = useUser();
   const [agreeCount, setAgreeCount] = useState<number>(data.agora.agreeCount);
   const [disagreeCount, setDisagreeCount] = useState<number>(
@@ -39,6 +41,7 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
         setButton('disagree');
       else if (newData.userVoteStatus === newData.agora.naturalText)
         setButton('natural');
+      setNewData(newData);
     };
     setStatus();
   }, [data]);
@@ -119,6 +122,10 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
 
   return isLogin ? (
     <>
+      <AgoraEditDelete
+        isMine={updatedData.agora.isMine}
+        agoraId={updatedData.agora.id}
+      />
       <div className='mx-1 mt-1 grid grid-cols-3 gap-1 md:gap-2'>
         <button
           className={`${
@@ -214,6 +221,9 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
               />
               <Button color='primary' onClick={handleSetOpinion}>
                 추가 의견 등록
+              </Button>
+              <Button color='default' onClick={() => setModal(false)}>
+                닫기
               </Button>
             </div>
           </div>

@@ -51,16 +51,16 @@ export default function Index({ feed }: { feed: feedItemType }) {
         <div className='w-full space-y-1'>
           <div className='flex justify-between'>
             <div
-              className='flex gap-1 transition hover:underline'
+              className='group flex gap-1'
               onClick={(e) => {
                 e.stopPropagation();
                 push(`/profile/${feed.authorUsername}`);
               }}
             >
-              <p className='inline text-[0.9rem] font-bold'>
+              <p className='inline text-[0.9rem] font-bold transition group-hover:underline'>
                 {feed.authorName}
               </p>
-              <p className='text-[0.9rem] text-default-500'>
+              <p className='text-[0.9rem] text-default-500 transition group-hover:text-default-900'>
                 @{feed.authorUsername}
               </p>
             </div>

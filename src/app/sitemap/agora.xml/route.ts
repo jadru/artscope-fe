@@ -9,16 +9,15 @@ export const revalidate = 3600 * 24;
 
 export async function GET(_request: Request) {
   // Method to source urls from cms
-  const data: AgoraListType = await fetch(NEXT_PUBLIC_API_URL + '/api/agoras', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      query: JSON.stringify({
-        page: 0,
-        size: 1000,
-      }),
-    },
-  }).then((res) => res.json());
+  const data: AgoraListType = await fetch(
+    NEXT_PUBLIC_API_URL + '/api/agoras?page=0&size=1000',
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  ).then((res) => res.json());
 
   return getServerSideSitemap(
     data.agoras.map((agora) => ({

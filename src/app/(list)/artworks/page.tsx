@@ -90,9 +90,10 @@ export default function Page() {
         description='감각적인 예술 작품들을 살펴보세요.'
         divider={false}
       />
-      {user && user.username && (
-        <NewArtworkModal placeholder='새로운 작품이 있나요?' />
-      )}
+      {user &&
+        !(user?.roleStatus === 'NONE' || user?.roleStatus === undefined) && (
+          <NewArtworkModal placeholder='새로운 작품이 있나요?' />
+        )}
       <div className=''>
         {isSuccess && (
           <ResponsiveGrid>
