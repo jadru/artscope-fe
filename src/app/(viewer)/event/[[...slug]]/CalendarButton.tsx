@@ -7,19 +7,19 @@ import { EventDetailType } from '@/types/event';
 
 type CalendarButtonProps = {
   data: EventDetailType;
+  scheduleId: number;
 } & React.ComponentProps<'button'>;
 
 const CalendarButton = ({ ...props }: CalendarButtonProps) => {
+  const thisSchedule = props.data.eventSchedules.filter(
+    (ii) => ii.id === props.scheduleId
+  )[0];
   const handleIcs = async () => {
     const startTime = new Date(
-      props.data.eventSchedules[0].eventDate +
-        ' ' +
-        props.data.eventSchedules[0].startTime
+      thisSchedule.eventDate + ' ' + thisSchedule.startTime
     );
     const endTime = new Date(
-      props.data.eventSchedules[0].eventDate +
-        ' ' +
-        props.data.eventSchedules[0].endTime
+      thisSchedule.eventDate + ' ' + thisSchedule.endTime
     );
     ics.createEvent(
       {
@@ -41,7 +41,7 @@ const CalendarButton = ({ ...props }: CalendarButtonProps) => {
         ],
         location:
           props.data.location.address +
-          props.data.eventSchedules[0].detailLocation +
+          thisSchedule.detailLocation +
           ' ' +
           props.data.location.name,
         geo: {
@@ -50,17 +50,19 @@ const CalendarButton = ({ ...props }: CalendarButtonProps) => {
         },
 
         categories: [props.data.eventType],
-        attendees: props.data.eventSchedules[0].participants.map(
-          (participant) => {
-            return {
-              name: participant.name ?? '',
-              dir: participant.username
-                ? 'https://www.artscope.kr/profile/' + participant.username
-                : undefined,
-            };
-          }
-        ),
-        url: 'https://www.artscope.kr/event/' + props.data.id,
+        attendees: thisSchedule.participants.map((participant) => {
+          return {
+            name: participant.name ?? '',
+            dir: participant.username
+              ? 'https://www.artscope.kr/profile/' + participant.username
+              : undefined,
+          };
+        }),
+        url:
+          'https://www.artscope.kr/event/' +
+          props.data.id +
+          '?scheduleId=' +
+          props.scheduleId,
         alarms: [
           {
             action: 'display',

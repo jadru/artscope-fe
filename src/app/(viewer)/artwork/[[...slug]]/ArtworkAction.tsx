@@ -46,8 +46,8 @@ export default function ArtworkAction({ aw }: { aw: ArtworkType }) {
             setFirstLike(true);
           }
         });
-    fetchLike();
-  }, [aw.isLiked, aw.artwork.id]);
+    if (isLogin) fetchLike();
+  }, [aw.isLiked, aw.artwork.id, isLogin]);
 
   return (
     <div className='flex w-full justify-between gap-1 self-start py-2 md:w-auto md:justify-items-start'>

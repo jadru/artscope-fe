@@ -4,7 +4,6 @@ import { Button } from '@nextui-org/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { BiCircle, BiQuestionMark, BiX } from 'react-icons/bi';
 import { toast } from 'react-toastify';
 
 import { useUser } from '@/states';
@@ -26,7 +25,7 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
   );
   const [modal, setModal] = useState<boolean>(false);
   const [opinion, setOpinion] = useState<string>('');
-  const { push } = useRouter();
+  const { refresh } = useRouter();
 
   useEffect(() => {
     const setStatus = async () => {
@@ -110,10 +109,10 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
         content: opinion,
       })
       .then((res) => {
-        if (res.status === 200) {
+        if (res.status === 200 || res.status === 201) {
           toast('의견이 등록되었습니다.');
           setOpinion('');
-          push('/agora/' + data.agora.id);
+          refresh();
         }
       });
   };
@@ -138,7 +137,7 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
           }}
           disabled={button !== undefined && button !== 'disagree'}
         >
-          <BiX size={30} />
+          {/* <BiX size={30} /> */}
           <p>
             {data.agora.disagreeText} {disagreeCount}
           </p>
@@ -160,7 +159,7 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
           }}
           disabled={button !== undefined && button !== 'natural'}
         >
-          <BiQuestionMark size={23} />
+          {/* <BiQuestionMark size={23} /> */}
           <p>
             {data.agora.naturalText} {naturalCount}
           </p>
@@ -182,25 +181,25 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
           }}
           disabled={button !== undefined && button !== 'agree'}
         >
-          <BiCircle size={23} />
+          {/* <BiCircle size={23} /> */}
           <p>
             {data.agora.agreeText} {agreeCount}
           </p>
         </button>
       </div>
-      <p>{data.userVoteStatus}</p>
       {modal && (
         <div
           className='fixed left-0 top-0 z-[51] mx-auto flex h-screen w-screen items-center justify-center bg-black/50'
           onClick={() => setModal(false)}
         >
           <div
-            className='h-screen w-screen rounded-3xl bg-white md:h-[400px] md:w-[500px]'
+            className='h-screen w-screen bg-white md:h-[400px] md:w-[500px] md:rounded-3xl'
             onClick={(e) => e.stopPropagation()}
           >
             <div className='flex h-[calc(100vh-70px)] w-screen flex-col justify-center gap-3 p-4 md:h-[400px] md:w-[500px]'>
               <textarea
                 id='opinion'
+                autoFocus
                 className='h-full w-full resize-none rounded-2xl border p-3'
                 placeholder={
                   (button === 'agree'

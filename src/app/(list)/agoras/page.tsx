@@ -31,16 +31,19 @@ export default async function AgoraListPage({
       <Title
         title='Agora'
         description='다양한 주제에 대해 토론하고 투표하세요.'
+        divider={false}
       />
       {data.agoras.map((agora) => (
         <AgoraItem agora={agora} key={agora.id} />
       ))}
-      <div className='mt-4 flex justify-center'>
-        <AgoraPagination
-          totalPage={data.pageInfo.totalPages}
-          page={Number(searchParams?.page ? searchParams.page : 1)}
-        />
-      </div>
+      {data.pageInfo.totalPages > 1 && (
+        <div className='my-4 flex justify-center'>
+          <AgoraPagination
+            totalPage={data.pageInfo.totalPages}
+            page={Number(searchParams?.page ? searchParams.page : 1)}
+          />
+        </div>
+      )}
     </div>
   );
 }

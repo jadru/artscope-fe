@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { timeCaculatortoKO } from '@/utils/timeCalculator';
 
 import { AgoraOpinionType } from '@/types/agora';
@@ -12,10 +14,22 @@ export default function AgoraCommentMessage({
   return (
     <div className='my-1 rounded-xl bg-default-100 p-2'>
       <div className='flex justify-between'>
-        <p className='font-bold text-default-700'>
-          {comment.author.name}{' '}
-          {comment.author.username ? '@' + comment.author.username : ''}
-        </p>
+        {comment.author.name.startsWith('익명') ? (
+          <p className='font-bold text-default-700'>
+            {comment.author.name === '익명 작성자'
+              ? '작성자'
+              : comment.author.name}
+          </p>
+        ) : (
+          <Link
+            href={`/profile/${comment.author.username}`}
+            className='font-bold text-default-700 hover:underline'
+          >
+            {comment.author.name}{' '}
+            {comment.author.username ? '@' + comment.author.username : ''}
+          </Link>
+        )}
+
         <div
           className={`${
             voteStatus === 'disagree'

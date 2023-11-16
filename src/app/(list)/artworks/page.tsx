@@ -88,11 +88,12 @@ export default function Page() {
       <Title
         title='Artworks'
         description='감각적인 예술 작품들을 살펴보세요.'
+        divider={false}
       />
       {user && user.username && (
         <NewArtworkModal placeholder='새로운 작품이 있나요?' />
       )}
-      <div className='md:p-3'>
+      <div className=''>
         {isSuccess && (
           <ResponsiveGrid>
             {data.pages.map((group) =>

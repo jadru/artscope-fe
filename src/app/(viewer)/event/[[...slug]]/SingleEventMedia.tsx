@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import {
   AiFillCloseCircle,
@@ -12,9 +14,9 @@ import ASNextImage from '@/components/ASNextImage';
 
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
 
-import { SinglePostType } from '@/types/feed';
+import { EventDetailType } from '@/types/event';
 
-export default function SinglePostMedia({ feed }: { feed: SinglePostType }) {
+export default function SingleEventMedia({ feed }: { feed: EventDetailType }) {
   const [detailedImage, setDetailedImage] = useState<string>('');
   return (
     <>
@@ -40,7 +42,7 @@ export default function SinglePostMedia({ feed }: { feed: SinglePostType }) {
                   })`,
                 }}
                 onClick={() => setDetailedImage(item.mediaUrl)}
-                key={item.id}
+                key={item.mediaUrl}
               ></div>
             ))}
         </Slide>

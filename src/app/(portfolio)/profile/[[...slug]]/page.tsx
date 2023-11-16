@@ -80,27 +80,21 @@ export default async function ProfilePage({
     params.slug[0]
   )) as ArtworkApiResponseByUsernameType;
 
-  const history = data.history?.split('\n').map((line, index) => {
+  const history = data.history?.split('\n').map((line) => {
     if (line === '') {
       return;
     }
     return (
-      <div key={'line-' + index}>
-        {index === 0 && <hr />}
-        <div>
-          <h3 className='cursor-text px-2.5 py-2 text-xl font-normal hover:bg-stone-900/10'>
-            {line}
-          </h3>
-          {data.history && data.history.length > index && <hr />}
-        </div>
-      </div>
+      <li className='py-0.5 font-normal' key={'line-' + line}>
+        {line}
+      </li>
     );
   });
 
   return (
-    <div className='mx-auto my-6 space-y-3 px-2 md:px-0'>
-      <div className='flex w-full items-center justify-between md:py-4'>
-        <div className='space-y-3 md:px-2.5'>
+    <div className='mx-auto flex flex-col items-stretch gap-2 px-2 md:px-0'>
+      <div className='flex w-full items-center justify-between py-1.5 md:py-4'>
+        <div className='md:px-2.5'>
           <div className='flex items-center gap-2'>
             <h1 className='text-[2rem]'>{data.name}</h1>
             <h2 className='my-0 text-2xl'>@{data.username}</h2>
@@ -108,7 +102,12 @@ export default async function ProfilePage({
 
           <h2 className='my-0 text-xl'>
             {data.companyName}
-            {data.companyRole ? ' | ' + data.companyRole : ''}
+            {data.companyRole ? ' | ' + data.companyRole : ''}{' '}
+            {data.roleStatus.startsWith('ARTIST')
+              ? '작가'
+              : data.roleStatus.startsWith('CURATOR')
+              ? '기획자'
+              : ''}
           </h2>
         </div>
         {data.picture && (
@@ -121,44 +120,41 @@ export default async function ProfilePage({
           />
         )}
       </div>
-      <hr className='h-0.5 bg-black' />
       {data.introduction && (
-        <>
-          <h2 className='mb-4 border-b-1 border-black px-2.5 pb-3 text-xl'>
-            {data.introduction}
-          </h2>
-        </>
+        <div className='rounded-2xl border border-default-400 px-2.5 py-2 '>
+          <h2 className='mb-1 text-xl font-normal'>소개</h2>
+          <p>{data.introduction}</p>
+        </div>
       )}
       {history && (
-        <>
-          <h3 className='px-2.5'>이력</h3>
-          <div>{history.map((item) => item)}</div>
-          <hr className='h-0.5 bg-black' />
-        </>
+        <div className='rounded-2xl border border-default-400 px-2.5 py-2'>
+          <h2 className='mb-1 text-xl font-normal'>이력</h2>
+          <ol className='ml-6 list-disc'>{history.map((item) => item)}</ol>
+        </div>
       )}
-      <div className='flex flex-col'>
-        {data.websiteUrl && (
-          <>
-            <h3 className='px-2.5'>웹사이트 & SNS</h3>
-            <Link href={data.websiteUrl}>
-              <h4 className='cursor-pointer px-2.5 py-2 text-lg font-bold hover:bg-stone-900/10'>
-                <AiOutlineHome className='mb-1 mr-1 inline' size={17} />
-                {data.websiteUrl}
-              </h4>
+      {(data.websiteUrl || data.snsUrl) && (
+        <div className='rounded-2xl border border-default-400 px-2.5 py-2'>
+          {data.websiteUrl && (
+            <>
+              <h2 className='mb-1 text-xl font-normal'>웹사이트 & SNS</h2>
+              <Link href={data.websiteUrl}>
+                <p className='cursor-pointer rounded-xl px-2.5 py-2 transition hover:bg-stone-900/10'>
+                  <AiOutlineHome className='mb-1 mr-1 inline' size={19} />
+                  {data.websiteUrl}
+                </p>
+              </Link>
+            </>
+          )}
+          {data.snsUrl && (
+            <Link href={data.snsUrl} target='_blank'>
+              <p className='cursor-pointer rounded-xl px-2.5 py-2 transition hover:bg-stone-900/10'>
+                <AiOutlineLink className='mb-1 mr-1 inline' size={19} />
+                {data.snsUrl}
+              </p>
             </Link>
-          </>
-        )}
-        {data.websiteUrl && data.snsUrl && <hr />}
-        {data.snsUrl && (
-          <Link href={data.snsUrl} target='_blank'>
-            <h4 className='cursor-pointer px-2.5 py-2 text-lg font-bold hover:bg-stone-900/10'>
-              <AiOutlineLink className='mb-1 mr-1 inline' size={17} />
-              {data.snsUrl}
-            </h4>
-          </Link>
-        )}
-        <hr className='h-0.5 bg-black' />
-      </div>
+          )}
+        </div>
+      )}
       <ResponsiveGrid>
         {artworkData &&
           artworkData.artworks.map((item) => (

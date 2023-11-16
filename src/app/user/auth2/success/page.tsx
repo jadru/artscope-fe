@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { AiOutlineCoffee } from 'react-icons/ai';
+import { toast } from 'react-toastify';
 
 import Title from '@/components/Title';
 
@@ -37,6 +38,7 @@ const RedirectOAuth2 = () => {
           );
         })
         .catch(() => {
+          toast.error('로그인에 실패했습니다.');
           router.push('/');
         });
     } else {

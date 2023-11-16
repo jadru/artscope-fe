@@ -78,7 +78,7 @@ export default function SinglePostItem({
                 {firstLink && <OpengraphCard externalUrl={firstLink} />}
               </div>
             </div>
-            {feed.medias && feed.medias.length > 0 && (
+            {feed.medias && feed.medias.length > 1 && (
               <SinglePostMedia feed={feed} />
             )}
             {feed.updatedTime ? (

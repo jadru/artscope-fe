@@ -24,7 +24,7 @@ export default function Index({ feed }: { feed: feedItemType }) {
 
   return (
     <div
-      className='flex cursor-pointer space-x-2 px-3.5 pb-1 pt-3.5 transition-colors hover:bg-gray-100 md:mx-0'
+      className='flex cursor-pointer space-x-2 rounded-xl px-3.5 pb-1 pt-3.5 transition-colors hover:bg-gray-100 md:mx-0'
       onClick={(e) => {
         e.stopPropagation();
         push(`/post/${feed.id}`);

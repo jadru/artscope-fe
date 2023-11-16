@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Input, User } from '@nextui-org/react';
+import { Button, Input } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import TextareaAutoSize from 'react-textarea-autosize';
@@ -39,13 +39,6 @@ export default function ArtworkEdit({ data }: { data: ArtworkType }) {
   return (
     <div className='mb-2 space-y-2 border-b border-default-200 bg-white p-3 transition-colors md:mx-0'>
       <div className='w-full px-3 pt-3'>
-        <div>
-          <User
-            name={data.artwork.authorName}
-            description={'@' + data.artwork.authorUsername}
-            className='p-1'
-          />
-        </div>
         <p className='mx-1.5 mt-1 text-default-500 '>
           {new Date(data.artwork.createdTime).toLocaleString('ko-KR', {
             dateStyle: 'full',

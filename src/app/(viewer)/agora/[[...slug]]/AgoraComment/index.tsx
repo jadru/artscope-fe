@@ -15,7 +15,7 @@ export default function Index({ data }: { data: AgoraDetailType }) {
   const [opinion, setOpinion] = useState<AgoraOpinionType[]>();
   const [newOpinion, setNewOpinion] = useState<string>('');
   const { isLogin } = useUser();
-  const { push } = useRouter();
+  const { refresh } = useRouter();
   useEffect(() => {
     setOpinion(
       [
@@ -36,10 +36,10 @@ export default function Index({ data }: { data: AgoraDetailType }) {
         content: newOpinion,
       })
       .then((res) => {
-        if (res.status === 201) {
+        if (res.status === 201 || res.status === 200) {
           toast('의견이 등록되었습니다.');
           setNewOpinion('');
-          push('/agora/' + data.agora.id);
+          refresh();
         }
       });
   };
