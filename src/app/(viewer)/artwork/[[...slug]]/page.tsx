@@ -75,10 +75,10 @@ export default async function ArtworkPage({
 }) {
   const data: ArtworkType = await fetchArtwork(params.slug[0]);
   const isEdit = Boolean(searchParams?.edit) ?? false;
-  if (!data) throw new Error('Failed to fetch data');
   const author: profileApiResponseType = await fetchAuthorProfile(
     data.artwork.authorUsername
   );
+  if (!data || !author) throw new Error('Failed to fetch data');
   return (
     <div>
       {!isEdit ? (

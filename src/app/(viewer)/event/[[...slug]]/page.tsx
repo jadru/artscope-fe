@@ -58,6 +58,7 @@ export default async function Event({
 }) {
   const id = params.slug[0];
   const data = await fetchEvent(id);
+  if (!data) throw new Error('Failed to fetch data');
   const scheduleId =
     Number(searchParams?.scheduleId) || data.eventSchedules[0].id;
   const thisSchedule = data.eventSchedules.filter(
