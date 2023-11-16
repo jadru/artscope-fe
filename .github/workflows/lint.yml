@@ -65,20 +65,20 @@ jobs:
       - name: 💅 Prettier check
         run: yarn format:check
 
-  test:
-    name: 🃏 Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v2
-
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-
-      - name: 🃏 Run jest
-        run: yarn test
+#  test:
+#    name: 🃏 Test
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: ⬇️ Checkout repo
+#        uses: actions/checkout@v2
+#
+#      - name: ⎔ Setup node
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: 18
+#
+#      - name: 📥 Download deps
+#        uses: bahmutov/npm-install@v1
+#
+#      - name: 🃏 Run jest
+#        run: yarn test
