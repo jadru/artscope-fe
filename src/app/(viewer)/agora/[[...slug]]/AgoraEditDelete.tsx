@@ -25,7 +25,7 @@ export default function AgoraEditDelete({
     }
   };
   return isMine ? (
-    <div className='flex justify-between'>
+    <div className='flex justify-between px-1'>
       <Button
         startContent={<AiOutlineDelete />}
         color='danger'

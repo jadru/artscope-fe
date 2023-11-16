@@ -27,7 +27,7 @@ export default function EventEditDelete({
     }
   };
   return user?.name === authorUsername ? (
-    <div className='flex justify-between'>
+    <div className='flex justify-between px-1'>
       <Button
         startContent={<AiOutlineDelete />}
         color='danger'
