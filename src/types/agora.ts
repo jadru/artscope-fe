@@ -51,6 +51,7 @@ export type AgoraAuthorType = {
 export type AgoraType = {
   id: number;
   title: string;
+  isMine: boolean;
   content: string;
   agreeCount: number;
   naturalCount: number;

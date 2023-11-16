@@ -9,6 +9,7 @@ import ASNextImage from '@/components/ASNextImage';
 import MarkdownVewer from '@/components/MarkdownViewer';
 
 import CalendarButton from '@/app/(viewer)/event/[[...slug]]/CalendarButton';
+import EventEditDelete from '@/app/(viewer)/event/[[...slug]]/EventEditDelete';
 import eventTypeToKO from '@/app/(viewer)/event/[[...slug]]/eventTypeToKO';
 import SingleEventMedia from '@/app/(viewer)/event/[[...slug]]/SingleEventMedia';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
@@ -119,6 +120,8 @@ export default async function Event({
               공유하기
             </button>
           </div>
+
+          <EventEditDelete authorUsername={data.author} eventId={data.id} />
 
           {data.medias && data.medias.length > 1 && (
             <SingleEventMedia feed={data} />

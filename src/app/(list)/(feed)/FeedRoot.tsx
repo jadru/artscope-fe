@@ -97,9 +97,10 @@ export default function Feeds() {
 
   return (
     <div className='w-full'>
-      {user && user.username && (
-        <NewPostModalButton placeholder='무슨 이야기가 있나요?' />
-      )}
+      {user &&
+        !(user?.roleStatus === 'NONE' || user?.roleStatus === undefined) && (
+          <NewPostModalButton placeholder='무슨 이야기가 있나요?' />
+        )}
       {data && (
         <>
           {data.pages.map((page, index) => (

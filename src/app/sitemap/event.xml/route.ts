@@ -10,17 +10,11 @@ export const revalidate = 3600 * 24;
 export async function GET(_request: Request) {
   // Method to source urls from cms
   const data: EventResponseType = await fetch(
-    NEXT_PUBLIC_API_URL + '/api/exhibitions',
+    NEXT_PUBLIC_API_URL + '/api/exhibitions?size=1000&page=0&eventType=ALL',
     {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
         accept: '*/*',
-        query: JSON.stringify({
-          eventType: 'ALL',
-          page: 0,
-          size: 1000,
-        }),
       },
     }
   ).then((res) => res.json());

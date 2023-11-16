@@ -20,7 +20,7 @@ export default function SingleEventMedia({ feed }: { feed: EventDetailType }) {
   const [detailedImage, setDetailedImage] = useState<string>('');
   return (
     <>
-      <div className='mt-3 block touch-pan-x gap-1 border-y'>
+      <div className='mt-3 block gap-1 border-y'>
         <Slide
           autoplay={false}
           infinite={false}

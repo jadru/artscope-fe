@@ -37,7 +37,7 @@ export default function Search() {
   }, []);
 
   return (
-    <div className='mb-2 flex flex-col items-center justify-center gap-2 px-2 md:px-0'>
+    <div className='mb-2 flex flex-col items-center justify-center gap-2 px-2'>
       <div className='flex h-16 w-full items-center space-x-2 rounded-2xl border border-default-400 px-4'>
         <AiOutlineSearch className='inline' size={25} />
         <input
@@ -59,9 +59,9 @@ export default function Search() {
       </div>
       {data &&
         (data.searchArtworks.artworks.length > 0 ? (
-          <div className='rounded-2xl border border-default-400 py-2'>
+          <div className='w-full rounded-2xl border border-default-400 py-2'>
             <h3 className='mx-3 mb-2'>아트워크 검색 결과</h3>
-            <div className=''>
+            <div className='px-2'>
               <ResponsiveGrid>
                 {data.searchArtworks.artworks.map((item) => (
                   <ArtworkItem
@@ -91,7 +91,7 @@ export default function Search() {
         (data.searchPosts.posts.length > 0 ? (
           <div className='w-full rounded-2xl border border-default-400 py-2'>
             <h3 className='mx-3 mb-2'>포스트 검색 결과</h3>
-            <div>
+            <div className='px-2'>
               {data.searchPosts.posts.map((item) => (
                 <FeedListItemPost feed={item} key={item.id} />
               ))}

@@ -18,7 +18,7 @@ export default function SinglePostMedia({ feed }: { feed: SinglePostType }) {
   const [detailedImage, setDetailedImage] = useState<string>('');
   return (
     <>
-      <div className='mt-3 block touch-pan-x gap-1 border-y'>
+      <div className='mt-3 block gap-1 border-y'>
         <Slide
           autoplay={false}
           infinite={false}

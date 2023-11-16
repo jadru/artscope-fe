@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineClose, AiOutlineForm, AiOutlineMenu } from 'react-icons/ai';
+import { BiPen } from 'react-icons/bi';
 
 import ASNextImage from '@/components/ASNextImage';
 import LoginModal from '@/components/Navbar/LoginModalButton';
@@ -79,28 +80,41 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
       <></>
     );
 
-  const NewContentDropdown = () => (
-    <Dropdown placement='bottom'>
-      <DropdownTrigger>
-        <button className='bg flex h-10 w-20 items-center justify-center gap-1 rounded-lg border-default-700 text-default-700 hover:bg-default-100'>
-          <AiOutlineForm size={23} />
-          <p className='pt-0.5'>작성</p>
+  const NewContentDropdown = () => {
+    if (user?.roleStatus === 'NONE' || user?.roleStatus === undefined)
+      return (
+        <button
+          className='bg flex h-10 w-20 items-center justify-center gap-1 rounded-lg border-default-700 text-default-700 hover:bg-default-100'
+          onClick={() => push('/user/apply')}
+        >
+          <BiPen size={23} />
+          <p className='pt-0.5'>정보 입력</p>
         </button>
-      </DropdownTrigger>
-      <DropdownMenu
-        aria-label='Profile Actions'
-        variant='flat'
-        onAction={(key) => {
-          push(key as string);
-        }}
-      >
-        <DropdownItem key='/new/post'>새 포스트</DropdownItem>
-        <DropdownItem key='/new/artwork'>새 작품</DropdownItem>
-        <DropdownItem key='/new/event'>새 이벤트</DropdownItem>
-        <DropdownItem key='/new/agora'>새 아고라</DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-  );
+      );
+    else
+      return (
+        <Dropdown placement='bottom'>
+          <DropdownTrigger>
+            <button className='bg flex h-10 w-20 items-center justify-center gap-1 rounded-lg border-default-700 text-default-700 hover:bg-default-100'>
+              <AiOutlineForm size={23} />
+              <p className='pt-0.5'>작성</p>
+            </button>
+          </DropdownTrigger>
+          <DropdownMenu
+            aria-label='Profile Actions'
+            variant='flat'
+            onAction={(key) => {
+              push(key as string);
+            }}
+          >
+            <DropdownItem key='/new/post'>새 포스트</DropdownItem>
+            <DropdownItem key='/new/artwork'>새 작품</DropdownItem>
+            <DropdownItem key='/new/event'>새 이벤트</DropdownItem>
+            <DropdownItem key='/new/agora'>새 아고라</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      );
+  };
 
   return (
     <>

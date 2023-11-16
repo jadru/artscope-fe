@@ -83,10 +83,10 @@ export default function FeedList({ data, index }: FeedListProps) {
           ) : (
             feed.type === 'agora' && <FeedListItemAgora feed={feed} />
           )}
-          {((Array.isArray(feed) && feed.length > 0) ||
-            (!Array.isArray(feed) && feed.type)) && (
-            <hr className='mx-3 rounded-xl border-default-200' />
-          )}
+          {/* {((Array.isArray(feed) && feed.length > 0) || */}
+          {/*   (!Array.isArray(feed) && feed.type)) && ( */}
+          {/*   <hr className='mx-3 rounded-xl border-default-200' /> */}
+          {/* )} */}
         </div>
       ))}
       {feeds.length === 0 && <p className='m-12'>데이터가 없습니다.</p>}
