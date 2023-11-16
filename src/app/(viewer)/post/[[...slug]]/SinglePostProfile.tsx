@@ -8,9 +8,6 @@ export default function SinglePostProfile({ feed }: { feed: SinglePostType }) {
   return (
     <Link
       className='cursor-pointer p-0'
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
       href={`/profile/${feed.authorUsername}`}
     >
       <div className='flex flex-row items-start justify-start gap-2 p-3 transition hover:underline'>
