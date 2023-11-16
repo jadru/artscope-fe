@@ -36,7 +36,7 @@ export default function EventListItem({
               { locale: ko }
             )}
           </h5>
-          <h5 className='font-bold'>
+          <h5>
             {event.eventSchedule.startTime} - {event.eventSchedule.endTime}
           </h5>
         </div>
