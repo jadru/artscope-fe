@@ -30,13 +30,13 @@ export default function AgoraItem({ agora }: { agora: AgoraType }) {
           </div>
         </div>
         <div className='flex'>
-          <ASNextImage
+          {agora.thumbnail?.mediaUrl && <ASNextImage
             className='ml-2 h-28 w-28 rounded-lg border object-cover drop-shadow-xl'
             src={agora.thumbnail.mediaUrl}
             alt={agora.title}
             width={112}
             height={112}
-          />
+          />}
         </div>
       </div>
     </Link>
