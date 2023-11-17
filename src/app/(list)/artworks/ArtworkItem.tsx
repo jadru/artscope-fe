@@ -11,7 +11,7 @@ const ArtworkItem = ({ artwork: aw }: { artwork: ArtworkType }) => {
       className='group cursor-pointer rounded-xl transition'
     >
       <div>
-        <div className='overflow-visible rounded-t-xl bg-black p-0'>
+        <div className='overflow-visible rounded-t-2xl bg-black p-0'>
           <ASNextImage
             src={aw.artwork.thumbnail.mediaUrl}
             alt={aw.artwork.title}

@@ -1,5 +1,6 @@
 'use client';
 
+import { Input, Select, SelectItem } from '@nextui-org/react';
 import { Bold } from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
 import { Document } from '@tiptap/extension-document';
@@ -31,22 +32,18 @@ import { Markdown } from 'tiptap-markdown';
 
 import '@/styles/editor.scss';
 
-import PublicTypeCheckBox, {
-  PublicType,
-} from '@/components/New/Artworks/PublicTypeCheckBox';
-import NewTagView from '@/components/New/Tag/NewTagView';
-
+import { EventTypeData } from '@/app/new/event/EventTypeData';
 import jxios from '@/utils/jxios';
 
-import { ArtworkType } from '@/types/artwork';
+import { EventDetailType, EventType } from '@/types/event';
 
-const NewArtwork = () => {
-  const [tagCount, setTagCount] = useState<string[]>([]);
+const NewEvent = () => {
+  const [link, setLink] = useState<string>('');
+  const [eventType, setEventType] = useState<EventType>('STANDARD');
+  const [price, setPrice] = useState<number>(0);
   const { push } = useRouter();
   const [isUpload, setIsUpload] = useState(false);
-  const [publicType, setPublicType] = useState<PublicType>('public');
-  const placeholderText =
-    '작품을 자유롭게 설명해주세요. \n사진과 동영상은 수정할 수 없어요.';
+  const placeholderText = '이벤트를 자유롭게 설명하세요.';
   const params = useParams();
 
   const CustomDocument = Document.extend({
@@ -57,7 +54,7 @@ const NewArtwork = () => {
     extensions: [
       CustomDocument,
       Heading.configure({
-        levels: [1],
+        levels: [1, 2, 3],
       }),
       Link.configure({
         protocols: ['http', 'https'],
@@ -82,7 +79,7 @@ const NewArtwork = () => {
         emptyNodeClass: 'is-artwork-editor-empty',
         placeholder: ({ node }) => {
           if (node.type.name === 'heading') {
-            return '작품 제목을 입력해주세요.';
+            return '이벤트 제목을 입력해주세요.';
           }
           return placeholderText;
         },
@@ -94,11 +91,14 @@ const NewArtwork = () => {
   });
 
   useEffect(() => {
-    jxios.get(`/api/artworks/${params.id}`).then((res) => {
-      const data = res.data as ArtworkType;
+    jxios.get(`/api/exhibitions/${params.id}`).then((res) => {
+      const data = res.data as EventDetailType;
       editor?.commands.setContent(
-        '# ' + data.artwork.title + '\n\n' + data.artwork.description
+        '# ' + data.title + '\n\n' + data.description
       );
+      setLink(data.link);
+      setEventType(data.eventType);
+      setPrice(data.price);
     });
   }, [editor, params.id]);
 
@@ -108,22 +108,27 @@ const NewArtwork = () => {
       toast.error('내용을 입력해주세요.');
       return;
     }
+    if (link === '' || price === null) {
+      toast.error('항목 전체를 입력해주세요.');
+      return;
+    }
     setIsUpload(true);
     const markdownContent = editor?.storage.markdown.getMarkdown() || '';
     const data = {
       title:
         editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4)) || '',
       description: markdownContent.slice(markdownContent.indexOf('\n') + 2),
-      tags: tagCount,
-      visible: publicType === 'public',
+      link,
+      eventType,
+      price,
     };
 
-    jxios
-      .put(`/api/artworks/${params.id}`, data)
+    await jxios
+      .put('/api/exhibitions', data)
       .then((res) => {
         if (res.status === 200) {
-          toast.success('작품이 수정되었습니다.');
-          push('/artwork/' + params.id);
+          toast.success('이벤트가 수정되었습니다.');
+          push('/event/' + res.data.id);
         }
       })
       .catch((err) => {
@@ -227,16 +232,51 @@ const NewArtwork = () => {
         <div></div>
       </div>
       <div className='h-16'></div>
-      <div className='w-full space-y-6 overflow-y-scroll p-4'>
+      <div className='w-full space-y-2 overflow-y-scroll p-4'>
         {editor && <EditorContent editor={editor} className='min-h-[80px]' />}
-        <NewTagView tagCount={tagCount} setTagCount={setTagCount} />
+      </div>
+      <hr className='my-4' />
+      <div className='flex flex-col items-start justify-between gap-1 px-3 md:flex-row'>
+        <Input
+          isRequired
+          type='number'
+          label='참석자 티켓 가격'
+          value={String(price)}
+          onValueChange={(value) => setPrice(Number(value))}
+          placeholder='가격을 입력해주세요'
+          description='무료인 경우 0을 입력해주세요'
+          endContent={
+            <div className='pointer-events-none flex items-center'>
+              <span className='text-small text-default-400'>원</span>
+            </div>
+          }
+        />
+        <Select
+          label='이벤트 타입'
+          defaultSelectedKeys={[EventTypeData[0].value]}
+          value={eventType}
+          onChange={(e) => setEventType(e.target.value as EventType)}
+          className='w-full'
+          isRequired
+        >
+          {EventTypeData.map((item) => (
+            <SelectItem key={item.value} value={item.value}>
+              {item.label}
+            </SelectItem>
+          ))}
+        </Select>
+        <Input
+          isRequired
+          type='url'
+          label='링크'
+          value={link}
+          onValueChange={setLink}
+          placeholder='관련 링크를 입력해주세요.'
+          className='w-full'
+        />
       </div>
       <div className='h-16'></div>
-      <div className='fixed bottom-0 z-50 flex h-16 w-full max-w-[718px] items-center justify-between border-t bg-default-50 px-3'>
-        <PublicTypeCheckBox
-          publicType={publicType}
-          setPublicType={setPublicType}
-        />
+      <div className='fixed bottom-0 z-40 flex h-16 w-full max-w-[718px] items-center justify-end border-t bg-default-50 px-3'>
         <button
           onClick={handleCreateSaveButton}
           disabled={isUpload}
@@ -246,11 +286,11 @@ const NewArtwork = () => {
               'animate-pulse border-gray-200 bg-gray-200 text-default'
             }`}
         >
-          새 작품 업로드
+          이벤트 수정
         </button>
       </div>
     </>
   );
 };
 
-export default NewArtwork;
+export default NewEvent;

@@ -101,15 +101,19 @@ export default function Feeds() {
         !(user?.roleStatus === 'NONE' || user?.roleStatus === undefined) && (
           <NewPostModalButton placeholder='무슨 이야기가 있나요?' />
         )}
-      {data && (
+      {data && !isError && (
         <>
-          {data.pages.map((page, index) => (
-            <FeedList
-              data={page.feedItems}
-              key={'feed-' + page.feedItems[0].id + index}
-              index={index}
-            />
-          ))}
+          {data.pages.map(
+            (page, index) =>
+              page.feedItems &&
+              page.feedItems.length > 0 && (
+                <FeedList
+                  data={page.feedItems}
+                  key={'feed-' + page.feedItems[0].id + index}
+                  index={index}
+                />
+              )
+          )}
           <div ref={bottom} className='mb-8 h-1'>
             <FeedObservationComponent />
           </div>
@@ -127,9 +131,15 @@ export default function Feeds() {
           <SkeletonFeed />
         </div>
       )}
-      {data && data.pages[0].feedItems.length === 0 && (
-        <h3 className='my-12 text-center'>아직 작성된 글이 없습니다.</h3>
+      {isError && (
+        <div className='w-full'>
+          <h3 className='my-12 text-center'>에러가 발생했습니다.</h3>
+        </div>
       )}
+      {data &&
+        (data.pages.length === 0 || data.pages[0].feedItems.length === 0) && (
+          <h3 className='my-12 text-center'>아직 작성된 글이 없습니다.</h3>
+        )}
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
-import MarkdownVewer from '@/components/MarkdownViewer';
+import MarkdownViewer from '@/components/MarkdownViewer';
 
 import FeedListItemPostAction from '@/app/(list)/(feed)/FeedListItem/FeedListItemPost/FeedListItemPostAction';
 import FeedListItemPostMedia from '@/app/(list)/(feed)/FeedListItem/FeedListItemPost/FeedListItemPostMedia';
@@ -70,36 +70,9 @@ export default function Index({ feed }: { feed: feedItemType }) {
           </div>
           <div className='flex flex-col justify-start'>
             <div className='text flex w-full flex-col gap-1'>
-              <div className='line-clamp-3 w-full overflow-x-hidden break-keep p-0.5 tracking-tight text-default-800'>
-                <MarkdownVewer content={feed.content} />
-                {/* {content.map((item, index) => { */}
-                {/*   if (item.type === 'text') { */}
-                {/*     return ( */}
-                {/*       <p */}
-                {/*         key={item.value + '-' + index} */}
-                {/*         className='inline text-default-800' */}
-                {/*       > */}
-                {/*         {convertNewlineToJSX(item.value)} */}
-                {/*       </p> */}
-                {/*     ); */}
-                {/*   } else { */}
-                {/*     return ( */}
-                {/*       <Link */}
-                {/*         key={item.value + '-' + index} */}
-                {/*         href={item.value} */}
-                {/*         target='_blank' */}
-                {/*         rel='noopener noreferrer' */}
-                {/*         className='inline text-blue-500 hover:underline' */}
-                {/*         onClick={(e) => { */}
-                {/*           e.stopPropagation(); */}
-                {/*         }} */}
-                {/*       > */}
-                {/*         {item.value} */}
-                {/*       </Link> */}
-                {/*     ); */}
-                {/*   } */}
-                {/* })} */}
-              </div>
+              <MarkdownViewer className='line-clamp-2 text-default-600 peer-default:!text-[0.9rem]'>
+                {feed.content}
+              </MarkdownViewer>
             </div>
             {firstLink && <OpengraphCard externalUrl={firstLink} />}
             {feed.mediaUrls && feed.mediaUrls.length > 0 && (

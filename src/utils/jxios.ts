@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { decode } from 'html-entities';
 import cookie from 'react-cookies';
 import { toast } from 'react-toastify';
 
@@ -39,7 +40,21 @@ export const getRefreshToken = async () => {
     });
 };
 Jxios.interceptors.response.use(
-  (res) => res,
+  (res) => {
+    // every response will be decoded
+    if (res.data) {
+      if (typeof res.data === 'string') {
+        res.data = decode(res.data);
+      } else if (typeof res.data === 'object') {
+        Object.keys(res.data).forEach((key) => {
+          if (typeof res.data[key] === 'string') {
+            res.data[key] = decode(res.data[key]);
+          }
+        });
+      }
+    }
+    return res;
+  },
   async (err) => {
     const { config, response } = err;
     if (response && response.status) {

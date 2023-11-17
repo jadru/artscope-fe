@@ -1,6 +1,6 @@
 import { Metadata, ResolvingMetadata } from 'next';
 
-import MarkdownVewer from '@/components/MarkdownViewer';
+import MarkdownViewer from '@/components/MarkdownViewer';
 
 import PostComment from '@/app/(viewer)/post/[[...slug]]/comment';
 import SinglePostItemAction from '@/app/(viewer)/post/[[...slug]]/SinglePostItemAction';
@@ -65,7 +65,7 @@ export default async function SinglePost({
 
             <div className='flex flex-col justify-start px-1.5'>
               <div className='flex w-full flex-col gap-1 break-keep p-3 text-xl leading-relaxed tracking-wide'>
-                <MarkdownVewer content={data.content} />
+                <MarkdownViewer>{data.content}</MarkdownViewer>
                 <SinglePostOpengraph content={data.content} />
               </div>
             </div>
