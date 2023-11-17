@@ -69,18 +69,18 @@ export default async function AgoraDetailPage({
       )}
       <div className='mt-3 flex w-full flex-col-reverse items-center justify-between gap-2 px-3 md:flex-row'>
         <AgoraChart agora={data} />
-        <ASNextImage
+        {data.agora.thumbnail?.mediaUrl && <ASNextImage
           src={data.agora.thumbnail.mediaUrl}
           alt={data.agora.title}
           width={400}
           height={400}
           className='h-96 w-full rounded-xl object-cover md:w-1/2'
-        />
+        />}
       </div>
       <div className='px-3 md:px-3'>
         <MarkdownViewer>{data.agora.content}</MarkdownViewer>
       </div>
-      {data.agora.medias.length > 2 && <AgoraMedia feed={data} />}
+      {data.agora.medias && data.agora.medias.length > 2 && <AgoraMedia feed={data} />}
       <div className='px-2'>
         {data.agora.updatedTime && (
           <p>
