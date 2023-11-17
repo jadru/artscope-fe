@@ -1,24 +1,36 @@
+import { decode } from 'html-entities';
 import ReactMarkdown from 'react-markdown';
 import rehypeExternalLinks from 'rehype-external-links';
+import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
+import strip from 'strip-markdown';
 
 import '@/styles/markdown.scss';
-export default function MarkdownVewer({
-  content,
+export default function MarkdownViewer({
+  children,
   className,
+  ignoreMarkdown = false,
+  ignoreHTML = false,
 }: {
-  content: string;
+  children: string;
   className?: string;
+  ignoreMarkdown?: boolean;
+  ignoreHTML?: boolean;
 }) {
   return (
     <ReactMarkdown
       className={'markdown-viewer break-all ' + className}
-      remarkPlugins={[remarkGfm]}
-      rehypePlugins={[
-        [rehypeExternalLinks, { target: '_blank', rel: 'noreferrer' }],
-      ]}
+      remarkPlugins={ignoreMarkdown ? [remarkGfm, strip] : [remarkGfm]}
+      rehypePlugins={
+        ignoreHTML
+          ? [[rehypeExternalLinks, { target: '_blank', rel: 'noreferrer' }]]
+          : [
+              [rehypeExternalLinks, { target: '_blank', rel: 'noreferrer' }],
+              rehypeRaw,
+            ]
+      }
     >
-      {content}
+      {decode(children)}
     </ReactMarkdown>
   );
 }

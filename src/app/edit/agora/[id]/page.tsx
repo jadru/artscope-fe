@@ -16,12 +16,11 @@ import { Text } from '@tiptap/extension-text';
 import { Underline } from '@tiptap/extension-underline';
 import { EditorContent, useEditor } from '@tiptap/react';
 import { useDebounce } from '@toss/react';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 import {
   BiArrowBack,
   BiBold,
-  BiImage,
   BiItalic,
   BiListOl,
   BiListUl,
@@ -33,21 +32,15 @@ import { Markdown } from 'tiptap-markdown';
 
 import '@/styles/editor.scss';
 
-import NewMediaView from '@/components/New/Media/NewMediaView';
-
 import AnonymousCheckBox from '@/app/new/agora/AnonymousCheckBox';
-import { initialAgoraSchema } from '@/app/new/agora/initialAgoraSchema';
 import jxios from '@/utils/jxios';
 
-import { ArtWorkMediaType } from '@/types/artwork';
+import { AgoraDetailType } from '@/types/agora';
 
 const NewArtwork = () => {
-  const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
-  const [imgs, setImgs] = useState<string[]>([]);
   const { push } = useRouter();
   const [anonymousType, setAnonymousType] = useState<boolean>(true);
   const [isUpload, setIsUpload] = useState(false);
-  const [insertImage, setInsertImage] = useState<boolean>(false);
   const [buttonText, setButtonText] = useState<{
     agreeText: string;
     naturalText: string;
@@ -58,6 +51,7 @@ const NewArtwork = () => {
     disagreeText: '',
   });
   const placeholderText = '주제에 대한 아고라 제안 이유를 설명해주세요.';
+  const params = useParams();
 
   const CustomDocument = Document.extend({
     content: 'heading block* paragraph+',
@@ -103,97 +97,61 @@ const NewArtwork = () => {
     autofocus: true,
   });
 
+  useEffect(() => {
+    jxios.get(`/api/agoras/${params.id}`).then((res) => {
+      const data = res.data as AgoraDetailType;
+      editor?.commands.setContent(
+        '# ' + data.agora.title + '\n\n' + data.agora.content
+      );
+      setButtonText({
+        agreeText: data.agora.agreeText,
+        naturalText: data.agora.naturalText,
+        disagreeText: data.agora.disagreeText,
+      });
+      setAnonymousType(data.agora.isAnonymous);
+    });
+  }, [editor, params.id]);
+
   const handleCreateSaveButton = useDebounce(async () => {
     if (isUpload) return;
-    try {
-      if (buttonText.disagreeText.length === 0) {
-        toast.warn('반대 의견 텍스트를 입력해주세요.');
-        return;
-      }
-      if (buttonText.agreeText.length === 0) {
-        toast.warn('찬성 의견 텍스트를 입력해주세요.');
-        return;
-      }
-      if (buttonText.naturalText.length === 0) {
-        toast.warn('중립 의견 텍스트를 입력해주세요.');
-        return;
-      }
-      if (
-        editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4))
-          .length === 0
-      ) {
-        toast.warn('제목을 입력해주세요.');
-        return;
-      }
-      if (
-        fileUrls.length > 0 &&
-        fileUrls.reduce(
-          (acc, cur) => (cur.file ? cur.file.size + acc : acc),
-          0
-        ) /
-          1000000 >
-          100
-      ) {
-        setIsUpload(false);
-        toast.warn('파일 용량이 너무 큽니다.');
-        return;
-      }
-      setIsUpload(true);
-      const newState = { ...initialAgoraSchema };
-      const markdownContent = editor?.storage.markdown.getMarkdown() || '';
-      newState.dto.title =
-        editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4)) || '';
-      newState.dto.content = markdownContent.slice(
-        markdownContent.indexOf('\n') + 2
-      );
-      newState.dto.agreeText = buttonText.agreeText;
-      newState.dto.disagreeText = buttonText.disagreeText;
-      newState.dto.naturalText = buttonText.naturalText;
-      newState.dto.isAnonymous = anonymousType;
-
-      const formData = new FormData();
-      if (fileUrls.length > 0) {
-        formData.append('thumbnailFile', fileUrls[0].file as File);
-        newState.dto.thumbnail = {
-          mediaType: 'image',
-        };
-        newState.dto.medias = [];
-        fileUrls.forEach((media) => {
-          formData.append('mediaFiles', media.file as File);
-          newState.dto.medias?.push({
-            mediaType: media.mediaType,
-          });
-        });
-      }
-      formData.append(
-        'dto',
-        new Blob([JSON.stringify(newState.dto)], { type: 'application/json' })
-      );
-      await jxios
-        .post('/api/agoras', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Accept: 'application/json',
-          },
-        })
-        .then((res) => {
-          if (res.status === 201) {
-            toast.success('아고라가 작성되었습니다.');
-            push('/agoras');
-          }
-        })
-        .catch((err) => {
-          toast.error(err.response.data);
-        });
-    } catch (err) {
-      toast.error((err as string) || '아고라 업로드에 실패했습니다.');
-    } finally {
-      setIsUpload(false);
+    if (editor?.getHTML() === '<h1></h1><p></p>') {
+      toast.error('내용을 입력해주세요.');
+      return;
     }
+    if (
+      buttonText.agreeText === '' ||
+      buttonText.disagreeText === '' ||
+      buttonText.naturalText === ''
+    ) {
+      toast.error('버튼 텍스트를 입력해주세요.');
+      return;
+    }
+    setIsUpload(true);
+    const markdownContent = editor?.storage.markdown.getMarkdown() || '';
+    const data = {
+      title:
+        editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4)) || '',
+      content: markdownContent.slice(markdownContent.indexOf('\n') + 2),
+      agreeText: buttonText.agreeText,
+      disagreeText: buttonText.disagreeText,
+      naturalText: buttonText.naturalText,
+      isAnonymous: anonymousType,
+    };
+    jxios
+      .put('/api/agoras', data)
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success('아고라가 수정되었습니다.');
+          push('/agora/' + res.data.id);
+        }
+      })
+      .finally(() => {
+        setIsUpload(false);
+      });
   }, 500);
 
   const handleBackButton = () => {
-    if (editor?.getHTML() !== '<p></p>' || fileUrls.length > 0) {
+    if (editor?.getHTML() !== '<h1></h1><p></p>') {
       if (confirm('작성 중인 내용이 있습니다. 정말로 나가시겠습니까?')) {
         push('/');
       }
@@ -257,14 +215,6 @@ const NewArtwork = () => {
           >
             <BiUnderline size={25} />
           </button>
-          <button onClick={() => setInsertImage((prev) => !prev)}>
-            <BiImage
-              size={25}
-              className={`hover:text-primary ${
-                insertImage ? 'text-black' : 'text-default'
-              }`}
-            />
-          </button>
           <button
             onClick={() => {
               if (editor) {
@@ -295,16 +245,6 @@ const NewArtwork = () => {
       <div className='h-16'></div>
       <div className='w-full space-y-2 overflow-y-scroll p-4'>
         {editor && <EditorContent editor={editor} className='min-h-[80px]' />}
-        {insertImage && (
-          <NewMediaView
-            fileUrls={fileUrls}
-            setFileUrls={setFileUrls}
-            setImgs={setImgs}
-            imgs={imgs}
-            header='토론 관련 이미지 업로드'
-            onlyImage
-          />
-        )}
       </div>
       <div className='flex w-full flex-col gap-2 p-3 md:flex-row'>
         <Input
@@ -365,7 +305,7 @@ const NewArtwork = () => {
               'animate-pulse border-gray-200 bg-gray-200 text-default'
             }`}
         >
-          새 아고라 작성
+          아고라 수정
         </button>
       </div>
     </>

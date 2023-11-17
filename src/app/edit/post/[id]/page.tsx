@@ -77,7 +77,13 @@ const EditPost = () => {
   const handleSubmitPostButton = useDebounce(async () => {
     try {
       setIsUpload(true);
+
       const content = editor?.storage.markdown.getMarkdown() || '';
+      if (content === '') {
+        toast.error('내용을 입력해주세요.');
+        setIsUpload(false);
+        return;
+      }
       await jxios.put(`/api/posts/${params.id}`, { content });
       toast.success('포스트가 수정 되었습니다.');
       push('/post/' + params.id);

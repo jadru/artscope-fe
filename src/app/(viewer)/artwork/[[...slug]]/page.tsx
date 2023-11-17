@@ -2,7 +2,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
-import MarkdownVewer from '@/components/MarkdownViewer';
+import MarkdownViewer from '@/components/MarkdownViewer';
 
 import ArtworkAction from '@/app/(viewer)/artwork/[[...slug]]/ArtworkAction';
 import ArtworkAuthorProfile from '@/app/(viewer)/artwork/[[...slug]]/ArtworkAuthorProfile';
@@ -77,12 +77,12 @@ export default async function ArtworkPage({
   if (!data || !author) throw new Error('Failed to fetch data');
   return (
     <div>
-      <h1 className='break-words px-3 pt-2 text-left text-4xl'>
+      <h1 className='break-words px-3 pt-2 text-left text-4xl md:px-0'>
         {data.artwork.title}
       </h1>
       <ArtworkProfile aw={data} />
-      <div className='px-3 py-3 md:px-3'>
-        <MarkdownVewer content={data.artwork.description} />
+      <div className='px-3 py-3 md:px-0'>
+        <MarkdownViewer>{data.artwork.description}</MarkdownViewer>
       </div>
       <div>
         {data.artwork.artworkMedias.map((media, mediaIndex) => (
@@ -120,13 +120,9 @@ export default async function ArtworkPage({
           </div>
         ))}
       </div>
-      <hr className='h-0.5 bg-default-100'></hr>
       <ArtworkTags data={data} />
-      <hr className='h-0.5 bg-default-100'></hr>
       <ArtworkAuthorProfile author={author} />
-      <hr className='h-0.5 bg-default-100'></hr>
       <ArtworkAction aw={data} />
-      <hr className='h-0.5 bg-default-100'></hr>
       <ArtworkComment aw={data} />
     </div>
   );

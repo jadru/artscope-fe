@@ -121,7 +121,7 @@ export default async function ProfilePage({
         )}
       </div>
       {data.introduction && (
-        <div className='rounded-2xl border border-default-400 px-2.5 py-2 '>
+        <div className='rounded-2xl border border-default-400 px-2.5 py-2'>
           <h2 className='mb-1 text-xl font-normal'>소개</h2>
           <p>{data.introduction}</p>
         </div>

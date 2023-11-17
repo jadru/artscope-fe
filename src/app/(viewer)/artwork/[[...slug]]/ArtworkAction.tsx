@@ -82,16 +82,6 @@ export default function ArtworkAction({ aw }: { aw: ArtworkType }) {
           {aw.artwork.comments}
         </Button>
       </div>
-      {/* <DebounceClick wait={500}> */}
-      {/*   <Button */}
-      {/*     startContent={<AiOutlineStar className='h-5 w-5' />} */}
-      {/*     variant='light' */}
-      {/*     className='text-md text-gray-500 hover:text-green-500' */}
-      {/*     onClick={handleSave} */}
-      {/*   > */}
-      {/*     {0} */}
-      {/*   </Button> */}
-      {/* </DebounceClick> */}
       <div>
         {aw.artwork.authorUsername === user?.username && (
           <>
