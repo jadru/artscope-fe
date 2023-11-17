@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { BiConfused, BiHappy, BiMeh } from 'react-icons/bi';
 
 import ASNextImage from '@/components/ASNextImage';
-import MarkdownVewer from '@/components/MarkdownViewer';
+import MarkdownViewer from '@/components/MarkdownViewer';
 
 import { AgoraType } from '@/types/agora';
 
@@ -14,7 +14,7 @@ export default function AgoraItem({ agora }: { agora: AgoraType }) {
           <div>
             <h3>{agora.title}</h3>
             <div className='line-clamp-2'>
-              <MarkdownVewer content={agora.content} />
+              <MarkdownViewer>{agora.content}</MarkdownViewer>
             </div>
           </div>
           <div className='mt-1 flex justify-start gap-3'>

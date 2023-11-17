@@ -186,29 +186,27 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
           animate={{ opacity: 1 }}
           className='fixed left-0 top-0 z-[49] flex h-screen w-screen flex-col items-start justify-center bg-white px-6 py-8 md:hidden'
         >
-          <div className='flex flex-col gap-4'>
-            {menuItems.map((item, index) => (
-              <Link
-                key={`${item.name}-${index}`}
-                href={item.url}
-                className={`flex w-full items-center text-left font-bold decoration-2 underline-offset-4 transition hover:underline ${
-                  index === 0
-                    ? pathname === '/'
-                      ? 'underline'
-                      : ''
-                    : pathname.startsWith(item.slug)
+          {menuItems.map((item, index) => (
+            <Link
+              key={`${item.name}-${index}`}
+              href={item.url}
+              className={`flex w-full items-center rounded-xl px-2.5 py-2 text-left font-bold decoration-2 underline-offset-4 transition hover:bg-default-100 hover:underline ${
+                index === 0
+                  ? pathname === '/'
                     ? 'underline'
                     : ''
-                }`}
-              >
-                {React.createElement(item.icon, {
-                  size: 23,
-                  className: 'mr-2',
-                })}
-                <p className='my-1 text-2xl'>{item.name}</p>
-              </Link>
-            ))}
-          </div>
+                  : pathname.startsWith(item.slug)
+                  ? 'underline'
+                  : ''
+              }`}
+            >
+              {React.createElement(item.icon, {
+                size: 23,
+                className: 'mr-2',
+              })}
+              <p className='my-1 text-2xl'>{item.name}</p>
+            </Link>
+          ))}
         </motion.div>
       )}
     </>

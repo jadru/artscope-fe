@@ -84,7 +84,7 @@ export default function FeedListItemPostAction({
         <button
           onClick={(e) => {
             e.stopPropagation();
-            push(`/post/${feed.id}?edit=true`);
+            push(`/edit/post/${feed.id}`);
           }}
           className='text-md flex p-2 text-gray-500 hover:text-purple-500'
         >

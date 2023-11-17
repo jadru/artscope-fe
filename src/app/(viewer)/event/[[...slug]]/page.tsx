@@ -2,15 +2,16 @@ import { format } from 'date-fns';
 import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import React from 'react';
-import { BiCalendar, BiShare, BiWon } from 'react-icons/bi';
+import { BiCalendar, BiWon } from 'react-icons/bi';
 import { BsInfoLg } from 'react-icons/bs';
 
 import ASNextImage from '@/components/ASNextImage';
-import MarkdownVewer from '@/components/MarkdownViewer';
+import MarkdownViewer from '@/components/MarkdownViewer';
 
 import CalendarButton from '@/app/(viewer)/event/[[...slug]]/CalendarButton';
 import EventEditDelete from '@/app/(viewer)/event/[[...slug]]/EventEditDelete';
 import eventTypeToKO from '@/app/(viewer)/event/[[...slug]]/eventTypeToKO';
+import ShareButton from '@/app/(viewer)/event/[[...slug]]/ShareButton';
 import SingleEventMedia from '@/app/(viewer)/event/[[...slug]]/SingleEventMedia';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
@@ -72,6 +73,14 @@ export default async function Event({
     if (ii.id === scheduleId) return;
     if (new Date(ii.eventDate + 'T' + ii.endTime) < new Date()) return ii;
   });
+  const [startDate, endDate] = data.eventSchedules.reduce(
+    (acc, cur) => {
+      if (new Date(cur.eventDate) < new Date(acc[0])) acc[0] = cur.eventDate;
+      if (new Date(cur.eventDate) > new Date(acc[1])) acc[1] = cur.eventDate;
+      return acc;
+    },
+    [data.eventSchedules[0].eventDate, data.eventSchedules[0].eventDate]
+  );
 
   if (!data) throw new Error('Failed to fetch data');
 
@@ -79,7 +88,7 @@ export default async function Event({
     <div>
       <div className='flex flex-col-reverse justify-between md:flex-row'>
         <div className='flex flex-col items-start justify-start gap-1 px-3 py-2 pb-2 md:w-1/2'>
-          <h1>{data.title}</h1>
+          <h1 className='break-keep text-[2.3rem] font-normal'>{data.title}</h1>
 
           <h3>
             {format(new Date(thisSchedule.eventDate), 'yyyy년 MM월 dd일')}{' '}
@@ -97,8 +106,8 @@ export default async function Event({
               {data.price === 0 ? '무료' : data.price + '원'}
             </div>
           </div>
-          <div className='p-3'>
-            <MarkdownVewer content={data.description} />
+          <div className='py-3'>
+            <MarkdownViewer>{data.description}</MarkdownViewer>
           </div>
 
           <div className='mb-3'>
@@ -116,34 +125,35 @@ export default async function Event({
               <BiCalendar size={20} />
               캘린더에 추가하기
             </CalendarButton>
-            <button className='flex items-center gap-1 hover:font-bold hover:underline'>
-              <BiShare size={20} />
-              공유하기
-            </button>
+            <ShareButton
+              id={data.id}
+              scheduleId={scheduleId}
+              title={data.title}
+            />
           </div>
 
           <EventEditDelete authorUsername={data.author} eventId={data.id} />
 
-          {data.medias && data.medias.length > 1 && (
+          {data.medias && data.medias.length > 2 && (
             <SingleEventMedia feed={data} />
           )}
 
-          <div>
+          <div className='my-2 w-full rounded-2xl border border-default-400 px-2.5 py-2'>
+            <h2>
+              {startDate === endDate ? startDate : startDate + ' ~ ' + endDate}
+            </h2>
             {futureEvents &&
               futureEvents.map((schedule) => (
                 <div key={schedule.id} className='flex flex-col py-3'>
                   <h3>
-                    {format(new Date(schedule.eventDate), 'yyyy년 MM월 dd일')}{' '}
-                    {schedule.startTime} - {schedule.endTime}
+                    {schedule.eventDate} {schedule.startTime} -{' '}
+                    {schedule.endTime}
                   </h3>
                   <h4 className='font-normal text-default-700'>
                     {data.location.name} {schedule.detailLocation}
                   </h4>
                 </div>
               ))}
-          </div>
-
-          <div>
             {previousEvents &&
               previousEvents.map((schedule) => (
                 <div
@@ -151,8 +161,8 @@ export default async function Event({
                   className='flex flex-col py-3 text-default-400'
                 >
                   <h3>
-                    {format(new Date(schedule.eventDate), 'yyyy년 MM월 dd일')}{' '}
-                    {schedule.startTime} - {schedule.endTime}
+                    {schedule.eventDate} {schedule.startTime} -{' '}
+                    {schedule.endTime}
                   </h3>
                   <h4 className='font-normal text-default-700'>
                     {data.location.name} {schedule.detailLocation}
@@ -165,7 +175,7 @@ export default async function Event({
           <ASNextImage
             src={data.thumbnail.mediaUrl}
             alt='thumbnail'
-            className='w-full md:w-1/2'
+            className='h-fit w-full md:w-1/2'
             width={400}
             height={400}
           />

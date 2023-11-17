@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { BiConfused, BiHappy, BiMeh } from 'react-icons/bi';
 
 import ASNextImage from '@/components/ASNextImage';
-import MarkdownVewer from '@/components/MarkdownViewer';
+import MarkdownViewer from '@/components/MarkdownViewer';
 
 import { feedItemType } from '@/types/feed';
 
@@ -20,10 +20,9 @@ export default function FeedListItemAgora({ feed }: { feed: feedItemType }) {
           <div className='flex w-3/4 flex-col justify-between overflow-x-hidden break-keep tracking-tight text-default-800'>
             <div className='line-clamp-3'>
               <h4 className='text-[1.1rem]'>{feed.title}</h4>
-              <MarkdownVewer
-                content={feed.content}
-                className='line-clamp-2 text-default-600 peer-default:!text-[0.9rem]'
-              />
+              <MarkdownViewer className='line-clamp-2 text-default-600 peer-default:!text-[0.9rem]'>
+                {feed.content}
+              </MarkdownViewer>
             </div>
             <div className='mt-1 flex justify-start gap-3'>
               <p className='flex items-center gap-1 text-lg text-red-600'>
