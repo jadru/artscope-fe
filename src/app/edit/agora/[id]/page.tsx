@@ -138,11 +138,11 @@ const NewArtwork = () => {
       isAnonymous: anonymousType,
     };
     jxios
-      .put('/api/agoras', data)
+      .put('/api/agoras/' + params.id, data)
       .then((res) => {
         if (res.status === 200) {
           toast.success('아고라가 수정되었습니다.');
-          push('/agora/' + res.data.id);
+          push('/agora/' + params.id);
         }
       })
       .finally(() => {

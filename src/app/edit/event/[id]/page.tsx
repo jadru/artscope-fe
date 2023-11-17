@@ -124,11 +124,11 @@ const NewEvent = () => {
     };
 
     await jxios
-      .put('/api/exhibitions', data)
+      .put('/api/exhibitions/' + params.id, data)
       .then((res) => {
         if (res.status === 200) {
           toast.success('이벤트가 수정되었습니다.');
-          push('/event/' + res.data.id);
+          push('/event/' + params.id);
         }
       })
       .catch((err) => {
