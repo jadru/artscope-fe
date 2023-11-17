@@ -1,6 +1,12 @@
 import { Metadata, ResolvingMetadata } from 'next';
 
-import SinglePostItem from '@/app/(viewer)/post/[[...slug]]/SinglePostItem';
+import MarkdownViewer from '@/components/MarkdownViewer';
+
+import PostComment from '@/app/(viewer)/post/[[...slug]]/comment';
+import SinglePostItemAction from '@/app/(viewer)/post/[[...slug]]/SinglePostItemAction';
+import SinglePostMedia from '@/app/(viewer)/post/[[...slug]]/SinglePostMedia';
+import SinglePostOpengraph from '@/app/(viewer)/post/[[...slug]]/SinglePostOpengraph';
+import SinglePostProfile from '@/app/(viewer)/post/[[...slug]]/SinglePostProfile';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
@@ -45,17 +51,47 @@ const fetchPost = async (id: string) =>
 
 export default async function SinglePost({
   params,
-  searchParams,
 }: {
   params: { slug: string[] };
-  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const data = await fetchPost(params.slug[0]);
   if (!data) throw new Error('Failed to fetch data');
   return (
-    <SinglePostItem
-      feed={data}
-      editMode={Boolean(searchParams?.edit) ?? false}
-    />
+    <>
+      <div className='border-default-200 bg-white pb-2 transition-colors md:mx-0'>
+        <div className='flex w-full flex-col justify-between text-left md:flex-row'>
+          <div className='w-full'>
+            <SinglePostProfile feed={data} />
+
+            <div className='flex flex-col justify-start px-1.5'>
+              <div className='flex w-full flex-col gap-1 break-keep p-3 text-xl leading-relaxed tracking-wide'>
+                <MarkdownViewer>{data.content}</MarkdownViewer>
+                <SinglePostOpengraph content={data.content} />
+              </div>
+            </div>
+            {data.medias && data.medias.length > 1 && (
+              <SinglePostMedia feed={data} />
+            )}
+            {data.updatedTime ? (
+              <p className='mx-1.5 mt-1.5 text-right text-default-500'>
+                {new Date(data.updatedTime).toLocaleString('ko-KR', {
+                  dateStyle: 'full',
+                  timeStyle: 'short',
+                }) + ' 수정'}
+              </p>
+            ) : (
+              <p className='mx-1.5 mt-1.5 text-right text-default-500'>
+                {new Date(data.createdTime).toLocaleString('ko-KR', {
+                  dateStyle: 'full',
+                  timeStyle: 'short',
+                }) + ' 작성'}
+              </p>
+            )}
+          </div>
+        </div>
+        <SinglePostItemAction feed={data} />
+      </div>
+      <PostComment post={data} />
+    </>
   );
 }

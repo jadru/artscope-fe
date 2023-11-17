@@ -1,5 +1,3 @@
-'use client';
-
 import FeedRoot from '@/app/(list)/(feed)/FeedRoot';
 import MainNavigation from '@/app/(list)/(feed)/MainNavigation';
 import RecentArtworkWidget from '@/app/(list)/(feed)/RecentArtworkWidget';

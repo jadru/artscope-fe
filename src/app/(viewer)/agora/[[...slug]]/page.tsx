@@ -2,7 +2,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
-import MarkdownVewer from '@/components/MarkdownViewer';
+import MarkdownViewer from '@/components/MarkdownViewer';
 
 import AgoraAction from '@/app/(viewer)/agora/[[...slug]]/AgoraAction';
 import AgoraChart from '@/app/(viewer)/agora/[[...slug]]/AgoraChart';
@@ -78,7 +78,7 @@ export default async function AgoraDetailPage({
         />
       </div>
       <div className='px-3 md:px-3'>
-        <MarkdownVewer content={data.agora.content} />
+        <MarkdownViewer>{data.agora.content}</MarkdownViewer>
       </div>
       {data.agora.medias.length > 2 && <AgoraMedia feed={data} />}
       <div className='px-2'>

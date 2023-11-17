@@ -14,13 +14,13 @@ export default function NewPostModalButton({ placeholder }: Props) {
 
   return (
     <div
-      className='flex w-full max-w-full animate-fade cursor-pointer flex-row justify-between gap-3 space-y-1 overflow-hidden border-default-200 p-3 transition hover:bg-default-100'
+      className='flex w-full max-w-full animate-fade cursor-pointer flex-row justify-between gap-3 space-y-1 overflow-hidden rounded-xl border-default-100 p-3 transition hover:bg-default-100'
       onClick={() => {
         push('/new/post');
       }}
     >
       <UserInfo />
-      <span className='flex h-12 w-[calc(100%-3rem)] items-center truncate rounded-3xl border border-white bg-default-100 px-3 text-left text-sm font-bold text-default-500'>
+      <span className='flex h-12 w-[calc(100%-3rem)] items-center truncate rounded-3xl bg-default-100 px-3 text-left text-sm font-bold text-default-500'>
         {placeholder}
       </span>
     </div>

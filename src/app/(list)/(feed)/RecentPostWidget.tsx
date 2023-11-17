@@ -1,6 +1,10 @@
+'use client';
+
 import { Skeleton } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+
+import MarkdownViewer from '@/components/MarkdownViewer';
 
 import jxios from '@/utils/jxios';
 
@@ -27,7 +31,9 @@ export default function RecentPostWidget() {
             key={p.id}
             onClick={() => push('/post/' + p.id)}
           >
-            <p className='truncate'>{p.content.replace(/<[^>]*>?/g, '')}</p>
+            <MarkdownViewer className='line-clamp-1' ignoreMarkdown ignoreHTML>
+              {p.content.replace(/<[^>]*>?/g, '')}
+            </MarkdownViewer>
           </button>
         ))}
       </div>

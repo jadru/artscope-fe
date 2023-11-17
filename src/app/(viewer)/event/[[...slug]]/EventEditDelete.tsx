@@ -2,7 +2,7 @@
 
 import { Button } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
-import { AiOutlineDelete } from 'react-icons/ai';
+import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 
 import { useUser } from '@/states';
@@ -27,13 +27,22 @@ export default function EventEditDelete({
     }
   };
   return user?.name === authorUsername ? (
-    <div className='flex justify-between px-1'>
+    <div className='flex justify-between gap-1 px-1'>
       <Button
         startContent={<AiOutlineDelete />}
         color='danger'
         onClick={handleDelete}
       >
         삭제
+      </Button>
+      <Button
+        startContent={<AiOutlineEdit />}
+        color='primary'
+        onClick={() => {
+          push(`/edit/event/${eventId}`);
+        }}
+      >
+        수정
       </Button>
     </div>
   ) : (

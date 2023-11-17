@@ -1,6 +1,10 @@
+'use client';
+
 import { Skeleton } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+
+import MarkdownViewer from '@/components/MarkdownViewer';
 
 import jxios from '@/utils/jxios';
 
@@ -27,7 +31,9 @@ export default function RecentArtworkWidget() {
             key={aw.id}
             onClick={() => push('/artwork/' + aw.id)}
           >
-            <p className='truncate'>{aw.title.replace(/<[^>]*>?/g, '')}</p>
+            <MarkdownViewer className='line-clamp-1' ignoreMarkdown ignoreHTML>
+              {aw.title.replace(/<[^>]*>?/g, '')}
+            </MarkdownViewer>
           </button>
         ))}
       </div>

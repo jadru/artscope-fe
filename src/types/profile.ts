@@ -7,7 +7,8 @@ export type roleStatus =
   | 'ARTIST'
   | 'CURATOR_REJECTED'
   | 'CURATOR_PENDING'
-  | 'CURATOR';
+  | 'CURATOR'
+  | 'ADMIN';
 
 export type profileApiType = {
   username: string;

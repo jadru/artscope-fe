@@ -140,7 +140,7 @@ const NewEvent = () => {
       newState.dto.title =
         editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4)) || '';
       newState.dto.description = markdownContent.slice(
-        markdownContent.indexOf('\n') + 3
+        markdownContent.indexOf('\n') + 2
       );
       newState.dto.link = link;
       newState.dto.eventType = eventType;
