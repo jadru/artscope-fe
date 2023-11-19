@@ -100,14 +100,14 @@ export default function Events() {
           <div className='relative mx-4'>
             {data &&
               data.map((date) => (
-                <div className='' key={date.date}>
-                  <div className='sticky top-16 flex items-center gap-3 bg-white md:flex-col md:items-start md:gap-0 md:bg-transparent'>
-                    <h2 className='py-1 text-[2.4rem]'>{date.date}</h2>
-                    <span className='text-2xl text-default-500'>
+                <div className='relative flex' key={date.date}>
+                  <div className='sticky top-16 flex w-28 flex-col items-start gap-0 self-start bg-transparent pt-2'>
+                    <h2 className='py-1 text-[1.4rem]'>{date.date}</h2>
+                    <span className='text-[1.2rem] text-default-500'>
                       {date.dayOfWeek} / {date.dayOfWeekKor}요일
                     </span>
                   </div>
-                  <div className='flex flex-col space-y-1'>
+                  <div className='flex w-[calc(100%-7rem)] flex-col space-y-1 md:pl-3'>
                     {date.event &&
                       date.event.map((exhibition) => (
                         <EventListItem event={exhibition} key={exhibition.id} />

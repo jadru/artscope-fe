@@ -5,6 +5,7 @@ import { PieChart } from '@mui/x-charts';
 import { AgoraDetailType } from '@/types/agora';
 
 export default function AgoraChart({ agora }: { agora: AgoraDetailType }) {
+  // TODO: 차트 디자인 재확인
   return (
     <PieChart
       series={[
