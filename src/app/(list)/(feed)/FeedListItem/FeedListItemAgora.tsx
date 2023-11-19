@@ -20,7 +20,7 @@ export default function FeedListItemAgora({ feed }: { feed: feedItemType }) {
           <div className='flex w-3/4 flex-col justify-between overflow-x-hidden break-keep tracking-tight text-default-800'>
             <div className='line-clamp-3'>
               <h4 className='text-[1.1rem]'>{feed.title}</h4>
-              <MarkdownViewer className='line-clamp-2 text-default-600 peer-default:!text-[0.9rem]'>
+              <MarkdownViewer className='line-clamp-2 leading-5 text-default-600 peer-default:!text-[0.9rem]'>
                 {feed.content}
               </MarkdownViewer>
             </div>

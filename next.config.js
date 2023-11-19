@@ -8,7 +8,9 @@ const config = {
   experimental: {
     scrollRestoration: true,
     webpackBuildWorker: true,
+    optimizePackageImports: ['react-markdown'],
   },
+  transpilePackages: ['react-markdown'],
   async rewrites() {
     return [
       {
@@ -22,7 +24,7 @@ const config = {
     ];
   },
 
-  reactStrictMode: false,
+  reactStrictMode: true,
   swcMinify: true,
 
   images: {
@@ -35,36 +37,39 @@ const config = {
 
   output: 'standalone',
 
-  // SVGR
-  webpack(config, { isServer, webpack }) {
+  webpack(config) {
+    // Grab the existing rule that handles SVG imports
+    const fileLoaderRule = config.module.rules.find((rule) =>
+      rule.test?.test?.('.svg')
+    );
+
     config.module.rules.push(
+      // Reapply the existing rule, but only for svg imports ending in ?url
+      {
+        ...fileLoaderRule,
+        test: /\.svg$/i,
+        resourceQuery: /url/, // *.svg?url
+      },
+      // Convert all other *.svg imports to React components
       {
         test: /\.svg$/i,
-        issuer: /\.[jt]sx?$/,
-        use: [
-          {
-            loader: '@svgr/webpack',
-            options: {
-              typescript: true,
-              icon: true,
-            },
-          },
-        ],
+        issuer: { not: /\.(css|scss|sass)$/ },
+        resourceQuery: { not: /url/ }, // exclude if *.svg?url
+        loader: '@svgr/webpack',
+        options: {
+          dimensions: false,
+          titleProp: true,
+        },
       },
       {
         test: /\.(mov|mp4|webm|ogg|swf|ogv)$/,
         type: 'asset/resource',
       }
     );
-    if (!isServer) {
-      config.resolve.fallback = {
-        fs: false,
-        net: false,
-        tls: false,
-        path: false,
-        dns: false,
-      };
-    }
+
+    // Modify the file loader rule to ignore *.svg, since we have it handled now.
+    fileLoaderRule.exclude = /\.svg$/i;
+
     return config;
   },
 };

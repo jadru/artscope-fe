@@ -1,4 +1,3 @@
-# https://github.com/kentcdodds/kentcdodds.com/blob/main/.github/workflows/deployment.yml
 name: Code Check
 on:
   push:
@@ -12,7 +11,7 @@ concurrency:
 
 jobs:
   lint:
-    name: ⬣ ESLint
+    name: ⬣ ESLint, ʦ TypeScript, 💅 Prettier, and 🃏 Test
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
@@ -24,61 +23,18 @@ jobs:
           node-version: 18
 
       - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
+        uses: u0reo/npm-install@fix/restore-failure
+        with:
+          useRollingCache: true
 
       - name: 🔬 Lint
         run: yarn lint:strict
 
-  typecheck:
-    name: ʦ TypeScript
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v2
-
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-
       - name: 🔎 Type check
         run: yarn typecheck
-
-  prettier:
-    name: 💅 Prettier
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v2
-
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
 
       - name: 💅 Prettier check
         run: yarn format:check
 
-#  test:
-#    name: 🃏 Test
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: ⬇️ Checkout repo
-#        uses: actions/checkout@v2
-#
-#      - name: ⎔ Setup node
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: 18
-#
-#      - name: 📥 Download deps
-#        uses: bahmutov/npm-install@v1
-#
-#      - name: 🃏 Run jest
-#        run: yarn test
+      - name: 🃏 Run jest
+        run: yarn test
