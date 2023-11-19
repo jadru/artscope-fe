@@ -50,7 +50,7 @@ const OpengraphCard = ({
         )}
         <div className='w-[calc(100%-6rem)] px-3 py-3'>
           <h5 className='truncate text-lg font-bold'>{ogData.ogTitle}</h5>
-          <p className='line-clamp-2 text-default-600'>
+          <p className='line-clamp-2 leading-4 text-default-600'>
             {ogData.ogDescription || externalUrl}
           </p>
         </div>

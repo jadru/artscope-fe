@@ -70,7 +70,7 @@ export default function Index({ feed }: { feed: feedItemType }) {
           </div>
           <div className='flex flex-col justify-start'>
             <div className='text flex w-full flex-col gap-1'>
-              <MarkdownViewer className='line-clamp-2 text-default-600 peer-default:!text-[0.9rem]'>
+              <MarkdownViewer className='line-clamp-2 leading-5 text-default-600 peer-default:!text-[0.9rem]'>
                 {feed.content}
               </MarkdownViewer>
             </div>

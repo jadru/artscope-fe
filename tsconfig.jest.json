@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx" // html문법을 사용하기 위해 compilerOptions 추가해줘야 함.
+  }
+}
