@@ -2,7 +2,6 @@ import Link from 'next/link';
 import {
   BiSearch,
   BiSolidCalendar,
-  BiSolidHome,
   BiSolidNetworkChart,
   BiSolidNews,
   BiSolidPlanet,
@@ -10,7 +9,6 @@ import {
 } from 'react-icons/bi';
 
 const menuItems = [
-  { href: '/', text: '홈', icon: <BiSolidHome size={23} />, active: true },
   {
     href: '/search',
     text: '검색',
@@ -47,7 +45,7 @@ const menuItems = [
 export default function MainNavigation() {
   return (
     <>
-      <div className='hidden h-max w-full flex-col space-y-2.5 px-3 md:block'>
+      <div className='hidden h-max w-full flex-col gap-1 px-3 py-2 md:block'>
         {menuItems.map((item) => (
           <Link
             key={item.text}
@@ -56,7 +54,7 @@ export default function MainNavigation() {
               item.active ? 'text-default-800' : 'text-default-400'
             } ${
               item.text === '홈' ? 'underline' : ''
-            } gap-2 font-bold decoration-2 underline-offset-4 transition hover:bg-default-100 hover:underline`}
+            } gap-1.5 font-bold decoration-2 underline-offset-4 transition hover:bg-default-100 hover:underline`}
           >
             {item.icon}
             <p className='text-lg'>{item.text}</p>

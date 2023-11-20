@@ -5,6 +5,7 @@ import Link from 'next/link';
 import * as React from 'react';
 import { RiAlarmWarningFill } from 'react-icons/ri';
 
+import Footer from '@/components/Footer';
 import NavBar from '@/components/Navbar';
 
 export default function NotFoundPage() {
@@ -21,6 +22,7 @@ export default function NotFoundPage() {
           <Button color='primary'>홈으로 돌아가기</Button>
         </Link>
       </div>
+      <Footer />
     </>
   );
 }
