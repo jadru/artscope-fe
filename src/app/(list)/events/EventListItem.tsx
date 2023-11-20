@@ -5,8 +5,6 @@ import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
 
-import eventTypeToKO from '@/app/(viewer)/event/[[...slug]]/eventTypeToKO';
-
 import { SingleEventTypeOnList } from '@/types/event';
 
 export default function EventListItem({
@@ -19,26 +17,37 @@ export default function EventListItem({
       className='group flex flex-row items-center justify-between rounded-2xl bg-white px-2 py-2 transition hover:bg-default-100 group-hover:bg-default-100 md:z-10'
       href={`/event/${event.id}?scheduleId=${event.eventSchedule.id}`}
     >
-      <div className='flex flex-col items-start justify-start pl-3'>
+      <div className='flex flex-col items-start justify-start gap-2 pl-3'>
         <h3>{event.title}</h3>
-        <h4>
-          {event.eventSchedule.locationName}{' '}
-          {event.eventSchedule.detailLocation}
-        </h4>
-        <div className='rounded-lg border-2 bg-default-200 px-2 py-0.5 font-bold'>
-          {eventTypeToKO(event.eventType)}
-        </div>
-        <div className='flex flex-col gap-1 md:flex-row'>
-          <h5>
-            {format(
-              new Date(event.eventSchedule.eventDate),
-              'yyyy년 MM월 dd일 EEE요일',
-              { locale: ko }
-            )}
-          </h5>
-          <h5>
-            {event.eventSchedule.startTime} - {event.eventSchedule.endTime}
-          </h5>
+        <div className='flex flex-col gap-0.5'>
+          <div className='flex flex-col gap-1 md:flex-row'>
+            <h4>
+              {format(
+                new Date(
+                  event.eventSchedule.eventDate +
+                    'T' +
+                    event.eventSchedule.startTime
+                ),
+                'a hh:mm',
+                { locale: ko }
+              )}
+              -
+              {format(
+                new Date(
+                  event.eventSchedule.eventDate +
+                    'T' +
+                    event.eventSchedule.endTime
+                ),
+                'a hh:mm',
+                { locale: ko }
+              )}
+            </h4>
+          </div>
+          <h4 className='font-normal'>
+            {event.eventSchedule.locationName}{' '}
+            {event.eventSchedule.detailLocation}
+          </h4>
+          <p>{event.eventType}</p>
         </div>
       </div>
       <ASNextImage
