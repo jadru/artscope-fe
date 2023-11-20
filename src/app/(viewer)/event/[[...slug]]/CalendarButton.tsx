@@ -7,12 +7,12 @@ import { EventDetailType } from '@/types/event';
 
 type CalendarButtonProps = {
   data: EventDetailType;
-  scheduleId: number;
+  scheduleid: number;
 } & React.ComponentProps<'button'>;
 
 const CalendarButton = ({ ...props }: CalendarButtonProps) => {
   const thisSchedule = props.data.eventSchedules.filter(
-    (ii) => ii.id === props.scheduleId
+    (ii) => ii.id === props.scheduleid
   )[0];
   const handleIcs = async () => {
     const startTime = new Date(
@@ -41,9 +41,10 @@ const CalendarButton = ({ ...props }: CalendarButtonProps) => {
         ],
         location:
           props.data.location.address +
-          thisSchedule.detailLocation +
           ' ' +
-          props.data.location.name,
+          props.data.location.name +
+          ' ' +
+          thisSchedule.detailLocation,
         geo: {
           lat: props.data.location.latitude,
           lon: props.data.location.longitude,
@@ -62,7 +63,7 @@ const CalendarButton = ({ ...props }: CalendarButtonProps) => {
           'https://www.artscope.kr/event/' +
           props.data.id +
           '?scheduleId=' +
-          props.scheduleId,
+          props.scheduleid,
         alarms: [
           {
             action: 'display',

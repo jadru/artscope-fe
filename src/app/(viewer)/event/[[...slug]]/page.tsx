@@ -2,8 +2,9 @@ import { format } from 'date-fns';
 import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import React from 'react';
-import { BiCalendar, BiWon } from 'react-icons/bi';
-import { BsInfoLg } from 'react-icons/bs';
+import { AiOutlineDelete } from 'react-icons/ai';
+import { BiCalendar, BiPlus, BiWon } from 'react-icons/bi';
+import { BsInfoLg, BsMap } from 'react-icons/bs';
 
 import ASNextImage from '@/components/ASNextImage';
 import MarkdownViewer from '@/components/MarkdownViewer';
@@ -11,6 +12,9 @@ import MarkdownViewer from '@/components/MarkdownViewer';
 import CalendarButton from '@/app/(viewer)/event/[[...slug]]/CalendarButton';
 import EventEditDelete from '@/app/(viewer)/event/[[...slug]]/EventEditDelete';
 import eventTypeToKO from '@/app/(viewer)/event/[[...slug]]/eventTypeToKO';
+import LocationButton from '@/app/(viewer)/event/[[...slug]]/LocationButton';
+import ScheduleAddButton from '@/app/(viewer)/event/[[...slug]]/ScheduleAddButton';
+import SchduleDeleteButton from '@/app/(viewer)/event/[[...slug]]/ScheduleDeleteButton';
 import ShareButton from '@/app/(viewer)/event/[[...slug]]/ShareButton';
 import SingleEventMedia from '@/app/(viewer)/event/[[...slug]]/SingleEventMedia';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
@@ -62,15 +66,13 @@ export default async function Event({
   if (!data) throw new Error('Failed to fetch data');
   const scheduleId =
     Number(searchParams?.scheduleId) || data.eventSchedules[0].id;
-  const thisSchedule = data.eventSchedules.filter(
-    (ii) => ii.id === scheduleId
-  )[0];
+  const thisSchedule =
+    data.eventSchedules.filter((ii) => ii.id === scheduleId)[0] ??
+    data.eventSchedules[0];
   const futureEvents = data.eventSchedules.filter((ii) => {
-    if (ii.id === scheduleId) return;
     if (new Date(ii.eventDate + 'T' + ii.endTime) >= new Date()) return ii;
   });
   const previousEvents = data.eventSchedules.filter((ii) => {
-    if (ii.id === scheduleId) return;
     if (new Date(ii.eventDate + 'T' + ii.endTime) < new Date()) return ii;
   });
   const [startDate, endDate] = data.eventSchedules.reduce(
@@ -87,16 +89,26 @@ export default async function Event({
   return (
     <div>
       <div className='flex flex-col-reverse justify-between md:flex-row'>
-        <div className='flex flex-col items-start justify-start gap-1 px-3 py-2 pb-2 md:w-1/2'>
+        <div className='flex flex-col items-start justify-start gap-2 px-3 py-2 pb-2 md:w-1/2'>
           <h1 className='break-keep text-[2.3rem] font-normal'>{data.title}</h1>
 
           <h3>
             {format(new Date(thisSchedule.eventDate), 'yyyy년 MM월 dd일')}{' '}
             {thisSchedule.startTime} - {thisSchedule.endTime}
           </h3>
-          <h3>
-            {data.location.name} {thisSchedule.detailLocation}
-          </h3>
+          <div>
+            <h4>
+              {data.location.snsUrl ? (
+                <Link href={data.location.snsUrl} className='hover:underline'>
+                  {data.location.name}
+                </Link>
+              ) : (
+                data.location.name
+              )}
+              {' ' + thisSchedule.detailLocation}
+            </h4>
+            <h4 className='font-normal'>{data.location.address}</h4>
+          </div>
           <div className='flex gap-1'>
             <div className='w-auto cursor-pointer rounded-lg border-2 bg-default-200 px-2 py-0.5 font-bold transition hover:bg-default-400'>
               {eventTypeToKO(data.eventType)}
@@ -106,7 +118,7 @@ export default async function Event({
               {data.price === 0 ? '무료' : data.price + '원'}
             </div>
           </div>
-          <div className='py-3'>
+          <div className='py-2'>
             <MarkdownViewer>{data.description}</MarkdownViewer>
           </div>
 
@@ -120,16 +132,23 @@ export default async function Event({
             <CalendarButton
               className='flex items-center gap-1 hover:font-bold hover:underline'
               data={data}
-              scheduleId={scheduleId}
+              scheduleid={scheduleId}
             >
               <BiCalendar size={20} />
-              캘린더에 추가하기
+              캘린더에 추가
             </CalendarButton>
             <ShareButton
               id={data.id}
               scheduleId={scheduleId}
               title={data.title}
             />
+            <LocationButton
+              location={data.location}
+              className='flex items-center gap-1 hover:font-bold hover:underline md:hidden'
+            >
+              <BsMap size={20} />
+              네이버 지도 보기
+            </LocationButton>
           </div>
 
           <EventEditDelete authorUsername={data.author} eventId={data.id} />
@@ -137,39 +156,6 @@ export default async function Event({
           {data.medias && data.medias.length > 2 && (
             <SingleEventMedia feed={data} />
           )}
-
-          <div className='my-2 w-full rounded-2xl border border-default-400 px-2.5 py-2'>
-            <h2>
-              {startDate === endDate ? startDate : startDate + ' ~ ' + endDate}
-            </h2>
-            {futureEvents &&
-              futureEvents.map((schedule) => (
-                <div key={schedule.id} className='flex flex-col py-3'>
-                  <h3>
-                    {schedule.eventDate} {schedule.startTime} -{' '}
-                    {schedule.endTime}
-                  </h3>
-                  <h4 className='font-normal text-default-700'>
-                    {data.location.name} {schedule.detailLocation}
-                  </h4>
-                </div>
-              ))}
-            {previousEvents &&
-              previousEvents.map((schedule) => (
-                <div
-                  key={schedule.id}
-                  className='flex flex-col py-3 text-default-400'
-                >
-                  <h3>
-                    {schedule.eventDate} {schedule.startTime} -{' '}
-                    {schedule.endTime}
-                  </h3>
-                  <h4 className='font-normal text-default-700'>
-                    {data.location.name} {schedule.detailLocation}
-                  </h4>
-                </div>
-              ))}
-          </div>
         </div>
         {data.thumbnail?.mediaUrl && (
           <ASNextImage
@@ -180,6 +166,67 @@ export default async function Event({
             height={400}
           />
         )}
+      </div>
+      <div className='my-2 w-full px-2.5 py-2'>
+        <h2 className='flex gap-2 py-4'>
+          {startDate === endDate
+            ? startDate
+            : startDate + (endDate ? ' - ' + endDate : '')}{' '}
+          <ScheduleAddButton
+            eventid={data.id}
+            eventAuthorUsername={data.author}
+            className='flex items-center gap-1 text-lg hover:font-bold hover:underline'
+          >
+            <BiPlus size={20} />
+            스케줄 추가
+          </ScheduleAddButton>
+        </h2>
+        {futureEvents &&
+          futureEvents.map((schedule) => (
+            <div className='flex' key={schedule.id}>
+              <div className='flex w-1/2 flex-col py-3 md:w-3/4'>
+                <h3>
+                  {schedule.eventDate} {schedule.startTime} - {schedule.endTime}
+                </h3>
+                <h4 className='font-normal text-default-700'>
+                  {data.location.name} {schedule.detailLocation}
+                </h4>
+              </div>
+              <div className='flex w-1/2 items-center justify-end gap-2 md:w-1/4'>
+                <SchduleDeleteButton
+                  className='flex items-center gap-1 hover:font-bold hover:underline'
+                  scheduleid={schedule.id}
+                  eventAuthorUsername={data.author}
+                  eventid={data.id}
+                >
+                  <AiOutlineDelete size={20} />
+                  삭제
+                </SchduleDeleteButton>
+                <CalendarButton
+                  data={data}
+                  scheduleid={schedule.id}
+                  className='flex items-center gap-1 hover:font-bold hover:underline'
+                >
+                  <BiCalendar size={20} />
+                  캘린더에 추가
+                </CalendarButton>
+              </div>
+            </div>
+          ))}
+        {previousEvents &&
+          previousEvents.map((schedule) => (
+            <div
+              key={schedule.id}
+              className='flex flex-col py-3 text-default-400'
+            >
+              <h3>
+                {schedule.eventDate} {schedule.startTime} - {schedule.endTime}
+              </h3>
+              <h4 className='font-normal text-default-700'>
+                {data.location.name} {schedule.detailLocation}
+              </h4>
+            </div>
+          ))}
       </div>
     </div>
   );

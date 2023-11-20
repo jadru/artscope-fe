@@ -40,23 +40,16 @@ export default function NewParticipantView({
 
   const handleAddJustName = (name: string) => {
     if (name === '') return;
-    schedule[index].participants.length === 0
-      ? setSchedule((prev) => {
-          const newSchedule = [...prev];
-          newSchedule[index].participants = [{ name }];
-          return newSchedule;
-        })
-      : schedule[index].participants.filter((item) => item.name !== name)
-          .length === schedule[index].participants.length
-      ? setSchedule((prev) => {
-          const newSchedule = [...prev];
-          newSchedule[index].participants = [
-            ...newSchedule[index].participants,
-            { name },
-          ];
-          return newSchedule;
-        })
-      : '';
+    schedule[index].participants.filter((item) => item.name === name).length ===
+      0 &&
+      setSchedule((prev) => {
+        const newSchedule = [...prev];
+        newSchedule[index].participants = [
+          ...newSchedule[index].participants,
+          { name },
+        ];
+        return newSchedule;
+      });
   };
 
   const regTagExp = /[`~!#$%^&*()_|+=?;:'",.<>{}[\]\\/ ]/gim;
@@ -92,10 +85,8 @@ export default function NewParticipantView({
           className='m-1 h-6 max-h-6 w-32 rounded-xl !border-0 bg-transparent p-2 focus:border-none focus:shadow-none focus:shadow-transparent focus:ring-0'
           placeholder='참여 예술가 추가'
           onKeyDown={(e) => {
-            if (
-              (e.key === 'Enter' || e.key == ' ' || e.code == 'Space') &&
-              !e.nativeEvent.isComposing
-            ) {
+            if (e.nativeEvent.isComposing) return;
+            if (e.key === 'Enter' || e.key == ' ' || e.code == 'Space') {
               handleAddJustName(e.currentTarget.value.replace(regTagExp, ''));
               e.currentTarget.value = '';
             }
