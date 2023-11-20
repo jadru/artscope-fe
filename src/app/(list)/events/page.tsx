@@ -97,17 +97,17 @@ export default function Events() {
       </Title>
       {!isLoading ? (
         <>
-          <div className='relative mx-4'>
+          <div className='relative mx-4 space-y-3'>
             {data &&
               data.map((date) => (
                 <div className='relative flex' key={date.date}>
-                  <div className='sticky top-16 flex w-28 flex-col items-start gap-0 self-start bg-transparent pt-2'>
+                  <div className='sticky top-16 flex w-28 flex-col items-start gap-0 self-start bg-transparent pt-2 md:w-48'>
                     <h2 className='py-1 text-[1.4rem]'>{date.date}</h2>
                     <span className='text-[1.2rem] text-default-500'>
                       {date.dayOfWeek} / {date.dayOfWeekKor}요일
                     </span>
                   </div>
-                  <div className='flex w-[calc(100%-7rem)] flex-col space-y-1 md:pl-3'>
+                  <div className='flex w-[calc(100%-7rem)] flex-col gap-3 py-1.5 md:ml-3 md:w-[calc(100%-12rem)]'>
                     {date.event &&
                       date.event.map((exhibition) => (
                         <EventListItem event={exhibition} key={exhibition.id} />

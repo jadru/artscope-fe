@@ -26,13 +26,14 @@ export default function FeedListItemAgora({ feed }: { feed: feedItemType }) {
             </div>
             <div className='mt-1 flex justify-start gap-3'>
               <p className='flex items-center gap-1 text-lg text-red-600'>
-                <BiConfused size={20} /> {feed.agoraDisagreeCount}
+                <BiConfused size={20} /> {feed.disagreeText}{' '}
+                {feed.agoraDisagreeCount}
               </p>
               <p className='flex items-center gap-1 text-lg text-yellow-600'>
-                <BiMeh size={20} /> {feed.agoraNaturalCount}
+                <BiMeh size={20} /> {feed.naturalText} {feed.agoraNaturalCount}
               </p>
               <p className='flex items-center gap-1 text-lg text-blue-500'>
-                <BiHappy size={20} /> {feed.agoraAgreeCount}
+                <BiHappy size={20} /> {feed.agreeText} {feed.agoraAgreeCount}
               </p>
             </div>
           </div>

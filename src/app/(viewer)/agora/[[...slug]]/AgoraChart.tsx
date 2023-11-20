@@ -5,7 +5,6 @@ import { PieChart } from '@mui/x-charts';
 import { AgoraDetailType } from '@/types/agora';
 
 export default function AgoraChart({ agora }: { agora: AgoraDetailType }) {
-  // TODO: 차트 디자인 재확인
   return (
     <PieChart
       series={[
@@ -32,6 +31,14 @@ export default function AgoraChart({ agora }: { agora: AgoraDetailType }) {
           ],
         },
       ]}
+      margin={{ top: 30, bottom: 30, left: 30, right: 30 }}
+      slotProps={{
+        legend: {
+          direction: 'row',
+          position: { vertical: 'bottom', horizontal: 'middle' },
+          padding: 0,
+        },
+      }}
       height={270}
     />
   );
