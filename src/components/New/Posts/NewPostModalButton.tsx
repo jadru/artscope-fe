@@ -5,14 +5,18 @@ import React from 'react';
 
 import UserInfo from '@/components/UserInfo';
 
+import { useUser } from '@/states';
+
 type Props = {
   placeholder: string;
 };
 
-export default function NewPostModalButton({ placeholder }: Props) {
+export default function NewPostButton({ placeholder }: Props) {
   const { push } = useRouter();
+  const { user } = useUser();
 
-  return (
+  return user &&
+    !(user?.roleStatus === 'NONE' || user?.roleStatus === undefined) ? (
     <div
       className='flex w-full max-w-full animate-fade cursor-pointer flex-row justify-between gap-3 space-y-1 overflow-hidden rounded-xl border-default-100 p-3 transition hover:bg-default-100'
       onClick={() => {
@@ -24,5 +28,7 @@ export default function NewPostModalButton({ placeholder }: Props) {
         {placeholder}
       </span>
     </div>
+  ) : (
+    <></>
   );
 }

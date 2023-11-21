@@ -7,13 +7,11 @@ import { notFound } from 'next/navigation';
 import { ReactElement, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import NewArtworkModal from '@/components/New/Artworks/NewArtworkModalButton';
 import ResponsiveGrid from '@/components/ResponsiveGrid';
 import RootLayout from '@/components/RootLayout';
 import Title from '@/components/Title';
 
-import ArtworkItem from '@/app/(list)/artworks/ArtworkItem';
-import { useUser } from '@/states';
+import ArtworkItem from '@/app/(list)/(feed)/artworks/ArtworkItem';
 
 import { ArtWorkApiResponseType } from '@/types/artwork';
 
@@ -31,7 +29,6 @@ const SkeletonArtwork = () => (
 );
 export default function Page() {
   const bottom = useRef(null);
-  const { user } = useUser();
   const LIMIT = 10;
   const fetchArtworks = async ({ pageParam = 0 }) =>
     await axios
@@ -90,13 +87,9 @@ export default function Page() {
         description='감각적인 예술 작품들을 살펴보세요.'
         divider={false}
       />
-      {user &&
-        !(user?.roleStatus === 'NONE' || user?.roleStatus === undefined) && (
-          <NewArtworkModal placeholder='새로운 작품이 있나요?' />
-        )}
-      <div className=''>
+      <div>
         {isSuccess && (
-          <ResponsiveGrid>
+          <div className='grid w-full grid-cols-2 gap-1.5 px-1 md:px-0 md:pb-1'>
             {data.pages.map((group) =>
               group.artworks.map((aw) => (
                 <ArtworkItem artwork={aw} key={aw.artwork.id} />
@@ -105,7 +98,7 @@ export default function Page() {
             <div ref={bottom}>
               <ObservationComponent />
             </div>
-          </ResponsiveGrid>
+          </div>
         )}
         {isLoading && (
           <ResponsiveGrid>

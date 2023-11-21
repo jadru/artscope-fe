@@ -1,16 +1,6 @@
-import { Metadata } from 'next';
-import React from 'react';
-
 import MainNavigation from '@/app/(list)/(feed)/MainNavigation';
-
-export const metadata: Metadata = {
-  title: 'Search',
-  description: '예술 작품, 포스트 등 궁금한 것을 검색하세요.',
-  openGraph: {
-    title: 'Search',
-    description: '예술 작품, 포스트 등 궁금한 것을 검색하세요.',
-  },
-};
+import RecentArtworkWidget from '@/app/(list)/(feed)/RecentArtworkWidget';
+import RecentPostWidget from '@/app/(list)/(feed)/RecentPostWidget';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -19,8 +9,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className='sticky top-11 h-max md:w-44 lg:w-52'>
           <MainNavigation />
         </div>
-        <div className='w-full md:w-[calc(100%-11rem)] lg:w-[calc(100%-13rem)]'>
+        <div className='w-full md:w-[calc(100%-26rem)] lg:w-[calc(100%-33rem)]'>
           {children}
+        </div>
+        <div className='sticky top-11 hidden h-max space-y-2 px-2 md:block md:w-60 lg:w-80'>
+          <RecentPostWidget />
+          <RecentArtworkWidget />
         </div>
       </div>
     </div>
