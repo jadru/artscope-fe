@@ -1,4 +1,5 @@
 import { Metadata, ResolvingMetadata } from 'next';
+import { redirect } from 'next/navigation';
 import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
@@ -28,6 +29,7 @@ export async function generateMetadata(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  if (!params.slug) redirect('/agoras');
   const id = params.slug[0];
   const data = await fetchAgoraDetail(id);
   if (!data) throw new Error('Failed to fetch data');
@@ -55,7 +57,9 @@ export default async function AgoraDetailPage({
 }: {
   params: { slug: string[] };
 }) {
+  if (!params.slug) redirect('/agoras');
   const data = await fetchAgoraDetail(params.slug[0]);
+  if (!data) throw new Error('Failed to fetch data');
   return (
     <div className='space-y-3 py-3'>
       <h1 className='break-words px-3 text-center text-4xl'>
@@ -69,18 +73,22 @@ export default async function AgoraDetailPage({
       )}
       <div className='mt-3 flex w-full flex-col-reverse items-center justify-between gap-2 px-3 md:flex-row'>
         <AgoraChart agora={data} />
-        {data.agora.thumbnail?.mediaUrl && <ASNextImage
-          src={data.agora.thumbnail.mediaUrl}
-          alt={data.agora.title}
-          width={400}
-          height={400}
-          className='h-96 w-full rounded-xl object-cover md:w-1/2'
-        />}
+        {data.agora.thumbnail?.mediaUrl && (
+          <ASNextImage
+            src={data.agora.thumbnail.mediaUrl}
+            alt={data.agora.title}
+            width={400}
+            height={400}
+            className='h-96 w-full rounded-xl object-cover md:w-1/2'
+          />
+        )}
       </div>
       <div className='px-3 md:px-3'>
         <MarkdownViewer>{data.agora.content}</MarkdownViewer>
       </div>
-      {data.agora.medias && data.agora.medias.length > 2 && <AgoraMedia feed={data} />}
+      {data.agora.medias && data.agora.medias.length > 2 && (
+        <AgoraMedia feed={data} />
+      )}
       <div className='px-2'>
         {data.agora.updatedTime && (
           <p>
