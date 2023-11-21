@@ -156,8 +156,8 @@ const NewEvent = () => {
       newState.dto.schedule = schedule.reduce((acc, cur) => {
         acc.push({
           locationId: Number(cur.locationId),
-          startDateTime: format(cur.startDateTime, 'yyyy-MM-ddTHH:mm:ss'),
-          endDateTime: format(cur.endDateTime, 'yyyy-MM-ddTHH:mm:ss'),
+          startDateTime: format(cur.startDateTime, "yyyy-MM-dd'T'HH:mm:ss"),
+          endDateTime: format(cur.endDateTime, "yyyy-MM-dd'T'HH:mm:ss"),
           participants: cur.participants,
           detailLocation: cur.detailLocation,
         });

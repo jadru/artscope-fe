@@ -43,8 +43,8 @@ export default function ScheduleAddButton(Props: SchduleAddButtonProps) {
 
   const handleAddSchedule = async () =>
     jxios.post(`/api/exhibitions/${Props.eventid}/schedule`, {
-      startDateTime: format(schedule[0].startDateTime, 'yyyy-MM-ddTHH:mm:ss'),
-      endDateTime: format(schedule[0].endDateTime, 'yyyy-MM-ddTHH:mm:ss'),
+      startDateTime: format(schedule[0].startDateTime, "yyyy-MM-dd'T'HH:mm:ss"),
+      endDateTime: format(schedule[0].endDateTime, "yyyy-MM-dd'T'HH:mm:ss"),
       locationId: schedule[0].locationId,
       detailLocation: schedule[0].detailLocation,
       participants: schedule[0].participants,

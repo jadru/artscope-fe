@@ -119,9 +119,9 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
             className='group box-border flex h-12 basis-0 cursor-pointer appearance-none flex-row flex-nowrap items-end justify-start whitespace-nowrap bg-transparent text-medium no-underline md:hidden'
             href='/'
           >
-            <Logo className='h-12 w-32 overflow-hidden fill-black px-2 pb-1 pt-2 transition duration-100' />
+            <Logo className='h-12 w-32 overflow-hidden fill-black px-2 pb-0 pt-2 transition duration-100' />
           </Link>
-          <div className='flex h-12 w-full items-center justify-between'>
+          <div className='flex h-14 w-full items-center justify-between'>
             <div className='flex items-center justify-center gap-0.5 py-2 md:hidden md:gap-1'>
               {menuItems.map((item, index) => (
                 <Link
@@ -154,7 +154,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
               href='/'
               className='group box-border hidden h-10 basis-0 cursor-pointer appearance-none flex-row flex-nowrap items-end justify-start whitespace-nowrap bg-transparent text-medium no-underline md:flex'
             >
-              <Logo className='h-10 w-32 overflow-hidden fill-black px-2 pb-1 pt-1 transition duration-100 group-hover:fill-secondary' />
+              <Logo className='h-10 w-32 overflow-hidden fill-black px-2 pb-1 pt-1 transition duration-100 group-hover:fill-primary' />
             </Link>
             <div className='flex gap-1.5'>
               {isLogin === undefined ? (
