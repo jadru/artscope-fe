@@ -1,4 +1,5 @@
 import { Metadata, ResolvingMetadata } from 'next';
+import { redirect } from 'next/navigation';
 import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
@@ -41,6 +42,7 @@ export async function generateMetadata(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  if (!params.slug) redirect('/artworks');
   const id = params.slug[0];
   const data: ArtworkType = await fetchArtwork(id);
   const thumbnail = data.artwork.thumbnail || [];
@@ -70,6 +72,7 @@ export default async function ArtworkPage({
 }: {
   params: { slug: string[] };
 }) {
+  if (!params.slug) redirect('/artworks');
   const data: ArtworkType = await fetchArtwork(params.slug[0]);
   const author: profileApiResponseType = await fetchAuthorProfile(
     data.artwork.authorUsername

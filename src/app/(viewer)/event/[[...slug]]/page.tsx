@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import React from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { BiCalendar, BiPlus, BiWon } from 'react-icons/bi';
@@ -36,6 +37,7 @@ export async function generateMetadata(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  if (!params.slug) redirect('/events');
   const id = params.slug[0];
   const data = await fetchEvent(id);
   // const thumbnail = (await parent).openGraph?.images || [];
@@ -61,6 +63,7 @@ export default async function Event({
   params: { slug: string[] };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
+  if (!params.slug) redirect('/events');
   const id = params.slug[0];
   const data = await fetchEvent(id);
   if (!data) throw new Error('Failed to fetch data');

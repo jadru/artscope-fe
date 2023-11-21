@@ -1,4 +1,5 @@
 import { Metadata, ResolvingMetadata } from 'next';
+import { redirect } from 'next/navigation';
 
 import MarkdownViewer from '@/components/MarkdownViewer';
 
@@ -54,6 +55,7 @@ export default async function SinglePost({
 }: {
   params: { slug: string[] };
 }) {
+  if (!params.slug) redirect('/');
   const data = await fetchPost(params.slug[0]);
   if (!data) throw new Error('Failed to fetch data');
   return (
