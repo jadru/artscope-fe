@@ -6,7 +6,7 @@ import { AiOutlineHome, AiOutlineLink } from 'react-icons/ai';
 import ASNextImage from '@/components/ASNextImage';
 import ResponsiveGrid from '@/components/ResponsiveGrid';
 
-import ArtworkItem from '@/app/(list)/artworks/ArtworkItem';
+import ArtworkItem from '@/app/(list)/(feed)/artworks/ArtworkItem';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 

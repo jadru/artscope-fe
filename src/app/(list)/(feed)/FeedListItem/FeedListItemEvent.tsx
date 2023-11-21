@@ -5,8 +5,6 @@ import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
 
-import eventTypeToKO from '@/app/(viewer)/event/[[...slug]]/eventTypeToKO';
-
 import { feedItemType } from '@/types/feed';
 
 export default function FeedListItemEvent({ feed }: { feed: feedItemType }) {
@@ -25,34 +23,27 @@ export default function FeedListItemEvent({ feed }: { feed: feedItemType }) {
               <h4 className='w-full text-[1.1rem]'>{feed.title}</h4>
               <p className='text-default-700'>{feed.event.locationName}</p>
             </div>
-            {/* <div className='line-clamp-2 w-full overflow-x-hidden break-keep tracking-tight text-default-800'> */}
-            {/*   <MarkdownVewer content={feed.content} /> */}
-            {/* </div> */}
-            <div className='flex w-full items-end justify-between'>
-              <p className='text-[0.9rem]'>
-                {format(
-                  new Date(feed.event.startDateTime),
-                  'yyyy년 MM월 dd일 (eee) HH:mm',
-                  {
-                    locale: ko,
-                  }
-                )}{' '}
-                -{' '}
-                {format(
-                  new Date(feed.event.endDateTime),
-                  format(new Date(feed.event.startDateTime), 'yyyy-MM-dd') ===
-                    format(new Date(feed.event.endDateTime), 'yyyy-MM-dd')
-                    ? 'HH:mm'
-                    : 'yyyy년 MM월 dd일 (eee) HH:mm',
-                  {
-                    locale: ko,
-                  }
-                )}
-              </p>
-              <div className='w-auto rounded-lg border-2 bg-default-200 px-2 py-0.5 pl-1 text-sm font-bold'>
-                {eventTypeToKO(feed.event.eventType)}
-              </div>
-            </div>
+            <p className='text-[0.9rem]'>
+              {format(
+                new Date(feed.event.startDateTime),
+                'yyyy년 MM월 dd일 (eee) HH:mm',
+                {
+                  locale: ko,
+                }
+              )}{' '}
+              -{' '}
+              {format(
+                new Date(feed.event.endDateTime),
+                format(new Date(feed.event.startDateTime), 'yyyy-MM-dd') ===
+                  format(new Date(feed.event.endDateTime), 'yyyy-MM-dd')
+                  ? 'HH:mm'
+                  : 'yyyy년 MM월 dd일 (eee) HH:mm',
+                {
+                  locale: ko,
+                }
+              )}
+            </p>
+            <p>{feed.event.eventType}</p>
           </div>
           {feed.thumbnailUrl && (
             <ASNextImage

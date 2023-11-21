@@ -13,7 +13,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Loading from '@/components/Loading';
 import Title from '@/components/Title';
 
-import EventListItem from '@/app/(list)/events/EventListItem';
+import EventListItem from '@/app/(list)/(feed)/events/EventListItem';
 import jxios from '@/utils/jxios';
 
 import { pageInfoType } from '@/types/default';
@@ -113,17 +113,20 @@ export default function Events() {
       </Title>
       {!isLoading ? (
         <>
-          <div className='relative mx-4 space-y-3'>
+          <div className='relative mx-3 space-y-3 md:mx-1'>
             {data &&
               data.map((date) => (
-                <div className='relative flex' key={date.date}>
-                  <div className='sticky top-16 flex w-28 flex-col items-start gap-0 self-start bg-transparent pt-2 md:w-48'>
+                <div
+                  className='relative flex flex-col md:flex-row'
+                  key={date.date}
+                >
+                  <div className='flex w-28 flex-col items-start gap-0 self-start bg-transparent pt-2 md:sticky md:top-16'>
                     <h2 className='py-1 text-[1.4rem]'>{date.date}</h2>
                     <span className='text-[1.2rem] text-default-500'>
                       {date.dayOfWeek} / {date.dayOfWeekKor}요일
                     </span>
                   </div>
-                  <div className='flex w-[calc(100%-7rem)] flex-col gap-3 py-1.5 md:ml-3 md:w-[calc(100%-12rem)]'>
+                  <div className='ml-1 flex w-full flex-col gap-3 py-1.5 md:w-[calc(100%-7rem)]'>
                     {date.event &&
                       date.event.map((exhibition) => (
                         <EventListItem event={exhibition} key={exhibition.id} />

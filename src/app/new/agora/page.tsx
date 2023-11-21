@@ -1,6 +1,6 @@
 'use client';
 
-import { Input } from '@nextui-org/react';
+import { Button, Input } from '@nextui-org/react';
 import { Bold } from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
 import { Document } from '@tiptap/extension-document';
@@ -356,17 +356,15 @@ const NewArtwork = () => {
           anonymousType={anonymousType}
           setAnonymousType={setAnonymousType}
         />
-        <button
+        <Button
           onClick={handleCreateSaveButton}
           disabled={isUpload}
+          color='primary'
           className={`
-            h-12 rounded-2xl border-2 border-primary bg-white px-6 py-3 font-bold text-primary transition hover:border-secondary hover:bg-blue-50 hover:text-secondary ${
-              isUpload &&
-              'animate-pulse border-gray-200 bg-gray-200 text-default'
-            }`}
+            h-12 ${isUpload ? 'opacity-20' : ''}`}
         >
           새 아고라 작성
-        </button>
+        </Button>
       </div>
     </>
   );

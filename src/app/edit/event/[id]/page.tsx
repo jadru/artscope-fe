@@ -1,6 +1,6 @@
 'use client';
 
-import { Input, Select, SelectItem } from '@nextui-org/react';
+import { Button, Input, Select, SelectItem } from '@nextui-org/react';
 import { Bold } from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
 import { Document } from '@tiptap/extension-document';
@@ -277,17 +277,15 @@ const NewEvent = () => {
       </div>
       <div className='h-16'></div>
       <div className='fixed bottom-0 z-40 flex h-16 w-full max-w-[718px] items-center justify-end border-t bg-default-50 px-3'>
-        <button
+        <Button
           onClick={handleCreateSaveButton}
           disabled={isUpload}
+          color='primary'
           className={`
-            h-12 rounded-2xl border-2 border-primary bg-white px-6 py-3 font-bold text-primary transition hover:border-secondary hover:bg-blue-50 hover:text-secondary ${
-              isUpload &&
-              'animate-pulse border-gray-200 bg-gray-200 text-default'
-            }`}
+            h-12 ${isUpload ? 'opacity-20' : ''}`}
         >
           이벤트 수정
-        </button>
+        </Button>
       </div>
     </>
   );

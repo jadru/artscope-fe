@@ -63,10 +63,10 @@ module.exports = {
         light: {
           colors: {
             primary: {
-              DEFAULT: '#086788',
+              DEFAULT: '#07A0C3',
             },
             secondary: {
-              DEFAULT: '#07A0C3',
+              DEFAULT: '#086788',
             },
             accent: {
               DEFAULT: '#F0c808',

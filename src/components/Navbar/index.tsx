@@ -32,7 +32,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
         <DropdownTrigger>
           <button>
             <ASNextImage
-              className='h-10 w-10 transform rounded-lg border-1.5 border-default-700 object-cover transition-transform hover:scale-110 hover:border-primary'
+              className='h-10 w-10 transform rounded-lg border-1.5 border-default-700 object-cover transition-transform hover:scale-105 hover:border-primary'
               alt={user.name}
               width={32}
               height={32}
@@ -113,21 +113,21 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
 
   return (
     <>
-      <div className='sticky -top-12 z-50 w-screen bg-white transition'>
+      <div className='sticky -top-12 z-50 w-screen bg-white/80 backdrop-blur-2xl transition md:top-0'>
         <div className='mx-auto flex max-w-[1024px] flex-col items-start justify-between px-2.5 lg:px-0'>
-          <div
-            className='group box-border flex h-12 basis-0 cursor-pointer flex-row flex-nowrap items-end justify-start whitespace-nowrap bg-transparent text-medium no-underline'
-            onClick={() => push('/')}
+          <Link
+            className='group box-border flex h-12 basis-0 cursor-pointer appearance-none flex-row flex-nowrap items-end justify-start whitespace-nowrap bg-transparent text-medium no-underline md:hidden'
+            href='/'
           >
-            <Logo className='h-12 w-36 overflow-hidden fill-black px-2 pb-1 pt-2 transition duration-100 group-hover:fill-secondary' />
-          </div>
+            <Logo className='h-12 w-32 overflow-hidden fill-black px-2 pb-1 pt-2 transition duration-100' />
+          </Link>
           <div className='flex h-12 w-full items-center justify-between'>
-            <div className='flex items-center justify-center gap-1 py-2'>
+            <div className='flex items-center justify-center gap-0.5 py-2 md:hidden md:gap-1'>
               {menuItems.map((item, index) => (
                 <Link
                   href={item.url}
                   key={`${item.name}-${index}`}
-                  className={`px-2 py-2 font-bold decoration-2 underline-offset-4 transition hover:underline ${
+                  className={`px-1 py-2 font-bold decoration-2 underline-offset-4 transition hover:underline md:px-2 ${
                     index === 0
                       ? pathname === '/'
                         ? 'underline'
@@ -150,6 +150,12 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
                 <BiSearch size={17} className='mt-0.5 stroke-1' />
               </Link>
             </div>
+            <Link
+              href='/'
+              className='group box-border hidden h-10 basis-0 cursor-pointer appearance-none flex-row flex-nowrap items-end justify-start whitespace-nowrap bg-transparent text-medium no-underline md:flex'
+            >
+              <Logo className='h-10 w-32 overflow-hidden fill-black px-2 pb-1 pt-1 transition duration-100 group-hover:fill-secondary' />
+            </Link>
             <div className='flex gap-1.5'>
               {isLogin === undefined ? (
                 <div className='h-1 w-1'></div>
