@@ -18,7 +18,7 @@ import NewLocationSchema, {
 } from '@/app/new/event/location/newLocationSchema';
 import jxios from '@/utils/jxios';
 
-import { CreateScheduleType } from '@/types/event';
+import { CreateScheduleTempType } from '@/types/event';
 
 export default function NewLocationModal({
   setSchedule,
@@ -28,7 +28,7 @@ export default function NewLocationModal({
   NewLocationOnOpenChange,
   AddLocationModalOnClose,
 }: {
-  setSchedule: React.Dispatch<React.SetStateAction<CreateScheduleType[]>>;
+  setSchedule: React.Dispatch<React.SetStateAction<CreateScheduleTempType[]>>;
   scheduleIndex: number;
   NewLocationisOpen: boolean;
   NewLocationOnClose: () => void;

@@ -37,7 +37,7 @@ export default function Events() {
         .get('/api/exhibitions', {
           params: {
             page: page.page,
-            size: 15,
+            size: 20,
             startDate: format(startDate, 'yyyy-MM-dd'),
             eventType: 'ALL',
           },
@@ -48,10 +48,23 @@ export default function Events() {
           eventDatas.exhibitions.length > 0 &&
             eventDatas.exhibitions.forEach((event) => {
               if (
-                events.find((ii) => ii.date === event.eventSchedule.eventDate)
+                events.find(
+                  (ii) =>
+                    ii.date ===
+                    format(
+                      new Date(event.eventSchedule.startDateTime),
+                      'yyyy-MM-dd'
+                    )
+                )
               ) {
                 events.forEach((ii) => {
-                  if (ii.date === event.eventSchedule.eventDate) {
+                  if (
+                    ii.date ===
+                    format(
+                      new Date(event.eventSchedule.startDateTime),
+                      'yyyy-MM-dd'
+                    )
+                  ) {
                     ii.event.push(event);
                   }
                 });
@@ -60,7 +73,10 @@ export default function Events() {
                   event: [event],
                   dayOfWeek: '',
                   dayOfWeekKor: '',
-                  date: event.eventSchedule.eventDate,
+                  date: format(
+                    new Date(event.eventSchedule.startDateTime),
+                    'yyyy-MM-dd'
+                  ),
                 });
               }
             });

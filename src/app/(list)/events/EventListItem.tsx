@@ -22,25 +22,13 @@ export default function EventListItem({
         <div className='flex flex-col gap-0.5'>
           <div className='flex flex-col gap-1 md:flex-row'>
             <h4>
-              {format(
-                new Date(
-                  event.eventSchedule.eventDate +
-                    'T' +
-                    event.eventSchedule.startTime
-                ),
-                'a hh:mm',
-                { locale: ko }
-              )}
+              {format(new Date(event.eventSchedule.startDateTime), 'a hh:mm', {
+                locale: ko,
+              })}
               -
-              {format(
-                new Date(
-                  event.eventSchedule.eventDate +
-                    'T' +
-                    event.eventSchedule.endTime
-                ),
-                'a hh:mm',
-                { locale: ko }
-              )}
+              {format(new Date(event.eventSchedule.endDateTime), 'a hh:mm', {
+                locale: ko,
+              })}
             </h4>
           </div>
           <h4 className='font-normal'>
