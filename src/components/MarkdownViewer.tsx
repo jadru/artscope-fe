@@ -1,3 +1,5 @@
+import { decode } from 'html-entities';
+import lodash from 'lodash';
 import ReactMarkdown from 'react-markdown';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeRaw from 'rehype-raw';
@@ -6,7 +8,6 @@ import strip from 'strip-markdown';
 
 import '@/styles/markdown.scss';
 
-import { standardLabel } from '@/components/StandardLabel';
 export default function MarkdownViewer({
   children,
   className,
@@ -31,7 +32,7 @@ export default function MarkdownViewer({
             ]
       }
     >
-      {standardLabel(children)}
+      {lodash.unescape(decode(children))}
     </ReactMarkdown>
   );
 }
