@@ -27,7 +27,7 @@ export default function SinglePostItemAction({
 }) {
   const [like, setLike] = useState<boolean>(feed.isLiked);
   const [firstLike, setFirstLike] = useState<boolean>(feed.isLiked);
-  const { user, isLogin, isAdmin } = useUser();
+  const { user, isLogin } = useUser();
   const { push } = useRouter();
 
   const handleLike = useDebounce(
@@ -100,36 +100,35 @@ export default function SinglePostItemAction({
         {/*   </Button> */}
         {/* </DebounceClick> */}
         <div>
-          {(user && feed.authorUsername === user?.username) ||
-            (isAdmin && (
-              <>
-                <DebounceClick wait={500}>
-                  <Button
-                    startContent={<AiOutlineEdit className='h-5 w-5' />}
-                    variant='light'
-                    size='sm'
-                    className='text-md text-gray-500 hover:text-purple-500'
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      push(`/edit/post/${feed.id}`);
-                    }}
-                  >
-                    수정
-                  </Button>
-                </DebounceClick>
-                <DebounceClick wait={500}>
-                  <Button
-                    startContent={<AiOutlineDelete className='h-5 w-5' />}
-                    variant='light'
-                    size='sm'
-                    className='text-md text-gray-500 hover:text-red-500'
-                    onClick={handleDelete}
-                  >
-                    삭제
-                  </Button>
-                </DebounceClick>
-              </>
-            ))}
+          {user && feed.authorUsername === user?.username && (
+            <>
+              <DebounceClick wait={500}>
+                <Button
+                  startContent={<AiOutlineEdit className='h-5 w-5' />}
+                  variant='light'
+                  size='sm'
+                  className='text-md text-gray-500 hover:text-purple-500'
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    push(`/edit/post/${feed.id}`);
+                  }}
+                >
+                  수정
+                </Button>
+              </DebounceClick>
+              <DebounceClick wait={500}>
+                <Button
+                  startContent={<AiOutlineDelete className='h-5 w-5' />}
+                  variant='light'
+                  size='sm'
+                  className='text-md text-gray-500 hover:text-red-500'
+                  onClick={handleDelete}
+                >
+                  삭제
+                </Button>
+              </DebounceClick>
+            </>
+          )}
           <Button
             startContent={<AiOutlineShareAlt className='h-5 w-5' />}
             variant='light'

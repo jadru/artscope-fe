@@ -16,7 +16,7 @@ export default function EventEditDelete({
   eventId: number;
 }) {
   const { push } = useRouter();
-  const { user, isAdmin } = useUser();
+  const { user } = useUser();
 
   const handleDelete = async () => {
     if (confirm('정말 삭제하시겠습니까?')) {
@@ -26,7 +26,7 @@ export default function EventEditDelete({
       });
     }
   };
-  return (user && user?.username === authorUsername) || isAdmin ? (
+  return user && user?.username === authorUsername ? (
     <div className='flex justify-between gap-1 px-1'>
       <Button
         startContent={<AiOutlineDelete />}
