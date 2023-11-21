@@ -49,6 +49,12 @@ export default function Search() {
       });
   }, [search, push, searchType]);
 
+  useEffect(() => {
+    if (search.length > 0) {
+      fetchSearch();
+    }
+  }, [search, fetchSearch]);
+
   return (
     <div className='mb-2 flex flex-col items-center justify-center gap-2 px-2'>
       <div className='flex h-16 w-full items-center space-x-2 rounded-2xl border border-default-400 px-2.5 py-2'>
