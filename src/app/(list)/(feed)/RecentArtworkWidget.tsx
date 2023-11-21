@@ -32,7 +32,7 @@ export default function RecentArtworkWidget() {
             onClick={() => push('/artwork/' + aw.id)}
           >
             <MarkdownViewer className='line-clamp-1' ignoreMarkdown ignoreHTML>
-              {aw.title.replace(/<[^>]*>?/g, '')}
+              {aw.title}
             </MarkdownViewer>
           </button>
         ))}

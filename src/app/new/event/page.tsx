@@ -55,6 +55,7 @@ import { ArtWorkMediaType } from '@/types/artwork';
 import {
   CreateScheduleTempType,
   CreateScheduleType,
+  EventDetailType,
   EventType,
 } from '@/types/event';
 
@@ -156,8 +157,8 @@ const NewEvent = () => {
       newState.dto.schedule = schedule.reduce((acc, cur) => {
         acc.push({
           locationId: Number(cur.locationId),
-          startDateTime: format(cur.startDateTime, "yyyy-MM-dd'T'HH:mm:ss"),
-          endDateTime: format(cur.endDateTime, "yyyy-MM-dd'T'HH:mm:ss"),
+          startDateTime: format(cur.startDateTime, "yyyy-MM-dd'T'HH:mm"),
+          endDateTime: format(cur.endDateTime, "yyyy-MM-dd'T'HH:mm"),
           participants: cur.participants,
           detailLocation: cur.detailLocation,
         });
@@ -224,9 +225,10 @@ const NewEvent = () => {
           },
         })
         .then((res) => {
+          const data = res.data as EventDetailType;
           if (res.status === 201) {
             toast.success('이벤트가 업로드되었습니다.');
-            push('/events');
+            push('/event/' + data.id);
           }
         })
         .catch((err) => {

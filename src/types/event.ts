@@ -5,7 +5,8 @@ export type EventDetailType = {
   id: number;
   title: string;
   description: string;
-  author: string;
+  authorUserName: string;
+  authorName: string;
   thumbnail: {
     mediaType: 'image' | 'video';
     mediaUrl: string;

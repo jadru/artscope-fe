@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import ASNextImage from '@/components/ASNextImage';
+import StandardLabel from '@/components/StandardLabel';
 
 import { ArtworkType } from '@/types/artwork';
 
@@ -24,14 +25,16 @@ const ArtworkItem = ({ artwork: aw }: { artwork: ArtworkType }) => {
         </div>
         <div className='flex items-center justify-between space-x-0.5 rounded-b-xl px-3 py-2 text-small transition group-hover:bg-default-200'>
           <div className='w-2/3 truncate'>
-            <b className='w-full truncate'>{aw.artwork.title}</b>
+            <b className='w-full truncate'>
+              <StandardLabel label={aw.artwork.title} />
+            </b>
             <p className='space-x-2 text-sm text-default-500'>
               <span>좋아요 {aw.artwork.likes}</span>
               <span>댓글 {aw.artwork.comments}</span>
             </p>
           </div>
           <p className='w-1/3 truncate pl-1 text-right font-bold text-default-500'>
-            {aw.artwork.authorName}
+            <StandardLabel label={aw.artwork.authorName} />
           </p>
         </div>
       </div>

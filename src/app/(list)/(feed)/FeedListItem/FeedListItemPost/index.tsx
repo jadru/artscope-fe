@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
 import MarkdownViewer from '@/components/MarkdownViewer';
+import StandardLabel from '@/components/StandardLabel';
 
 import FeedListItemPostAction from '@/app/(list)/(feed)/FeedListItem/FeedListItemPost/FeedListItemPostAction';
 import FeedListItemPostMedia from '@/app/(list)/(feed)/FeedListItem/FeedListItemPost/FeedListItemPostMedia';
@@ -58,7 +59,7 @@ export default function Index({ feed }: { feed: feedItemType }) {
               }}
             >
               <p className='inline text-[0.9rem] font-bold transition group-hover:underline'>
-                {feed.authorName}
+                <StandardLabel label={feed.authorName} />
               </p>
               <p className='text-[0.9rem] text-default-500 transition group-hover:text-default-900'>
                 @{feed.authorUsername}

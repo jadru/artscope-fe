@@ -19,6 +19,8 @@ import jxios from '@/utils/jxios';
 import { pageInfoType } from '@/types/default';
 import { EventResponseType, EventViewType } from '@/types/event';
 
+// TODO: Placeholder Skeleton & 무한스크롤 도입
+
 export default function Events() {
   const [isLoading, setIsLoading] = useState(true);
   const [startDate, setStartDate] = useState<Date | null>(new Date());

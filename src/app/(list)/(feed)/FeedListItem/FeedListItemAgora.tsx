@@ -3,6 +3,7 @@ import { BiConfused, BiHappy, BiMeh } from 'react-icons/bi';
 
 import ASNextImage from '@/components/ASNextImage';
 import MarkdownViewer from '@/components/MarkdownViewer';
+import StandardLabel from '@/components/StandardLabel';
 
 import { feedItemType } from '@/types/feed';
 
@@ -19,21 +20,27 @@ export default function FeedListItemAgora({ feed }: { feed: feedItemType }) {
         <div className='flex justify-between'>
           <div className='flex w-3/4 flex-col justify-between overflow-x-hidden break-keep tracking-tight text-default-800'>
             <div className='line-clamp-3'>
-              <h4 className='text-[1.1rem]'>{feed.title}</h4>
+              <h4 className='text-[1.1rem]'>
+                <StandardLabel label={feed.title} />
+              </h4>
               <MarkdownViewer className='line-clamp-2 leading-5 text-default-600 peer-default:!text-[0.9rem]'>
                 {feed.content}
               </MarkdownViewer>
             </div>
             <div className='mt-2 flex flex-col justify-start gap-0.5'>
               <p className='flex items-center gap-1 text-lg text-red-600'>
-                <BiConfused size={20} /> {feed.disagreeText}{' '}
+                <BiConfused size={20} />{' '}
+                <StandardLabel label={feed.agreeText} />{' '}
                 {feed.agoraDisagreeCount}
               </p>
               <p className='flex items-center gap-1 text-lg text-yellow-600'>
-                <BiMeh size={20} /> {feed.naturalText} {feed.agoraNaturalCount}
+                <BiMeh size={20} /> <StandardLabel label={feed.naturalText} />{' '}
+                {feed.agoraNaturalCount}
               </p>
               <p className='flex items-center gap-1 text-lg text-blue-500'>
-                <BiHappy size={20} /> {feed.agreeText} {feed.agoraAgreeCount}
+                <BiHappy size={20} />{' '}
+                <StandardLabel label={feed.disagreeText} />{' '}
+                {feed.agoraAgreeCount}
               </p>
             </div>
           </div>

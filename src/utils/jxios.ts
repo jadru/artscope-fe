@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { decode } from 'html-entities';
 import cookie from 'react-cookies';
 import { toast } from 'react-toastify';
+
+import { standardLabel } from '@/components/StandardLabel';
 
 import {
   removeRefreshToken,
@@ -44,11 +45,11 @@ Jxios.interceptors.response.use(
     // every response will be decoded
     if (res.data) {
       if (typeof res.data === 'string') {
-        res.data = decode(res.data);
+        res.data = standardLabel(res.data);
       } else if (typeof res.data === 'object') {
         Object.keys(res.data).forEach((key) => {
           if (typeof res.data[key] === 'string') {
-            res.data[key] = decode(res.data[key]);
+            res.data[key] = standardLabel(res.data[key]);
           }
         });
       }

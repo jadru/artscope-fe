@@ -80,7 +80,7 @@ export default function FeedListItemPostAction({
       {/*     {0} */}
       {/*   </Button> */}
       {/* </DebounceClick> */}
-      {feed.authorUsername === user?.username && (
+      {user && feed.authorUsername === user?.username && (
         <button
           onClick={(e) => {
             e.stopPropagation();

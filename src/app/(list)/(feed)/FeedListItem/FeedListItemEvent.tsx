@@ -4,6 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
+import StandardLabel from '@/components/StandardLabel';
 
 import { feedItemType } from '@/types/feed';
 
@@ -20,8 +21,12 @@ export default function FeedListItemEvent({ feed }: { feed: feedItemType }) {
         <div className='flex items-start justify-between'>
           <div className='flex h-full w-[calc(100%-104px)] flex-col items-start justify-between gap-1'>
             <div className='w-full'>
-              <h4 className='w-full text-[1.1rem]'>{feed.title}</h4>
-              <p className='text-default-700'>{feed.event.locationName}</p>
+              <h4 className='w-full text-[1.1rem]'>
+                <StandardLabel label={feed.title} />
+              </h4>
+              <p className='text-default-700'>
+                <StandardLabel label={feed.event.locationName} />
+              </p>
             </div>
             <p className='text-[0.9rem]'>
               {format(
