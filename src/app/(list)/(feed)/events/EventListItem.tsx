@@ -4,6 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
+import StandardLabel from '@/components/StandardLabel';
 
 import { SingleEventTypeOnList } from '@/types/event';
 
@@ -18,7 +19,9 @@ export default function EventListItem({
       href={`/event/${event.id}?scheduleId=${event.eventSchedule.id}`}
     >
       <div className='flex flex-col items-start justify-start gap-2'>
-        <h3>{event.title}</h3>
+        <h3>
+          <StandardLabel label={event.title} />
+        </h3>
         <div className='flex flex-col gap-0.5'>
           <div className='flex flex-col gap-1 md:flex-row'>
             <h4>
@@ -32,8 +35,8 @@ export default function EventListItem({
             </h4>
           </div>
           <h4 className='font-normal'>
-            {event.eventSchedule.locationName}{' '}
-            {event.eventSchedule.detailLocation}
+            <StandardLabel label={event.eventSchedule.locationName} />{' '}
+            <StandardLabel label={event.eventSchedule.detailLocation} />
           </h4>
           <p>{event.eventType}</p>
         </div>
