@@ -15,7 +15,7 @@ type SchduleDeleteButtonProps = {
 
 export default function SchduleDeleteButton(Props: SchduleDeleteButtonProps) {
   const { refresh } = useRouter();
-  const { user, isAdmin } = useUser();
+  const { user } = useUser();
   const handleDeleteSchedule = async () =>
     confirm('정말 삭제하시겠습니까?') &&
     jxios
@@ -24,7 +24,7 @@ export default function SchduleDeleteButton(Props: SchduleDeleteButtonProps) {
         toast.success('스케줄이 삭제되었습니다.');
         refresh();
       });
-  return (user && user?.username === Props.eventAuthorUsername) || isAdmin ? (
+  return user && user?.username === Props.eventAuthorUsername ? (
     <button onClick={handleDeleteSchedule} {...Props} />
   ) : (
     <></>

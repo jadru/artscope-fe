@@ -35,7 +35,7 @@ type SchduleAddButtonProps = {
 
 export default function ScheduleAddButton(Props: SchduleAddButtonProps) {
   const { refresh } = useRouter();
-  const { user, isAdmin } = useUser();
+  const { user } = useUser();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [schedule, setSchedule] = React.useState<CreateScheduleTempType[]>([
     initialScheduleSchema,
@@ -50,7 +50,7 @@ export default function ScheduleAddButton(Props: SchduleAddButtonProps) {
       participants: schedule[0].participants,
     });
 
-  return (user && user?.username === Props.eventAuthorUsername) || isAdmin ? (
+  return user && user?.username === Props.eventAuthorUsername ? (
     <>
       <button onClick={onOpen} {...Props} />
       <Modal

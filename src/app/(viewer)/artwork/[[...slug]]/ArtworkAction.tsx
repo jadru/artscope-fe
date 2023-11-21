@@ -83,35 +83,34 @@ export default function ArtworkAction({ aw }: { aw: ArtworkType }) {
         </Button>
       </div>
       <div>
-        {(user && aw.artwork.authorUsername === user?.username) ||
-          (isAdmin && (
-            <>
-              <Button
-                onClick={() => push(`/edit/artwork/${aw.artwork.id}`)}
-                startContent={<AiOutlineEdit className='h-5 w-5' />}
-                variant='light'
-                size='sm'
-                className='text-md text-gray-500 hover:text-purple-500'
-              >
-                수정
-              </Button>
-              <Button
-                onClick={() =>
-                  confirm(aw.artwork.title + ' 작품을 삭제하시겠습니까?') &&
-                  jxios.delete(`/api/artworks/${aw.artwork.id}`).then(() => {
-                    toast.success('작품이 삭제되었습니다.');
-                    push('/artworks');
-                  })
-                }
-                startContent={<AiOutlineDelete className='h-5 w-5' />}
-                variant='light'
-                size='sm'
-                className='text-md text-gray-500 hover:text-red-500'
-              >
-                삭제
-              </Button>
-            </>
-          ))}
+        {(aw.artwork.authorUsername === user?.username || isAdmin) && (
+          <>
+            <Button
+              onClick={() => push(`/edit/artwork/${aw.artwork.id}`)}
+              startContent={<AiOutlineEdit className='h-5 w-5' />}
+              variant='light'
+              size='sm'
+              className='text-md text-gray-500 hover:text-purple-500'
+            >
+              수정
+            </Button>
+            <Button
+              onClick={() =>
+                confirm(aw.artwork.title + ' 작품을 삭제하시겠습니까?') &&
+                jxios.delete(`/api/artworks/${aw.artwork.id}`).then(() => {
+                  toast.success('작품이 삭제되었습니다.');
+                  push('/artworks');
+                })
+              }
+              startContent={<AiOutlineDelete className='h-5 w-5' />}
+              variant='light'
+              size='sm'
+              className='text-md text-gray-500 hover:text-red-500'
+            >
+              삭제
+            </Button>
+          </>
+        )}
         <DebounceClick wait={500}>
           <Button
             startContent={<AiOutlineShareAlt className='h-5 w-5' />}
