@@ -4,6 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
+import StandardLabel from '@/components/StandardLabel';
 
 import { SingleEventTypeOnList } from '@/types/event';
 
@@ -14,38 +15,28 @@ export default function EventListItem({
 }) {
   return (
     <Link
-      className='group flex flex-row items-center justify-between rounded-2xl bg-white px-2 py-2 transition hover:bg-default-100 group-hover:bg-default-100 md:z-10'
+      className='group flex flex-row items-center justify-between rounded-2xl bg-white px-1.5 py-1.5 transition hover:bg-default-100 group-hover:bg-default-100 md:z-10'
       href={`/event/${event.id}?scheduleId=${event.eventSchedule.id}`}
     >
-      <div className='flex flex-col items-start justify-start gap-2 pl-3'>
-        <h3>{event.title}</h3>
+      <div className='flex flex-col items-start justify-start gap-2'>
+        <h3>
+          <StandardLabel label={event.title} />
+        </h3>
         <div className='flex flex-col gap-0.5'>
           <div className='flex flex-col gap-1 md:flex-row'>
             <h4>
-              {format(
-                new Date(
-                  event.eventSchedule.eventDate +
-                    'T' +
-                    event.eventSchedule.startTime
-                ),
-                'a hh:mm',
-                { locale: ko }
-              )}
+              {format(new Date(event.eventSchedule.startDateTime), 'a hh:mm', {
+                locale: ko,
+              })}
               -
-              {format(
-                new Date(
-                  event.eventSchedule.eventDate +
-                    'T' +
-                    event.eventSchedule.endTime
-                ),
-                'a hh:mm',
-                { locale: ko }
-              )}
+              {format(new Date(event.eventSchedule.endDateTime), 'a hh:mm', {
+                locale: ko,
+              })}
             </h4>
           </div>
           <h4 className='font-normal'>
-            {event.eventSchedule.locationName}{' '}
-            {event.eventSchedule.detailLocation}
+            <StandardLabel label={event.eventSchedule.locationName} />{' '}
+            <StandardLabel label={event.eventSchedule.detailLocation} />
           </h4>
           <p>{event.eventType}</p>
         </div>

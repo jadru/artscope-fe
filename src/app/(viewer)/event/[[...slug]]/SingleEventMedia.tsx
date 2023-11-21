@@ -20,7 +20,7 @@ export default function SingleEventMedia({ feed }: { feed: EventDetailType }) {
   const [detailedImage, setDetailedImage] = useState<string>('');
   return (
     <>
-      <div className='mt-3 block gap-1 border-y'>
+      <div className='mt-3 block w-full gap-1'>
         <Slide
           autoplay={false}
           infinite={false}
@@ -35,7 +35,7 @@ export default function SingleEventMedia({ feed }: { feed: EventDetailType }) {
           {feed.medias &&
             feed.medias.slice(1).map((item) => (
               <div
-                className='flex h-96 cursor-pointer items-center justify-center bg-contain bg-center bg-no-repeat md:h-[500px]'
+                className='flex h-96 cursor-pointer items-center justify-center bg-contain bg-center bg-no-repeat md:h-[600px]'
                 style={{
                   backgroundImage: `url(${
                     NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + item.mediaUrl

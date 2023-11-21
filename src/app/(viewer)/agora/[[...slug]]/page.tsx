@@ -1,8 +1,10 @@
 import { Metadata, ResolvingMetadata } from 'next';
+import { redirect } from 'next/navigation';
 import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
 import MarkdownViewer from '@/components/MarkdownViewer';
+import StandardLabel, { standardLabel } from '@/components/StandardLabel';
 
 import AgoraAction from '@/app/(viewer)/agora/[[...slug]]/AgoraAction';
 import AgoraChart from '@/app/(viewer)/agora/[[...slug]]/AgoraChart';
@@ -28,19 +30,20 @@ export async function generateMetadata(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  if (!params.slug) redirect('/agoras');
   const id = params.slug[0];
   const data = await fetchAgoraDetail(id);
   if (!data) throw new Error('Failed to fetch data');
   // const thumbnail = (await parent).openGraph?.images || [];
   const previousImages = (await parent).openGraph?.images || [];
   return {
-    title: `${data.agora.title
+    title: `${standardLabel(data.agora.title)
       .replace(/<[^>]*>?/g, '')
-      .slice(0, 20)} 아고라 토론`,
-    description: data.agora.content.replace(/<[^>]*>?/g, ''),
+      .slice(0, 20)} 아고라`,
+    description: standardLabel(data.agora.content),
     openGraph: {
-      title: `${data.agora.title.slice(0, 20)} 이벤트 | Artscope`,
-      description: data.agora.content.replace(/<[^>]*>?/g, '').slice(0, 100),
+      title: `${standardLabel(data.agora.title).slice(0, 20)} | Artscope`,
+      description: standardLabel(data.agora.content).slice(0, 100),
       url: 'https://www.artscope.kr/agora/' + id,
       type: 'article',
       authors: ['Artscope'],
@@ -55,11 +58,13 @@ export default async function AgoraDetailPage({
 }: {
   params: { slug: string[] };
 }) {
+  if (!params.slug) redirect('/agoras');
   const data = await fetchAgoraDetail(params.slug[0]);
+  if (!data) throw new Error('Failed to fetch data');
   return (
     <div className='space-y-3 py-3'>
       <h1 className='break-words px-3 text-center text-4xl'>
-        {data.agora.title}
+        <StandardLabel label={data.agora.title} />
       </h1>
       <h2 className='text-center'>{data.agora.participantCount}명 참여</h2>
       {data.agora.isAnonymous ? (
@@ -69,18 +74,22 @@ export default async function AgoraDetailPage({
       )}
       <div className='mt-3 flex w-full flex-col-reverse items-center justify-between gap-2 px-3 md:flex-row'>
         <AgoraChart agora={data} />
-        {data.agora.thumbnail?.mediaUrl && <ASNextImage
-          src={data.agora.thumbnail.mediaUrl}
-          alt={data.agora.title}
-          width={400}
-          height={400}
-          className='h-96 w-full rounded-xl object-cover md:w-1/2'
-        />}
+        {data.agora.thumbnail?.mediaUrl && (
+          <ASNextImage
+            src={data.agora.thumbnail.mediaUrl}
+            alt={data.agora.title}
+            width={400}
+            height={400}
+            className='h-96 w-full rounded-xl object-cover md:w-1/2'
+          />
+        )}
       </div>
       <div className='px-3 md:px-3'>
         <MarkdownViewer>{data.agora.content}</MarkdownViewer>
       </div>
-      {data.agora.medias && data.agora.medias.length > 2 && <AgoraMedia feed={data} />}
+      {data.agora.medias && data.agora.medias.length > 2 && (
+        <AgoraMedia feed={data} />
+      )}
       <div className='px-2'>
         {data.agora.updatedTime && (
           <p>

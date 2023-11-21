@@ -15,7 +15,7 @@ import { BiBuilding, BiPlus } from 'react-icons/bi';
 import NewLocationModal from '@/app/new/event/location/NewLocationModal';
 import jxios from '@/utils/jxios';
 
-import { CreateScheduleType } from '@/types/event';
+import { CreateScheduleTempType } from '@/types/event';
 import { LocationDataType, LocationResponseType } from '@/types/location';
 
 export default function AddLocation({
@@ -23,8 +23,8 @@ export default function AddLocation({
   setSchedule,
   scheduleIndex,
 }: {
-  schedule: CreateScheduleType[];
-  setSchedule: React.Dispatch<React.SetStateAction<CreateScheduleType[]>>;
+  schedule: CreateScheduleTempType[];
+  setSchedule: React.Dispatch<React.SetStateAction<CreateScheduleTempType[]>>;
   scheduleIndex: number;
 }) {
   const [data, setData] = useState<LocationDataType[]>();

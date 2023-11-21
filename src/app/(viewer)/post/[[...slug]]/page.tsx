@@ -1,6 +1,8 @@
 import { Metadata, ResolvingMetadata } from 'next';
+import { redirect } from 'next/navigation';
 
 import MarkdownViewer from '@/components/MarkdownViewer';
+import { standardLabel } from '@/components/StandardLabel';
 
 import PostComment from '@/app/(viewer)/post/[[...slug]]/comment';
 import SinglePostItemAction from '@/app/(viewer)/post/[[...slug]]/SinglePostItemAction';
@@ -26,19 +28,21 @@ export async function generateMetadata(
   // const thumbnail = (await parent).openGraph?.images || [];
   const previousImages = (await parent).openGraph?.images || [];
   return {
-    title: `${data.content.replace(/<[^>]*>?/g, '').slice(0, 20)} - ${
+    title: `${standardLabel(data.content).slice(0, 20)} - ${standardLabel(
       data.authorName
-    }`,
-    description: data.content.replace(/<[^>]*>?/g, ''),
+    )}`,
+    description: standardLabel(data.content),
     openGraph: {
-      title: `${data.content.slice(0, 20)} - ${data.authorName} | Artscope`,
-      description: data.content.replace(/<[^>]*>?/g, '').slice(0, 100),
+      title: `${standardLabel(data.content).slice(0, 20)} - ${standardLabel(
+        data.authorName
+      )} | Artscope`,
+      description: standardLabel(data.content).slice(0, 100),
       url: 'https://www.artscope.kr/artwork/' + id,
       type: 'article',
       authors: [data.authorName],
       images: [...previousImages],
     },
-    publisher: data.authorName,
+    publisher: 'Artscope',
   };
 }
 
@@ -54,6 +58,7 @@ export default async function SinglePost({
 }: {
   params: { slug: string[] };
 }) {
+  if (!params.slug) redirect('/');
   const data = await fetchPost(params.slug[0]);
   if (!data) throw new Error('Failed to fetch data');
   return (
@@ -66,7 +71,7 @@ export default async function SinglePost({
             <div className='flex flex-col justify-start px-1.5'>
               <div className='flex w-full flex-col gap-1 break-keep p-3 text-xl leading-relaxed tracking-wide'>
                 <MarkdownViewer>{data.content}</MarkdownViewer>
-                <SinglePostOpengraph content={data.content} />
+                <SinglePostOpengraph content={standardLabel(data.content)} />
               </div>
             </div>
             {data.medias && data.medias.length > 1 && (

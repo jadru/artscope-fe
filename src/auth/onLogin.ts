@@ -35,12 +35,11 @@ export const onGetProfile = async (
       },
     });
     const data: profileApiResponseType = await res.data;
-    if (res.status !== 200) {
-      setUser(undefined);
-      return;
-    } else {
+    if (res.status === 200) {
       setUser(data);
       onSuccess(data.roleStatus, router);
+    } else {
+      setUser(undefined);
     }
   } else {
     setUser(undefined);

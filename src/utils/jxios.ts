@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { decode } from 'html-entities';
 import cookie from 'react-cookies';
 import { toast } from 'react-toastify';
+
+import { standardLabel } from '@/components/StandardLabel';
 
 import {
   removeRefreshToken,
@@ -44,11 +45,11 @@ Jxios.interceptors.response.use(
     // every response will be decoded
     if (res.data) {
       if (typeof res.data === 'string') {
-        res.data = decode(res.data);
+        res.data = standardLabel(res.data);
       } else if (typeof res.data === 'object') {
         Object.keys(res.data).forEach((key) => {
           if (typeof res.data[key] === 'string') {
-            res.data[key] = decode(res.data[key]);
+            res.data[key] = standardLabel(res.data[key]);
           }
         });
       }
@@ -61,7 +62,8 @@ Jxios.interceptors.response.use(
       switch (response.status || config.sent) {
         case 400:
         case 401:
-          toast.error(`
+          if (typeof window !== 'undefined')
+            toast.error(`
               ${response.data.message}
                 ${
                   response.data.detail !== null
@@ -70,21 +72,24 @@ Jxios.interceptors.response.use(
                 }`);
           return Promise.reject(err);
         case 403:
-          if (cookie.load('refresh-token')) {
-            config.sent = true;
-            await getRefreshToken();
-            return axios(config);
-          } else {
-            cookie.remove('refresh-token');
-            cookie.remove('access-token');
-            toast.warn('로그인이 필요합니다.');
-            return Promise.reject(err);
-          }
+          if (typeof window !== 'undefined')
+            if (cookie.load('refresh-token')) {
+              config.sent = true;
+              await getRefreshToken();
+              return axios(config);
+            } else {
+              cookie.remove('refresh-token');
+              cookie.remove('access-token');
+              toast.warn('로그인이 필요합니다.');
+              return Promise.reject(err);
+            }
+          break;
         case 502:
         case 500:
           return Promise.reject(err);
         default:
-          toast.error(`
+          if (typeof window !== 'undefined')
+            toast.error(`
               ${response.data.message}
                 ${
                   response.data.detail !== null

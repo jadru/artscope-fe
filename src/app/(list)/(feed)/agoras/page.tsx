@@ -1,11 +1,13 @@
 import Title from '@/components/Title';
 
-import AgoraItem from '@/app/(list)/agoras/AgoraItem';
-import AgoraPagination from '@/app/(list)/agoras/AgoraPagination';
+import AgoraItem from '@/app/(list)/(feed)/agoras/AgoraItem';
+import AgoraPagination from '@/app/(list)/(feed)/agoras/AgoraPagination';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
 import { AgoraListType } from '@/types/agora';
+
+// TODO: Placeholder Skeleton & 무한스크롤 도입
 
 const fetchAgora = async (page: number) =>
   jxios

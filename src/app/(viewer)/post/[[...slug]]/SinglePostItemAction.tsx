@@ -100,7 +100,7 @@ export default function SinglePostItemAction({
         {/*   </Button> */}
         {/* </DebounceClick> */}
         <div>
-          {feed.authorUsername === user?.username && (
+          {user && feed.authorUsername === user?.username && (
             <>
               <DebounceClick wait={500}>
                 <Button

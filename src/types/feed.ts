@@ -9,32 +9,31 @@ export type feedApiResponseType = {
 
 export type feedItemType = {
   id: number;
-  title: string | null;
+  title: string | undefined;
   content: string;
   type: contentType;
-  thumbnailUrl: string | null;
-  mediaUrls: string[] | null;
+  thumbnailUrl: string | undefined;
+  mediaUrls: string[] | undefined;
   authorUsername: string;
   authorName: string;
-  authorDescription: string | null;
-  authorProfileImageUrl: string | null;
-  authorCompanyName: string | null;
-  authorCompanyRole: string | null;
-  tags: string[] | null;
+  authorDescription: string | undefined;
+  authorProfileImageUrl: string | undefined;
+  authorCompanyName: string | undefined;
+  authorCompanyRole: string | undefined;
+  tags: string[] | undefined;
   categoryId: string;
   views: number;
   likes: number;
   isLiked: boolean;
   comments: number;
   createdTime: Date;
-  updatedTime: Date | null;
+  updatedTime: Date | undefined;
 
   // only for exhibition
   event: {
     eventType: EventType;
-    startTime: `${number}:${number}`;
-    endTime: `${number}:${number}`;
-    eventDate: `${number}-${number}-${number}`;
+    startDateTime: Date;
+    endDateTime: Date;
     locationName: string;
     locationAddress: string;
     detailLocation: string;

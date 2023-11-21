@@ -3,6 +3,8 @@
 import * as ics from 'ics';
 import React from 'react';
 
+import { standardLabel } from '@/components/StandardLabel';
+
 import { EventDetailType } from '@/types/event';
 
 type CalendarButtonProps = {
@@ -15,15 +17,11 @@ const CalendarButton = ({ ...props }: CalendarButtonProps) => {
     (ii) => ii.id === props.scheduleid
   )[0];
   const handleIcs = async () => {
-    const startTime = new Date(
-      thisSchedule.eventDate + ' ' + thisSchedule.startTime
-    );
-    const endTime = new Date(
-      thisSchedule.eventDate + ' ' + thisSchedule.endTime
-    );
+    const startTime = new Date(thisSchedule.startDateTime);
+    const endTime = new Date(thisSchedule.endDateTime);
     ics.createEvent(
       {
-        title: props.data.title,
+        title: standardLabel(props.data.title),
         start: [
           startTime.getFullYear(),
           startTime.getMonth() + 1,
@@ -31,7 +29,7 @@ const CalendarButton = ({ ...props }: CalendarButtonProps) => {
           startTime.getHours(),
           startTime.getMinutes(),
         ],
-        description: props.data.description,
+        description: standardLabel(props.data.description),
         end: [
           endTime.getFullYear(),
           endTime.getMonth() + 1,
@@ -42,9 +40,9 @@ const CalendarButton = ({ ...props }: CalendarButtonProps) => {
         location:
           props.data.location.address +
           ' ' +
-          props.data.location.name +
+          standardLabel(props.data.location.name) +
           ' ' +
-          thisSchedule.detailLocation,
+          standardLabel(thisSchedule.detailLocation),
         geo: {
           lat: props.data.location.latitude,
           lon: props.data.location.longitude,
@@ -53,8 +51,8 @@ const CalendarButton = ({ ...props }: CalendarButtonProps) => {
         categories: [props.data.eventType],
         attendees: thisSchedule.participants.map((participant) => {
           return {
-            name: participant.name ?? '',
-            dir: participant.username
+            name: standardLabel(participant.name) ?? '',
+            dir: standardLabel(participant.username)
               ? 'https://www.artscope.kr/profile/' + participant.username
               : undefined,
           };
@@ -68,7 +66,7 @@ const CalendarButton = ({ ...props }: CalendarButtonProps) => {
           {
             action: 'display',
             trigger: {
-              hours: 1,
+              hours: 4,
               minutes: 0,
               before: true,
             },

@@ -26,7 +26,7 @@ export default function EventEditDelete({
       });
     }
   };
-  return user?.name === authorUsername ? (
+  return user && user?.username === authorUsername ? (
     <div className='flex justify-between gap-1 px-1'>
       <Button
         startContent={<AiOutlineDelete />}

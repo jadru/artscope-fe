@@ -1,9 +1,12 @@
 'use client';
 
-import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import {
+  DateTimePicker,
+  LocalizationProvider,
+  TimePicker,
+} from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Input, Select, SelectItem } from '@nextui-org/react';
+import { Button, Input, Select, SelectItem } from '@nextui-org/react';
 import { Bold } from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
 import { Document } from '@tiptap/extension-document';
@@ -49,7 +52,12 @@ import AddLocation from '@/app/new/event/location/AddLocation';
 import jxios from '@/utils/jxios';
 
 import { ArtWorkMediaType } from '@/types/artwork';
-import { CreateScheduleType, EventType, ScheduleType } from '@/types/event';
+import {
+  CreateScheduleTempType,
+  CreateScheduleType,
+  EventDetailType,
+  EventType,
+} from '@/types/event';
 
 const NewEvent = () => {
   const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
@@ -57,9 +65,10 @@ const NewEvent = () => {
   const [eventType, setEventType] = useState<EventType>('STANDARD');
   const [price, setPrice] = useState<number>(0);
   const [imgs, setImgs] = useState<string[]>([]);
-  const [schedule, setSchedule] = useState<CreateScheduleType[]>([
+  const [schedule, setSchedule] = useState<CreateScheduleTempType[]>([
     initialScheduleSchema,
   ]);
+
   const { push } = useRouter();
   const [isUpload, setIsUpload] = useState(false);
   const placeholderText = '이벤트를 자유롭게 설명해주세요.';
@@ -148,17 +157,13 @@ const NewEvent = () => {
       newState.dto.schedule = schedule.reduce((acc, cur) => {
         acc.push({
           locationId: Number(cur.locationId),
-          startTime: format(cur.startTime, 'HH:mm') as `${number}:${number}`,
-          endTime: format(cur.endTime, 'HH:mm') as `${number}:${number}`,
-          eventDate: format(
-            new Date(cur.eventDate),
-            'yyyy-MM-dd'
-          ) as `${number}-${number}-${number}`,
+          startDateTime: format(cur.startDateTime, "yyyy-MM-dd'T'HH:mm"),
+          endDateTime: format(cur.endDateTime, "yyyy-MM-dd'T'HH:mm"),
           participants: cur.participants,
           detailLocation: cur.detailLocation,
         });
         return acc;
-      }, [] as ScheduleType[]);
+      }, [] as CreateScheduleType[]);
       const formData = new FormData();
       if (fileUrls[0].mediaType === 'video') {
         const cover = (await getVideoCoverFromLocal(
@@ -220,9 +225,10 @@ const NewEvent = () => {
           },
         })
         .then((res) => {
+          const data = res.data as EventDetailType;
           if (res.status === 201) {
             toast.success('이벤트가 업로드되었습니다.');
-            push('/events');
+            push('/event/' + data.id);
           }
         })
         .catch((err) => {
@@ -393,8 +399,11 @@ const NewEvent = () => {
                     id: prev[prev.length - 1].id + 1,
                     locationId: prev[prev.length - 1].locationId,
                     locationName: prev[prev.length - 1].locationName,
-                    eventDate: add(prev[prev.length - 1].eventDate, {
-                      weeks: 1,
+                    startDateTime: add(prev[prev.length - 1].startDateTime, {
+                      days: 1,
+                    }),
+                    endDateTime: add(prev[prev.length - 1].endDateTime, {
+                      days: 1,
                     }),
                   },
             ]);
@@ -446,38 +455,38 @@ const NewEvent = () => {
                 </button>
               </div>
               <div className='flex flex-col gap-2 md:flex-row'>
-                <DatePicker
-                  label='시작 날짜'
-                  value={item.eventDate}
+                <DateTimePicker
+                  label='시작 날짜 및 시간'
+                  value={item.startDateTime}
                   onChange={(newValue) =>
                     newValue &&
                     setSchedule((prev) => {
                       const temp = [...prev];
-                      temp[index].eventDate = newValue;
+                      temp[index].startDateTime = newValue;
+                      temp[index].endDateTime = add(newValue, { hours: 2 });
                       return [...temp];
                     })
                   }
                 />
                 <TimePicker
-                  label='시작 시간'
-                  value={item.startTime}
-                  onChange={(newValue) => {
-                    newValue &&
-                      setSchedule((prev) => {
-                        const temp = [...prev];
-                        temp[index].startTime = newValue;
-                        return [...temp];
-                      });
-                  }}
-                />
-                <TimePicker
                   label='종료 시간'
-                  value={item.endTime}
+                  value={item.endDateTime}
                   onChange={(newValue) => {
                     newValue &&
                       setSchedule((prev) => {
                         const temp = [...prev];
-                        temp[index].endTime = newValue;
+                        if (newValue < temp[index].startDateTime)
+                          if (confirm('혹시 이벤트가 자정을 넘기나요?'))
+                            temp[index].endDateTime = add(newValue, {
+                              days: 1,
+                            });
+                          else
+                            temp[index].endDateTime = add(
+                              temp[index].startDateTime,
+                              {
+                                hours: 2,
+                              }
+                            );
                         return [...temp];
                       });
                   }}
@@ -490,7 +499,7 @@ const NewEvent = () => {
               {/*       @으로 Artscope 회원을 찾을 수 있습니다 */}
               {/*     </b> */}
               {/*   </p> */}
-              {/*   <NewParticipantView */}
+              {/*   <NewParticipant */}
               {/*     schedule={schedule} */}
               {/*     setSchedule={setSchedule} */}
               {/*     index={index} */}
@@ -502,17 +511,15 @@ const NewEvent = () => {
       </div>
       <div className='h-16'></div>
       <div className='fixed bottom-0 z-40 flex h-16 w-full max-w-[718px] items-center justify-end border-t bg-default-50 px-3'>
-        <button
+        <Button
           onClick={handleCreateSaveButton}
           disabled={isUpload}
+          color='primary'
           className={`
-            h-12 rounded-2xl border-2 border-primary bg-white px-6 py-3 font-bold text-primary transition hover:border-secondary hover:bg-blue-50 hover:text-secondary ${
-              isUpload &&
-              'animate-pulse border-gray-200 bg-gray-200 text-default'
-            }`}
+            h-12 ${isUpload ? 'opacity-20' : ''}`}
         >
           새 이벤트 등록
-        </button>
+        </Button>
       </div>
     </>
   );

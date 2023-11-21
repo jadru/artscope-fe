@@ -23,7 +23,7 @@ import { ArtworkType } from '@/types/artwork';
 export default function ArtworkAction({ aw }: { aw: ArtworkType }) {
   const [like, setLike] = useState<boolean>(aw.isLiked);
   const [firstLike, setFirstLike] = useState<boolean>(aw.isLiked);
-  const { user, isLogin } = useUser();
+  const { user, isLogin, isAdmin } = useUser();
   const { push } = useRouter();
 
   const handleLike = useDebounce(
@@ -83,7 +83,7 @@ export default function ArtworkAction({ aw }: { aw: ArtworkType }) {
         </Button>
       </div>
       <div>
-        {aw.artwork.authorUsername === user?.username && (
+        {(aw.artwork.authorUsername === user?.username || isAdmin) && (
           <>
             <Button
               onClick={() => push(`/edit/artwork/${aw.artwork.id}`)}

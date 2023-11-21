@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import ASNextImage from '@/components/ASNextImage';
+import StandardLabel from '@/components/StandardLabel';
 
 import { SinglePostType } from '@/types/feed';
 
@@ -19,14 +20,18 @@ export default function SinglePostProfile({ feed }: { feed: SinglePostType }) {
           className='h-10 w-10 rounded-full border object-cover'
         />
         <div className='ml-0.5 flex flex-col transition hover:underline'>
-          <p className='inline text-[0.9rem] font-bold'>{feed.authorName}</p>
+          <p className='inline text-[0.9rem] font-bold'>
+            <StandardLabel label={feed.authorName} />
+          </p>
           <p
             className={`${
               feed.authorDescription ? 'ml-0.5 inline w-full' : ''
             } line-clamp-1 text-[0.9rem] text-default-500`}
           >
             @{feed.authorUsername}{' '}
-            {feed.authorDescription ? '- ' + feed.authorDescription : ''}
+            {feed.authorDescription
+              ? '- ' + <StandardLabel label={feed.authorDescription} />
+              : ''}
           </p>
         </div>
       </div>

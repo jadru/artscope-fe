@@ -24,7 +24,7 @@ const config = {
     ];
   },
 
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: true,
 
   images: {

@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 
 import ASNextImage from '@/components/ASNextImage';
+import StandardLabel from '@/components/StandardLabel';
 
 import { profileApiResponseType } from '@/types/profile';
 
@@ -18,7 +19,9 @@ export default function ArtworkAuthorProfile({
       onClick={() => push('/profile/' + author.username)}
     >
       <div className='flex flex-col items-start justify-center'>
-        <p className='text-lg font-bold'>{author.name} 작가</p>
+        <p className='text-lg font-bold'>
+          <StandardLabel label={author.name} /> 작가
+        </p>
         <p className='text-sm'>@{author.username}</p>
       </div>
       {author.picture ? (

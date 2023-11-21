@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import ASNextImage from '@/components/ASNextImage';
+import StandardLabel, { standardLabel } from '@/components/StandardLabel';
 
 import { ArtworkType } from '@/types/artwork';
 
@@ -20,11 +21,13 @@ export default function ArtworkProfile({ aw }: { aw: ArtworkType }) {
         />
         <div className='ml-0.5 flex flex-col transition hover:underline'>
           <p className='inline text-[0.9rem] font-bold'>
-            {aw.artwork.authorName}
+            <StandardLabel label={aw.artwork.authorName} />
           </p>
           <p className='line-clamp-1 text-[0.9rem] text-default-500'>
             @{aw.artwork.authorUsername}
-            {' • ' + aw.artwork.authorIntroduction || ''}
+            {aw.artwork.authorIntroduction
+              ? ' • ' + standardLabel(aw.artwork.authorIntroduction)
+              : ''}
           </p>
         </div>
       </div>

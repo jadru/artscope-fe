@@ -6,7 +6,7 @@ import { notFound, usePathname } from 'next/navigation';
 import { ReactElement, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import NewPostModalButton from '@/components/New/Posts/NewPostModalButton';
+import NewPostButton from '@/components/New/Posts/NewPostModalButton';
 
 import FeedList from '@/app/(list)/(feed)/FeedList';
 import { useUser } from '@/states';
@@ -56,16 +56,21 @@ export default function Feeds() {
   const { user } = useUser();
   const pathname = usePathname();
 
-  const { data, fetchNextPage, isLoading, refetch, isError } = useInfiniteQuery(
-    {
-      queryKey: ['feed'],
-      queryFn: async ({ pageParam }) => await fetchFeeds({ pageParam }),
-      initialPageParam: 0,
-      getNextPageParam: (lastPage, allPages) => {
-        return lastPage.hasNext ? allPages.length : null;
-      },
-    }
-  );
+  const {
+    data,
+    fetchNextPage,
+    isFetchingNextPage,
+    isLoading,
+    refetch,
+    isError,
+  } = useInfiniteQuery({
+    queryKey: ['feed'],
+    queryFn: async ({ pageParam }) => await fetchFeeds({ pageParam }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.hasNext ? allPages.length : null;
+    },
+  });
 
   useEffect(() => {
     refetch();
@@ -97,10 +102,7 @@ export default function Feeds() {
 
   return (
     <div className='w-full'>
-      {user &&
-        !(user?.roleStatus === 'NONE' || user?.roleStatus === undefined) && (
-          <NewPostModalButton placeholder='무슨 이야기가 있나요?' />
-        )}
+      <NewPostButton placeholder='무슨 이야기가 있나요?' />
       {data && !isError && (
         <>
           {data.pages.map(
@@ -120,6 +122,18 @@ export default function Feeds() {
         </>
       )}
       {isLoading && (
+        <div className='w-full'>
+          <SkeletonFeed />
+          <SkeletonFeed />
+          <SkeletonFeed />
+          <SkeletonFeed />
+          <SkeletonFeed />
+          <SkeletonFeed />
+          <SkeletonFeed />
+          <SkeletonFeed />
+        </div>
+      )}
+      {isFetchingNextPage && (
         <div className='w-full'>
           <SkeletonFeed />
           <SkeletonFeed />

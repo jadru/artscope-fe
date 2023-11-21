@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import ASNextImage from '@/components/ASNextImage';
+import StandardLabel from '@/components/StandardLabel';
 
 import { AgoraDetailType } from '@/types/agora';
 
@@ -20,7 +21,7 @@ export default function AgoraProfile({ agora }: { agora: AgoraDetailType }) {
         />
         <div className='ml-0.5 flex flex-col transition hover:underline'>
           <p className='inline text-[0.9rem] font-bold'>
-            {agora.agora.author.name}
+            <StandardLabel label={agora.agora.author.name} />
           </p>
           <p className='line-clamp-1 text-[0.9rem] text-default-500'>
             @{agora.agora.author.username}

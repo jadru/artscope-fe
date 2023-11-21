@@ -12,7 +12,7 @@ const Title = ({
   title,
   description,
   className,
-  divider = true,
+  divider = false,
   children,
 }: Props) => (
   <div

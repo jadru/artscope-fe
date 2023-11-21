@@ -1,26 +1,42 @@
 'use client';
 
 import { Kbd } from '@nextui-org/react';
-import { useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useCallback, useEffect, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { MdArrowForwardIos } from 'react-icons/md';
 
 import ResponsiveGrid from '@/components/ResponsiveGrid';
 
+import ArtworkItem from '@/app/(list)/(feed)/artworks/ArtworkItem';
 import FeedListItemPost from '@/app/(list)/(feed)/FeedListItem/FeedListItemPost';
-import ArtworkItem from '@/app/(list)/artworks/ArtworkItem';
 import jxios from '@/utils/jxios';
 
 import { searchType } from '@/types/search';
 
 export default function Search() {
   const [search, setSearch] = useState('');
+  const [searchType, setSearchType] = useState<string>('all');
   const [data, setData] = useState<searchType>();
   const searchParams = useSearchParams();
-  const searchKeyword = searchParams.get('c');
+  const { push } = useRouter();
+  const initialSearchKeyword = searchParams.get('c');
+  const initialSearchType = searchParams.get('type');
 
-  const fetchSearch = async () =>
+  useEffect(() => {
+    if (initialSearchKeyword) {
+      setSearch(initialSearchKeyword);
+    }
+  }, [initialSearchKeyword]);
+
+  useEffect(() => {
+    if (initialSearchType) {
+      setSearchType(initialSearchType);
+    }
+  }, [initialSearchType]);
+
+  const fetchSearch = useCallback(async () => {
+    push(`/search?c=${search}&type=${searchType}`);
     await jxios
       .get('/api/search', {
         params: {
@@ -31,14 +47,17 @@ export default function Search() {
       .then((res) => {
         setData(res.data);
       });
+  }, [search, push, searchType]);
+
   useEffect(() => {
-    fetchSearch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (search.length > 0) {
+      fetchSearch();
+    }
+  }, [search, fetchSearch]);
 
   return (
     <div className='mb-2 flex flex-col items-center justify-center gap-2 px-2'>
-      <div className='flex h-16 w-full items-center space-x-2 rounded-2xl border border-default-400 px-4'>
+      <div className='flex h-16 w-full items-center space-x-2 rounded-2xl border border-default-400 px-2.5 py-2'>
         <AiOutlineSearch className='inline' size={25} />
         <input
           type='search'
@@ -49,7 +68,7 @@ export default function Search() {
               fetchSearch();
             }
           }}
-          autoFocus={!searchKeyword}
+          autoFocus={!initialSearchKeyword}
           placeholder='예술을 검색하세요'
           className='inline h-full w-full border-0 bg-transparent text-2xl focus:border-0 focus:outline-none focus:ring-0'
         />

@@ -1,5 +1,4 @@
 import {
-  BiSearch,
   BiSolidCalendar,
   BiSolidHome,
   BiSolidNetworkChart,
@@ -13,16 +12,10 @@ export const menuItems = [
   //   url: '/about',
   // },
   {
-    name: '홈',
+    name: '피드',
     slug: '/',
     url: '/',
     icon: BiSolidHome,
-  },
-  {
-    name: '검색',
-    slug: '/search',
-    url: '/search',
-    icon: BiSearch,
   },
   {
     name: '작품',
@@ -49,5 +42,12 @@ export const menuItems = [
   // {
   //   name: '매거진',
   //   url: '/magazine',
+  // },
+
+  // {
+  //   name: '검색',
+  //   slug: '/search',
+  //   url: '/search',
+  //   icon: BiSearch,
   // },
 ];

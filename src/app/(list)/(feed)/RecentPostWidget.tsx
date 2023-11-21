@@ -32,7 +32,7 @@ export default function RecentPostWidget() {
             onClick={() => push('/post/' + p.id)}
           >
             <MarkdownViewer className='line-clamp-1' ignoreMarkdown ignoreHTML>
-              {p.content.replace(/<[^>]*>?/g, '')}
+              {p.content}
             </MarkdownViewer>
           </button>
         ))}

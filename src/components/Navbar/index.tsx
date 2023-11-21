@@ -6,12 +6,11 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from '@nextui-org/react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { AiOutlineClose, AiOutlineForm, AiOutlineMenu } from 'react-icons/ai';
-import { BiPen } from 'react-icons/bi';
+import React from 'react';
+import { AiOutlineForm } from 'react-icons/ai';
+import { BiPen, BiSearch } from 'react-icons/bi';
 
 import ASNextImage from '@/components/ASNextImage';
 import LoginModal from '@/components/Navbar/LoginModalButton';
@@ -22,14 +21,10 @@ import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import { useUser } from '@/states';
 
 export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, isLogin } = useUser();
   const { push } = useRouter();
   const pathname = usePathname();
   const _theme = theme;
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
 
   const ProfileDropdown = () =>
     user ? (
@@ -37,7 +32,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
         <DropdownTrigger>
           <button>
             <ASNextImage
-              className='h-10 w-10 transform rounded-lg border-1.5 border-default-700 object-cover transition-transform hover:scale-110 hover:border-primary'
+              className='h-10 w-10 transform rounded-lg border-1.5 border-default-700 object-cover transition-transform hover:scale-105 hover:border-primary'
               alt={user.name}
               width={32}
               height={32}
@@ -118,97 +113,68 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
 
   return (
     <>
-      <div className='sticky top-0 z-50 w-screen bg-white'>
-        <div className='mx-auto flex h-16 max-w-[1024px] items-center justify-between px-2 lg:px-0'>
-          <div
-            className='group box-border w-24 basis-0 cursor-pointer flex-row flex-nowrap items-center justify-start whitespace-nowrap bg-transparent text-medium no-underline'
-            onClick={() => push('/')}
+      <div className='sticky -top-12 z-50 w-screen bg-white/80 backdrop-blur-2xl transition md:top-0'>
+        <div className='mx-auto flex max-w-[1024px] flex-col items-start justify-between px-2.5 lg:px-0'>
+          <Link
+            className='group box-border flex h-12 basis-0 cursor-pointer appearance-none flex-row flex-nowrap items-end justify-start whitespace-nowrap bg-transparent text-medium no-underline md:hidden'
+            href='/'
           >
-            <Logo className='h-20 w-24 overflow-hidden fill-[#22bce0] transition duration-100 group-hover:fill-secondary' />
-          </div>
-          <div className='fitems-center hidden justify-center gap-3 md:flex'>
-            {menuItems.map((item, index) => (
-              <Link
-                href={item.url}
-                key={`${item.name}-${index}`}
-                className={`pt-0.5 font-bold decoration-2 underline-offset-4 transition hover:underline ${
-                  index === 0
-                    ? pathname === '/'
+            <Logo className='h-12 w-32 overflow-hidden fill-black px-2 pb-0 pt-2 transition duration-100' />
+          </Link>
+          <div className='flex h-14 w-full items-center justify-between'>
+            <div className='flex items-center justify-center gap-0.5 py-2 md:hidden md:gap-1'>
+              {menuItems.map((item, index) => (
+                <Link
+                  href={item.url}
+                  key={`${item.name}-${index}`}
+                  className={`px-1 py-2 font-bold decoration-2 underline-offset-4 transition hover:underline md:px-2 ${
+                    index === 0
+                      ? pathname === '/'
+                        ? 'underline'
+                        : ''
+                      : pathname.startsWith(item.slug)
                       ? 'underline'
                       : ''
-                    : pathname.startsWith(item.slug)
-                    ? 'underline'
-                    : ''
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+              <Link
+                href='/search'
+                key='search'
+                className={`px-2 py-2 font-bold decoration-2 underline-offset-4 transition hover:underline ${
+                  pathname.startsWith('/search') ? 'text-indigo-700' : ''
                 }`}
               >
-                {item.name}
+                <BiSearch size={17} className='mt-0.5 stroke-1' />
               </Link>
-            ))}
-          </div>
-          <div className='flex gap-1.5'>
-            {!isMobileMenuOpen ? (
-              <>
-                {isLogin === undefined ? (
-                  <div className='h-1 w-1'></div>
-                ) : !isLogin ? (
-                  <LoginModal
-                    btnText='시작하기'
-                    title='로그인 / 회원가입'
-                    link={NEXT_PUBLIC_API_URL + '/oauth2/authorization/google'}
-                  />
-                ) : (
-                  <>
-                    <NewContentDropdown />
-                    <ProfileDropdown />
-                  </>
-                )}
-                <button
-                  className='flex h-10 w-10 items-center justify-center rounded-lg border-1.5 border-default-700 text-default-700 md:hidden'
-                  onClick={() => setIsMobileMenuOpen(true)}
-                >
-                  <AiOutlineMenu size={23} />
-                </button>
-              </>
-            ) : (
-              <button
-                className='flex h-10 w-10 items-center justify-center rounded-lg border-1.5 border-default-700 text-default-700 md:hidden'
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <AiOutlineClose size={23} />
-              </button>
-            )}
+            </div>
+            <Link
+              href='/'
+              className='group box-border hidden h-10 basis-0 cursor-pointer appearance-none flex-row flex-nowrap items-end justify-start whitespace-nowrap bg-transparent text-medium no-underline md:flex'
+            >
+              <Logo className='h-10 w-32 overflow-hidden fill-black px-2 pb-1 pt-1 transition duration-100 group-hover:fill-primary' />
+            </Link>
+            <div className='flex gap-1.5'>
+              {isLogin === undefined ? (
+                <div className='h-1 w-1'></div>
+              ) : !isLogin ? (
+                <LoginModal
+                  btnText='시작하기'
+                  title='로그인 / 회원가입'
+                  link={NEXT_PUBLIC_API_URL + '/oauth2/authorization/google'}
+                />
+              ) : (
+                <>
+                  <NewContentDropdown />
+                  <ProfileDropdown />
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
-      {isMobileMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className='fixed left-0 top-0 z-[49] flex h-screen w-screen flex-col items-start justify-center bg-white px-6 py-8 md:hidden'
-        >
-          {menuItems.map((item, index) => (
-            <Link
-              key={`${item.name}-${index}`}
-              href={item.url}
-              className={`flex w-full items-center rounded-xl px-2.5 py-2 text-left font-bold decoration-2 underline-offset-4 transition hover:bg-default-100 hover:underline ${
-                index === 0
-                  ? pathname === '/'
-                    ? 'underline'
-                    : ''
-                  : pathname.startsWith(item.slug)
-                  ? 'underline'
-                  : ''
-              }`}
-            >
-              {React.createElement(item.icon, {
-                size: 23,
-                className: 'mr-2',
-              })}
-              <p className='my-1 text-2xl'>{item.name}</p>
-            </Link>
-          ))}
-        </motion.div>
-      )}
     </>
   );
 }

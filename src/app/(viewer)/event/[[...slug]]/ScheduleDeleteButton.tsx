@@ -24,7 +24,7 @@ export default function SchduleDeleteButton(Props: SchduleDeleteButtonProps) {
         toast.success('스케줄이 삭제되었습니다.');
         refresh();
       });
-  return user?.name === Props.eventAuthorUsername ? (
+  return user && user?.username === Props.eventAuthorUsername ? (
     <button onClick={handleDeleteSchedule} {...Props} />
   ) : (
     <></>
