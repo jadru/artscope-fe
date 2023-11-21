@@ -49,14 +49,14 @@ export async function generateMetadata(
   const thumbnail = data.artwork.thumbnail || [];
   const previousImages = (await parent).openGraph?.images || [];
   return {
-    title: `${standardLabel(data.artwork.title)} - ${standardLabel(
-      data.artwork.authorName
-    )} 작가`,
+    title: `${standardLabel(data.artwork.authorName)} 작가, ${standardLabel(
+      data.artwork.title
+    )}`,
     description: standardLabel(data.artwork.description),
     openGraph: {
-      title: `${standardLabel(data.artwork.title)} - ${standardLabel(
-        data.artwork.authorName
-      )} | Artscope`,
+      title: `${standardLabel(data.artwork.authorName)} 작가, ${standardLabel(
+        data.artwork.title
+      )} - Artscope`,
       description: standardLabel(data.artwork.description).slice(0, 100),
       url: 'https://www.artscope.kr/artwork/' + id,
       type: 'article',
