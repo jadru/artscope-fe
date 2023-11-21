@@ -94,14 +94,14 @@ export type EventViewType = {
   event: SingleEventTypeOnList[];
 }[];
 
-export type EventApiRequestType = {
+export type CreateEventType = {
   dto: {
     title: string;
     description: string;
     eventType: EventType;
     link: string;
     price: number;
-    schedule: ScheduleType[];
+    schedule: CreateScheduleType[];
     medias:
       | {
           mediaType: MediaType;
@@ -118,20 +118,26 @@ export type EventApiRequestType = {
 export type ScheduleType = {
   locationId: number;
   detailLocation: string;
-  startTime: `${number}:${number}`; // '20:00'
-  endTime: `${number}:${number}`; // '20:00'
-  eventDate: `${number}-${number}-${number}`; // '2021-08-01'
+  startDateTime: Date;
+  endDateTime: Date;
   participants: ParticipantType[];
 };
 
 export type CreateScheduleType = {
-  id: number;
-  locationId: number | undefined;
-  locationName: string;
+  locationId: number;
   detailLocation: string;
-  startTime: Date; // '20:00'
-  endTime: Date; // '20:00'
-  eventDate: Date; // '2021-08-01'
+  startDateTime: string;
+  endDateTime: string;
+  participants: ParticipantType[];
+};
+
+export type CreateScheduleTempType = {
+  id: number;
+  locationId?: number;
+  locationName?: string;
+  detailLocation: string;
+  startDateTime: Date;
+  endDateTime: Date;
   participants: ParticipantType[];
 };
 
@@ -139,9 +145,8 @@ export type ScheduleResponseType = {
   id: number;
   locationId: number;
   detailLocation: string;
-  startTime: string; // '20:00'
-  endTime: string; // '20:00'
-  eventDate: string; // '2021-08-01'
+  startDateTime: Date;
+  endDateTime: Date;
   participants: ParticipantType[];
   locationAddress: string;
   locationName: string;

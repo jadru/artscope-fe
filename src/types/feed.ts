@@ -32,9 +32,8 @@ export type feedItemType = {
   // only for exhibition
   event: {
     eventType: EventType;
-    startTime: `${number}:${number}`;
-    endTime: `${number}:${number}`;
-    eventDate: `${number}-${number}-${number}`;
+    startDateTime: Date;
+    endDateTime: Date;
     locationName: string;
     locationAddress: string;
     detailLocation: string;

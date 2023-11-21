@@ -31,14 +31,23 @@ export default function FeedListItemEvent({ feed }: { feed: feedItemType }) {
             <div className='flex w-full items-end justify-between'>
               <p className='text-[0.9rem]'>
                 {format(
-                  new Date(feed.event.eventDate),
-                  'yyyy년 MM월 dd일 (eee)',
+                  new Date(feed.event.startDateTime),
+                  'yyyy년 MM월 dd일 (eee) HH:mm',
+                  {
+                    locale: ko,
+                  }
+                )}{' '}
+                -{' '}
+                {format(
+                  new Date(feed.event.endDateTime),
+                  format(new Date(feed.event.startDateTime), 'yyyy-MM-dd') ===
+                    format(new Date(feed.event.endDateTime), 'yyyy-MM-dd')
+                    ? 'HH:mm'
+                    : 'yyyy년 MM월 dd일 (eee) HH:mm',
                   {
                     locale: ko,
                   }
                 )}
-                <br />
-                {feed.event.startTime} - {feed.event.endTime}
               </p>
               <div className='w-auto rounded-lg border-2 bg-default-200 px-2 py-0.5 pl-1 text-sm font-bold'>
                 {eventTypeToKO(feed.event.eventType)}

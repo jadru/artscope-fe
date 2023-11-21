@@ -1,8 +1,11 @@
 'use client';
 
-import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import {
+  DateTimePicker,
+  LocalizationProvider,
+  TimePicker,
+} from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {
   Button,
   Input,
@@ -13,7 +16,7 @@ import {
   ModalHeader,
   useDisclosure,
 } from '@nextui-org/react';
-import { format } from 'date-fns';
+import { add, format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -23,7 +26,7 @@ import AddLocation from '@/app/new/event/location/AddLocation';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
-import { CreateScheduleType } from '@/types/event';
+import { CreateScheduleTempType } from '@/types/event';
 
 type SchduleAddButtonProps = {
   eventid: number;
@@ -34,15 +37,14 @@ export default function ScheduleAddButton(Props: SchduleAddButtonProps) {
   const { refresh } = useRouter();
   const { user } = useUser();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [schedule, setSchedule] = React.useState<CreateScheduleType[]>([
+  const [schedule, setSchedule] = React.useState<CreateScheduleTempType[]>([
     initialScheduleSchema,
   ]);
 
   const handleAddSchedule = async () =>
     jxios.post(`/api/exhibitions/${Props.eventid}/schedule`, {
-      eventDate: format(schedule[0].eventDate, 'yyyy-MM-dd'),
-      startTime: format(schedule[0].startTime, 'HH:mm'),
-      endTime: format(schedule[0].endTime, 'HH:mm'),
+      startDateTime: format(schedule[0].startDateTime, 'yyyy-MM-ddTHH:mm:ss'),
+      endDateTime: format(schedule[0].endDateTime, 'yyyy-MM-ddTHH:mm:ss'),
       locationId: schedule[0].locationId,
       detailLocation: schedule[0].detailLocation,
       participants: schedule[0].participants,
@@ -51,7 +53,13 @@ export default function ScheduleAddButton(Props: SchduleAddButtonProps) {
   return user?.name === Props.eventAuthorUsername ? (
     <>
       <button onClick={onOpen} {...Props} />
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement='top-center'>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement='top-center'
+        hideCloseButton
+        isDismissable={false}
+      >
         <ModalContent>
           {(onClose) => (
             <>
@@ -82,38 +90,37 @@ export default function ScheduleAddButton(Props: SchduleAddButtonProps) {
                   adapterLocale={ko}
                 >
                   <div className='flex flex-col gap-2'>
-                    <DatePicker
-                      label='시작 날짜'
-                      value={schedule[0].eventDate}
+                    <DateTimePicker
+                      label='시작 시간'
+                      value={schedule[0].startDateTime}
                       onChange={(newValue) =>
                         newValue &&
                         setSchedule((prev) => {
                           const temp = [...prev];
-                          temp[0].eventDate = newValue;
+                          temp[0].startDateTime = newValue;
+                          temp[0].endDateTime = add(newValue, { hours: 2 });
                           return [...temp];
                         })
                       }
                     />
                     <TimePicker
-                      label='시작 시간'
-                      value={schedule[0].startTime}
-                      onChange={(newValue) => {
-                        newValue &&
-                          setSchedule((prev) => {
-                            const temp = [...prev];
-                            temp[0].startTime = newValue;
-                            return [...temp];
-                          });
-                      }}
-                    />
-                    <TimePicker
                       label='종료 시간'
-                      value={schedule[0].endTime}
+                      value={schedule[0].endDateTime}
                       onChange={(newValue) => {
                         newValue &&
                           setSchedule((prev) => {
                             const temp = [...prev];
-                            temp[0].endTime = newValue;
+                            if (newValue < temp[0].startDateTime)
+                              if (confirm('혹시 이벤트가 자정을 넘기나요?')) {
+                                temp[0].endDateTime = add(newValue, {
+                                  days: 1,
+                                });
+                              } else {
+                                temp[0].endDateTime = add(
+                                  temp[0].startDateTime,
+                                  { hours: 2 }
+                                );
+                              }
                             return [...temp];
                           });
                       }}

@@ -1,8 +1,8 @@
 import { add } from 'date-fns';
 
-import { CreateScheduleType, EventApiRequestType } from '@/types/event';
+import { CreateEventType, CreateScheduleTempType } from '@/types/event';
 
-export const initialEventSchema: EventApiRequestType = {
+export const initialEventSchema: CreateEventType = {
   dto: {
     title: '',
     description: '',
@@ -17,15 +17,12 @@ export const initialEventSchema: EventApiRequestType = {
   thumbnailFile: undefined,
 };
 
-export const initialScheduleSchema: CreateScheduleType = {
+export const initialScheduleSchema: CreateScheduleTempType = {
   id: 0,
   locationId: undefined,
   locationName: '',
-  startTime: new Date(),
-  endTime: add(new Date(), {
-    hours: 4,
-  }),
+  startDateTime: add(new Date(), { hours: 1 }),
+  endDateTime: add(new Date(), { hours: 3 }),
   detailLocation: '',
-  eventDate: new Date(),
   participants: [],
 };

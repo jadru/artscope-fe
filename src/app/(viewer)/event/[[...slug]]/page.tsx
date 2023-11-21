@@ -69,19 +69,27 @@ export default async function Event({
   const thisSchedule =
     data.eventSchedules.filter((ii) => ii.id === scheduleId)[0] ??
     data.eventSchedules[0];
+  const isSameDaySchedule =
+    format(new Date(thisSchedule.startDateTime), 'yyyy-MM-dd') ===
+    format(new Date(thisSchedule.endDateTime), 'yyyy-MM-dd');
   const futureEvents = data.eventSchedules.filter((ii) => {
-    if (new Date(ii.eventDate + 'T' + ii.endTime) >= new Date()) return ii;
+    if (new Date(ii.endDateTime) >= new Date()) return ii;
   });
   const previousEvents = data.eventSchedules.filter((ii) => {
-    if (new Date(ii.eventDate + 'T' + ii.endTime) < new Date()) return ii;
+    if (new Date(ii.endDateTime) < new Date()) return ii;
   });
   const [startDate, endDate] = data.eventSchedules.reduce(
     (acc, cur) => {
-      if (new Date(cur.eventDate) < new Date(acc[0])) acc[0] = cur.eventDate;
-      if (new Date(cur.eventDate) > new Date(acc[1])) acc[1] = cur.eventDate;
+      if (new Date(cur.startDateTime) < new Date(acc[0]))
+        acc[0] = format(new Date(cur.startDateTime), 'yyyy-MM-dd');
+      if (new Date(cur.endDateTime) > new Date(acc[1]))
+        acc[1] = format(new Date(cur.endDateTime), 'yyyy-MM-dd');
       return acc;
     },
-    [data.eventSchedules[0].eventDate, data.eventSchedules[0].eventDate]
+    [
+      format(new Date(data.eventSchedules[0].startDateTime), 'yyyy-MM-dd'),
+      format(new Date(data.eventSchedules[0].endDateTime), 'yyyy-MM-dd'),
+    ]
   );
 
   if (!data) throw new Error('Failed to fetch data');
@@ -93,8 +101,15 @@ export default async function Event({
           <h1 className='break-keep text-[2.3rem] font-normal'>{data.title}</h1>
 
           <h3>
-            {format(new Date(thisSchedule.eventDate), 'yyyy년 MM월 dd일')}{' '}
-            {thisSchedule.startTime} - {thisSchedule.endTime}
+            {format(
+              new Date(thisSchedule.startDateTime),
+              'yyyy년 MM월 dd일 HH:mm'
+            )}{' '}
+            -{' '}
+            {format(
+              new Date(thisSchedule.endDateTime),
+              isSameDaySchedule ? 'HH:mm' : 'yyyy년 MM월 dd일 HH:mm'
+            )}
           </h3>
           <div>
             <h4>
@@ -186,7 +201,18 @@ export default async function Event({
             <div className='flex' key={schedule.id}>
               <div className='flex w-1/2 flex-col py-3 md:w-3/4'>
                 <h3>
-                  {schedule.eventDate} {schedule.startTime} - {schedule.endTime}
+                  {format(
+                    new Date(schedule.startDateTime),
+                    'yyyy년 MM월 dd일 HH:mm'
+                  )}{' '}
+                  -{' '}
+                  {format(
+                    new Date(schedule.endDateTime),
+                    format(new Date(schedule.startDateTime), 'yyyy-MM-dd') ===
+                      format(new Date(schedule.endDateTime), 'yyyy-MM-dd')
+                      ? 'HH:mm'
+                      : 'yyyy년 MM월 dd일 HH:mm'
+                  )}
                 </h3>
                 <h4 className='font-normal text-default-700'>
                   {data.location.name} {schedule.detailLocation}
@@ -220,7 +246,18 @@ export default async function Event({
               className='flex flex-col py-3 text-default-400'
             >
               <h3>
-                {schedule.eventDate} {schedule.startTime} - {schedule.endTime}
+                {format(
+                  new Date(schedule.startDateTime),
+                  'yyyy년 MM월 dd일 HH:mm'
+                )}{' '}
+                -{' '}
+                {format(
+                  new Date(schedule.endDateTime),
+                  format(new Date(schedule.startDateTime), 'yyyy-MM-dd') ===
+                    format(new Date(schedule.endDateTime), 'yyyy-MM-dd')
+                    ? 'HH:mm'
+                    : 'yyyy년 MM월 dd일 HH:mm'
+                )}
               </h3>
               <h4 className='font-normal text-default-700'>
                 {data.location.name} {schedule.detailLocation}

@@ -15,12 +15,8 @@ const CalendarButton = ({ ...props }: CalendarButtonProps) => {
     (ii) => ii.id === props.scheduleid
   )[0];
   const handleIcs = async () => {
-    const startTime = new Date(
-      thisSchedule.eventDate + ' ' + thisSchedule.startTime
-    );
-    const endTime = new Date(
-      thisSchedule.eventDate + ' ' + thisSchedule.endTime
-    );
+    const startTime = new Date(thisSchedule.startDateTime);
+    const endTime = new Date(thisSchedule.endDateTime);
     ics.createEvent(
       {
         title: props.data.title,
