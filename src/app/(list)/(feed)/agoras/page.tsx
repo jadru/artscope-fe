@@ -7,6 +7,8 @@ import jxios from '@/utils/jxios';
 
 import { AgoraListType } from '@/types/agora';
 
+// TODO: Placeholder Skeleton & 무한스크롤 도입
+
 const fetchAgora = async (page: number) =>
   jxios
     .get(NEXT_PUBLIC_API_URL + '/api/agoras', {

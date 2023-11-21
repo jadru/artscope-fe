@@ -5,6 +5,7 @@ import { AiOutlineHome, AiOutlineLink } from 'react-icons/ai';
 
 import ASNextImage from '@/components/ASNextImage';
 import ResponsiveGrid from '@/components/ResponsiveGrid';
+import StandardLabel, { standardLabel } from '@/components/StandardLabel';
 
 import ArtworkItem from '@/app/(list)/(feed)/artworks/ArtworkItem';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
@@ -53,17 +54,22 @@ export async function generateMetadata(
   // const thumbnail = (await parent).openGraph?.images || [];
   const previousImages = (await parent).openGraph?.images || [];
   return {
-    title: `${data.name.replace(/<[^>]*>?/g, '').slice(0, 20)} Portfolio`,
+    title: `${standardLabel(
+      data.name.replace(/<[^>]*>?/g, '').slice(0, 20)
+    )} Portfolio`,
     description: data.introduction
-      ? data.introduction.replace(/<[^>]*>?/g, '')
-      : data.name + '님의 포트폴리오입니다.',
+      ? standardLabel(data.introduction.replace(/<[^>]*>?/g, ''))
+      : standardLabel(data.name) + '님의 포트폴리오입니다.',
     openGraph: {
-      title: `${data.name.slice(0, 20)} 이벤트 | Artscope`,
+      title: `${standardLabel(data.name.slice(0, 20))} 이벤트 | Artscope`,
       description: data.introduction
-        ? data.introduction.replace(/<[^>]*>?/g, '').slice(0, 100)
-        : data.name + '님의 포트폴리오입니다.',
+        ? standardLabel(data.introduction.replace(/<[^>]*>?/g, '')).slice(
+            0,
+            100
+          )
+        : standardLabel(data.name) + '님의 포트폴리오입니다.',
       url: 'https://www.artscope.kr/profile/' + id,
-      authors: [data.name],
+      authors: [standardLabel(data.name)],
       images: [data.picture, ...previousImages],
     },
     publisher: 'Artscope',
@@ -86,7 +92,7 @@ export default async function ProfilePage({
     }
     return (
       <li className='py-0.5 font-normal' key={'line-' + line}>
-        {line}
+        <StandardLabel label={line} />
       </li>
     );
   });
@@ -96,13 +102,17 @@ export default async function ProfilePage({
       <div className='flex w-full items-center justify-between py-1.5 md:py-4'>
         <div className='md:px-2.5'>
           <div className='flex items-center gap-2'>
-            <h1 className='text-[2rem]'>{data.name}</h1>
+            <h1 className='text-[2rem]'>
+              <StandardLabel label={data.name} />
+            </h1>
             <h2 className='my-0 text-2xl'>@{data.username}</h2>
           </div>
 
           <h2 className='my-0 text-xl'>
-            {data.companyName}
-            {data.companyRole ? ' | ' + data.companyRole : ''}{' '}
+            {data.companyName ? <StandardLabel label={data.companyName} /> : ''}
+            {data.companyRole
+              ? ' | ' + <StandardLabel label={data.companyRole} />
+              : ''}{' '}
             {data.roleStatus.startsWith('ARTIST')
               ? '작가'
               : data.roleStatus.startsWith('CURATOR')
@@ -123,7 +133,9 @@ export default async function ProfilePage({
       {data.introduction && (
         <div className='rounded-2xl border border-default-400 px-2.5 py-2'>
           <h2 className='mb-1 text-xl font-normal'>소개</h2>
-          <p>{data.introduction}</p>
+          <p>
+            <StandardLabel label={data.introduction} />
+          </p>
         </div>
       )}
       {history && (
@@ -137,19 +149,19 @@ export default async function ProfilePage({
           {data.websiteUrl && (
             <>
               <h2 className='mb-1 text-xl font-normal'>웹사이트 & SNS</h2>
-              <Link href={data.websiteUrl}>
+              <Link href={standardLabel(data.websiteUrl)}>
                 <p className='cursor-pointer rounded-xl px-2.5 py-2 transition hover:bg-stone-900/10'>
                   <AiOutlineHome className='mb-1 mr-1 inline' size={19} />
-                  {data.websiteUrl}
+                  {standardLabel(data.websiteUrl)}
                 </p>
               </Link>
             </>
           )}
           {data.snsUrl && (
-            <Link href={data.snsUrl} target='_blank'>
+            <Link href={standardLabel(data.snsUrl)} target='_blank'>
               <p className='cursor-pointer rounded-xl px-2.5 py-2 transition hover:bg-stone-900/10'>
                 <AiOutlineLink className='mb-1 mr-1 inline' size={19} />
-                {data.snsUrl}
+                {standardLabel(data.snsUrl)}
               </p>
             </Link>
           )}

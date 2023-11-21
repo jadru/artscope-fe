@@ -4,6 +4,7 @@ import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
 import MarkdownViewer from '@/components/MarkdownViewer';
+import StandardLabel, { standardLabel } from '@/components/StandardLabel';
 
 import AgoraAction from '@/app/(viewer)/agora/[[...slug]]/AgoraAction';
 import AgoraChart from '@/app/(viewer)/agora/[[...slug]]/AgoraChart';
@@ -36,13 +37,13 @@ export async function generateMetadata(
   // const thumbnail = (await parent).openGraph?.images || [];
   const previousImages = (await parent).openGraph?.images || [];
   return {
-    title: `${data.agora.title
+    title: `${standardLabel(data.agora.title)
       .replace(/<[^>]*>?/g, '')
-      .slice(0, 20)} 아고라 토론`,
-    description: data.agora.content.replace(/<[^>]*>?/g, ''),
+      .slice(0, 20)} 아고라`,
+    description: standardLabel(data.agora.content),
     openGraph: {
-      title: `${data.agora.title.slice(0, 20)} 이벤트 | Artscope`,
-      description: data.agora.content.replace(/<[^>]*>?/g, '').slice(0, 100),
+      title: `${standardLabel(data.agora.title).slice(0, 20)} | Artscope`,
+      description: standardLabel(data.agora.content).slice(0, 100),
       url: 'https://www.artscope.kr/agora/' + id,
       type: 'article',
       authors: ['Artscope'],
@@ -63,7 +64,7 @@ export default async function AgoraDetailPage({
   return (
     <div className='space-y-3 py-3'>
       <h1 className='break-words px-3 text-center text-4xl'>
-        {data.agora.title}
+        <StandardLabel label={data.agora.title} />
       </h1>
       <h2 className='text-center'>{data.agora.participantCount}명 참여</h2>
       {data.agora.isAnonymous ? (

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import ASNextImage from '@/components/ASNextImage';
+import StandardLabel from '@/components/StandardLabel';
 
 import { feedItemType } from '@/types/feed';
 
@@ -18,9 +19,12 @@ const FeedListItemArtwork = ({ feed }: { feed: feedItemType }) => {
           />
         </div>
         <div className='space-x-0.5 rounded-b-xl px-2 py-3 text-small transition group-hover:bg-default-200'>
-          <h3 className='truncate text-[0.86rem]'>{feed.title}</h3>
+          {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
+          <h3 className='truncate text-[0.86rem]'>
+            <StandardLabel label={feed.title} />
+          </h3>
           <h4 className='truncate text-[0.86rem] text-default-500'>
-            {feed.authorName}
+            <StandardLabel label={feed.authorName} />
           </h4>
         </div>
       </div>

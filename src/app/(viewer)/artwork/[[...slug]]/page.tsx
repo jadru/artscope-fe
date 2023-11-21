@@ -4,6 +4,7 @@ import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
 import MarkdownViewer from '@/components/MarkdownViewer';
+import StandardLabel, { standardLabel } from '@/components/StandardLabel';
 
 import ArtworkAction from '@/app/(viewer)/artwork/[[...slug]]/ArtworkAction';
 import ArtworkAuthorProfile from '@/app/(viewer)/artwork/[[...slug]]/ArtworkAuthorProfile';
@@ -48,22 +49,24 @@ export async function generateMetadata(
   const thumbnail = data.artwork.thumbnail || [];
   const previousImages = (await parent).openGraph?.images || [];
   return {
-    title: `${data.artwork.title} - ${data.artwork.authorName} 작가`,
-    description: data.artwork.description.replace(/<[^>]*>?/g, ''),
+    title: `${standardLabel(data.artwork.title)} - ${standardLabel(
+      data.artwork.authorName
+    )} 작가`,
+    description: standardLabel(data.artwork.description),
     openGraph: {
-      title: `${data.artwork.title} - ${data.artwork.authorName} | Artscope`,
-      description: data.artwork.description
-        .replace(/<[^>]*>?/g, '')
-        .slice(0, 100),
+      title: `${standardLabel(data.artwork.title)} - ${standardLabel(
+        data.artwork.authorName
+      )} | Artscope`,
+      description: standardLabel(data.artwork.description).slice(0, 100),
       url: 'https://www.artscope.kr/artwork/' + id,
       type: 'article',
-      authors: [data.artwork.authorName],
+      authors: [standardLabel(data.artwork.authorName)],
       images: [
         NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + thumbnail.mediaUrl,
         ...previousImages,
       ],
     },
-    publisher: data.artwork.authorName,
+    publisher: 'Artscope',
   };
 }
 
@@ -81,7 +84,7 @@ export default async function ArtworkPage({
   return (
     <div>
       <h1 className='break-words px-3 pt-2 text-left text-4xl md:px-0'>
-        {data.artwork.title}
+        <StandardLabel label={data.artwork.title} />
       </h1>
       <ArtworkProfile aw={data} />
       <div className='px-3 py-3 md:px-0'>

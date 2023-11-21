@@ -17,7 +17,7 @@ export default function AgoraItem({ agora }: { agora: AgoraType }) {
               <MarkdownViewer>{agora.content}</MarkdownViewer>
             </div>
           </div>
-          <div className='mt-1 flex justify-start gap-3'>
+          <div className='mt-2 flex flex-col justify-start gap-0.5'>
             <p className='flex items-center gap-1 text-lg text-red-600'>
               <BiConfused size={20} /> {agora.disagreeText}{' '}
               {agora.disagreeCount}

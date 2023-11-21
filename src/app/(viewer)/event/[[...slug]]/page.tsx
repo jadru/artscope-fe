@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import lodash from 'lodash';
 import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -9,6 +10,7 @@ import { BsInfoLg, BsMap } from 'react-icons/bs';
 
 import ASNextImage from '@/components/ASNextImage';
 import MarkdownViewer from '@/components/MarkdownViewer';
+import StandardLabel, { standardLabel } from '@/components/StandardLabel';
 
 import CalendarButton from '@/app/(viewer)/event/[[...slug]]/CalendarButton';
 import EventEditDelete from '@/app/(viewer)/event/[[...slug]]/EventEditDelete';
@@ -43,17 +45,19 @@ export async function generateMetadata(
   // const thumbnail = (await parent).openGraph?.images || [];
   const previousImages = (await parent).openGraph?.images || [];
   return {
-    title: `${data.title.replace(/<[^>]*>?/g, '').slice(0, 20)} 정보`,
+    title: `${lodash
+      .unescape(data.title.replace(/<[^>]*>?/g, ''))
+      .slice(0, 20)}`,
     description: data.description.replace(/<[^>]*>?/g, ''),
     openGraph: {
-      title: `${data.title.slice(0, 20)} 이벤트 | Artscope`,
-      description: data.description.replace(/<[^>]*>?/g, '').slice(0, 100),
+      title: `${standardLabel(data.title).slice(0, 20)} 이벤트 | Artscope`,
+      description: standardLabel(data.description).slice(0, 100),
       url: 'https://www.artscope.kr/event/' + id,
       type: 'article',
-      authors: [data.author],
+      authors: [standardLabel(data.authorName)],
       images: [...previousImages],
     },
-    publisher: data.author,
+    publisher: 'Artscope',
   };
 }
 export default async function Event({
@@ -101,7 +105,9 @@ export default async function Event({
     <div>
       <div className='flex flex-col-reverse justify-between md:flex-row'>
         <div className='flex flex-col items-start justify-start gap-2 px-3 py-2 pb-2 md:w-1/2'>
-          <h1 className='break-keep text-[2.3rem] font-normal'>{data.title}</h1>
+          <h1 className='break-keep text-[2.3rem] font-normal'>
+            <StandardLabel label={data.title} />
+          </h1>
 
           <h3>
             {format(
@@ -118,12 +124,12 @@ export default async function Event({
             <h4>
               {data.location.snsUrl ? (
                 <Link href={data.location.snsUrl} className='hover:underline'>
-                  {data.location.name}
+                  {standardLabel(data.location.name)}
                 </Link>
               ) : (
-                data.location.name
+                standardLabel(data.location.name)
               )}
-              {' ' + thisSchedule.detailLocation}
+              {' ' + standardLabel(thisSchedule.detailLocation)}
             </h4>
             <h4 className='font-normal'>{data.location.address}</h4>
           </div>
@@ -169,11 +175,10 @@ export default async function Event({
             </LocationButton>
           </div>
 
-          <EventEditDelete authorUsername={data.author} eventId={data.id} />
-
-          {data.medias && data.medias.length > 2 && (
-            <SingleEventMedia feed={data} />
-          )}
+          <EventEditDelete
+            authorUsername={data.authorUserName}
+            eventId={data.id}
+          />
         </div>
         {data.thumbnail?.mediaUrl && (
           <ASNextImage
@@ -185,6 +190,9 @@ export default async function Event({
           />
         )}
       </div>
+      {data.medias && data.medias.length > 2 && (
+        <SingleEventMedia feed={data} />
+      )}
       <div className='my-2 w-full px-2.5 py-2'>
         <h2 className='flex gap-2 py-4'>
           {startDate === endDate
@@ -192,7 +200,7 @@ export default async function Event({
             : startDate + (endDate ? ' - ' + endDate : '')}{' '}
           <ScheduleAddButton
             eventid={data.id}
-            eventAuthorUsername={data.author}
+            eventAuthorUsername={data.authorUserName}
             className='flex items-center gap-1 text-lg hover:font-bold hover:underline'
           >
             <BiPlus size={20} />
@@ -225,7 +233,7 @@ export default async function Event({
                 <SchduleDeleteButton
                   className='flex items-center gap-1 hover:font-bold hover:underline'
                   scheduleid={schedule.id}
-                  eventAuthorUsername={data.author}
+                  eventAuthorUsername={data.authorUserName}
                   eventid={data.id}
                 >
                   <AiOutlineDelete size={20} />
@@ -263,7 +271,8 @@ export default async function Event({
                 )}
               </h3>
               <h4 className='font-normal text-default-700'>
-                {data.location.name} {schedule.detailLocation}
+                <StandardLabel label={data.location.name} />{' '}
+                <StandardLabel label={schedule.detailLocation} />
               </h4>
             </div>
           ))}

@@ -164,7 +164,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                     댓글
                   </h5>
 
-                  {user?.username === comment.authorUsername && (
+                  {user && user?.username === comment.authorUsername && (
                     <h5
                       className='ml-2 cursor-pointer text-lg font-bold text-gray-500 hover:underline'
                       onClick={() => handleCommentDelete(comment.id)}
@@ -210,14 +210,17 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                           >
                             댓글
                           </h5>
-                          {user?.username === reComment.authorUsername && (
-                            <h5
-                              className='ml-2 cursor-pointer text-lg font-bold text-gray-500 hover:underline'
-                              onClick={() => handleCommentDelete(reComment.id)}
-                            >
-                              삭제
-                            </h5>
-                          )}
+                          {user &&
+                            user?.username === reComment.authorUsername && (
+                              <h5
+                                className='ml-2 cursor-pointer text-lg font-bold text-gray-500 hover:underline'
+                                onClick={() =>
+                                  handleCommentDelete(reComment.id)
+                                }
+                              >
+                                삭제
+                              </h5>
+                            )}
                         </div>
                         <p className='break-words'>
                           <span
