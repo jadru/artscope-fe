@@ -19,7 +19,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
   const [toComment, setTocomment] = useState<number | undefined>();
   const [reCommentContent, setReCommentContent] = useState<string>('');
   const [commentCount, setCommentCount] = useState<number>(post.comments);
-  const { user, isLogin } = useUser();
+  const { user, isLogin, isAdmin } = useUser();
   const { push } = useRouter();
   const [content, setContent] = useState<string>('');
 
@@ -164,14 +164,15 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                     댓글
                   </h5>
 
-                  {user && user?.username === comment.authorUsername && (
-                    <h5
-                      className='ml-2 cursor-pointer text-lg font-bold text-gray-500 hover:underline'
-                      onClick={() => handleCommentDelete(comment.id)}
-                    >
-                      삭제
-                    </h5>
-                  )}
+                  {user &&
+                    (user?.username === comment.authorUsername || isAdmin) && (
+                      <h5
+                        className='ml-2 cursor-pointer text-lg font-bold text-gray-500 hover:underline'
+                        onClick={() => handleCommentDelete(comment.id)}
+                      >
+                        삭제
+                      </h5>
+                    )}
                 </div>
                 <p className='break-words'>{comment.content}</p>
               </div>
@@ -211,7 +212,8 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                             댓글
                           </h5>
                           {user &&
-                            user?.username === reComment.authorUsername && (
+                            (user?.username === reComment.authorUsername ||
+                              isAdmin) && (
                               <h5
                                 className='ml-2 cursor-pointer text-lg font-bold text-gray-500 hover:underline'
                                 onClick={() =>

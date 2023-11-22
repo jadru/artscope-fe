@@ -27,7 +27,7 @@ export default function SinglePostItemAction({
 }) {
   const [like, setLike] = useState<boolean>(feed.isLiked);
   const [firstLike, setFirstLike] = useState<boolean>(feed.isLiked);
-  const { user, isLogin } = useUser();
+  const { user, isLogin, isAdmin } = useUser();
   const { push } = useRouter();
 
   const handleLike = useDebounce(
@@ -100,7 +100,7 @@ export default function SinglePostItemAction({
         {/*   </Button> */}
         {/* </DebounceClick> */}
         <div>
-          {user && feed.authorUsername === user?.username && (
+          {user && (feed.authorUsername === user?.username || isAdmin) && (
             <>
               <DebounceClick wait={500}>
                 <Button

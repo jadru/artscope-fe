@@ -12,6 +12,8 @@ import { useDebounce } from '@toss/react';
 import React, { useEffect, useState } from 'react';
 import { BiBuilding, BiPlus } from 'react-icons/bi';
 
+import StandardLabel from '@/components/StandardLabel';
+
 import NewLocationModal from '@/app/new/event/location/NewLocationModal';
 import jxios from '@/utils/jxios';
 
@@ -121,7 +123,9 @@ export default function AddLocation({
                         onClick={() => handleLocationClick(location)}
                       >
                         <h5>
-                          <b>{location.name}</b>
+                          <b>
+                            <StandardLabel label={location.name} />
+                          </b>
                         </h5>
                         <p>{location.address}</p>
                       </div>

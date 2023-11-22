@@ -15,7 +15,7 @@ import { ArtworkType } from '@/types/artwork';
 
 export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
   const [aw, setAwData] = useState<ArtworkType>(awData);
-  const { user, isLogin } = useUser();
+  const { user, isLogin, isAdmin } = useUser();
   const [content, setContent] = useState<string>('');
 
   const handleCommentContentInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -119,14 +119,15 @@ export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
                     {timeCaculatortoKO(comment.updatedTime) ??
                       timeCaculatortoKO(comment.createdTime)}
                   </h5>
-                  {user && user?.username === comment.authorUsername && (
-                    <h5
-                      className='ml-2 cursor-pointer text-lg font-bold text-gray-500 hover:underline'
-                      onClick={() => handleCommentDelete(comment.id)}
-                    >
-                      삭제
-                    </h5>
-                  )}
+                  {user &&
+                    (user?.username === comment.authorUsername || isAdmin) && (
+                      <h5
+                        className='ml-2 cursor-pointer text-lg font-bold text-gray-500 hover:underline'
+                        onClick={() => handleCommentDelete(comment.id)}
+                      >
+                        삭제
+                      </h5>
+                    )}
                 </div>
                 <p className='break-words'>{comment.content}</p>
               </div>
