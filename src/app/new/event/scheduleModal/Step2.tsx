@@ -13,7 +13,7 @@ export default function Step2({
   setSchedule,
 }: {
   setSchedule: React.Dispatch<React.SetStateAction<CreateScheduleTempType[]>>;
-  schedule: CreateScheduleTempType[];
+  _schedule: CreateScheduleTempType[];
 }) {
   // TODO: DateMultiplePicker에 state를 따로 빼야됨
   const [scheduleDate, setScheduleDate] = React.useState<Date[]>([]);
