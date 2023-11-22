@@ -14,7 +14,7 @@ type userType = {
 export const useUser = create<userType>((set) => ({
   user: undefined,
   setUser: (user: profileApiResponseType | undefined) =>
-    set({ user, isLogin: !!user, isAdmin: user?.isAdmin }),
+    set({ user, isLogin: !!user, isAdmin: user?.username === 'admin' }),
   clearUser: () => set({ user: undefined, isLogin: false }),
   setNotLogin: () => set({ isLogin: false }),
   setAdmin: () => set({ isAdmin: true }),
