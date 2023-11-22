@@ -121,6 +121,9 @@ export default function ScheduleAddButton(Props: SchduleAddButtonProps) {
                                   { hours: 2 }
                                 );
                               }
+                            else {
+                              temp[0].endDateTime = newValue;
+                            }
                             return [...temp];
                           });
                       }}
