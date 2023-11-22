@@ -52,7 +52,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
                 push('/user/settings');
                 break;
               case 'feedback':
-                push('https://ad21pifdjli.typeform.com/to/kg4KHrj4');
+                push('https://forms.gle/F9V9gppnKXXBRE4d6');
                 break;
               case 'logout':
                 push('/user/signout');

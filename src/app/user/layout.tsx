@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import React from 'react';
 
+import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
@@ -16,9 +17,10 @@ export default function DashboardLayout({
   return (
     <>
       <Navbar theme='light' />
-      <div className='mx-auto flex max-w-md flex-col items-stretch gap-2 p-4'>
+      <div className='container mx-auto flex min-h-[calc(100vh-10rem)] max-w-md flex-col items-stretch gap-2 p-4 pb-3'>
         {children}
       </div>
+      <Footer />
     </>
   );
 }
