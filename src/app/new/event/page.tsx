@@ -487,6 +487,9 @@ const NewEvent = () => {
                                 hours: 2,
                               }
                             );
+                        else {
+                          temp[0].endDateTime = newValue;
+                        }
                         return [...temp];
                       });
                   }}

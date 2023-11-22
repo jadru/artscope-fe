@@ -13,7 +13,7 @@ type SchduleDeleteButtonProps = {
   eventid: number;
 } & React.ComponentProps<'button'>;
 
-export default function SchduleDeleteButton(Props: SchduleDeleteButtonProps) {
+export default function ScheduleDeleteButton(Props: SchduleDeleteButtonProps) {
   const { refresh } = useRouter();
   const { user, isAdmin } = useUser();
   const handleDeleteSchedule = async () =>
