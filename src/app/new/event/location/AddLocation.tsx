@@ -82,7 +82,7 @@ export default function AddLocation({
           <>
             <BiBuilding size={23} />
             <p className='ml-1 mt-0.5'>
-              {schedule[scheduleIndex].locationName}
+              <StandardLabel label={schedule[scheduleIndex].locationName} />
             </p>
           </>
         ) : (
