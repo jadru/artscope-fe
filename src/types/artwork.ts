@@ -59,17 +59,17 @@ export type DetailedArtworkType = {
   tags: string[];
   likes: number;
   authorUsername: string;
-  authorIntroduction: string | null;
-  authorProfileImage: string | null;
-  authorCompanyName: string | null;
-  authorCompanyRole: string | null;
+  authorIntroduction?: string;
+  authorProfileImage?: string;
+  authorCompanyName?: string;
+  authorCompanyRole?: string;
   comments: number;
   authorName: string;
   thumbnail: MediaTypeInfoWithDescription;
   artworkMedias: MediaTypeInfoWithDescription[];
   artworkComments: artworkCommentType[];
   createdTime: Date;
-  updatedTime: Date | null;
+  updatedTime?: Date;
   views: number;
 };
 

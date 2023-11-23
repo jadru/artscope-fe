@@ -58,9 +58,9 @@ export type SinglePostType = {
   isLiked: boolean;
   authorUsername: string;
   authorName: string;
-  mentionUsername: string | null;
-  authorDescription: string | null;
-  authorProfileImageUrl: string | null;
+  mentionUsername?: string;
+  authorDescription?: string;
+  authorProfileImageUrl?: string;
   likeMembers: { username: string; name: string; likedTime: Date }[];
   medias: {
     id: number;
