@@ -144,7 +144,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
                 href='/search'
                 key='search'
                 className={`px-2 py-2 font-bold decoration-2 underline-offset-4 transition hover:underline ${
-                  pathname.startsWith('/search') ? 'text-indigo-700' : ''
+                  pathname.startsWith('/(search)') ? 'text-indigo-700' : ''
                 }`}
               >
                 <BiSearch size={17} className='mt-0.5 stroke-1' />

@@ -46,8 +46,8 @@ export const menuItems = [
 
   // {
   //   name: '검색',
-  //   slug: '/search',
-  //   url: '/search',
+  //   slug: '/(search)',
+  //   url: '/(search)',
   //   icon: BiSearch,
   // },
 ];

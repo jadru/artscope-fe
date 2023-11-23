@@ -12,6 +12,7 @@ Host: https://dev.artscope.kr
 
 # Sitemaps
 Sitemap: https://dev.artscope.kr/sitemap.xml
-Sitemap: https://dev.artscope.kr/sitemap-0.xml
 Sitemap: https://dev.artscope.kr/sitemap/artwork.xml
 Sitemap: https://dev.artscope.kr/sitemap/post.xml
+Sitemap: https://dev.artscope.kr/sitemap/event.xml
+Sitemap: https://dev.artscope.kr/sitemap/agora.xml
