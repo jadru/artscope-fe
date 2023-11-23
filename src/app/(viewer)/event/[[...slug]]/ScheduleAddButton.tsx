@@ -68,9 +68,18 @@ export default function ScheduleAddButton(Props: SchduleAddButtonProps) {
               </ModalHeader>
               <ModalBody>
                 <AddLocation
-                  setSchedule={setSchedule}
-                  scheduleIndex={0}
-                  schedule={schedule}
+                  setLocation={(location) =>
+                    setSchedule((prev) => {
+                      const temp = [...prev];
+                      temp[0].locationId = location.locationId;
+                      temp[0].locationName = location.locationName;
+                      return [...temp];
+                    })
+                  }
+                  location={{
+                    locationId: schedule[0].locationId,
+                    locationName: schedule[0].locationName,
+                  }}
                 />
                 <Input
                   label='상세 이벤트 장소'
