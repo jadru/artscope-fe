@@ -21,8 +21,8 @@ const menuItems = [
     active: true,
   },
   {
-    href: '/(search)',
-    slug: '/(search)',
+    href: '/search',
+    slug: '/search',
     text: '검색',
     icon: <BiSearch size={23} />,
     active: true,
