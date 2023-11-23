@@ -1,7 +1,5 @@
 import { create } from 'zustand';
 
-import { CreateScheduleTempType } from '@/types/event';
-
 export type scheduleSetupStep1Type = {
   isDone: boolean | undefined;
   isDayRotate: boolean | undefined;
@@ -12,16 +10,16 @@ export type scheduleSetupStep2Type = {
   isDone: boolean | undefined;
   startDate: Date;
   endDate: Date;
-  holidays: [];
+  holidays: Date[];
 };
 
 export type scheduleSetupStep3Type = {
   isDone: boolean | undefined;
-  isEveryEventTimeSame: boolean;
+  hasSpecialTime: boolean;
   usualStartTime: Date;
   usualEndTime: Date;
   someEventsTimes: {
-    id: number;
+    dayOfWeek: number;
     startTime: Date;
     endTime: Date;
   }[];
@@ -29,8 +27,9 @@ export type scheduleSetupStep3Type = {
 
 export type scheduleSetupStep4Type = {
   isDone: boolean | undefined;
-  isSpecialSchedule: boolean;
-  specialSchedule: CreateScheduleTempType[];
+  usualLocationId?: number;
+  usualLocationName?: string;
+  usualDetailLocation?: string;
 };
 
 type scheduleSetupType = {
@@ -60,15 +59,16 @@ export const useScheduleSetupStepperStore = create<scheduleSetupType>(
     },
     step3: {
       isDone: undefined,
-      isEveryEventTimeSame: false,
+      hasSpecialTime: false,
       usualStartTime: new Date('2023-12-31T10:00:00.000Z'),
-      usualEndTime: new Date('2023-12-31T12:00:00.000Z'),
+      usualEndTime: new Date('2023-12-31T17:00:00.000Z'),
       someEventsTimes: [],
     },
     step4: {
       isDone: undefined,
-      isSpecialSchedule: false,
-      specialSchedule: [],
+      usualLocationId: undefined,
+      usualLocationName: '',
+      usualDetailLocation: '',
     },
     setStep1: (step1) => set({ step1 }),
     setStep2: (step2) => set({ step2 }),
@@ -89,15 +89,16 @@ export const useScheduleSetupStepperStore = create<scheduleSetupType>(
         },
         step3: {
           isDone: false,
-          isEveryEventTimeSame: false,
+          hasSpecialTime: false,
           usualStartTime: new Date('2023-12-31T10:00:00.000Z'),
-          usualEndTime: new Date('2023-12-31T12:00:00.000Z'),
+          usualEndTime: new Date('2023-12-31T17:00:00.000Z'),
           someEventsTimes: [],
         },
         step4: {
           isDone: false,
-          isSpecialSchedule: false,
-          specialSchedule: [],
+          usualLocationId: undefined,
+          usualLocationName: '',
+          usualDetailLocation: '',
         },
       });
     },

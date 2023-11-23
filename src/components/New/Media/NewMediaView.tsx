@@ -111,7 +111,7 @@ export default function NewMediaView({
   };
 
   return (
-    <div className='flex w-full flex-col gap-2 border px-3 pb-4 pt-3'>
+    <div className='flex w-full flex-col gap-2 rounded-2xl border-2 px-3 pb-4 pt-3'>
       <p className='-mb-2 text-lg font-bold'>
         <BiImage className='mb-0.5 mr-1 inline' size={20} />
         {header || '미디어 첨부'} {fileUrls.length}/10

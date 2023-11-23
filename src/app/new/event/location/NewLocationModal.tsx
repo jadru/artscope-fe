@@ -18,18 +18,14 @@ import NewLocationSchema, {
 } from '@/app/new/event/location/newLocationSchema';
 import jxios from '@/utils/jxios';
 
-import { CreateScheduleTempType } from '@/types/event';
-
 export default function NewLocationModal({
-  setSchedule,
-  scheduleIndex,
+  setLocation,
   NewLocationisOpen,
   NewLocationOnClose,
   NewLocationOnOpenChange,
   AddLocationModalOnClose,
 }: {
-  setSchedule: React.Dispatch<React.SetStateAction<CreateScheduleTempType[]>>;
-  scheduleIndex: number;
+  setLocation: (location: { locationId: number; locationName: string }) => void;
   NewLocationisOpen: boolean;
   NewLocationOnClose: () => void;
   NewLocationOnOpenChange: () => void;
@@ -85,11 +81,9 @@ export default function NewLocationModal({
       })
       .then((res) => {
         toast.success('장소가 등록되었습니다.');
-        setSchedule((prev) => {
-          const newSchedule = [...prev];
-          newSchedule[scheduleIndex].locationId = res.data.id;
-          newSchedule[scheduleIndex].locationName = res.data.name;
-          return newSchedule;
+        setLocation({
+          locationId: res.data.id,
+          locationName: res.data.name,
         });
         AddLocationModalOnClose();
         NewLocationOnClose();

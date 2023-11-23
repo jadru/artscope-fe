@@ -15,6 +15,7 @@ import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 export default function Index({
   startDate = subYears(new Date(), 100),
   endDate = addYears(new Date(), 100),
+  scheduleDate = [],
   onDateChangeRange,
   onDateChangeMultiple,
   multiple,
@@ -22,12 +23,13 @@ export default function Index({
   multiple?: boolean;
   startDate?: Date;
   endDate?: Date;
+  scheduleDate?: Date[];
   onDateChangeRange?: (date: Date[]) => void;
   onDateChangeMultiple?: (date: Date[]) => void;
 }) {
   const [standardDate, setStandardDate] = React.useState<Date>(new Date());
   const [monthView, setMonthView] = React.useState<Date[]>([]);
-  const [selectedDate, setSelectedDate] = React.useState<Date[]>([]);
+  const [selectedDate, setSelectedDate] = React.useState<Date[]>(scheduleDate);
   const [hoverDate, setHoverDate] = React.useState<Date>();
 
   useEffect(() => {
@@ -39,6 +41,16 @@ export default function Index({
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [standardDate]);
+
+  useEffect(() => {
+    if (startDate > standardDate) {
+      setStandardDate(startDate);
+    }
+    if (endDate < standardDate) {
+      setStandardDate(endDate);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (multiple) {
@@ -107,9 +119,16 @@ export default function Index({
     <div>
       <div className='flex w-full justify-between'>
         <button
-          className='flex items-center gap-1 text-xl transition hover:text-primary'
+          className={`
+           flex items-center gap-1 text-xl transition
+           ${
+             subMonths(endOfMonth(standardDate), 1) >= startDate
+               ? 'cursor-pointer hover:text-primary'
+               : 'cursor-default text-default-300'
+           }
+          `}
           onClick={() => {
-            const newDate = subMonths(standardDate, 1);
+            const newDate = subMonths(endOfMonth(standardDate), 1);
             if (
               newDate >= startDate &&
               newDate.toDateString() !== standardDate.toDateString()
@@ -125,9 +144,16 @@ export default function Index({
           {standardDate.getFullYear()}년 {standardDate.getMonth() + 1}월
         </p>
         <button
-          className='flex items-center gap-1 text-xl transition hover:text-primary'
+          className={`
+           flex items-center gap-1 text-xl transition
+           ${
+             addMonths(startOfMonth(standardDate), 1) <= endDate
+               ? 'cursor-pointer hover:text-primary'
+               : 'cursor-default text-default-300'
+           }
+          `}
           onClick={() => {
-            const newDate = addMonths(standardDate, 1);
+            const newDate = addMonths(startOfMonth(standardDate), 1);
             if (
               newDate <= endDate &&
               newDate.toDateString() !== standardDate.toDateString()

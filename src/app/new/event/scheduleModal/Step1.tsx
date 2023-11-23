@@ -1,11 +1,7 @@
-import {
-  DateTimePicker,
-  LocalizationProvider,
-  TimePicker,
-} from '@mui/x-date-pickers';
+import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Checkbox, Input } from '@nextui-org/react';
-import { add } from 'date-fns';
+import { add, addHours } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import React from 'react';
 
@@ -109,17 +105,10 @@ export default function Step1({
                             id: prev[prev.length - 1].id + 1,
                             locationId: prev[prev.length - 1].locationId,
                             locationName: prev[prev.length - 1].locationName,
-                            startDateTime: add(
-                              prev[prev.length - 1].startDateTime,
-                              {
-                                days: 1,
-                              }
-                            ),
-                            endDateTime: add(
+                            startDateTime: prev[prev.length - 1].endDateTime,
+                            endDateTime: addHours(
                               prev[prev.length - 1].endDateTime,
-                              {
-                                days: 1,
-                              }
+                              2
                             ),
                           },
                     ]);
@@ -139,9 +128,18 @@ export default function Step1({
                   <div className='flex justify-between'>
                     <div className='flex items-center justify-start gap-1'>
                       <AddLocation
-                        setSchedule={setSchedule}
-                        scheduleIndex={index}
-                        schedule={schedule}
+                        setLocation={(location) =>
+                          setSchedule((prev) => {
+                            const temp = [...prev];
+                            temp[index].locationId = location.locationId;
+                            temp[index].locationName = location.locationName;
+                            return [...temp];
+                          })
+                        }
+                        location={{
+                          locationId: item.locationId,
+                          locationName: item.locationName,
+                        }}
                       />
                       <Input
                         className='h-12'
@@ -175,7 +173,7 @@ export default function Step1({
                     )}
                   </div>
                   <div className='flex flex-col gap-2 md:flex-row'>
-                    <DateTimePicker
+                    <TimePicker
                       label='시작 날짜 및 시간'
                       value={item.startDateTime}
                       onChange={(newValue) =>
