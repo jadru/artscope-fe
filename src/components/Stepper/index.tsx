@@ -16,7 +16,7 @@ type StepperProps = {
   titlesWithIcon: titleWithIcon[];
   children: React.ReactNode[];
   onFinish?: (step: number) => void;
-  isDone?: (boolean | undefined)[];
+  isDone: (boolean | undefined)[];
 };
 
 export default function Stepper({

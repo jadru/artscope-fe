@@ -7,7 +7,7 @@ type StepperFooterProps = {
   totalStepSize: number;
   activeStep: number;
   onFinish?: (step: number) => void;
-  isDone?: (boolean | undefined)[];
+  isDone: (boolean | undefined)[];
 };
 
 const StepperFooter = ({
@@ -42,7 +42,7 @@ const StepperFooter = ({
         color='primary'
         startContent={<BiCheck />}
         onClick={() => (onFinish ? onFinish(activeStep) : undefined)}
-        disabled={isDone && isDone[activeStep] === undefined}
+        disabled={isDone[activeStep] === undefined}
       >
         완료
       </Button>

@@ -37,10 +37,7 @@ import getVideoCoverFromLocal from '@/components/New/Artworks/getVideoCoverFromL
 import NewMediaView from '@/components/New/Media/NewMediaView';
 
 import { EventTypeData } from '@/app/new/event/EventTypeData';
-import {
-  initialEventSchema,
-  initialScheduleSchema,
-} from '@/app/new/event/initialEventSchema';
+import { initialEventSchema } from '@/app/new/event/initialEventSchema';
 import ScheduleModal from '@/app/new/event/scheduleModal';
 import jxios from '@/utils/jxios';
 
@@ -58,9 +55,7 @@ const NewEvent = () => {
   const [eventType, setEventType] = useState<EventType>('STANDARD');
   const [price, setPrice] = useState<number>(0);
   const [imgs, setImgs] = useState<string[]>([]);
-  const [schedule, setSchedule] = useState<CreateScheduleTempType[]>([
-    initialScheduleSchema,
-  ]);
+  const [schedule, setSchedule] = useState<CreateScheduleTempType[]>([]);
 
   const { push } = useRouter();
   const [isUpload, setIsUpload] = useState(false);
@@ -379,133 +374,44 @@ const NewEvent = () => {
         />
       </div>
       <hr className='my-4' />
-      <ScheduleModal schedule={schedule} setSchedule={setSchedule} />
-      {/* <div className='flex items-center justify-between px-3'> */}
-      {/*   <h3 className='text-lg font-bold'>일정</h3> */}
-      {/*   <button */}
-      {/*     onClick={() => { */}
-      {/*       setSchedule((prev) => [ */}
-      {/*         ...prev, */}
-      {/*         prev.length === 0 */}
-      {/*           ? initialScheduleSchema */}
-      {/*           : { */}
-      {/*               ...prev[prev.length - 1], */}
-      {/*               id: prev[prev.length - 1].id + 1, */}
-      {/*               locationId: prev[prev.length - 1].locationId, */}
-      {/*               locationName: prev[prev.length - 1].locationName, */}
-      {/*               startDateTime: add(prev[prev.length - 1].startDateTime, { */}
-      {/*                 days: 1, */}
-      {/*               }), */}
-      {/*               endDateTime: add(prev[prev.length - 1].endDateTime, { */}
-      {/*                 days: 1, */}
-      {/*               }), */}
-      {/*             }, */}
-      {/*       ]); */}
-      {/*     }} */}
-      {/*     className='flex items-center justify-center gap-2 text-sm text-default-500 hover:text-default-900' */}
-      {/*   > */}
-      {/*     + 일정 추가 */}
-      {/*   </button> */}
-      {/* </div> */}
-      {/* <div className='flex flex-col items-stretch gap-2 px-3 py-2'> */}
-      {/*   <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ko}> */}
-      {/*     {schedule.map((item, index) => ( */}
-      {/*       <div */}
-      {/*         key={item.id} */}
-      {/*         className='flex flex-col gap-3 rounded-xl border p-2' */}
-      {/*       > */}
-      {/*         <div className='flex justify-between'> */}
-      {/*           <div className='flex items-center justify-start gap-1'> */}
-      {/*             <AddLocation */}
-      {/*               setSchedule={setSchedule} */}
-      {/*               scheduleIndex={index} */}
-      {/*               schedule={schedule} */}
-      {/*             /> */}
-      {/*             <Input */}
-      {/*               className='h-12' */}
-      {/*               label='상세 이벤트 장소' */}
-      {/*               value={item.detailLocation} */}
-      {/*               placeholder='예) 1층 101호' */}
-      {/*               onValueChange={(value) => */}
-      {/*                 setSchedule((prev) => { */}
-      {/*                   const temp = [...prev]; */}
-      {/*                   temp[index].detailLocation = value; */}
-      {/*                   return [...temp]; */}
-      {/*                 }) */}
-      {/*               } */}
-      {/*               variant='bordered' */}
-      {/*             /> */}
-      {/*           </div> */}
-      {/*           <button */}
-      {/*             onClick={() => */}
-      {/*               setSchedule((prev) => */}
-      {/*                 prev.length === 1 */}
-      {/*                   ? [initialScheduleSchema] */}
-      {/*                   : prev.filter((deleteItem) => deleteItem.id !== item.id) */}
-      {/*               ) */}
-      {/*             } */}
-      {/*           > */}
-      {/*             삭제 */}
-      {/*           </button> */}
-      {/*         </div> */}
-      {/*         <div className='flex flex-col gap-2 md:flex-row'> */}
-      {/*           <DateTimePicker */}
-      {/*             label='시작 날짜 및 시간' */}
-      {/*             value={item.startDateTime} */}
-      {/*             onChange={(newValue) => */}
-      {/*               newValue && */}
-      {/*               setSchedule((prev) => { */}
-      {/*                 const temp = [...prev]; */}
-      {/*                 temp[index].startDateTime = newValue; */}
-      {/*                 temp[index].endDateTime = add(newValue, { hours: 2 }); */}
-      {/*                 return [...temp]; */}
-      {/*               }) */}
-      {/*             } */}
-      {/*           /> */}
-      {/*           <TimePicker */}
-      {/*             label='종료 시간' */}
-      {/*             value={item.endDateTime} */}
-      {/*             onChange={(newValue) => { */}
-      {/*               newValue && */}
-      {/*                 setSchedule((prev) => { */}
-      {/*                   const temp = [...prev]; */}
-      {/*                   if (newValue < temp[index].startDateTime) */}
-      {/*                     if (confirm('혹시 이벤트가 자정을 넘기나요?')) */}
-      {/*                       temp[index].endDateTime = add(newValue, { */}
-      {/*                         days: 1, */}
-      {/*                       }); */}
-      {/*                     else */}
-      {/*                       temp[index].endDateTime = add( */}
-      {/*                         temp[index].startDateTime, */}
-      {/*                         { */}
-      {/*                           hours: 2, */}
-      {/*                         } */}
-      {/*                       ); */}
-      {/*                   else { */}
-      {/*                     temp[0].endDateTime = newValue; */}
-      {/*                   } */}
-      {/*                   return [...temp]; */}
-      {/*                 }); */}
-      {/*             }} */}
-      {/*           /> */}
-      {/*         </div> */}
-      {/*         /!* <div> *!/ */}
-      {/*         /!*   <p> *!/ */}
-      {/*         /!*     참여 예술가{' '} *!/ */}
-      {/*         /!*     <b className='text-sm text-default-600'> *!/ */}
-      {/*         /!*       @으로 Artscope 회원을 찾을 수 있습니다 *!/ */}
-      {/*         /!*     </b> *!/ */}
-      {/*         /!*   </p> *!/ */}
-      {/*         /!*   <NewParticipant *!/ */}
-      {/*         /!*     scheduleModal={scheduleModal} *!/ */}
-      {/*         /!*     setSchedule={setSchedule} *!/ */}
-      {/*         /!*     index={index} *!/ */}
-      {/*         /!*   /> *!/ */}
-      {/*         /!* </div> *!/ */}
-      {/*       </div> */}
-      {/*     ))} */}
-      {/*   </LocalizationProvider> */}
-      {/* </div> */}
+      <div className='flex w-full items-center justify-between p-3'>
+        <div>
+          <p className='text-lg font-bold'>스케줄</p>
+          <p className=' text-default-500'>
+            이벤트를 진행할 장소와 시간을 알려주세요.
+          </p>
+        </div>
+        <ScheduleModal schedule={schedule} setSchedule={setSchedule} />
+      </div>
+      <div className='space-y-1 p-3'>
+        {schedule.length > 0 && (
+          <p>
+            전체 일정 기간 :{' '}
+            {format(schedule[0].startDateTime, 'yyyy년 MM월 dd일')} ~{' '}
+            {format(
+              schedule[schedule.length - 1].endDateTime,
+              'yyyy년 MM월 dd일'
+            )}
+          </p>
+        )}
+        {schedule &&
+          schedule.map((item) => (
+            <div
+              className='flex flex-col gap-2 rounded-2xl border-2 p-3'
+              key={item.id}
+            >
+              <p>
+                {item.locationName} {item.detailLocation}
+              </p>
+              <div className='flex w-full justify-between gap-1'>
+                <p>
+                  {format(item.startDateTime, 'yyyy-MM-dd HH:mm')} ~{' '}
+                  {format(item.endDateTime, 'yyyy-MM-dd HH:mm')}
+                </p>
+              </div>
+            </div>
+          ))}
+      </div>
       <div className='h-16'></div>
       <div className='fixed bottom-0 z-40 flex h-16 w-full max-w-[718px] items-center justify-end border-t bg-default-50 px-3'>
         <Button
