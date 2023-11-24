@@ -2,10 +2,10 @@
 
 import { Button, Input } from '@nextui-org/react';
 import { useDebounce } from '@toss/react';
-import Link from 'next/link';
 import React, { ChangeEvent, useState } from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
+import LoginNeeded from '@/components/LoginNeeded';
 
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
@@ -57,10 +57,8 @@ export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
 
   return (
     <div className='space-y-2 rounded-xl border-2 px-2 py-4'>
-      <h4 className='mb-1 px-2 text-3xl'>
-        댓글 {aw.artwork.artworkComments.length}
-      </h4>
-      {isLogin ? (
+      <h3 className='font-normal'>댓글 {aw.artwork.artworkComments.length}</h3>
+      {isLogin && (
         <div className='flex px-2'>
           <Input
             placeholder={
@@ -86,14 +84,8 @@ export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
             작성
           </Button>
         </div>
-      ) : (
-        <Link
-          className='flex h-24 w-full cursor-pointer items-center justify-center border hover:bg-default-100'
-          href='/user/login'
-        >
-          <p>댓글 작성을 위해 로그인하세요.</p>
-        </Link>
       )}
+      <LoginNeeded href='/user/login' />
       <div>
         {isLogin && aw.artwork.comments === 0 && (
           <p className='p-4 text-center'>첫 댓글을 작성해보세요</p>

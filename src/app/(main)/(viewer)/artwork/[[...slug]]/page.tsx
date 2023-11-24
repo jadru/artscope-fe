@@ -82,7 +82,7 @@ export default async function ArtworkPage({
   );
   if (!data || !author) throw new Error('Failed to fetch data');
   return (
-    <div className='space-y-3 py-3'>
+    <div className='space-y-3 px-3 py-3 md:px-0'>
       <h1 className='break-keep text-[2.3rem] font-normal'>
         <StandardLabel label={data.artwork.title} />
       </h1>
@@ -95,7 +95,7 @@ export default async function ArtworkPage({
       <div className='w-full rounded-xl bg-default-100 px-3 py-3'>
         <MarkdownViewer>{data.artwork.description}</MarkdownViewer>
       </div>
-      <div className='w-full rounded-2xl border-2'>
+      <div className='w-full space-y-1'>
         {data.artwork.artworkMedias.map((media, mediaIndex) => (
           <div key={media.id}>
             {(media.mediaType === 'image' && (

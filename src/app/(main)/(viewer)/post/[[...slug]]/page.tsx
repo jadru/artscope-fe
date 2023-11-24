@@ -63,7 +63,7 @@ export default async function SinglePost({
   if (!data) throw new Error('Failed to fetch data');
   return (
     <>
-      <div className='space-y-3 py-3'>
+      <div className='space-y-3 px-3 py-3 md:px-0'>
         <ProfileComponent
           username={data.authorUsername}
           name={data.authorName}
@@ -93,8 +93,8 @@ export default async function SinglePost({
         )}
 
         <SinglePostItemAction feed={data} />
+        <PostComment post={data} />
       </div>
-      <PostComment post={data} />
     </>
   );
 }
