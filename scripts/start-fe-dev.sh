@@ -1,4 +1,4 @@
-IMAGE_FILE_PATH="/home/ubuntu/deploy-front/fe-image-dev.txt"
+IMAGE_FILE_PATH="/home/ubuntu/deploy-front-dev/fe-image-dev.txt"
 IMAGE_NAME=$(cat "$IMAGE_FILE_PATH")
 CONTAINER_ENV_PATH="/home/ubuntu/env/.env.fe-dev"
 SERVICE_NAME=art-fe-dev
