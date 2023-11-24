@@ -62,6 +62,9 @@ jobs:
       - name: Create zip file for AWS CodeDeploy
         run: mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec-dev.yml fe-image-dev.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
 
+      - name: Rename appspec-dev file to appspec
+        run: cd ${{ env.AWS_CODE_DEPLOY_NAME }} && mv appspec-dev.yml appspec.yml
+
         # AWS 설정
       - name: AWS Configure
         uses: aws-actions/configure-aws-credentials@v1
@@ -69,6 +72,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-region: ap-northeast-2
+          
         # AWS S3로 배포 파일 업로드
       - name: Upload to AWS S3
         run: |
