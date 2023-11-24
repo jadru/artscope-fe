@@ -18,10 +18,14 @@ export default function EventListItem({
       className='group flex flex-row items-center justify-between rounded-2xl bg-white px-1.5 py-1.5 transition hover:bg-default-100 group-hover:bg-default-100 md:z-10'
       href={`/event/${event.id}?scheduleId=${event.eventSchedule.id}`}
     >
-      <div className='flex flex-col items-start justify-start gap-2'>
-        <h3>
+      <div
+        className={`flex flex-col justify-between overflow-x-hidden break-keep tracking-tight text-default-800 ${
+          event.thumbnail.mediaUrl ? 'w-[calc(100%-3rem)]' : 'w-full'
+        }`}
+      >
+        <h4 className='flex w-full justify-between text-[1.1rem]'>
           <StandardLabel label={event.title} />
-        </h3>
+        </h4>
         <div className='flex flex-col gap-0.5'>
           <div className='flex flex-col gap-1 md:flex-row'>
             <h4>

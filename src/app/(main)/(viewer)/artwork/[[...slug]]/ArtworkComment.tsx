@@ -9,7 +9,7 @@ import LoginNeeded from '@/components/LoginNeeded';
 
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
-import { timeCaculatortoKO } from '@/utils/timeCalculator';
+import { editAndPostTimeCalculatorKO } from '@/utils/timeCalculator';
 
 import { ArtworkType } from '@/types/artwork';
 
@@ -56,7 +56,7 @@ export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
   };
 
   return (
-    <div className='space-y-2 rounded-xl border-2 px-2 py-4'>
+    <div className='space-y-1.5 rounded-xl border-2 px-2 py-3'>
       <h3 className='font-normal'>댓글 {aw.artwork.artworkComments.length}</h3>
       {isLogin && (
         <div className='flex px-2'>
@@ -86,13 +86,13 @@ export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
         </div>
       )}
       <LoginNeeded href='/user/login' />
-      <div>
-        {isLogin && aw.artwork.comments === 0 && (
-          <p className='p-4 text-center'>첫 댓글을 작성해보세요</p>
-        )}
-        {aw.artwork.artworkComments.map((comment, index) => (
+      {isLogin && aw.artwork.comments === 0 && (
+        <p className='p-4 text-center'>첫 댓글을 작성해보세요</p>
+      )}
+      <div className='flex w-full flex-col items-stretch gap-1.5'>
+        {aw.artwork.artworkComments.map((comment) => (
           <div key={comment.id}>
-            <div className='flex px-2 py-3 hover:bg-default-100'>
+            <div className='flex rounded-xl bg-default-100 px-2 py-3'>
               <ASNextImage
                 src={comment.authorProfileImageUrl ?? 'prod/images/default.jpg'}
                 alt={comment.authorName}
@@ -101,15 +101,19 @@ export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
                 className='h-12 w-12 rounded-full bg-gray-300 object-cover'
               />
               <div className='flex w-[calc(100%-48px)] flex-col pl-2'>
-                <div className='flex'>
-                  <h5 className='text-lg font-bold'>{comment.authorName}</h5>
-                  <h5 className='ml-2 text-lg text-gray-500'>
-                    @{comment.authorUsername}
-                  </h5>
-                  <h5 className='ml-2 text-gray-500'>
-                    {timeCaculatortoKO(comment.updatedTime) ??
-                      timeCaculatortoKO(comment.createdTime)}
-                  </h5>
+                <div className='flex justify-between'>
+                  <div className='flex'>
+                    <h5 className='text-lg font-bold'>{comment.authorName}</h5>
+                    <h5 className='ml-2 text-lg text-gray-500'>
+                      @{comment.authorUsername}
+                    </h5>
+                  </div>
+                  <p className='px-2 text-default-600'>
+                    {editAndPostTimeCalculatorKO(
+                      comment.createdTime,
+                      comment.updatedTime
+                    )}
+                  </p>
                   {user &&
                     (user?.username === comment.authorUsername || isAdmin) && (
                       <h5
@@ -123,7 +127,6 @@ export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
                 <p className='break-words'>{comment.content}</p>
               </div>
             </div>
-            {index + 1 !== aw.artwork.artworkComments.length && <hr />}
           </div>
         ))}
       </div>

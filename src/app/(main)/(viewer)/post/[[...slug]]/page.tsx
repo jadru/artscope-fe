@@ -1,5 +1,6 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import { redirect } from 'next/navigation';
+import React from 'react';
 
 import MarkdownViewer from '@/components/MarkdownViewer';
 import MediaSlider from '@/components/MediaSlider';
@@ -11,6 +12,7 @@ import SinglePostItemAction from '@/app/(main)/(viewer)/post/[[...slug]]/SingleP
 import SinglePostOpengraph from '@/app/(main)/(viewer)/post/[[...slug]]/SinglePostOpengraph';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
+import { editAndPostTimeCalculatorKO } from '@/utils/timeCalculator';
 
 import { SinglePostType } from '@/types/feed';
 
@@ -76,21 +78,9 @@ export default async function SinglePost({
         {data.medias && data.medias.length > 1 && (
           <MediaSlider medias={data.medias.slice(1)} />
         )}
-        {data.updatedTime ? (
-          <p className='mx-1.5 mt-1.5 text-right text-default-500'>
-            {new Date(data.updatedTime).toLocaleString('ko-KR', {
-              dateStyle: 'full',
-              timeStyle: 'short',
-            }) + ' 수정'}
-          </p>
-        ) : (
-          <p className='mx-1.5 mt-1.5 text-right text-default-500'>
-            {new Date(data.createdTime).toLocaleString('ko-KR', {
-              dateStyle: 'full',
-              timeStyle: 'short',
-            }) + ' 작성'}
-          </p>
-        )}
+        <p className='w-full px-2.5 text-right font-normal text-default-500'>
+          {editAndPostTimeCalculatorKO(data.createdTime, data.updatedTime)}
+        </p>
 
         <SinglePostItemAction feed={data} />
         <PostComment post={data} />

@@ -1,9 +1,12 @@
 import Link from 'next/link';
+import React from 'react';
 import { BiConfused, BiHappy, BiMeh } from 'react-icons/bi';
 
 import ASNextImage from '@/components/ASNextImage';
 import MarkdownViewer from '@/components/MarkdownViewer';
 import StandardLabel from '@/components/StandardLabel';
+
+import { editAndPostShortCalculatorKO } from '@/utils/timeCalculator';
 
 import { feedItemType } from '@/types/feed';
 
@@ -18,10 +21,20 @@ export default function FeedListItemAgora({ feed }: { feed: feedItemType }) {
     >
       <div className='flex w-full flex-col justify-between text-left'>
         <div className='flex justify-between'>
-          <div className='flex w-3/4 flex-col justify-between overflow-x-hidden break-keep tracking-tight text-default-800'>
+          <div
+            className={`flex flex-col justify-between overflow-x-hidden break-keep tracking-tight text-default-800 ${
+              feed.thumbnailUrl ? 'w-[calc(100%-3rem)]' : 'w-full'
+            }`}
+          >
             <div className='line-clamp-3'>
-              <h4 className='text-[1.1rem]'>
-                <StandardLabel label={feed.title} />
+              <h4 className='flex w-full justify-between text-[1.1rem]'>
+                <StandardLabel label={feed.title} />{' '}
+                <span className='text-right font-normal text-default-500'>
+                  {editAndPostShortCalculatorKO(
+                    feed.createdTime,
+                    feed.updatedTime
+                  )}
+                </span>
               </h4>
               <MarkdownViewer className='line-clamp-2 leading-5 text-default-600 peer-default:!text-[0.9rem]'>
                 {feed.content}

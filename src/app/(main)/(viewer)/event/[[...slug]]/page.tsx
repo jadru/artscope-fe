@@ -10,6 +10,7 @@ import { BsInfoLg, BsMap } from 'react-icons/bs';
 
 import MarkdownViewer from '@/components/MarkdownViewer';
 import MediaSlider from '@/components/MediaSlider';
+import ProfileComponent from '@/components/Profile';
 import StandardLabel, { standardLabel } from '@/components/StandardLabel';
 
 import CalendarButton from '@/app/(main)/(viewer)/event/[[...slug]]/CalendarButton';
@@ -21,6 +22,7 @@ import SchduleDeleteButton from '@/app/(main)/(viewer)/event/[[...slug]]/Schedul
 import ShareButton from '@/app/(main)/(viewer)/event/[[...slug]]/ShareButton';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
+import { editAndPostTimeCalculatorKO } from '@/utils/timeCalculator';
 
 import { EventDetailType } from '@/types/event';
 
@@ -142,6 +144,16 @@ export default async function Event({
       <div className='w-full rounded-xl bg-default-100 px-3 py-3'>
         <MarkdownViewer>{data.description}</MarkdownViewer>
       </div>
+
+      <p className='w-full px-2.5 text-right font-normal text-default-500'>
+        {editAndPostTimeCalculatorKO(data.createdTime, data.updatedTime)}
+      </p>
+
+      <ProfileComponent
+        username={data.authorUserName}
+        name={data.authorName}
+        picture={data.authorProfileImage}
+      />
 
       <div className='w-full space-y-2 rounded-xl border-2 px-3 py-3'>
         <h3 className='font-normal'>일정 관리</h3>

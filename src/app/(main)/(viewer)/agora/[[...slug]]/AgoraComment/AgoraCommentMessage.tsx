@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { timeCaculatortoKO } from '@/utils/timeCalculator';
+import { editAndPostTimeCalculatorKO } from '@/utils/timeCalculator';
 
 import { AgoraOpinionType } from '@/types/agora';
 
@@ -12,7 +12,7 @@ export default function AgoraCommentMessage({
   voteStatus: 'agree' | 'natural' | 'disagree';
 }) {
   return (
-    <div className='my-1 rounded-xl bg-default-100 p-2'>
+    <div className='rounded-xl bg-default-100 p-2'>
       <div className='flex justify-between'>
         {comment.author.name.startsWith('익명') ? (
           <p className='font-bold text-default-700'>
@@ -43,8 +43,8 @@ export default function AgoraCommentMessage({
         </div>
       </div>
       <p>{comment.content}</p>
-      <p className='mt-0.5 text-sm font-bold'>
-        {timeCaculatortoKO(comment.createdTime)} 작성됨
+      <p className='mt-0.5 text-sm text-default-600'>
+        {editAndPostTimeCalculatorKO(comment.createdTime, comment.updatedTime)}
       </p>
     </div>
   );

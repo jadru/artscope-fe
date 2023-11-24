@@ -1,8 +1,12 @@
 import Link from 'next/link';
+import React from 'react';
 import { BiConfused, BiHappy, BiMeh } from 'react-icons/bi';
 
 import ASNextImage from '@/components/ASNextImage';
 import MarkdownViewer from '@/components/MarkdownViewer';
+import StandardLabel from '@/components/StandardLabel';
+
+import { editAndPostShortCalculatorKO } from '@/utils/timeCalculator';
 
 import { AgoraType } from '@/types/agora';
 
@@ -10,9 +14,21 @@ export default function AgoraItem({ agora }: { agora: AgoraType }) {
   return (
     <Link href={'/agora/' + agora.id}>
       <div className='flex justify-between rounded-2xl p-4 transition hover:bg-default-100'>
-        <div className='flex w-4/5 flex-col justify-between'>
+        <div
+          className={`flex w-4/5 flex-col justify-between ${
+            agora.thumbnail?.mediaUrl ? 'w-[calc(100%-3rem)]' : 'w-full'
+          }`}
+        >
           <div>
-            <h3>{agora.title}</h3>
+            <h4 className='flex w-full justify-between text-[1.1rem]'>
+              <StandardLabel label={agora.title} />{' '}
+              <span className='text-right font-normal text-default-500'>
+                {editAndPostShortCalculatorKO(
+                  agora.createdTime,
+                  agora.updatedTime
+                )}
+              </span>
+            </h4>
             <div className='line-clamp-2'>
               <MarkdownViewer>{agora.content}</MarkdownViewer>
             </div>
