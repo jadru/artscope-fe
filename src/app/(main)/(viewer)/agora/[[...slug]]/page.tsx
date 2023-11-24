@@ -2,6 +2,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 import { redirect } from 'next/navigation';
 import React from 'react';
 
+import LoginNeeded from '@/components/LoginNeeded';
 import MarkdownViewer from '@/components/MarkdownViewer';
 import MediaSlider from '@/components/MediaSlider';
 import StandardLabel, { standardLabel } from '@/components/StandardLabel';
@@ -61,7 +62,7 @@ export default async function AgoraDetailPage({
   const data = await fetchAgoraDetail(params.slug[0]);
   if (!data) throw new Error('Failed to fetch data');
   return (
-    <div className='space-y-3 py-3'>
+    <div className='flex flex-col items-stretch gap-3 px-3 py-3 md:px-0'>
       <h1 className='break-keep text-[2.3rem] font-normal'>
         <StandardLabel label={data.agora.title} />
       </h1>
@@ -78,7 +79,7 @@ export default async function AgoraDetailPage({
       {data.agora.medias && data.agora.medias.length > 1 && (
         <MediaSlider medias={data.agora.medias.slice(1)} />
       )}
-      <div className='px-2'>
+      <div className='px-1.5 text-right text-default-500'>
         {data.agora.updatedTime && (
           <p>
             {new Date(data.agora.updatedTime).toLocaleString('ko-KR')} 편집됨
@@ -88,6 +89,7 @@ export default async function AgoraDetailPage({
       </div>
 
       <AgoraAction data={data} />
+      <LoginNeeded href='/user/login' />
       <AgoraComments data={data} />
     </div>
   );

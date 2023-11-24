@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from '@nextui-org/react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -231,14 +230,6 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
       )}
     </>
   ) : (
-    <Link href='/user/login' className='w-full px-2'>
-      <button className='my-2 h-16 w-[calc(100%-1rem)] rounded-2xl border border-black transition hover:bg-default-200'>
-        <p>
-          <b className='font-bold text-black '>
-            의견을 남기려면 로그인이 필요합니다.
-          </b>
-        </p>
-      </button>
-    </Link>
+    <></>
   );
 }

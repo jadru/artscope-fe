@@ -29,7 +29,7 @@ export default function MediaSlider({ medias }: { medias: MediaTypeInfo[] }) {
                 src={image.mediaUrl}
                 alt={image.mediaUrl}
                 width={500}
-                height={500}
+                height={300}
               />
             </Carousel.Item>
           ))}
