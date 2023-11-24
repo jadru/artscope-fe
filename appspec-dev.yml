@@ -2,11 +2,11 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/deploy-front/
+    destination: /home/ubuntu/deploy-front-dev/
     overwrite: yes
 
 permissions:
-  - object: /home/ubuntu/deploy-front/
+  - object: /home/ubuntu/deploy-front-dev/
     pattern: '**'
     owner: root
     group: root
