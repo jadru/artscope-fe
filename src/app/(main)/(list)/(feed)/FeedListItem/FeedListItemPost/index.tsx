@@ -8,7 +8,7 @@ import StandardLabel from '@/components/StandardLabel';
 import FeedListItemPostAction from '@/app/(main)/(list)/(feed)/FeedListItem/FeedListItemPost/FeedListItemPostAction';
 import FeedListItemPostMedia from '@/app/(main)/(list)/(feed)/FeedListItem/FeedListItemPost/FeedListItemPostMedia';
 import OpengraphCard from '@/app/(main)/(list)/(feed)/OpengraphCard';
-import { timeCaculatortoKO } from '@/utils/timeCalculator';
+import { editAndPostShortCalculatorKO } from '@/utils/timeCalculator';
 
 import { feedItemType } from '@/types/feed';
 
@@ -51,23 +51,28 @@ export default function Index({ feed }: { feed: feedItemType }) {
       <div className='flex w-[calc(100%-3rem)] flex-col justify-between text-left'>
         <div className='w-full space-y-1'>
           <div className='flex justify-between'>
-            <div
-              className='group flex gap-1'
-              onClick={(e) => {
-                e.stopPropagation();
-                push(`/profile/${feed.authorUsername}`);
-              }}
-            >
-              <p className='inline text-[0.9rem] font-bold transition group-hover:underline'>
-                <StandardLabel label={feed.authorName} />
-              </p>
-              <p className='text-[0.9rem] text-default-500 transition group-hover:text-default-900'>
-                @{feed.authorUsername}
-              </p>
+            <div className='flex w-full justify-between gap-1'>
+              <div
+                className='group flex gap-0.5'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  push(`/profile/${feed.authorUsername}`);
+                }}
+              >
+                <p className='inline text-[0.9rem] font-bold transition group-hover:underline'>
+                  <StandardLabel label={feed.authorName} />
+                </p>
+                <p className='text-[0.9rem] text-default-500 transition group-hover:text-default-900'>
+                  @{feed.authorUsername}
+                </p>
+              </div>
+              <h5 className='px-1.5 text-right text-default-500'>
+                {editAndPostShortCalculatorKO(
+                  feed.createdTime,
+                  feed.updatedTime
+                )}
+              </h5>
             </div>
-            <h5 className='text-[0.9rem] text-default-600'>
-              {timeCaculatortoKO(feed.createdTime)}
-            </h5>
           </div>
           <div className='flex flex-col justify-start'>
             <div className='text flex w-full flex-col gap-1'>

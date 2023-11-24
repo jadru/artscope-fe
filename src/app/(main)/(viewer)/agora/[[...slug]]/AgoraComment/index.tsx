@@ -45,7 +45,7 @@ export default function Index({ data }: { data: AgoraDetailType }) {
   };
 
   return (
-    <div className='mx-2 my-2 space-y-1.5'>
+    <div className='space-y-1.5'>
       {isLogin && data.userVoteStatus !== undefined && (
         <Input
           variant='bordered'
@@ -59,36 +59,7 @@ export default function Index({ data }: { data: AgoraDetailType }) {
           onValueChange={setNewOpinion}
         />
       )}
-      <div className='hidden grid-cols-3 gap-2 md:grid'>
-        <div>
-          {data.disagreeOpinions.map((comment) => (
-            <AgoraCommentMessage
-              comment={comment}
-              voteStatus='disagree'
-              key={comment.author.name + comment.createdTime}
-            />
-          ))}
-        </div>
-        <div>
-          {data.naturalOpinions.map((comment) => (
-            <AgoraCommentMessage
-              comment={comment}
-              voteStatus='natural'
-              key={comment.author.name + comment.createdTime}
-            />
-          ))}
-        </div>
-        <div>
-          {data.agreeOpinions.map((comment) => (
-            <AgoraCommentMessage
-              comment={comment}
-              voteStatus='agree'
-              key={comment.author.name + comment.createdTime}
-            />
-          ))}
-        </div>
-      </div>
-      <div className='flex flex-col md:hidden'>
+      <div className='flex flex-col gap-1'>
         {opinion &&
           opinion.map((comment) => (
             <AgoraCommentMessage

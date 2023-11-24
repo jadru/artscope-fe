@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
 import StandardLabel from '@/components/StandardLabel';
@@ -33,7 +34,7 @@ const ArtworkItem = ({ artwork: aw }: { artwork: ArtworkType }) => {
               <span>댓글 {aw.artwork.comments}</span>
             </p>
           </div>
-          <p className='w-1/3 truncate pl-1 text-right font-bold text-default-500'>
+          <p className='flex w-1/3 flex-col justify-between truncate pl-1 text-right font-bold text-default-500'>
             <StandardLabel label={aw.artwork.authorName} />
           </p>
         </div>

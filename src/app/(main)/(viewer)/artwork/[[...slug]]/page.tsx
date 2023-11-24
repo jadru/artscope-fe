@@ -16,6 +16,7 @@ import {
   NEXT_PUBLIC_MEDIA_STORAGE_URL,
 } from '@/constant/env';
 import jxios from '@/utils/jxios';
+import { editAndPostTimeCalculatorKO } from '@/utils/timeCalculator';
 
 import { ArtworkType } from '@/types/artwork';
 import { profileApiResponseType } from '@/types/profile';
@@ -131,7 +132,13 @@ export default async function ArtworkPage({
           </div>
         ))}
       </div>
-      <ArtworkTags data={data} />
+      <ArtworkTags tags={data.artwork.tags} />
+      <p className='w-full px-2.5 text-right font-normal text-default-500'>
+        {editAndPostTimeCalculatorKO(
+          data.artwork.createdTime,
+          data.artwork.updatedTime
+        )}
+      </p>
       <ArtworkAuthorProfileCard
         username={author.username}
         name={author.name}

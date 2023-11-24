@@ -6,6 +6,8 @@ import React from 'react';
 import ASNextImage from '@/components/ASNextImage';
 import StandardLabel from '@/components/StandardLabel';
 
+import { editAndPostShortCalculatorKO } from '@/utils/timeCalculator';
+
 import { feedItemType } from '@/types/feed';
 
 export default function FeedListItemEvent({ feed }: { feed: feedItemType }) {
@@ -21,8 +23,14 @@ export default function FeedListItemEvent({ feed }: { feed: feedItemType }) {
         <div className='flex items-start justify-between'>
           <div className='flex h-full w-[calc(100%-104px)] flex-col items-start justify-between gap-1'>
             <div className='w-full'>
-              <h4 className='w-full text-[1.1rem]'>
+              <h4 className='flex w-full justify-between text-[1.1rem]'>
                 <StandardLabel label={feed.title} />
+                <span className='text-right font-normal text-default-500'>
+                  {editAndPostShortCalculatorKO(
+                    feed.createdTime,
+                    feed.updatedTime
+                  )}
+                </span>
               </h4>
               <p className='text-default-700'>
                 <StandardLabel label={feed.event.locationName} />

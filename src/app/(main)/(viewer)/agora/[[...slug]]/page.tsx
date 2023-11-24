@@ -13,6 +13,7 @@ import AgoraComments from '@/app/(main)/(viewer)/agora/[[...slug]]/AgoraComment'
 import AgoraProfile from '@/app/(main)/(viewer)/agora/[[...slug]]/AgoraProfile';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
+import { editAndPostTimeCalculatorKO } from '@/utils/timeCalculator';
 
 import { AgoraDetailType } from '@/types/agora';
 
@@ -79,14 +80,12 @@ export default async function AgoraDetailPage({
       {data.agora.medias && data.agora.medias.length > 1 && (
         <MediaSlider medias={data.agora.medias.slice(1)} />
       )}
-      <div className='px-1.5 text-right text-default-500'>
-        {data.agora.updatedTime && (
-          <p>
-            {new Date(data.agora.updatedTime).toLocaleString('ko-KR')} 편집됨
-          </p>
+      <h5 className='px-1.5 text-right text-default-500'>
+        {editAndPostTimeCalculatorKO(
+          data.agora.createdTime,
+          data.agora.updatedTime
         )}
-        <p>{new Date(data.agora.createdTime).toLocaleString('ko-KR')} 작성됨</p>
-      </div>
+      </h5>
 
       <AgoraAction data={data} />
       <LoginNeeded href='/user/login' />
