@@ -13,6 +13,9 @@ env:
   IMAGE_NAME: jadru/artplatform-fe
   DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+  AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+  AWS_CODE_DEPLOY_NAME: artscope-codedeploy
+  AWS_CODE_DEPLOY_GROUP: artscope-codedeploy-frontend-dev
 
 jobs:
   build:
@@ -20,8 +23,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
       id-token: write
 
     steps:
@@ -54,6 +55,38 @@ jobs:
           file: ./Dockerfile.dev
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Write Docker image name to file
+        run: echo "${{ env.IMAGE_NAME }}:${{ secrets.MAJOR }}.${{ secrets.MINOR }}.dev" > fe-image-dev.txt
+
+      - name: Create zip file for AWS CodeDeploy
+        run: mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec-dev.yml fe-image-dev.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
+
+        # AWS 설정
+      - name: AWS Configure
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ap-northeast-2
+        # AWS S3로 배포 파일 업로드
+      - name: Upload to AWS S3
+        run: |
+          aws deploy push \
+          --application-name ${{ env.AWS_CODE_DEPLOY_NAME }} \
+          --s3-location s3://${{ env.AWS_S3_BUCKET_NAME }}/codedeploy/$GITHUB_SHA.zip \
+          --ignore-hidden-files \
+          --source ${{ env.AWS_CODE_DEPLOY_NAME }}
+
+      # AWS EC2 CodeDeploy 배포 요청
+      - name: Delpoy to AWS EC2
+        run: |
+          aws deploy create-deployment \
+          --application-name ${{ env.AWS_CODE_DEPLOY_NAME }} \
+          --deployment-config-name CodeDeployDefault.OneAtATime \
+          --deployment-group-name ${{ env.AWS_CODE_DEPLOY_GROUP }} \
+          --description "Deploy artscope frontend dev" \
+          --s3-location bucket=$AWS_S3_BUCKET_NAME,key=codedeploy/$GITHUB_SHA.zip,bundleType=zip
 
       - name: Autoincrement a new minor version
         run: |
