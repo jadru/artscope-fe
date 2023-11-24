@@ -417,11 +417,13 @@ const NewEvent = () => {
         <Button
           onClick={handleCreateSaveButton}
           disabled={isUpload}
+          spinnerPlacement='end'
+          isLoading={isUpload}
           color='primary'
           className={`
             h-12 ${isUpload ? 'opacity-20' : ''}`}
         >
-          새 이벤트 등록
+          {isUpload ? '업로드 중...' : '이벤트 등록'}
         </Button>
       </div>
     </>

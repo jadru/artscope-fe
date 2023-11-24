@@ -360,10 +360,12 @@ const NewArtwork = () => {
           onClick={handleCreateSaveButton}
           disabled={isUpload}
           color='primary'
+          spinnerPlacement='end'
+          isLoading={isUpload}
           className={`
             h-12 ${isUpload ? 'opacity-20' : ''}`}
         >
-          새 아고라 작성
+          {isUpload ? '업로드 중...' : '아고라 시작'}
         </Button>
       </div>
     </>

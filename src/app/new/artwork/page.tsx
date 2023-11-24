@@ -329,11 +329,13 @@ const NewArtwork = () => {
         <Button
           onClick={handleCreateSaveButton}
           disabled={isUpload}
+          spinnerPlacement='end'
+          isLoading={isUpload}
           color='primary'
           className={`
             h-12 ${isUpload ? 'opacity-20' : ''}`}
         >
-          새 작품 업로드
+          {isUpload ? '업로드 중...' : '작품 업로드'}
         </Button>
       </div>
     </>
