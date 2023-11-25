@@ -78,9 +78,9 @@ export default function Search() {
           Enter
         </Kbd>
       </div>
-      <div className='w-full rounded-2xl border border-default-400 py-2'>
-        {data &&
-          (data.searchArtworks.artworks.length > 0 ? (
+      {data &&
+        (data.searchArtworks.artworks.length > 0 ? (
+          <div className='w-full rounded-2xl border border-default-400 py-2'>
             <>
               <h3 className='mx-3 mb-2'>아트워크 검색 결과</h3>
               <div className='px-2'>
@@ -103,38 +103,41 @@ export default function Search() {
                 )}
               </div>
             </>
-          ) : (
+          </div>
+        ) : (
+          <div className='w-full rounded-2xl border border-default-400 py-2'>
             <h3 className='py-14 text-center text-default-500'>
               아트워크 검색 결과가 없습니다.
             </h3>
-          ))}
-      </div>
-      <div className='w-full rounded-2xl border border-default-400 py-2'>
-        {data &&
-          (data.searchPosts.posts.length > 0 ? (
-            <>
-              <h3 className='mx-3 mb-2'>포스트 검색 결과</h3>
-              <div className='px-2'>
-                {data.searchPosts.posts.map((item) => (
-                  <FeedListItemPost feed={item} key={item.id} />
-                ))}
+          </div>
+        ))}
+
+      {data &&
+        (data.searchPosts.posts.length > 0 ? (
+          <div className='w-full rounded-2xl border border-default-400 py-2'>
+            <h3 className='mx-3 mb-2'>포스트 검색 결과</h3>
+            <div className='px-2'>
+              {data.searchPosts.posts.map((item) => (
+                <FeedListItemPost feed={item} key={item.id} />
+              ))}
+            </div>
+            {data.searchPosts.pageInfo.totalElements > 6 && (
+              <div className='mx-2 flex cursor-pointer items-center justify-start rounded-2xl px-3 py-2 transition hover:bg-default-100'>
+                <p>
+                  {data.searchPosts.pageInfo.totalElements}개의 포스트 검색결과
+                  더보기
+                </p>
+                <MdArrowForwardIos className='ml-1 inline' />
               </div>
-              {data.searchPosts.pageInfo.totalElements > 6 && (
-                <div className='mx-2 flex cursor-pointer items-center justify-start rounded-2xl px-3 py-2 transition hover:bg-default-100'>
-                  <p>
-                    {data.searchPosts.pageInfo.totalElements}개의 포스트
-                    검색결과 더보기
-                  </p>
-                  <MdArrowForwardIos className='ml-1 inline' />
-                </div>
-              )}
-            </>
-          ) : (
+            )}
+          </div>
+        ) : (
+          <div className='w-full rounded-2xl border border-default-400 py-2'>
             <h3 className='py-14 text-center text-default-500'>
               포스트 검색 결과가 없습니다.
             </h3>
-          ))}
-      </div>
+          </div>
+        ))}
     </div>
   );
 }
