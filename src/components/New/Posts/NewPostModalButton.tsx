@@ -20,7 +20,7 @@ export default function NewPostButton({ placeholder }: Props) {
   const { isLogin } = useUser();
 
   return isLogin ? (
-    <div className='flex w-full max-w-full flex-row items-start justify-between gap-3 overflow-hidden rounded-xl p-3'>
+    <div className='flex w-full max-w-full flex-row items-start justify-between gap-3 overflow-hidden rounded-xl px-3 pb-2'>
       <UserInfo />
       <div className='w-[calc(100%-3rem)] space-y-1'>
         <Link
