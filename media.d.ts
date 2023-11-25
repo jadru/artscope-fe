@@ -14,8 +14,8 @@ declare module '*.webm' {
 }
 
 declare module '*.svg' {
-  const src: string;
-  export default src;
+  const value: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
+  export default value;
 }
 
 declare module 'lodash';
