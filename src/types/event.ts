@@ -6,6 +6,7 @@ export type EventDetailType = {
   title: string;
   description: string;
   authorUserName: string;
+  authorProfileImage?: string;
   authorName: string;
   thumbnail: {
     mediaType: 'image' | 'video';

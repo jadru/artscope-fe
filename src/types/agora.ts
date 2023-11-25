@@ -65,5 +65,5 @@ export type AgoraType = {
   thumbnail: MediaTypeInfo;
   medias: MediaTypeInfo[];
   createdTime: Date;
-  updatedTime: Date | null;
+  updatedTime?: Date;
 };

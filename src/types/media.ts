@@ -10,9 +10,9 @@ export type MediaTypeInfoWithDescription = {
 };
 
 export type MediaTypeInfo = {
-  id: number;
+  id?: number;
   mediaType: MediaType;
   mediaUrl: string;
-  imageHeight: number;
-  imageWidth: number;
+  imageHeight?: number;
+  imageWidth?: number;
 };
