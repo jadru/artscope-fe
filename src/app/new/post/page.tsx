@@ -263,11 +263,13 @@ const NewPost = () => {
         <Button
           onClick={handleSubmitPostButton}
           disabled={isUpload}
+          spinnerPlacement='end'
+          isLoading={isUpload}
           color='primary'
           className={`
             h-12 ${isUpload ? 'opacity-20' : ''}`}
         >
-          새 포스트 작성
+          {isUpload ? '업로드 중...' : '포스트 작성'}
         </Button>
       </div>
     </>

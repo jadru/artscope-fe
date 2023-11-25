@@ -1,29 +1,55 @@
-const timeCaculatortoKO = (from: Date | null) => {
-  if (!from) {
-    return undefined;
-  }
-  const time = new Date(String(from));
-  const now = new Date();
-  const diff = now.getTime() - time.getTime();
-  const diffDay = diff / (1000 * 60 * 60 * 24);
-  const diffHour = diff / (1000 * 60 * 60);
+import { format, formatDistanceToNow } from 'date-fns';
+import { ko } from 'date-fns/locale';
 
-  if (diffDay > 365) {
-    return time.toLocaleString('ko-KR');
+const timeCalculatorKO = (date: Date) => {
+  const d = new Date(date);
+  const now = Date.now();
+  const diff = (now - d.getTime()) / 1000;
+  if (diff < 60) {
+    return '방금 전';
   }
-  if (diffDay > 30) {
-    return time.toLocaleString('ko-KR');
+  if (diff < 60 * 60 * 24 * 14) {
+    return formatDistanceToNow(d, { addSuffix: true, locale: ko });
   }
-  if (diffDay > 1) {
-    return Math.floor(diffDay) + '일 전';
-  }
-  if (diffHour > 1) {
-    return Math.floor(diffHour) + '시간 전';
-  }
-  if (diff > 1300 * 60) {
-    return Math.floor(diff / (1000 * 60)) + '분 전';
-  }
-  return '방금 전';
+  return format(d, 'PPP EEE p', { locale: ko }); // 날짜 포맷
 };
 
-export { timeCaculatortoKO };
+const editAndPostTimeCalculatorKO = (
+  createdTime: Date,
+  editedTime?: Date | null
+) => {
+  if (!editedTime || createdTime === editedTime) {
+    return timeCalculatorKO(createdTime);
+  }
+  return `${timeCalculatorKO(editedTime)} 수정`;
+};
+
+const shortTimeCalculatorKO = (date: Date) => {
+  const d = new Date(date);
+  const now = Date.now();
+  const diff = (now - d.getTime()) / 1000;
+  if (diff < 60) {
+    return '방금 전';
+  }
+  if (diff < 60 * 60 * 24 * 14) {
+    return formatDistanceToNow(d, { addSuffix: true, locale: ko });
+  }
+  return format(d, 'PP', { locale: ko }); // 날짜 포맷
+};
+
+const editAndPostShortCalculatorKO = (
+  createdTime: Date,
+  editedTime?: Date | null
+) => {
+  if (!editedTime || createdTime === editedTime) {
+    return shortTimeCalculatorKO(createdTime);
+  }
+  return `${shortTimeCalculatorKO(editedTime)} 수정`;
+};
+
+export {
+  editAndPostShortCalculatorKO,
+  editAndPostTimeCalculatorKO,
+  shortTimeCalculatorKO,
+  timeCalculatorKO,
+};

@@ -17,17 +17,17 @@ import StandardLabel from '@/components/StandardLabel';
 import NewLocationModal from '@/app/new/event/location/NewLocationModal';
 import jxios from '@/utils/jxios';
 
-import { CreateScheduleTempType } from '@/types/event';
 import { LocationDataType, LocationResponseType } from '@/types/location';
 
 export default function AddLocation({
-  schedule,
-  setSchedule,
-  scheduleIndex,
+  location,
+  setLocation,
 }: {
-  schedule: CreateScheduleTempType[];
-  setSchedule: React.Dispatch<React.SetStateAction<CreateScheduleTempType[]>>;
-  scheduleIndex: number;
+  location: {
+    locationId?: number;
+    locationName?: string;
+  };
+  setLocation: (location: { locationId: number; locationName: string }) => void;
 }) {
   const [data, setData] = useState<LocationDataType[]>();
   const [keyword, setKeyword] = useState<string>('');
@@ -59,11 +59,9 @@ export default function AddLocation({
   );
 
   const handleLocationClick = (location: LocationDataType) => {
-    setSchedule((prev) => {
-      const newSchedule = [...prev];
-      newSchedule[scheduleIndex].locationId = location.locationId;
-      newSchedule[scheduleIndex].locationName = location.name;
-      return newSchedule;
+    setLocation({
+      locationId: location.locationId,
+      locationName: location.name,
     });
     onClose();
   };
@@ -78,11 +76,11 @@ export default function AddLocation({
         className='flex h-12 w-44 items-center justify-center rounded-xl border px-2 hover:bg-default-100'
         onClick={() => onOpen()}
       >
-        {schedule[scheduleIndex].locationId ? (
+        {location.locationId ? (
           <>
             <BiBuilding size={23} />
             <p className='ml-1 mt-0.5'>
-              <StandardLabel label={schedule[scheduleIndex].locationName} />
+              <StandardLabel label={location.locationName} />
             </p>
           </>
         ) : (
@@ -140,8 +138,7 @@ export default function AddLocation({
         </ModalContent>
       </Modal>
       <NewLocationModal
-        setSchedule={setSchedule}
-        scheduleIndex={scheduleIndex}
+        setLocation={setLocation}
         NewLocationisOpen={NewLocationisOpen}
         NewLocationOnOpenChange={NewLocationOnOpenChange}
         NewLocationOnClose={NewLocationOnClose}

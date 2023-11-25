@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import FeedRootPage from '@/app/(list)/(feed)/page';
+import FeedRootPage from '@/app/(main)/(list)/(feed)/page';
 
 jest.mock('next/navigation', () => ({
   useRouter() {
