@@ -114,7 +114,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
   return (
     <>
       <div className='sticky -top-12 z-50 w-screen bg-white/80 backdrop-blur-2xl transition md:top-0'>
-        <div className='mx-auto flex max-w-[1024px] flex-col items-start justify-between px-2.5 lg:px-0'>
+        <div className='mx-auto flex max-w-screen-sm flex-col items-start justify-between px-2.5 md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl'>
           <Link
             className='group box-border flex h-12 basis-0 cursor-pointer appearance-none flex-row flex-nowrap items-end justify-start whitespace-nowrap bg-transparent text-medium no-underline md:hidden'
             href='/'

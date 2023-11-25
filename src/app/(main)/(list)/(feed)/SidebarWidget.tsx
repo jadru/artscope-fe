@@ -50,52 +50,48 @@ export default function SidebarWidget() {
       <RecentArtworkWidget />
       <RecentEventWidget />
       <RecentAgoraWidget />
-      <div className='flex flex-col items-center justify-center gap-2 lg:flex-row'>
-        <div className='flex gap-1'>
+      <div className='space-y-0.5'>
+        <div className='flex items-center justify-center gap-2 text-default-500'>
           <Link
             href='https://jadru.notion.site/Artscope-5d99f78df8c64d019bd21a02eb1f80d2?pvs=4'
             target='_blank'
-            className='font-bold hover:text-primary'
+            className='text-[0.88rem] hover:text-primary'
           >
             가이드
           </Link>
           <Link
             href='https://forms.gle/F9V9gppnKXXBRE4d6'
             target='_blank'
-            className='font-bold hover:text-primary'
+            className='text-[0.88rem] hover:text-primary'
           >
             피드백
           </Link>
           <Link
             href='https://www.plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/privacy-policy'
             target='_blank'
-            className='font-bold hover:text-primary'
+            className='text-[0.88rem] hover:text-primary'
           >
             개인정보 처리방침
           </Link>
         </div>
-        <div className='h-0.5 w-52 bg-default-600 lg:h-4 lg:w-0.5' />
-        <div className='flex gap-1'>
+        <div className='flex justify-center gap-1 text-default-500'>
           <Link
             href='https://www.instagram.com/artscope.kr/'
             target='_blank'
             className='flex items-center gap-0.5 hover:text-primary'
           >
-            <FiInstagram size={20} />
+            <FiInstagram size={18} />
           </Link>
           <Link
             href='https://mediaxi.kr/'
             target='_blank'
             className='flex items-center gap-0.5 hover:text-primary'
           >
-            <FiCompass size={20} />
+            <FiCompass size={18} />
           </Link>
+          <p className='px-2 text-center text-[0.88rem]'>© 2023 Artscope.</p>
         </div>
       </div>
-      <p className='text-md px-2 text-center text-[0.85rem] text-gray-600'>
-        © 2023 Artscope by Media Xi from Busan
-        <br /> All rights reserved.
-      </p>
     </div>
   );
 }
