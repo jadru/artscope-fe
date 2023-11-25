@@ -1,4 +1,8 @@
-import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import {
+  DateTimePicker,
+  LocalizationProvider,
+  TimePicker,
+} from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Checkbox, Input } from '@nextui-org/react';
 import { add, addHours } from 'date-fns';
@@ -173,7 +177,7 @@ export default function Step1({
                     )}
                   </div>
                   <div className='flex flex-col gap-2 md:flex-row'>
-                    <TimePicker
+                    <DateTimePicker
                       label='시작 날짜 및 시간'
                       value={item.startDateTime}
                       onChange={(newValue) =>
