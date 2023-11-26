@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import Script from 'next/script';
 import React from 'react';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -96,20 +96,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <Head>
-        <script
-          type='application/ld+json'
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrg) }}
-        />
-        <script
-          type='application/ld+json'
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdNav) }}
-        />
-        <script
-          type='application/ld+json'
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdThumb) }}
-        />
-      </Head>
+      <Script
+        id='json-ld-org'
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrg) }}
+      />
+      <Script
+        id='json-ld-nav'
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdNav) }}
+      />
+      <Script
+        id='json-ld-thumb'
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdThumb) }}
+      />
       {children}
     </>
   );

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
+import { isMobile } from 'react-device-detect';
 import { FiCompass, FiInstagram } from 'react-icons/fi';
 
 import RecentAgoraWidget from '@/app/(main)/(list)/(feed)/RecentAgoraWidget';
@@ -46,10 +47,14 @@ export default function SidebarWidget() {
       className='sticky w-full space-y-2 self-start pb-4 pt-0'
       style={{ top: topStyle }}
     >
-      <RecentPostWidget />
-      <RecentArtworkWidget />
-      <RecentEventWidget />
-      <RecentAgoraWidget />
+      {!isMobile && (
+        <>
+          <RecentPostWidget />
+          <RecentArtworkWidget />
+          <RecentEventWidget />
+          <RecentAgoraWidget />
+        </>
+      )}
       <div className='space-y-0.5'>
         <div className='flex items-center justify-center gap-2 text-default-500'>
           <Link
