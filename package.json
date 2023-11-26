@@ -76,6 +76,7 @@
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.0",
     "sass": "^1.62.0",
+    "schema-dts": "^1.1.2",
     "strip-markdown": "^6.0.0",
     "supports-color": "8.1.1",
     "tailwind-merge": "^1.10.0",

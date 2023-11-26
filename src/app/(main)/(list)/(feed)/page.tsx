@@ -3,12 +3,18 @@
 import { Skeleton } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { notFound, usePathname } from 'next/navigation';
-import { ReactElement, useEffect, useRef } from 'react';
+import React, { ReactElement, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import NewPostButton from '@/components/New/Posts/NewPostModalButton';
 
 import FeedList from '@/app/(main)/(list)/(feed)/FeedList';
+import {
+  jsonLdNav,
+  jsonLdOrg,
+  jsonLdSearch,
+  jsonLdThumb,
+} from '@/app/(main)/(list)/(feed)/searchSchema';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
@@ -101,58 +107,78 @@ export default function Feeds() {
   }, [isError]);
 
   return (
-    <div className='w-full'>
-      <NewPostButton placeholder='무슨 이야기가 있나요?' />
-      {data && !isError && (
-        <>
-          {data.pages.map(
-            (page, index) =>
-              page.feedItems &&
-              page.feedItems.length > 0 && (
-                <FeedList
-                  data={page.feedItems}
-                  key={'feed-' + page.feedItems[0].id + index}
-                />
-              )
-          )}
-          <div ref={bottom} className='mb-8 h-1'>
-            <FeedObservationComponent />
-          </div>
-        </>
-      )}
-      {isLoading && (
-        <div className='w-full'>
-          <SkeletonFeed />
-          <SkeletonFeed />
-          <SkeletonFeed />
-          <SkeletonFeed />
-          <SkeletonFeed />
-          <SkeletonFeed />
-          <SkeletonFeed />
-          <SkeletonFeed />
-        </div>
-      )}
-      {isFetchingNextPage && (
-        <div className='w-full'>
-          <SkeletonFeed />
-          <SkeletonFeed />
-          <SkeletonFeed />
-          <SkeletonFeed />
-          <SkeletonFeed />
-          <SkeletonFeed />
-          <SkeletonFeed />
-          <SkeletonFeed />
-        </div>
-      )}
-      {isError && (
-        <div className='w-full'>
-          <h3 className='my-12 text-center'>에러가 발생했습니다.</h3>
-        </div>
-      )}
-      {data &&
-        (data.pages.length === 0 || data.pages[0].feedItems.length === 0) && (
-          <h3 className='my-12 text-center'>아직 작성된 글이 없습니다.</h3>
+    <>
+      <section>
+        <script
+          type='application/ld+json'
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrg) }}
+        />
+        <script
+          type='application/ld+json'
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdNav) }}
+        />
+        <script
+          type='application/ld+json'
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdThumb) }}
+        />
+        <script
+          type='application/ld+json'
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdSearch) }}
+        />
+      </section>
+      <div className='w-full'>
+        <NewPostButton placeholder='무슨 이야기가 있나요?' />
+        {data && !isError && (
+          <>
+            {data.pages.map(
+              (page, index) =>
+                page.feedItems &&
+                page.feedItems.length > 0 && (
+                  <FeedList
+                    data={page.feedItems}
+                    key={'feed-' + page.feedItems[0].id + index}
+                  />
+                )
+            )}
+            <div ref={bottom} className='mb-8 h-1'>
+              <FeedObservationComponent />
+            </div>
+          </>
         )}
-    </div>
+        {isLoading && (
+          <div className='w-full'>
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
+          </div>
+        )}
+        {isFetchingNextPage && (
+          <div className='w-full'>
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
+            <SkeletonFeed />
+          </div>
+        )}
+        {isError && (
+          <div className='w-full'>
+            <h3 className='my-12 text-center'>에러가 발생했습니다.</h3>
+          </div>
+        )}
+        {data &&
+          (data.pages.length === 0 || data.pages[0].feedItems.length === 0) && (
+            <h3 className='my-12 text-center'>아직 작성된 글이 없습니다.</h3>
+          )}
+      </div>
+    </>
   );
 }

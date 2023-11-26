@@ -17635,6 +17635,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"schema-dts@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "schema-dts@npm:1.1.2"
+  peerDependencies:
+    typescript: ">=4.1.0"
+  checksum: bcca8719b1bb1cd71ba2b01a5126b3579e917a2f193e10fcffe020fa42fef911776ed9d2197c9f376780e703994b3ab854db3f962c47064f7282f41eff0f1d24
+  languageName: node
+  linkType: hard
+
 "schema-utils@npm:^2.6.5":
   version: 2.7.1
   resolution: "schema-utils@npm:2.7.1"
@@ -18867,6 +18876,7 @@ __metadata:
     rehype-raw: "npm:^7.0.0"
     remark-gfm: "npm:^4.0.0"
     sass: "npm:^1.62.0"
+    schema-dts: "npm:^1.1.2"
     strip-markdown: "npm:^6.0.0"
     supports-color: "npm:8.1.1"
     tailwind-merge: "npm:^1.10.0"
