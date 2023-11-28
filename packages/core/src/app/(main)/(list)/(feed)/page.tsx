@@ -43,6 +43,7 @@ export default function Feeds() {
     isFetchingNextPage,
     isLoading,
     refetch,
+    isSuccess,
     isError,
   } = useInfiniteQuery({
     queryKey: ['feed'],
@@ -85,7 +86,7 @@ export default function Feeds() {
       </section>
       <div className='w-full'>
         <NewPostButton placeholder='무슨 이야기가 있나요?' />
-        {data && !isError && (
+        {isSuccess && (
           <>
             {data.pages.map(
               (page, index) =>
@@ -97,13 +98,6 @@ export default function Feeds() {
                   />
                 )
             )}
-            <div ref={bottom} className='mb-8 h-1'>
-              <FeedObservationComponent
-                hasNext={data.pages[data.pages.length - 1].hasNext}
-                hasData={Boolean(data)}
-                fetchNextPage={fetchNextPage}
-              />
-            </div>
           </>
         )}
         {isLoading && (
@@ -133,6 +127,15 @@ export default function Feeds() {
         {isError && (
           <div className='w-full'>
             <h3 className='my-12 text-center'>에러가 발생했습니다.</h3>
+          </div>
+        )}
+        {isSuccess && (
+          <div ref={bottom}>
+            <FeedObservationComponent
+              hasNext={data.pages[data.pages.length - 1].hasNext}
+              hasData={Boolean(data)}
+              fetchNextPage={fetchNextPage}
+            />
           </div>
         )}
         {data &&
