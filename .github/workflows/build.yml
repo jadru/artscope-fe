@@ -58,6 +58,11 @@ jobs:
           DOCKERFILE: |
             main:${{ matrix.dockerfile-prod }}
             dev:${{ matrix.dockerfile-dev }}
+      - name: Copy env from secrets
+        if: steps.diff.outputs.diff
+        run: |
+          main: echo ${{ secrets.ENV_PROD }} > .env
+          dev: echo ${{ secrets.ENV_DEV }} > .env
 
       - name: Setup Docker buildx
         if: steps.diff.outputs.diff
