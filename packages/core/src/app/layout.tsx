@@ -1,3 +1,4 @@
+import GoogleTagManager from '@magicul/next-google-tag-manager';
 import { Metadata, Viewport } from 'next';
 import { IBM_Plex_Sans_KR } from 'next/font/google';
 import Script from 'next/script';
@@ -8,7 +9,11 @@ import '../styles/globals.scss';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { Providers } from '@/app/providers';
-import { GA_TRACKING_ID, NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
+import {
+  GOOGLE_ANALYTICS_ID,
+  GOOGLE_TAG_MANAGER_ID,
+  NEXT_PUBLIC_ROOT_URL,
+} from '@/constant/env';
 import { cls } from '@/utils';
 
 const ibm_flex_Sans_KR = IBM_Plex_Sans_KR({
@@ -110,26 +115,27 @@ export default function RootLayout({
       <body className={cls(ibm_flex_Sans_KR.className, 'min-h-screen')}>
         <ToastContainer limit={2} hideProgressBar />
         <link rel='manifest' href='/manifest.json' />
-        {NEXT_PUBLIC_ROOT_URL === 'https://www.artscope.kr' && (
-          <Script
-            strategy='afterInteractive'
-            src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
-          />
+        {GOOGLE_TAG_MANAGER_ID && (
+          <GoogleTagManager id={GOOGLE_TAG_MANAGER_ID} />
         )}
-        <Script
-          id='gtag-init'
-          strategy='afterInteractive'
-          dangerouslySetInnerHTML={{
-            __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_TRACKING_ID}', {
-              page_path: window.location.pathname,
-            });
-          `,
-          }}
-        />
+        {GOOGLE_ANALYTICS_ID && (
+          <>
+            <Script
+              src={
+                'https://www.googletagmanager.com/gtag/js?id=' +
+                GOOGLE_ANALYTICS_ID
+              }
+            />
+            <Script id='google-analytics'>
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GOOGLE_ANALYTICS_ID}');
+              `}
+            </Script>
+          </>
+        )}
 
         <Providers>{children}</Providers>
       </body>

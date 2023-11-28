@@ -4,11 +4,9 @@
   "version": "2.5",
   "private": true,
   "scripts": {
-    "start:dev": "yarn env-cmd -f ../../.env.development next dev",
-    "start:prod": "serve -s .next -l 3000",
-    "build:dev": "yarn env-cmd -f ../../.env.development next build && yarn postbuild",
-    "build:prod": "yarn env-cmd -f ../../.env.production next build && yarn postbuild",
-    "analyze": "yarn ANALYZE=true env-cmd -f ../../.env.development next build",
+    "start": "yarn env-cmd -f ../../.env next dev",
+    "build": "yarn env-cmd -f ../../.env next build && yarn postbuild",
+    "analyze": "yarn ANALYZE=true env-cmd -f ../../.env next build",
     "postbuild": "next-sitemap --config next-sitemap.config.js",
     "test": "jest --passWithNoTests",
     "typecheck": "tsc --noEmit --incremental false"
@@ -20,6 +18,7 @@
     "@emotion/styled": "^11.11.0",
     "@hocuspocus/provider": "^2.0.4",
     "@hookform/resolvers": "^3.0.0",
+    "@magicul/next-google-tag-manager": "^2.0.0",
     "@mui/material": "^5.14.16",
     "@mui/x-charts": "^6.18.1",
     "@mui/x-date-pickers": "^6.17.0",
