@@ -1,0 +1,3 @@
+[submodule "packages/admin"]
+	path = packages/admin
+	url = git@github.com:Media-XI/artscope-admin.git
