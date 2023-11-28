@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - dev
+      - develop
 
 env:
   REGISTRY: docker.io
@@ -54,15 +54,15 @@ jobs:
         with:
           IMAGE_REPO: |
             main:${{ matrix.image-prod }}
-            dev:${{ matrix.image-dev }}
+            develop:${{ matrix.image-dev }}
           DOCKERFILE: |
             main:${{ matrix.dockerfile-prod }}
-            dev:${{ matrix.dockerfile-dev }}
+            develop:${{ matrix.dockerfile-dev }}
       - name: Copy env from secrets
         if: steps.diff.outputs.diff
         run: |
           main: echo ${{ secrets.ENV_PROD }} > .env
-          dev: echo ${{ secrets.ENV_DEV }} > .env
+          develop: echo ${{ secrets.ENV_DEV }} > .env
 
       - name: Setup Docker buildx
         if: steps.diff.outputs.diff
@@ -80,7 +80,7 @@ jobs:
           images: ${{ IMAGE_REPO }}
           tags: |
             main: ${{ secrets.MAJOR }}.${{ secrets.MINOR }}
-            dev: ${{ secrets.MAJOR }}.${{ secrets.MINOR }}.dev
+            develop: ${{ secrets.MAJOR }}.${{ secrets.MINOR }}.dev
 
       - name: Build and Push Docker image
         id: build-and-push
@@ -97,17 +97,18 @@ jobs:
         if: steps.diff.outputs.diff
         run: |
           main: echo "${{ env.IMAGE_NAME }}:${{ secrets.MAJOR }}.${{ secrets.MINOR }}" > fe-image.txt
-          dev: echo "${{ env.IMAGE_NAME }}:${{ secrets.MAJOR }}.${{ secrets.MINOR }}.dev" > fe-image-dev.txt
+          develop: echo "${{ env.IMAGE_NAME }}:${{ secrets.MAJOR }}.${{ secrets.MINOR }}.dev" > fe-image-dev.txt
 
       - name: Create zip file for AWS CodeDeploy
         if: steps.diff.outputs.diff
         run: |
           main: mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec.yml fe-image.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
-          dev: mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec-dev.yml fe-image-dev.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
+          develop: mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec-dev.yml fe-image-dev.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
 
       - name: Rename appspec-dev file to appspec
-        if: dev
-        run: cd ${{ env.AWS_CODE_DEPLOY_NAME }} && mv appspec-dev.yml appspec.yml
+        if: steps.diff.outputs.diff
+        run: |
+          develop: cd ${{ env.AWS_CODE_DEPLOY_NAME }} && mv appspec-dev.yml appspec.yml
 
       - name: AWS Configure
         if: steps.diff.outputs.diff
