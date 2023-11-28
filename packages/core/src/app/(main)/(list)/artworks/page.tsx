@@ -84,16 +84,6 @@ export default function Page() {
                 <ArtworkItem artwork={aw} key={aw.artwork.id} />
               ))
             )}
-            <div ref={bottom}>
-              <FeedObservationComponent
-                hasNext={
-                  data.pages[data.pages.length - 1].pageInfo.page + 1 <
-                  data.pages[data.pages.length - 1].pageInfo.totalPages
-                }
-                hasData={Boolean(data)}
-                fetchNextPage={fetchNextPage}
-              />
-            </div>
           </div>
         )}
         {isLoading && (
@@ -118,6 +108,18 @@ export default function Page() {
             <SkeletonArtwork />
             <SkeletonArtwork />
             <SkeletonArtwork />
+          </div>
+        )}
+        {isSuccess && (
+          <div ref={bottom}>
+            <FeedObservationComponent
+              hasNext={
+                data.pages[data.pages.length - 1].pageInfo.page + 1 <
+                data.pages[data.pages.length - 1].pageInfo.totalPages
+              }
+              hasData={Boolean(data)}
+              fetchNextPage={fetchNextPage}
+            />
           </div>
         )}
         {data && data.pages[0].artworks.length === 0 && (

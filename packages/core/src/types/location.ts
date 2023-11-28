@@ -25,7 +25,14 @@ export type LocationDataType = {
   webSiteUrl: string;
 };
 
+export type LocationListItemType = {
+  locationId: number;
+  name: string;
+  englishName: string;
+  address: string;
+};
+
 export type LocationResponseType = {
-  locations: LocationDataType[];
+  locations: LocationListItemType[];
   pageInfo: pageInfoType;
 };

@@ -11,7 +11,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-import ObservationComponent from '@/components/ObservationComponent';
+import FeedObservationComponent from '@/components/ObservationComponent';
 import Title from '@/components/Title';
 
 import EventListItem from '@/app/(main)/(list)/events/EventListItem';
@@ -175,18 +175,6 @@ export default function Events() {
                 ))
               )}
           </div>
-          {data && (
-            <div ref={bottom}>
-              <ObservationComponent
-                hasNext={
-                  data.pages[data.pages.length - 1].pageInfo.page + 1 <
-                  data.pages[data.pages.length - 1].pageInfo.totalPages
-                }
-                hasData={Boolean(data)}
-                fetchNextPage={fetchNextPage}
-              />
-            </div>
-          )}
         </>
       ) : (
         <>
@@ -211,6 +199,18 @@ export default function Events() {
           <SkeletonEvent />
           <SkeletonEvent />
         </>
+      )}
+      {isSuccess && (
+        <div ref={bottom}>
+          <FeedObservationComponent
+            hasNext={
+              data.pages[data.pages.length - 1].pageInfo.page + 1 <
+              data.pages[data.pages.length - 1].pageInfo.totalPages
+            }
+            hasData={Boolean(data)}
+            fetchNextPage={fetchNextPage}
+          />
+        </div>
       )}
       {data && data.pages[0].exhibitions.length === 0 && (
         <h3 className='text-center'>아직 작성된 이벤트가 없습니다.</h3>

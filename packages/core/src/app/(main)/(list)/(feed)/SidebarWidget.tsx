@@ -79,7 +79,7 @@ export default function SidebarWidget() {
             개인정보 처리방침
           </Link>
         </div>
-        <div className='text-default-500 flex justify-center gap-1'>
+        <div className='text-default-500 flex justify-center gap-1 pb-12'>
           <Link
             href='https://www.instagram.com/artscope.kr/'
             target='_blank'

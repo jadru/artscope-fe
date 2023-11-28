@@ -70,16 +70,6 @@ export default function AgoraListPage() {
                 <AgoraItem agora={agora} key={agora.id} />
               ))
             )}
-            <div ref={bottom}>
-              <FeedObservationComponent
-                hasNext={
-                  data.pages[data.pages.length - 1].pageInfo.page + 1 <
-                  data.pages[data.pages.length - 1].pageInfo.totalPages
-                }
-                hasData={Boolean(data)}
-                fetchNextPage={fetchNextPage}
-              />
-            </div>
           </>
         )}
         {isLoading && (
@@ -105,6 +95,18 @@ export default function AgoraListPage() {
             <SkeletonAgora />
             <SkeletonAgora />
           </>
+        )}
+        {isSuccess && (
+          <div ref={bottom}>
+            <FeedObservationComponent
+              hasNext={
+                data.pages[data.pages.length - 1].pageInfo.page + 1 <
+                data.pages[data.pages.length - 1].pageInfo.totalPages
+              }
+              hasData={Boolean(data)}
+              fetchNextPage={fetchNextPage}
+            />
+          </div>
         )}
         {data && data.pages[0].agoras.length === 0 && (
           <h3 className='text-center'>아직 작성된 아고라가 없습니다.</h3>
