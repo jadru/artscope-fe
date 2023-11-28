@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
+  BiBuilding,
   BiHome,
   BiSearch,
   BiSolidCalendar,
@@ -46,6 +47,13 @@ const menuItems = [
     slug: '/agora',
     text: '아고라',
     icon: <BiSolidNetworkChart size={23} />,
+    active: true,
+  },
+  {
+    href: '/spaces',
+    slug: '/space',
+    text: '공간',
+    icon: <BiBuilding size={23} />,
     active: true,
   },
   {

@@ -43,10 +43,14 @@ jobs:
 
       - name: Check if affected
         id: diff
-        uses: technote-space/get-diff-action@v6.1.0
+        uses: technote-space/get-diff-action@v6.1.2
         with:
           PATTERNS: |
             ${{ matrix.pattern }}
+          FILES: |
+            package.json
+            yarn.lock
+            tsconfig.base.json
 
       - name: Set branch-based environment variables
         if: steps.diff.outputs.diff
@@ -58,6 +62,7 @@ jobs:
           DOCKERFILE: |
             main:${{ matrix.dockerfile-prod }}
             develop:${{ matrix.dockerfile-dev }}
+
       - name: Copy env from secrets
         if: steps.diff.outputs.diff
         run: |
