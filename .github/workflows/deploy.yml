@@ -77,7 +77,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ IMAGE_REPO }}
+          images: ${{ env.IMAGE_REPO }}
           tags: |
             main: ${{ secrets.MAJOR }}.${{ secrets.MINOR }}
             develop: ${{ secrets.MAJOR }}.${{ secrets.MINOR }}.dev
