@@ -4,9 +4,9 @@ import { Skeleton } from '@nextui-org/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { notFound } from 'next/navigation';
-import { ReactElement, useEffect, useRef } from 'react';
-import { useInView } from 'react-intersection-observer';
+import React, { useEffect, useRef } from 'react';
 
+import FeedObservationComponent from '@/components/ObservationComponent';
 import RootLayout from '@/components/RootLayout';
 import Title from '@/components/Title';
 
@@ -69,22 +69,6 @@ export default function Page() {
     }
   }, [isError]);
 
-  const ObservationComponent = (): ReactElement => {
-    const [ref, inView] = useInView();
-    useEffect(() => {
-      if (!data) return;
-
-      const pageLastIdx = data.pages.length - 1;
-      const isLast =
-        data?.pages[pageLastIdx].pageInfo.totalPages -
-          data?.pages[pageLastIdx].pageInfo.page ===
-        0;
-
-      if (!isLast && inView) fetchNextPage();
-    }, [inView]);
-
-    return <div ref={ref} className='mb-1 h-1' />;
-  };
   return (
     <RootLayout className='w-full'>
       <Title
@@ -101,7 +85,14 @@ export default function Page() {
               ))
             )}
             <div ref={bottom}>
-              <ObservationComponent />
+              <FeedObservationComponent
+                hasNext={
+                  data.pages[data.pages.length - 1].pageInfo.page + 1 <
+                  data.pages[data.pages.length - 1].pageInfo.totalPages
+                }
+                hasData={Boolean(data)}
+                fetchNextPage={fetchNextPage}
+              />
             </div>
           </div>
         )}

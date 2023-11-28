@@ -1,53 +1,115 @@
+'use client';
+
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { notFound } from 'next/dist/client/components/not-found';
+import React, { useEffect, useRef } from 'react';
+
+import FeedObservationComponent from '@/components/ObservationComponent';
 import Title from '@/components/Title';
 
 import AgoraItem from '@/app/(main)/(list)/agoras/AgoraItem';
-import AgoraPagination from '@/app/(main)/(list)/agoras/AgoraPagination';
-import { NEXT_PUBLIC_API_URL } from '@/constant/env';
+import SkeletonAgora from '@/app/(main)/(list)/agoras/SkeletonAgora';
 import jxios from '@/utils/jxios';
 
 import { AgoraListType } from '@/types/agora';
 
-// TODO: Placeholder Skeleton & 무한스크롤 도입
+export default function AgoraListPage() {
+  const bottom = useRef(null);
+  const LIMIT = 10;
 
-const fetchAgora = async (page: number) =>
-  jxios
-    .get(NEXT_PUBLIC_API_URL + '/api/agoras', {
-      params: {
-        page: page - 1,
-        size: 10,
-      },
-    })
-    .then((res) => res.data as AgoraListType)
-    .catch(() => null);
+  const fetchAgora = async (page: number) =>
+    await jxios
+      .get('/api/agoras', {
+        params: {
+          page: page,
+          size: LIMIT,
+        },
+      })
+      .then((res) => res.data as AgoraListType);
 
-export default async function AgoraListPage({
-  searchParams,
-}: {
-  params: { slug: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
-  const data = await fetchAgora(
-    Number(searchParams?.page ? searchParams.page : 1)
-  );
-  if (!data) throw new Error('Failed to fetch data');
+  const {
+    data,
+    isSuccess,
+    isFetchingNextPage,
+    fetchNextPage,
+    isLoading,
+    isError,
+  } = useInfiniteQuery({
+    queryKey: ['agoras'],
+    queryFn: async ({ pageParam }) => await fetchAgora(pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      if (!lastPage) {
+        return null;
+      } else {
+        return lastPage.pageInfo.totalPages - lastPage.pageInfo.page > 0
+          ? lastPage.pageInfo.page + 1
+          : null;
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (isError) {
+      notFound();
+    }
+  }, [isError]);
+
   return (
-    <div>
+    <>
       <Title
         title='Agora'
         description='다양한 주제에 대해 토론하고 투표하세요.'
         divider={false}
       />
-      {data.agoras.map((agora) => (
-        <AgoraItem agora={agora} key={agora.id} />
-      ))}
-      {data.pageInfo.totalPages > 1 && (
-        <div className='my-4 flex justify-center'>
-          <AgoraPagination
-            totalPage={data.pageInfo.totalPages}
-            page={Number(searchParams?.page ? searchParams.page : 1)}
-          />
-        </div>
-      )}
-    </div>
+      <div className='container mx-auto'>
+        {isSuccess && (
+          <>
+            {data.pages.map((group) =>
+              group.agoras.map((agora) => (
+                <AgoraItem agora={agora} key={agora.id} />
+              ))
+            )}
+            <div ref={bottom}>
+              <FeedObservationComponent
+                hasNext={
+                  data.pages[data.pages.length - 1].pageInfo.page + 1 <
+                  data.pages[data.pages.length - 1].pageInfo.totalPages
+                }
+                hasData={Boolean(data)}
+                fetchNextPage={fetchNextPage}
+              />
+            </div>
+          </>
+        )}
+        {isLoading && (
+          <>
+            <SkeletonAgora />
+            <SkeletonAgora />
+            <SkeletonAgora />
+            <SkeletonAgora />
+            <SkeletonAgora />
+            <SkeletonAgora />
+            <SkeletonAgora />
+            <SkeletonAgora />
+          </>
+        )}
+        {isFetchingNextPage && (
+          <>
+            <SkeletonAgora />
+            <SkeletonAgora />
+            <SkeletonAgora />
+            <SkeletonAgora />
+            <SkeletonAgora />
+            <SkeletonAgora />
+            <SkeletonAgora />
+            <SkeletonAgora />
+          </>
+        )}
+        {data && data.pages[0].agoras.length === 0 && (
+          <h3 className='text-center'>아직 작성된 아고라가 없습니다.</h3>
+        )}
+      </div>
+    </>
   );
 }

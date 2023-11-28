@@ -94,7 +94,7 @@ export type EventViewType = {
   dayOfWeek: string;
   dayOfWeekKor: string;
   event: SingleEventTypeOnList[];
-}[];
+};
 
 export type CreateEventType = {
   dto: {
