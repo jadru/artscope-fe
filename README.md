@@ -1,4 +1,4 @@
-# Artscope Frontend Core
+# Artscope Frontend Mono-repo
 
 <div align="center">
   <h2>art-platform-frontend</h2>
@@ -8,6 +8,30 @@
 ![large-og](https://github.com/Media-XI/art-platform-frontend/assets/21021930/5ea455f1-4820-429d-bfd3-57c805f8c5bd)
 
 </div>
+
+## Packages
+
+- core
+- admin
+- blog
+- lib
+  - ui
+  - utils
+  - type
+  - api
+
+## How to install
+
+```bash
+$ yarn install
+```
+
+## How to get Admin Submodule
+    
+```bash
+$ git submodule update --remote
+```
+   
 
 ## Information
 
