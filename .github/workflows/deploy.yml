@@ -63,13 +63,14 @@ jobs:
             develop:${{ matrix.image-dev }}
           DOCKERFILE: ${{ matrix.dockerfile }}
 
+
       - name: Copy env from secrets
         if: steps.diff.outputs.diff
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo ${{ secrets.ENV_PROD }} > .env
+            printf '%s\n' "${{ secrets.ENV_PROD }}" > .env
           elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-           echo ${{ secrets.ENV_DEV }} > .env
+            printf '%s\n' "${{ secrets.ENV_DEV }}" > .env
           fi
 
       - name: Setup Docker buildx
