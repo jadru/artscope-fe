@@ -213,6 +213,7 @@ __metadata:
     react-icalendar-link: "npm:^3.0.2"
     react-icons: "npm:^4.8.0"
     react-intersection-observer: "npm:^9.4.3"
+    react-kakao-maps-sdk: "npm:^1.1.24"
     react-lazy-load-image-component: "npm:^1.5.6"
     react-markdown: "npm:^9.0.1"
     react-query: "npm:^3.39.3"
@@ -1668,6 +1669,15 @@ __metadata:
   dependencies:
     regenerator-runtime: "npm:^0.14.0"
   checksum: db2bf183cd0119599b903ca51ca0aeea8e0ab478a16be1aae10dd90473ed614159d3e5adfdd8f8f3d840402428ce0d90b5c01aae95da9e45a2dd83e02d85ca27
+  languageName: node
+  linkType: hard
+
+"@babel/runtime@npm:^7.22.15":
+  version: 7.23.5
+  resolution: "@babel/runtime@npm:7.23.5"
+  dependencies:
+    regenerator-runtime: "npm:^0.14.0"
+  checksum: ca679cc91bb7e424bc2db87bb58cc3b06ade916b9adb21fbbdc43e54cdaacb3eea201ceba2a0464b11d2eb65b9fe6a6ffcf4d7521fa52994f19be96f1af14788
   languageName: node
   linkType: hard
 
@@ -14219,6 +14229,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"kakao.maps.d.ts@npm:^0.1.39":
+  version: 0.1.39
+  resolution: "kakao.maps.d.ts@npm:0.1.39"
+  checksum: 2752382aaea86dbeb86021f8aa3397ce9cf9991667f651dd038676aae6db55c74bc5e054d84c64cc759d5424e994771db1c49f441ae6a4ce7ee174847cc8d4ed
+  languageName: node
+  linkType: hard
+
 "keyv@npm:^4.5.3":
   version: 4.5.4
   resolution: "keyv@npm:4.5.4"
@@ -16849,6 +16866,19 @@ __metadata:
   version: 18.2.0
   resolution: "react-is@npm:18.2.0"
   checksum: 6eb5e4b28028c23e2bfcf73371e72cd4162e4ac7ab445ddae2afe24e347a37d6dc22fae6e1748632cd43c6d4f9b8f86dcf26bf9275e1874f436d129952528ae0
+  languageName: node
+  linkType: hard
+
+"react-kakao-maps-sdk@npm:^1.1.24":
+  version: 1.1.24
+  resolution: "react-kakao-maps-sdk@npm:1.1.24"
+  dependencies:
+    "@babel/runtime": "npm:^7.22.15"
+    kakao.maps.d.ts: "npm:^0.1.39"
+  peerDependencies:
+    react: ^16.8 || ^17 || ^18
+    react-dom: ^16.8 || ^17 || ^18
+  checksum: 2b9274bb50c4e1245ebe73049e4b5799b958813518824d8df2889e5ae9612cab44b8d68f350116ab5e7314ca07502cd3876fbdc41059980565226050649d49ad
   languageName: node
   linkType: hard
 

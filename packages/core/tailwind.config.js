@@ -23,6 +23,7 @@ module.exports = {
       fontFamily: {
         primary: ['var(--ibm-plex-sans-kr)', ...fontFamily.sans],
         secondary: ['var(--noto-serif-kr)', ...fontFamily.serif],
+        title: ['NanumSquareNeo-Variable', ...fontFamily.sans],
       },
       animation: {
         fade: 'fadeOut 1s ease-in-out',

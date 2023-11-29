@@ -15,7 +15,7 @@ export default function EventListItem({
 }) {
   return (
     <Link
-      className='hover:bg-default-100 group-hover:bg-default-100 group flex flex-row items-center justify-between rounded-2xl bg-white px-1.5 py-1.5 transition md:z-10'
+      className='hover:bg-default-100 group-hover:bg-default-100 group flex flex-row items-center justify-between rounded-2xl bg-white px-1.5 py-1 transition md:z-10'
       href={`/event/${event.id}?scheduleId=${event.eventSchedule.id}`}
     >
       <div
@@ -23,12 +23,12 @@ export default function EventListItem({
           event.thumbnail.mediaUrl ? 'w-[calc(100%-3rem)]' : 'w-full'
         }`}
       >
-        <h4 className='flex w-full justify-between text-[1.1rem]'>
+        <h4 className='font-title flex w-full justify-between text-[1.1rem]'>
           <StandardLabel label={event.title} />
         </h4>
         <div className='flex flex-col gap-0.5'>
           <div className='flex flex-col gap-1 md:flex-row'>
-            <h4>
+            <h4 className='font-normal'>
               {format(new Date(event.eventSchedule.startDateTime), 'a hh:mm', {
                 locale: ko,
               })}

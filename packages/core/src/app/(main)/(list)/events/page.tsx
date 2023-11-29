@@ -157,12 +157,14 @@ export default function Events() {
                     key={date.date}
                   >
                     <div className='flex w-28 flex-col items-start gap-0 self-start bg-transparent pt-2 md:sticky md:top-16'>
-                      <h2 className='py-1 text-[1.4rem]'>{date.date}</h2>
-                      <span className='text-default-500 text-[1.2rem]'>
+                      <h2 className='font-title py-1 text-[1.4rem]'>
+                        {date.date}
+                      </h2>
+                      <span className='text-default-500 font-title text-[1.1rem]'>
                         {date.dayOfWeek} / {date.dayOfWeekKor}요일
                       </span>
                     </div>
-                    <div className='ml-1 flex w-full flex-col gap-3 py-1.5 md:w-[calc(100%-7rem)]'>
+                    <div className='ml-1 flex w-full flex-col gap-4 py-1 md:w-[calc(100%-7rem)]'>
                       {date.event &&
                         date.event.map((exhibition) => (
                           <EventListItem

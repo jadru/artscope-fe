@@ -27,16 +27,10 @@ export default function FeedListItemAgora({ feed }: { feed: feedItemType }) {
             }`}
           >
             <div className='line-clamp-3'>
-              <h4 className='flex w-full justify-between text-[1.1rem]'>
-                <StandardLabel label={feed.title} />{' '}
-                <span className='text-default-500 text-right font-normal'>
-                  {editAndPostShortCalculatorKO(
-                    feed.createdTime,
-                    feed.updatedTime
-                  )}
-                </span>
+              <h4 className='font-title flex w-full justify-between text-[1.1rem]'>
+                <StandardLabel label={feed.title} />
               </h4>
-              <MarkdownViewer className='text-default-600 line-clamp-2 leading-5 peer-default:!text-[0.9rem]'>
+              <MarkdownViewer className='text-default-600 line-clamp-3 leading-5 peer-default:!text-[0.9rem]'>
                 {feed.content}
               </MarkdownViewer>
             </div>
@@ -58,7 +52,7 @@ export default function FeedListItemAgora({ feed }: { feed: feedItemType }) {
             </div>
           </div>
           {feed.thumbnailUrl && (
-            <div className='flex'>
+            <div className='flex h-full flex-col items-end justify-between'>
               <ASNextImage
                 className='ml-2 h-24 w-24 rounded-lg border object-cover drop-shadow-xl'
                 src={feed.thumbnailUrl}
@@ -66,6 +60,12 @@ export default function FeedListItemAgora({ feed }: { feed: feedItemType }) {
                 width={96}
                 height={96}
               />
+              <span className='text-default-500 text-right font-normal'>
+                {editAndPostShortCalculatorKO(
+                  feed.createdTime,
+                  feed.updatedTime
+                )}
+              </span>
             </div>
           )}
         </div>

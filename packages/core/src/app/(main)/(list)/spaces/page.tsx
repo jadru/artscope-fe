@@ -58,8 +58,12 @@ export default function AgoraListPage() {
 
   return (
     <>
-      <Title title='Space' description='공간을 소개합니다.' divider={false} />
-      <div className='container mx-auto flex flex-col items-stretch gap-2'>
+      <Title
+        title='Space'
+        description='좋은 공간들을 소개합니다.'
+        divider={false}
+      />
+      <div className='container mx-auto flex flex-col items-stretch gap-4'>
         {isSuccess && (
           <>
             {data.pages.map((group) =>
