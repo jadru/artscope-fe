@@ -1,4 +1,4 @@
-CONTAINER_NAME=art-frontend-production-dev
+CONTAINER_NAME=art-frontend-dev
 
 # 도커 컨테이너가 있는지 확인 (-a 옵션으로 정지된 컨테이너도 확인)
 RUNNING_CONTAINER_ID=$(docker ps -aq --filter "name=$CONTAINER_NAME")

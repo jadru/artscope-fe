@@ -88,7 +88,7 @@ jobs:
         with:
           images: ${{ env.IMAGE_REPO }}
           tags: |
-            type=ref,event=branch,prefix=${{ secrets.MAJOR }}.${{ secrets.MINOR }}
+            type=ref,event=branch,prefix=${{ secrets.MAJOR }}.${{ secrets.MINOR }}.
 
       - name: Build and Push Docker image
         id: build-and-push
