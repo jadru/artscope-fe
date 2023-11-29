@@ -1,4 +1,4 @@
-name: Docker Image CI for Production w/ AWS CodeDeploy
+name: CI/CD
 
 on:
   push:
@@ -24,14 +24,12 @@ jobs:
             pattern: packages/core/**
             image-prod: jadru/artplatform-fe
             image-dev: jadru/artplatform-fe
-            dockerfile-prod: ./docker/core/Dockerfile.prod
-            dockerfile-dev: ./docker/core/Dockerfile.dev
+            dockerfile: ./docker/core/core.Dockerfile
           - package: admin
             pattern: packages/admin/**
             image-prod: jadru/artscope-admin
             image-dev: jadru/artscope-admin
-            dockerfile-prod: ./docker/admin/Dockerfile.prod
-            dockerfile-dev: ./docker/admin/Dockerfile.dev
+            dockerfile: ./docker/admin/admin.Dockerfile
     permissions:
       contents: read
       packages: write
@@ -64,8 +62,7 @@ jobs:
             main:${{ matrix.image-prod }}
             develop:${{ matrix.image-dev }}
           DOCKERFILE: |
-            main:${{ matrix.dockerfile-prod }}
-            develop:${{ matrix.dockerfile-dev }}
+            ${{ matrix.dockerfile }}
 
       - name: Copy env from secrets
         if: steps.diff.outputs.diff

@@ -1,7 +1,7 @@
 'use client';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { notFound, usePathname } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import React, { useEffect, useRef } from 'react';
 
 import NewPostButton from '@/components/New/Posts/NewPostModalButton';
@@ -35,7 +35,6 @@ const fetchFeeds = async ({ pageParam = 0 }) =>
 export default function Feeds() {
   const bottom = useRef(null);
   const { user } = useUser();
-  const pathname = usePathname();
 
   const {
     data,
