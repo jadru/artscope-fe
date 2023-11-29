@@ -70,8 +70,11 @@ jobs:
       - name: Copy env from secrets
         if: steps.diff.outputs.diff
         run: |
-          main: echo ${{ secrets.ENV_PROD }} > .env
-          develop: echo ${{ secrets.ENV_DEV }} > .env
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo ${{ secrets.ENV_PROD }} > .env
+          elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+           echo ${{ secrets.ENV_DEV }} > .env
+          fi
 
       - name: Setup Docker buildx
         if: steps.diff.outputs.diff
@@ -104,20 +107,27 @@ jobs:
 
       - name: Write Docker image name to file
         if: steps.diff.outputs.diff
+        id: meta
         run: |
-          main: echo "${{ env.IMAGE_NAME }}:${{ secrets.MAJOR }}.${{ secrets.MINOR }}" > fe-image.txt
-          develop: echo "${{ env.IMAGE_NAME }}:${{ secrets.MAJOR }}.${{ secrets.MINOR }}.dev" > fe-image-dev.txt
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "${{ env.IMAGE_NAME }}:${{ secrets.MAJOR }}.${{ secrets.MINOR }}" > fe-image.txt
+          elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            echo "${{ env.IMAGE_NAME }}:${{ secrets.MAJOR }}.${{ secrets.MINOR }}.dev" > fe-image-dev.txt
+          fi
 
       - name: Create zip file for AWS CodeDeploy
         if: steps.diff.outputs.diff
         run: |
-          main: mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec.yml fe-image.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
-          develop: mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec-dev.yml fe-image-dev.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec.yml fe-image.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
+          elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec-dev.yml fe-image-dev.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
+          fi
 
       - name: Rename appspec-dev file to appspec
-        if: steps.diff.outputs.diff
+        if: steps.diff.outputs.diff && github.ref == 'refs/heads/develop'
         run: |
-          develop: cd ${{ env.AWS_CODE_DEPLOY_NAME }} && mv appspec-dev.yml appspec.yml
+          cd ${{ env.AWS_CODE_DEPLOY_NAME }} && mv appspec-dev.yml appspec.yml
 
       - name: AWS Configure
         if: steps.diff.outputs.diff
