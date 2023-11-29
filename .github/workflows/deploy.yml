@@ -107,9 +107,9 @@ jobs:
         if: steps.diff.outputs.diff
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo "${{ env.IMAGE_REPO }}:${{ steps.meta.outputs.tags }}" > fe-image.txt
+            echo "${{ steps.meta.outputs.tags }}" > fe-image.txt
           elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            echo "${{ env.IMAGE_REPO }}:${{ steps.meta.outputs.tags }}" > fe-image-dev.txt
+            echo "${{ steps.meta.outputs.tags }}" > fe-image-dev.txt
           fi
 
       - name: Create zip file for AWS CodeDeploy
