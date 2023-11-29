@@ -87,7 +87,7 @@ jobs:
       - name: Extract Docker metadata
         if: steps.diff.outputs.diff
         id: meta
-        uses: docker/metadata-action@5
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.IMAGE_REPO }}
           tags: |
