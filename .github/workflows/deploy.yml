@@ -61,8 +61,7 @@ jobs:
           IMAGE_REPO: |
             main:${{ matrix.image-prod }}
             develop:${{ matrix.image-dev }}
-          DOCKERFILE: |
-            ${{ matrix.dockerfile }}
+          DOCKERFILE: ${{ matrix.dockerfile }}
 
       - name: Copy env from secrets
         if: steps.diff.outputs.diff
