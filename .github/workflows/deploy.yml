@@ -85,20 +85,13 @@ jobs:
         run: echo "$DOCKER_REGISTRY_PASSWORD" | docker login "$REGISTRY" -u "$DOCKER_REGISTRY_USERNAME" --password-stdin
 
       - name: Extract Docker metadata
-        if: steps.diff.outputs.diff && github.ref == 'refs/heads/main'
+        if: steps.diff.outputs.diff
         id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        uses: docker/metadata-action@5
         with:
           images: ${{ env.IMAGE_REPO }}
-          tags: ${{ secrets.MAJOR }}.${{ secrets.MINOR }}
-
-      - name: Extract Docker metadata
-        if: steps.diff.outputs.diff && github.ref == 'refs/heads/develop'
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-        with:
-          images: ${{ env.IMAGE_REPO }}
-          tags: ${{ secrets.MAJOR }}.${{ secrets.MINOR }}.dev
+          tags: |
+            type=ref,event=branch,prefix=${{ secrets.MAJOR }}.${{ secrets.MINOR }}
 
       - name: Build and Push Docker image
         id: build-and-push
