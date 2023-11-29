@@ -17,7 +17,7 @@ import StandardLabel from '@/components/StandardLabel';
 import NewLocationModal from '@/app/new/event/location/NewLocationModal';
 import jxios from '@/utils/jxios';
 
-import { LocationDataType, LocationResponseType } from '@/types/location';
+import { LocationListItemType, LocationResponseType } from '@/types/location';
 
 export default function AddLocation({
   location,
@@ -29,7 +29,7 @@ export default function AddLocation({
   };
   setLocation: (location: { locationId: number; locationName: string }) => void;
 }) {
-  const [data, setData] = useState<LocationDataType[]>();
+  const [data, setData] = useState<LocationListItemType[]>();
   const [keyword, setKeyword] = useState<string>('');
   const [page, setPage] = useState<number>(-1);
   const [totalPage, setTotalPage] = useState<number>(0);
@@ -58,7 +58,7 @@ export default function AddLocation({
     500
   );
 
-  const handleLocationClick = (location: LocationDataType) => {
+  const handleLocationClick = (location: LocationListItemType) => {
     setLocation({
       locationId: location.locationId,
       locationName: location.name,
