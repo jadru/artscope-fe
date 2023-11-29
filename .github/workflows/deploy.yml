@@ -24,12 +24,12 @@ jobs:
             pattern: packages/core/**
             image-prod: jadru/artplatform-fe
             image-dev: jadru/artplatform-fe
-            dockerfile: ./docker/core.Dockerfile
+            dockerfile: docker/core.Dockerfile
           - package: admin
             pattern: packages/admin/**
             image-prod: jadru/artscope-admin
             image-dev: jadru/artscope-admin
-            dockerfile: ./docker/admin.Dockerfile
+            dockerfile: docker/admin.Dockerfile
     permissions:
       contents: read
       packages: write
