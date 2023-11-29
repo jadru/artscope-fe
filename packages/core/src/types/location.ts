@@ -18,7 +18,6 @@ export type LocationDataType = {
   englishName: string;
   latitude: number;
   longitude: number;
-  link: string;
   name: string;
   phoneNumber: string;
   snsUrl: string;

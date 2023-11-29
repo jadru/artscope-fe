@@ -69,7 +69,7 @@ export default function FeedList({ data }: FeedListProps) {
   };
 
   return (
-    <div className='flex max-w-full flex-col gap-2'>
+    <div className='flex max-w-full flex-col gap-4'>
       {feeds.map((feed, index) => (
         <div key={index + '-' + (Array.isArray(feed) ? 'artwork' : feed.type)}>
           {renderFeedItem(feed)}

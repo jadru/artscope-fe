@@ -12,9 +12,9 @@ export default function LocationItem({
   return (
     <Link href={'/space/' + location.locationId}>
       <div className='hover:bg-default-100 w-full appearance-none rounded-2xl px-3 py-2 transition'>
-        <h3>
+        <h4 className='font-title flex w-full justify-between text-[1.1rem]'>
           <StandardLabel label={location.name} />
-        </h3>
+        </h4>
         {location.englishName && (
           <h4 className='font-normal'>
             <StandardLabel label={location.englishName} />

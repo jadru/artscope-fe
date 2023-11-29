@@ -26,9 +26,9 @@ const ArtworkItem = ({ artwork: aw }: { artwork: ArtworkType }) => {
         </div>
         <div className='text-small group-hover:bg-default-200 flex items-center justify-between space-x-0.5 rounded-b-xl px-3 py-2 transition'>
           <div className='w-2/3 truncate'>
-            <b className='w-full truncate'>
+            <p className='font-title w-full truncate'>
               <StandardLabel label={aw.artwork.title} />
-            </b>
+            </p>
             <p className='text-default-500 space-x-2 text-sm'>
               <span>좋아요 {aw.artwork.likes}</span>
               <span>댓글 {aw.artwork.comments}</span>

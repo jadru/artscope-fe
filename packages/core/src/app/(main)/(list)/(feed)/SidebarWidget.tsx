@@ -7,7 +7,6 @@ import { FiCompass, FiInstagram } from 'react-icons/fi';
 
 import RecentAgoraWidget from '@/app/(main)/(list)/(feed)/RecentAgoraWidget';
 import RecentArtworkWidget from '@/app/(main)/(list)/(feed)/RecentArtworkWidget';
-import RecentEventWidget from '@/app/(main)/(list)/(feed)/RecentEventWidget';
 import RecentPostWidget from '@/app/(main)/(list)/(feed)/RecentPostWidget';
 
 export default function SidebarWidget() {
@@ -51,7 +50,7 @@ export default function SidebarWidget() {
         <>
           <RecentPostWidget />
           <RecentArtworkWidget />
-          <RecentEventWidget />
+          {/* <RecentEventWidget /> */}
           <RecentAgoraWidget />
         </>
       )}

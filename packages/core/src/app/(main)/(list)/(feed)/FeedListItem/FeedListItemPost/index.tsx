@@ -59,10 +59,10 @@ export default function Index({ feed }: { feed: feedItemType }) {
                   push(`/profile/${feed.authorUsername}`);
                 }}
               >
-                <p className='inline text-[0.9rem] font-bold transition group-hover:underline'>
+                <p className='font-title inline text-[0.9rem] transition group-hover:text-blue-600 '>
                   <StandardLabel label={feed.authorName} />
                 </p>
-                <p className='text-default-500 group-hover:text-default-900 text-[0.9rem] transition'>
+                <p className='text-default-400 font-title text-[0.9rem] transition group-hover:text-blue-600'>
                   @{feed.authorUsername}
                 </p>
               </div>
@@ -76,7 +76,7 @@ export default function Index({ feed }: { feed: feedItemType }) {
           </div>
           <div className='flex flex-col justify-start'>
             <div className='text flex w-full flex-col gap-1'>
-              <MarkdownViewer className='text-default-600 line-clamp-2 leading-5 peer-default:!text-[0.9rem]'>
+              <MarkdownViewer className='text-default-600 line-clamp-3 leading-5 peer-default:!text-[0.9rem]'>
                 {feed.content}
               </MarkdownViewer>
             </div>
