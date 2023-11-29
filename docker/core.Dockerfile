@@ -30,10 +30,10 @@ ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/packages/core/public ./public
 
 COPY --from=builder --chown=nextjs:nodejs /app/packages/core/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/packages/core/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/packages/core/public ./packages/core/public
+COPY --from=builder --chown=nextjs:nodejs /app/packages/core/.next/static ./packages/core/.next/static
 
 USER nextjs
 
