@@ -12,7 +12,6 @@ env:
   DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
   AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
   AWS_CODE_DEPLOY_NAME: artscope-codedeploy
-  AWS_CODE_DEPLOY_GROUP: artscope-codedeploy-frontend
 
 jobs:
   build-deploy:
@@ -25,11 +24,16 @@ jobs:
             image-prod: jadru/artplatform-fe
             image-dev: jadru/artplatform-fe
             dockerfile: docker/core.Dockerfile
+            aws-code-deploy-group-prod: artplatform-codedeploy-frontend
+            aws-code-deploy-group-dev: artplatform-codedeploy-frontend-dev
           - package: admin
             pattern: packages/admin/**
             image-prod: jadru/artscope-admin
             image-dev: jadru/artscope-admin
             dockerfile: docker/admin.Dockerfile
+            aws-code-deploy-group-prod: artscope-codedeploy-admin
+            aws-code-deploy-group-dev: artscope-codedeploy-admin-dev
+
     permissions:
       contents: read
       packages: write
@@ -62,6 +66,9 @@ jobs:
             main:${{ matrix.image-prod }}
             develop:${{ matrix.image-dev }}
           DOCKERFILE: ${{ matrix.dockerfile }}
+          AWS_CODE_DEPLOY_GROUP: |
+            main:${{ matrix.aws-code-deploy-group-prod }}
+            develop:${{ matrix.aws-code-deploy-group-dev }}
 
 
       - name: Copy env from secrets
