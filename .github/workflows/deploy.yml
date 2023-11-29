@@ -85,12 +85,20 @@ jobs:
         run: echo "$DOCKER_REGISTRY_PASSWORD" | docker login "$REGISTRY" -u "$DOCKER_REGISTRY_USERNAME" --password-stdin
 
       - name: Extract Docker metadata
-        if: steps.diff.outputs.diff
+        if: steps.diff.outputs.diff && github.ref == 'refs/heads/main'
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.IMAGE_REPO }}
           tags: ${{ secrets.MAJOR }}.${{ secrets.MINOR }}
+
+      - name: Extract Docker metadata
+        if: steps.diff.outputs.diff && github.ref == 'refs/heads/develop'
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.IMAGE_REPO }}
+          tags: ${{ secrets.MAJOR }}.${{ secrets.MINOR }}.dev
 
       - name: Build and Push Docker image
         id: build-and-push
@@ -100,12 +108,7 @@ jobs:
           context: .
           push: true
           file: ${{ env.DOCKERFILE }}
-          tags: |
-            if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-              ${{ steps.meta.outputs.tags }}
-            elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-              ${{ steps.meta.outputs.tags }}.dev
-            fi
+          tags:  ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Write Docker image name to file
@@ -114,7 +117,7 @@ jobs:
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}" > fe-image.txt
           elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            echo "${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}.dev" > fe-image-dev.txt
+            echo "${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}" > fe-image-dev.txt
           fi
 
       - name: Create zip file for AWS CodeDeploy
