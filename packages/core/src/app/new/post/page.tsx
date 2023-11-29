@@ -4,6 +4,7 @@ import { Button } from '@nextui-org/react';
 import { Bold } from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
 import { Document } from '@tiptap/extension-document';
+import { History } from '@tiptap/extension-history';
 import { Italic } from '@tiptap/extension-italic';
 import { ListItem } from '@tiptap/extension-list-item';
 import { OrderedList } from '@tiptap/extension-ordered-list';
@@ -63,6 +64,7 @@ const NewPost = () => {
         transformCopiedText: true,
       }),
       BulletList,
+      History,
       ListItem,
       OrderedList,
       Paragraph,

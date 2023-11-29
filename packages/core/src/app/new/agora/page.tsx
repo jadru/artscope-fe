@@ -5,6 +5,7 @@ import { Bold } from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
 import { Document } from '@tiptap/extension-document';
 import { Heading } from '@tiptap/extension-heading';
+import { History } from '@tiptap/extension-history';
 import { Italic } from '@tiptap/extension-italic';
 import { Link } from '@tiptap/extension-link';
 import { ListItem } from '@tiptap/extension-list-item';
@@ -86,6 +87,7 @@ const NewArtwork = () => {
       Underline,
       BulletList,
       ListItem,
+      History,
       OrderedList,
       Paragraph,
       Placeholder.configure({
