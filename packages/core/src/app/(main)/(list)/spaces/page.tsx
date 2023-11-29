@@ -106,7 +106,7 @@ export default function AgoraListPage() {
           </div>
         )}
         {data && data.pages[0].locations.length === 0 && (
-          <h3 className='text-center'>아직 작성된 공간이 없습니다.</h3>
+          <h3 className='text-center'>아직 작성된 공간이 없습니다</h3>
         )}
       </div>
     </>

@@ -39,11 +39,14 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
 
       - name: Check if affected
         id: diff
-        uses: technote-space/get-diff-action@v6.1.2
+        uses: technote-space/get-diff-action@v6
         with:
           PATTERNS: |
             ${{ matrix.pattern }}
@@ -51,6 +54,7 @@ jobs:
             package.json
             yarn.lock
             tsconfig.base.json
+            .eslintrc
 
       - name: Set branch-based environment variables
         if: steps.diff.outputs.diff
