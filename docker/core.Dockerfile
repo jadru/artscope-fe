@@ -4,7 +4,6 @@ FROM base AS deps
 
 WORKDIR /app
 
-COPY .yarn ./
 COPY .yarnrc.yml package.json yarn.lock ./
 COPY packages/core/package.json ./packages/core/
 
