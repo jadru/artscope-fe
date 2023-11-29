@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'true'
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
@@ -90,9 +90,7 @@ jobs:
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.IMAGE_REPO }}
-          tags: |
-            main: ${{ secrets.MAJOR }}.${{ secrets.MINOR }}
-            develop: ${{ secrets.MAJOR }}.${{ secrets.MINOR }}.dev
+          tags: ${{ secrets.MAJOR }}.${{ secrets.MINOR }}
 
       - name: Build and Push Docker image
         id: build-and-push
@@ -102,16 +100,21 @@ jobs:
           context: .
           push: true
           file: ${{ env.DOCKERFILE }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+              ${{ steps.meta.outputs.tags }}
+            elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+              ${{ steps.meta.outputs.tags }}.dev
+            fi
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Write Docker image name to file
         if: steps.diff.outputs.diff
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo "${{ env.IMAGE_NAME }}:${{ secrets.MAJOR }}.${{ secrets.MINOR }}" > fe-image.txt
+            echo "${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}" > fe-image.txt
           elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            echo "${{ env.IMAGE_NAME }}:${{ secrets.MAJOR }}.${{ secrets.MINOR }}.dev" > fe-image-dev.txt
+            echo "${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}.dev" > fe-image-dev.txt
           fi
 
       - name: Create zip file for AWS CodeDeploy
