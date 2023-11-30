@@ -126,7 +126,7 @@ jobs:
           fi
 
       - name: Rename appspec-dev file to appspec
-        if: steps.diff.outputs.diff && github.ref == "refs/heads/develop"
+        if: steps.diff.outputs.diff && ${{ github.ref }} == "refs/heads/develop"
         run: |
           if [[ "${{ env.DOCKERFILE }}" == "jadru/artplatform-fe" ]]; then
             cd ${{ env.AWS_CODE_DEPLOY_NAME }} && mv appspec-dev.yml appspec.yml
