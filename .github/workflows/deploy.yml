@@ -41,7 +41,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: 'true'
+          submodules: "true"
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
 
       - name: Check if affected
@@ -104,7 +104,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Write Docker image name to file
-        if: steps.diff.outputs.diff && contains('docker/core.Dockerfile', ${{ env.DOCKERFILE }})
+        if: steps.diff.outputs.diff && ${{ env.DOCKERFILE }} == "jadru/artplatform-fe"
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "${{ steps.meta.outputs.tags }}" > fe-image.txt
@@ -113,7 +113,7 @@ jobs:
           fi
 
       - name: Create zip file for AWS CodeDeploy
-        if: steps.diff.outputs.diff && contains('docker/core.Dockerfile', ${{ env.DOCKERFILE }})
+        if: steps.diff.outputs.diff && ${{ env.DOCKERFILE }} == "jadru/artplatform-fe"
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec.yml fe-image.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
@@ -122,12 +122,12 @@ jobs:
           fi
 
       - name: Rename appspec-dev file to appspec
-        if: steps.diff.outputs.diff && github.ref == 'refs/heads/develop' && contains('docker/core.Dockerfile', ${{ env.DOCKERFILE }})
+        if: steps.diff.outputs.diff && github.ref == "refs/heads/develop" && ${{ env.IMAGE_REPO }} == "jadru/artplatform-fe"
         run: |
           cd ${{ env.AWS_CODE_DEPLOY_NAME }} && mv appspec-dev.yml appspec.yml
 
       - name: AWS Configure
-        if: steps.diff.outputs.diff && contains('docker/core.Dockerfile', ${{ env.DOCKERFILE }})
+        if: steps.diff.outputs.diff && ${{ env.DOCKERFILE }} == "jadru/artplatform-fe"
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
@@ -135,7 +135,7 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Upload to AWS S3
-        if: steps.diff.outputs.diff && contains('docker/core.Dockerfile', ${{ env.DOCKERFILE }})
+        if: steps.diff.outputs.diff && ${{ env.DOCKERFILE }} == "jadru/artplatform-fe"
         run: |
           aws deploy push \
           --application-name ${{ env.AWS_CODE_DEPLOY_NAME }} \
@@ -144,7 +144,7 @@ jobs:
           --source ${{ env.AWS_CODE_DEPLOY_NAME }}
 
       - name: Delpoy to AWS EC2
-        if: steps.diff.outputs.diff && contains('docker/core.Dockerfile', ${{ env.DOCKERFILE }})
+        if: steps.diff.outputs.diff && ${{ env.IMAGE_REPO }} == "jadru/artplatform-fe"
         run: |
           aws deploy create-deployment \
           --application-name ${{ env.AWS_CODE_DEPLOY_NAME }} \
@@ -162,7 +162,7 @@ jobs:
         if: steps.diff.outputs.diff
         uses: hmanzur/actions-set-secret@v2.0.0
         with:
-          name: 'MINOR'
+          name: "MINOR"
           value: ${{ env.NEW_MINOR_VERSION }}
           repository: ${{ secrets.REPO }}
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
