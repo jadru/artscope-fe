@@ -3,7 +3,7 @@ const commonConfig = require('./../../eslint.common.js');
 
 module.exports = {
   ...commonConfig,
-  plugins: [...commonConfig.plugins, 'react-refresh'],
+  plugins: [...commonConfig.plugins, 'react-refresh', 'eslint-plugin-react'],
   rules: {
     ...commonConfig.rules,
     'react/no-unescaped-entities': 'off',
