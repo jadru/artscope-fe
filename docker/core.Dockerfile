@@ -1,8 +1,7 @@
 FROM node:18-slim AS base
+WORKDIR /app
 
 FROM base AS deps
-
-WORKDIR /app
 
 COPY .yarnrc.yml package.json yarn.lock ./
 COPY packages/core/package.json ./packages/core/
@@ -11,7 +10,6 @@ RUN yarn set version berry
 RUN yarn workspaces focus @artscope/core
 
 FROM base AS builder
-WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 COPY .env ./packages/core/.env
@@ -23,7 +21,6 @@ RUN yarn workspace @artscope/core build
 RUN rm -rf ./packages/core/.next/cache
 
 FROM base AS runner
-WORKDIR /app
 
 ENV NODE_ENV production
 
