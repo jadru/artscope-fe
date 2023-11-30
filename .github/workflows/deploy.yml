@@ -26,7 +26,7 @@ jobs:
             aws-code-deploy-group-prod: artscope-codedeploy-frontend
             aws-code-deploy-group-dev: artscope-codedeploy-frontend-dev
           - package: admin
-            pattern: packages/admin/**
+            pattern: /**
             image: jadru/artscope-admin
             dockerfile: docker/admin.Dockerfile
             aws-code-deploy-group-prod: artscope-codedeploy-admin
@@ -55,7 +55,6 @@ jobs:
             yarn.lock
             tsconfig.base.json
             .eslintrc
-            packages/admin/**/*
             
 
       - name: Set branch-based environment variables
