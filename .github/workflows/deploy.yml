@@ -104,30 +104,36 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Write Docker image name to file
-        if: steps.diff.outputs.diff && ${{ env.DOCKERFILE }} == "jadru/artplatform-fe"
+        if: steps.diff.outputs.diff
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo "${{ steps.meta.outputs.tags }}" > fe-image.txt
-          elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            echo "${{ steps.meta.outputs.tags }}" > fe-image-dev.txt
-          fi
+          if [[ "${{ env.DOCKERFILE }}" == "jadru/artplatform-fe" ]]; then
+            if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+              echo "${{ steps.meta.outputs.tags }}" > fe-image.txt
+            elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+              echo "${{ steps.meta.outputs.tags }}" > fe-image-dev.txt
+            fi
+          if
 
       - name: Create zip file for AWS CodeDeploy
-        if: steps.diff.outputs.diff && ${{ env.DOCKERFILE }} == "jadru/artplatform-fe"
+        if: steps.diff.outputs.diff
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec.yml fe-image.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
-          elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec-dev.yml fe-image-dev.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
+          if [[ "${{ env.DOCKERFILE }}" == "jadru/artplatform-fe" ]]; then
+            if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+              mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec.yml fe-image.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
+            elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+              mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec-dev.yml fe-image-dev.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
+            fi
           fi
 
       - name: Rename appspec-dev file to appspec
-        if: steps.diff.outputs.diff && github.ref == "refs/heads/develop" && ${{ env.IMAGE_REPO }} == "jadru/artplatform-fe"
+        if: steps.diff.outputs.diff && github.ref == "refs/heads/develop"
         run: |
-          cd ${{ env.AWS_CODE_DEPLOY_NAME }} && mv appspec-dev.yml appspec.yml
+          if [[ "${{ env.DOCKERFILE }}" == "jadru/artplatform-fe" ]]; then
+            cd ${{ env.AWS_CODE_DEPLOY_NAME }} && mv appspec-dev.yml appspec.yml
+          fi
 
       - name: AWS Configure
-        if: steps.diff.outputs.diff && ${{ env.DOCKERFILE }} == "jadru/artplatform-fe"
+        if: steps.diff.outputs.diff
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
@@ -135,23 +141,27 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Upload to AWS S3
-        if: steps.diff.outputs.diff && ${{ env.DOCKERFILE }} == "jadru/artplatform-fe"
+        if: steps.diff.outputs.diff
         run: |
-          aws deploy push \
-          --application-name ${{ env.AWS_CODE_DEPLOY_NAME }} \
-          --s3-location s3://${{ env.AWS_S3_BUCKET_NAME }}/codedeploy/$GITHUB_SHA.zip \
-          --ignore-hidden-files \
-          --source ${{ env.AWS_CODE_DEPLOY_NAME }}
+          if [[ "${{ env.DOCKERFILE }}" == "jadru/artplatform-fe" ]]; then
+            aws deploy push \
+            --application-name ${{ env.AWS_CODE_DEPLOY_NAME }} \
+            --s3-location s3://${{ env.AWS_S3_BUCKET_NAME }}/codedeploy/$GITHUB_SHA.zip \
+            --ignore-hidden-files \
+            --source ${{ env.AWS_CODE_DEPLOY_NAME }}
+          fi
 
       - name: Delpoy to AWS EC2
         if: steps.diff.outputs.diff && ${{ env.IMAGE_REPO }} == "jadru/artplatform-fe"
         run: |
-          aws deploy create-deployment \
-          --application-name ${{ env.AWS_CODE_DEPLOY_NAME }} \
-          --deployment-config-name CodeDeployDefault.OneAtATime \
-          --deployment-group-name ${{ env.AWS_CODE_DEPLOY_GROUP }} \
-          --description "Deploy artscope frontend" \
-          --s3-location bucket=$AWS_S3_BUCKET_NAME,key=codedeploy/$GITHUB_SHA.zip,bundleType=zip
+          if [[ "${{ env.DOCKERFILE }}" == "jadru/artplatform-fe" ]]; then
+            aws deploy create-deployment \
+            --application-name ${{ env.AWS_CODE_DEPLOY_NAME }} \
+            --deployment-config-name CodeDeployDefault.OneAtATime \
+            --deployment-group-name ${{ env.AWS_CODE_DEPLOY_GROUP }} \
+            --description "Deploy artscope frontend" \
+            --s3-location bucket=$AWS_S3_BUCKET_NAME,key=codedeploy/$GITHUB_SHA.zip,bundleType=zip
+          fi
 
       - name: Autoincrement a new minor version
         if: steps.diff.outputs.diff
