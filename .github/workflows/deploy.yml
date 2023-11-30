@@ -92,6 +92,7 @@ jobs:
           tags: |
             type=ref,event=branch,prefix=${{ secrets.MAJOR }}.${{ secrets.MINOR }}.
 
+
       - name: Build and Push Docker image
         id: build-and-push
         if: steps.diff.outputs.diff
