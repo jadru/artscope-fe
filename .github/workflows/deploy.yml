@@ -106,29 +106,26 @@ jobs:
       - name: Write Docker image name to file
         if: steps.diff.outputs.diff
         run: |
-          if [[ "${{ env.IMAGE_REPO }}" == "jadru/artplatform-fe" ]]; then
-            if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-              echo "${{ steps.meta.outputs.tags }}" > fe-image.txt
-            elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-              echo "${{ steps.meta.outputs.tags }}" > fe-image-dev.txt
-            fi
-          if
+          if [[ "${{ env.IMAGE_REPO }}" == "jadru/artplatform-fe" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "${{ steps.meta.outputs.tags }}" > fe-image.txt
+          elif [[ "${{ env.IMAGE_REPO }}" == "jadru/artplatform-fe" && "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            echo "${{ steps.meta.outputs.tags }}" > fe-image-dev.txt
+          fi
 
       - name: Create zip file for AWS CodeDeploy
         if: steps.diff.outputs.diff
         run: |
-          if [[ "${{ env.IMAGE_REPO }}" == "jadru/artplatform-fe" ]]; then
-            if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-              mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec.yml fe-image.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
-            elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-              mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec-dev.yml fe-image-dev.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
-            fi
+          if [[ "${{ env.IMAGE_REPO }}" == "jadru/artplatform-fe" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec.yml fe-image.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
+          elif [[ "${{ env.IMAGE_REPO }}" == "jadru/artplatform-fe" && "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec-dev.yml fe-image-dev.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
           fi
+  
 
       - name: Rename appspec-dev file to appspec
-        if: steps.diff.outputs.diff && ${{ github.ref }} == "refs/heads/develop"
+        if: steps.diff.outputs.diff
         run: |
-          if [[ "${{ env.IMAGE_REPO }}" == "jadru/artplatform-fe" ]]; then
+          if [[ "${{ env.IMAGE_REPO }}" == "jadru/artplatform-fe" && "${{ github.ref }}" == "refs/heads/develop" ]]; then
             cd ${{ env.AWS_CODE_DEPLOY_NAME }} && mv appspec-dev.yml appspec.yml
           fi
 
@@ -152,7 +149,7 @@ jobs:
           fi
 
       - name: Delpoy to AWS EC2
-        if: steps.diff.outputs.diff && ${{ env.IMAGE_REPO }} == "jadru/artplatform-fe"
+        if: steps.diff.outputs.diff
         run: |
           if [[ "${{ env.IMAGE_REPO }}" == "jadru/artplatform-fe" ]]; then
             aws deploy create-deployment \
