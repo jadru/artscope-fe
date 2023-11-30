@@ -7,6 +7,7 @@ module.exports = {
   plugins: [
     '@typescript-eslint',
     'simple-import-sort',
+    '@cspell/eslint-plugin',
     'unused-imports',
     'prettier',
   ],
