@@ -59,6 +59,7 @@ export type EventType =
 export type EventTypeLabel = {
   label: string;
   value: EventType;
+  description: string;
 }[];
 
 export type SearchEventType =
@@ -102,7 +103,7 @@ export type CreateEventType = {
     description: string;
     eventType: EventType;
     link: string;
-    price: number;
+    price: string;
     schedule: CreateScheduleType[];
     medias:
       | {

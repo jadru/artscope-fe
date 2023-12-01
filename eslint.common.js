@@ -13,12 +13,22 @@ module.exports = {
   ],
   extends: [
     'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:prettier/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
     'prettier',
   ],
   ignorePatterns: ['dist', '.eslintrc.js'],
   rules: {
+    'prettier/prettier': [
+      'error',
+      {
+        useTabs: false,
+        trailingComma: 'all',
+        singleQuote: true,
+      },
+    ],
     quotes: ['error', 'single'],
     'no-unused-vars': 'warn',
     '@typescript-eslint/require-statement-exists': 'off',
