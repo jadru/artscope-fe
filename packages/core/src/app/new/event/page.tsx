@@ -1,433 +1,247 @@
 'use client';
 
-import { Button, Input, Select, SelectItem } from '@nextui-org/react';
-import { Bold } from '@tiptap/extension-bold';
-import { BulletList } from '@tiptap/extension-bullet-list';
-import { Document } from '@tiptap/extension-document';
-import { Heading } from '@tiptap/extension-heading';
-import { History } from '@tiptap/extension-history';
-import { Italic } from '@tiptap/extension-italic';
-import { Link } from '@tiptap/extension-link';
-import { ListItem } from '@tiptap/extension-list-item';
-import { OrderedList } from '@tiptap/extension-ordered-list';
-import { Paragraph } from '@tiptap/extension-paragraph';
-import { Placeholder } from '@tiptap/extension-placeholder';
-import { Strike } from '@tiptap/extension-strike';
-import { Text } from '@tiptap/extension-text';
-import { Underline } from '@tiptap/extension-underline';
-import { EditorContent, useEditor } from '@tiptap/react';
+import { Input, Select, SelectItem } from '@nextui-org/react';
 import { useDebounce } from '@toss/react';
 import { format } from 'date-fns';
+import ko from 'date-fns/locale/ko';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import {
-  BiArrowBack,
-  BiBold,
-  BiItalic,
-  BiListOl,
-  BiListUl,
-  BiStrikethrough,
-  BiUnderline,
-} from 'react-icons/bi';
 import { toast } from 'react-toastify';
-import { Markdown } from 'tiptap-markdown';
 
 import '@/styles/editor.scss';
 
+import DateMultiplePicker from '@/components/DateMultiplePicker';
 import getVideoCoverFromLocal from '@/components/New/Artworks/getVideoCoverFromLocal';
-import NewMediaView from '@/components/New/Media/NewMediaView';
+import StandardEditor from '@/components/StandardEditor';
 
 import { EventTypeData } from '@/app/new/event/EventTypeData';
 import { initialEventSchema } from '@/app/new/event/initialEventSchema';
-import ScheduleModal from '@/app/new/event/scheduleModal';
 import jxios from '@/utils/jxios';
 
 import { ArtWorkMediaType } from '@/types/artwork';
-import {
-  CreateScheduleTempType,
-  CreateScheduleType,
-  EventDetailType,
-  EventType,
-} from '@/types/event';
+import { EventDetailType, EventType } from '@/types/event';
 
 const NewEvent = () => {
-  const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
-  const [link, setLink] = useState<string>('');
-  const [eventType, setEventType] = useState<EventType>('STANDARD');
-  const [price, setPrice] = useState<number>(0);
-  const [imgs, setImgs] = useState<string[]>([]);
-  const [schedule, setSchedule] = useState<CreateScheduleTempType[]>([]);
-
+  const [eventSchedule, setEventSchedule] = useState<Date[]>([]);
   const { push } = useRouter();
   const [isUpload, setIsUpload] = useState(false);
-  const placeholderText = '이벤트를 자유롭게 설명해주세요.';
+  const [eventType, setEventType] = useState<EventType>('EXHIBITION');
+  const [operationTime, setOperationTime] = useState('');
+  const [price, setPrice] = useState('');
+  const [link, setLink] = useState('');
 
-  const CustomDocument = Document.extend({
-    content: 'heading block* paragraph+',
-  });
-
-  const editor = useEditor({
-    extensions: [
-      CustomDocument,
-      Heading.configure({
-        levels: [1, 2, 3],
-      }),
-      Link.configure({
-        protocols: ['http', 'https'],
-      }),
-      Text,
-      Bold,
-      Italic,
-      Markdown.configure({
-        html: false,
-        tightLists: true,
-        linkify: true,
-        transformPastedText: true,
-        transformCopiedText: true,
-      }),
-      Strike,
-      Underline,
-      BulletList,
-      History,
-      ListItem,
-      OrderedList,
-      Paragraph,
-      Placeholder.configure({
-        emptyNodeClass: 'is-artwork-editor-empty',
-        placeholder: ({ node }) => {
-          if (node.type.name === 'heading') {
-            return '이벤트 제목을 입력해주세요.';
-          }
-          return placeholderText;
-        },
-        showOnlyCurrent: false,
-      }),
-    ],
-    content: '',
-    autofocus: true,
-  });
-
-  const handleCreateSaveButton = useDebounce(async () => {
-    if (isUpload) return;
-    try {
-      if (fileUrls.length === 0) {
-        toast.warn('이미지, 영상 또는 썸네일을 업로드해주세요.');
-        return;
-      }
-      if (
-        editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4))
-          .length === 0
-      ) {
-        toast.warn('제목을 입력해주세요.');
-        return;
-      }
-      if (
-        fileUrls.reduce(
-          (acc, cur) => (cur.file ? cur.file.size + acc : acc),
-          0
-        ) /
-          1000000 >
-        100
-      ) {
-        toast.warn('파일 용량이 너무 큽니다.');
-        return;
-      }
-      if (!schedule[0].locationId) return toast.warn('장소를 선택해주세요.');
-      setIsUpload(true);
-      const newState = { ...initialEventSchema };
-      const markdownContent = editor?.storage.markdown.getMarkdown() || '';
-      newState.dto.title =
-        editor?.getHTML().substring(4, editor?.getHTML().indexOf('<', 4)) || '';
-      newState.dto.description = markdownContent.slice(
-        markdownContent.indexOf('\n') + 2
-      );
-      newState.dto.link = link;
-      newState.dto.eventType = eventType;
-      newState.dto.price = price;
-      newState.dto.schedule = schedule.reduce((acc, cur) => {
-        acc.push({
-          locationId: Number(cur.locationId),
-          startDateTime: format(cur.startDateTime, "yyyy-MM-dd'T'HH:mm"),
-          endDateTime: format(cur.endDateTime, "yyyy-MM-dd'T'HH:mm"),
-          participants: cur.participants,
-          detailLocation: cur.detailLocation,
-        });
-        return acc;
-      }, [] as CreateScheduleType[]);
-      const formData = new FormData();
-      if (fileUrls[0].mediaType === 'video') {
-        const cover = (await getVideoCoverFromLocal(
-          fileUrls[0].file as File,
-          1.5
-        )) as Blob;
-        formData.append(
-          'thumbnailFile',
-          new File([cover], 'thumbnail.jpg', { type: 'image/jpeg' })
+  const handleCreateSaveButton = useDebounce(
+    async (markdown: string, medias: ArtWorkMediaType[]) => {
+      if (isUpload) return;
+      try {
+        if (medias.length === 0) {
+          toast.warn('이미지, 영상 또는 썸네일을 업로드해주세요.');
+          return;
+        }
+        if (markdown.substring(1).length === 0) {
+          toast.warn('제목을 입력해주세요.');
+          return;
+        }
+        if (
+          medias.reduce(
+            (acc, cur) => (cur.file ? cur.file.size + acc : acc),
+            0,
+          ) /
+            1000000 >
+          100
+        ) {
+          toast.warn('파일 용량이 너무 큽니다.');
+          return;
+        }
+        setIsUpload(true);
+        const newState = { ...initialEventSchema };
+        const markdownContent = markdown.slice(markdown.indexOf('\n') + 2);
+        newState.dto.title = markdown.slice(1, markdown.indexOf('\n')).trim();
+        newState.dto.description = markdownContent.slice(
+          markdownContent.indexOf('\n') + 2,
         );
-      } else if (fileUrls[0].mediaType === 'image') {
-        formData.append('thumbnailFile', fileUrls[0].file as File);
-      } else {
-        fileUrls[0].linkUrl &&
+        newState.dto.link = link;
+        newState.dto.eventType = eventType;
+        newState.dto.price = price;
+        const formData = new FormData();
+        if (medias[0].mediaType === 'video') {
+          const cover = (await getVideoCoverFromLocal(
+            medias[0].file as File,
+            1.5,
+          )) as Blob;
           formData.append(
             'thumbnailFile',
-            await fetch(
-              'https://img.youtube.com/vi/' +
-                fileUrls[0].linkUrl.substring(
-                  fileUrls[0].linkUrl.indexOf('=') + 1
-                ) +
-                '/maxresdefault.jpg',
-              {
-                mode: 'no-cors',
-                headers: {
-                  'Access-Control-Allow-Origin': '*',
-                  Accept: '*/*',
-                  'Content-Type': 'image/jpeg',
-                },
-              }
-            ).then((res) => res.blob()),
-            'yt_thumbnail.jpg'
+            new File([cover], 'thumbnail.jpg', { type: 'image/jpeg' }),
           );
-      }
-      newState.dto.medias = [];
-      fileUrls.forEach((media) => {
-        media.mediaType === 'url'
-          ? formData.append(
-              'mediaFiles',
-              new File([media.linkUrl as string], 'mediaFiles', {
-                type: 'text/plain',
-              })
-            )
-          : formData.append('mediaFiles', media.file as File);
-        if (newState.dto.medias)
-          newState.dto.medias.push({
-            mediaType: media.mediaType,
-          });
-      });
-      formData.append(
-        'dto',
-        new Blob([JSON.stringify(newState.dto)], { type: 'application/json' })
-      );
-      await jxios
-        .post('/api/exhibitions', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Accept: 'application/json',
-          },
-        })
-        .then((res) => {
-          const data = res.data as EventDetailType;
-          if (res.status === 201) {
-            toast.success('이벤트가 업로드되었습니다.');
-            push('/event/' + data.id);
-          }
-        })
-        .catch((err) => {
-          toast.error(err.response.data);
+        } else if (medias[0].mediaType === 'image') {
+          formData.append('thumbnailFile', medias[0].file as File);
+        } else {
+          medias[0].linkUrl &&
+            formData.append(
+              'thumbnailFile',
+              await fetch(
+                'https://img.youtube.com/vi/' +
+                  medias[0].linkUrl.substring(
+                    medias[0].linkUrl.indexOf('=') + 1,
+                  ) +
+                  '/maxresdefault.jpg',
+                {
+                  mode: 'no-cors',
+                  headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    Accept: '*/*',
+                    'Content-Type': 'image/jpeg',
+                  },
+                },
+              ).then((res) => res.blob()),
+              'yt_thumbnail.jpg',
+            );
+        }
+        newState.dto.medias = [];
+        medias.forEach((media) => {
+          media.mediaType === 'url'
+            ? formData.append(
+                'mediaFiles',
+                new File([media.linkUrl as string], 'mediaFiles', {
+                  type: 'text/plain',
+                }),
+              )
+            : formData.append('mediaFiles', media.file as File);
+          if (newState.dto.medias)
+            newState.dto.medias.push({
+              mediaType: media.mediaType,
+            });
         });
-    } catch (err) {
-      toast.error((err as string) || '이벤트 업로드에 실패했습니다.');
-    } finally {
-      setIsUpload(false);
-    }
-  }, 500);
-
-  const handleBackButton = () => {
-    if (editor?.getHTML() !== '<p></p>' || fileUrls.length > 0) {
-      if (confirm('작성 중인 내용이 있습니다. 정말로 나가시겠습니까?')) {
-        push('/');
+        formData.append(
+          'dto',
+          new Blob([JSON.stringify(newState.dto)], {
+            type: 'application/json',
+          }),
+        );
+        await jxios
+          .post('/api/exhibitions', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Accept: 'application/json',
+            },
+          })
+          .then((res) => {
+            const data = res.data as EventDetailType;
+            if (res.status === 201) {
+              toast.success('이벤트가 업로드되었습니다.');
+              push('/event/' + data.id);
+            }
+          })
+          .catch((err) => {
+            toast.error(err.response.data);
+          });
+      } catch (err) {
+        toast.error((err as string) || '이벤트 업로드에 실패했습니다.');
+      } finally {
+        setIsUpload(false);
       }
-    } else {
-      push('/');
-    }
-  };
+    },
+    500,
+  );
 
   return (
     <>
-      <div className='bg-default-50 fixed top-0 z-50 flex h-16 w-full max-w-[718px] items-center justify-between gap-5 border-b px-5'>
-        <button onClick={handleBackButton}>
-          <BiArrowBack className='h-6 w-6 hover:text-blue-600' />
-        </button>
-        <div className='flex items-center justify-center gap-5'>
-          <button
-            onClick={() => {
-              if (editor) {
-                editor.chain().focus().toggleBold().run();
-              }
-            }}
-            className={`hover:text-primary ${
-              editor?.isActive('bold') ? 'text-black' : 'text-default'
-            }`}
-          >
-            <BiBold size={25} />
-          </button>
-          <button
-            onClick={() => {
-              if (editor) {
-                editor.chain().focus().toggleItalic().run();
-              }
-            }}
-            className={`hover:text-primary ${
-              editor?.isActive('italic') ? 'text-black' : 'text-default'
-            }`}
-          >
-            <BiItalic size={25} />
-          </button>
-          <button
-            onClick={() => {
-              if (editor) {
-                editor.chain().focus().toggleStrike().run();
-              }
-            }}
-            className={`hover:text-primary ${
-              editor?.isActive('strike') ? 'text-black' : 'text-default'
-            }`}
-          >
-            <BiStrikethrough size={25} />
-          </button>
-          <button
-            onClick={() => {
-              if (editor) {
-                editor.chain().focus().toggleUnderline().run();
-              }
-            }}
-            className={`hover:text-primary ${
-              editor?.isActive('underline') ? 'text-black' : 'text-default'
-            }`}
-          >
-            <BiUnderline size={25} />
-          </button>
-          <button
-            onClick={() => {
-              if (editor) {
-                editor.chain().focus().toggleBulletList().run();
-              }
-            }}
-            className={`hover:text-primary ${
-              editor?.isActive('bulletList') ? 'text-black' : 'text-default'
-            }`}
-          >
-            <BiListUl size={25} />
-          </button>
-          <button
-            onClick={() => {
-              if (editor) {
-                editor.chain().focus().toggleOrderedList().run();
-              }
-            }}
-            className={`hover:text-primary ${
-              editor?.isActive('orderedList') ? 'text-black' : 'text-default'
-            }`}
-          >
-            <BiListOl size={25} />
-          </button>
-        </div>
-        <div></div>
-      </div>
-      <div className='h-16'></div>
-      <div className='w-full space-y-2 overflow-y-scroll p-4'>
-        {editor && <EditorContent editor={editor} className='min-h-[80px]' />}
-        <NewMediaView
-          fileUrls={fileUrls}
-          setFileUrls={setFileUrls}
-          setImgs={setImgs}
-          imgs={imgs}
-          header='미디어 또는 링크 업로드'
-          onlyImage
-        />
-      </div>
-      <hr className='my-4' />
-      <div className='flex flex-col items-start justify-between gap-1 px-3 md:flex-row'>
-        <Input
-          isRequired
-          type='number'
-          label='참석자 티켓 가격'
-          value={String(price)}
-          onValueChange={(value) => setPrice(Number(value))}
-          placeholder='가격을 입력해주세요'
-          description='무료인 경우 0을 입력해주세요'
-          endContent={
-            <div className='pointer-events-none flex items-center'>
-              <span className='text-small text-default-400'>원</span>
-            </div>
-          }
-        />
-        <Select
-          label='이벤트 타입'
-          defaultSelectedKeys={[EventTypeData[0].value]}
-          value={eventType}
-          onChange={(e) => setEventType(e.target.value as EventType)}
-          className='w-full'
-          isRequired
-        >
-          {EventTypeData.map((item) => (
-            <SelectItem key={item.value} value={item.value}>
-              {item.label}
-            </SelectItem>
-          ))}
-        </Select>
-        <Input
-          isRequired
-          type='url'
-          label='링크'
-          value={link}
-          onValueChange={setLink}
-          placeholder='관련 링크를 입력해주세요.'
-          className='w-full'
-        />
-      </div>
-      <hr className='my-4' />
-      <div className='flex w-full items-center justify-between p-3'>
-        <div>
-          <p className='text-lg font-bold'>스케줄</p>
-          <p className=' text-default-500'>
-            이벤트를 진행할 장소와 시간을 알려주세요.
-          </p>
-        </div>
-        <ScheduleModal schedule={schedule} setSchedule={setSchedule} />
-      </div>
-      <div className='space-y-1 p-3'>
-        {schedule.length > 0 && (
-          <p>
-            전체 일정 기간 :{' '}
-            {format(schedule[0].startDateTime, 'yyyy년 MM월 dd일')} ~{' '}
-            {format(
-              schedule[schedule.length - 1].endDateTime,
-              'yyyy년 MM월 dd일'
-            )}
-          </p>
-        )}
-        {schedule &&
-          schedule.map((item) => (
-            <div
-              className='flex flex-col gap-2 rounded-2xl border-2 p-3'
-              key={item.id}
-            >
-              <p>
-                {item.locationName} {item.detailLocation}
-              </p>
-              <div className='flex w-full justify-between gap-1'>
-                <p>
-                  {format(item.startDateTime, 'yyyy-MM-dd HH:mm')} ~{' '}
-                  {format(item.endDateTime, 'yyyy-MM-dd HH:mm')}
-                </p>
+      <StandardEditor
+        onSubmit={handleCreateSaveButton}
+        isUpload={isUpload}
+        submitText='이벤트 작성'
+        headingRequired
+        documentHeading={3}
+        placeholderText='이벤트에 대한 설명을 자유롭게 작성해주세요.'>
+        <form>
+          <div className='flex flex-col items-start justify-between gap-1 px-3'>
+            <h5 className='mt-2'>정보 입력</h5>
+            <Select
+              items={EventTypeData}
+              label='이벤트 타입'
+              defaultSelectedKeys={[EventTypeData[0].value]}
+              value={eventType}
+              onChange={(e) => setEventType(e.target.value as EventType)}
+              className='w-full'
+              isRequired>
+              {(user) => (
+                <SelectItem
+                  key={user.value}
+                  textValue={`${user.label} ${user.value}`}>
+                  <div className='flex gap-2 items-center'>
+                    <div className='flex flex-col'>
+                      <span className='text-small'>
+                        {user.label} {user.value}
+                      </span>
+                      <span className='text-tiny text-default-400'>
+                        {user.description}
+                      </span>
+                    </div>
+                  </div>
+                </SelectItem>
+              )}
+            </Select>
+            <div className='bg-default-100 rounded-xl p-3 flex-col w-full justify-between'>
+              <div>
+                {!eventSchedule[1] && (
+                  <p className='mb-4'>날짜를 선택해주세요.</p>
+                )}
+                {eventSchedule[0] && (
+                  <h4>
+                    {eventSchedule[1] && '시작 날짜 : '}
+                    {format(eventSchedule[0], 'yyyy년 MM월 dd일 (eee)', {
+                      locale: ko,
+                    })}
+                  </h4>
+                )}
+                {eventSchedule[1] && (
+                  <h4>
+                    {eventSchedule[1] && '종료 날짜 : '}
+                    {format(
+                      eventSchedule[eventSchedule.length - 1],
+                      'yyyy년 MM월 dd일 (eee)',
+                      {
+                        locale: ko,
+                      },
+                    )}
+                  </h4>
+                )}
               </div>
+              <DateMultiplePicker
+                scheduleDate={eventSchedule}
+                onDateChangeRange={setEventSchedule}
+              />
             </div>
-          ))}
-      </div>
-      <div className='h-16'></div>
-      <div className='bg-default-50 fixed bottom-0 z-40 flex h-16 w-full max-w-[718px] items-center justify-end border-t px-3'>
-        <Button
-          onClick={handleCreateSaveButton}
-          disabled={isUpload}
-          spinnerPlacement='end'
-          isLoading={isUpload}
-          color='primary'
-          className={`
-            h-12 ${isUpload ? 'opacity-20' : ''}`}
-        >
-          {isUpload ? '업로드 중...' : '이벤트 등록'}
-        </Button>
-      </div>
+            <h5 className='mt-2'>추가 정보 입력</h5>
+            <Input
+              label='운영시간'
+              value={operationTime}
+              onValueChange={setOperationTime}
+              placeholder='운영시간을 입력해주세요.'
+            />
+            <Input
+              label='휴무일'
+              value={operationTime}
+              onValueChange={setOperationTime}
+              placeholder='운영시간을 입력해주세요.'
+            />
+            <Input
+              label='참석자 티켓 가격'
+              value={price}
+              onValueChange={setPrice}
+              placeholder='가격을 입력해주세요'
+            />
+            <Input
+              type='url'
+              label='링크'
+              value={link}
+              onValueChange={setLink}
+              placeholder='관련 링크를 입력해주세요.'
+              className='w-full'
+            />
+          </div>
+        </form>
+      </StandardEditor>
     </>
   );
 };

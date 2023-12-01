@@ -228,7 +228,7 @@ __metadata:
     env-cmd: "npm:^10.1.0"
     eslint: "npm:^8.51.0"
     eslint-config-next: "npm:^14.0.3"
-    eslint-config-prettier: "npm:^8.8.0"
+    eslint-config-prettier: "npm:^9.0.0"
     eslint-plugin-prettier: "npm:^5.0.1"
     eslint-plugin-react: "npm:^7.33.2"
     eslint-plugin-simple-import-sort: "npm:^7.0.0"
@@ -9412,6 +9412,8 @@ __metadata:
     "@cspell/eslint-plugin": "npm:^8.0.0"
     "@types/node": "npm:^18.18.2"
     "@typescript-eslint/eslint-plugin": "npm:^5.56.0"
+    eslint-config-prettier: "npm:^9.0.0"
+    eslint-plugin-react: "npm:^7.33.2"
     husky: "npm:^8.0.3"
     lint-staged: "npm:^12.5.0"
     prettier: "npm:^2.8.7"
@@ -11729,17 +11731,6 @@ __metadata:
     typescript:
       optional: true
   checksum: 398da0334b803da885de2d3fa53dd37c18aae0e5f62a38ad88bed5f2cc21cfa97ef75dfdfdc0009dc57e59d412554430d54052d2d555973c16df247f9be118d9
-  languageName: node
-  linkType: hard
-
-"eslint-config-prettier@npm:^8.8.0":
-  version: 8.10.0
-  resolution: "eslint-config-prettier@npm:8.10.0"
-  peerDependencies:
-    eslint: ">=7.0.0"
-  bin:
-    eslint-config-prettier: bin/cli.js
-  checksum: 19f8c497d9bdc111a17a61b25ded97217be3755bbc4714477dfe535ed539dddcaf42ef5cf8bb97908b058260cf89a3d7c565cb0be31096cbcd39f4c2fa5fe43c
   languageName: node
   linkType: hard
 
