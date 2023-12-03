@@ -17,6 +17,7 @@ COPY .env ./packages/admin/.env
 
 RUN yarn set version berry
 
+
 RUN yarn workspace @artscope/admin build
 
 # 단계 2: 프로덕션 환경
