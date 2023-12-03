@@ -25,7 +25,7 @@ module.exports = {
       'error',
       {
         useTabs: false,
-        trailingComma: 'all',
+        trailingComma: 'es5',
         singleQuote: true,
       },
     ],
@@ -34,6 +34,7 @@ module.exports = {
     '@typescript-eslint/require-statement-exists': 'off',
     'no-console': 'warn',
     'react/react-in-jsx-scope': 'off',
+    'comma-dangle': 'off',
     'react-hooks/exhaustive-deps': 'warn',
     'react-hooks/rules-of-hooks': 'error',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
