@@ -8,7 +8,7 @@ COPY .yarnrc.yml package.json yarn.lock ./
 COPY packages/admin/package.json ./packages/admin/
 
 RUN yarn set version berry
-RUN yarn install
+RUN yarn workspace @artscope/admin install
 
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
