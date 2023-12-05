@@ -12,7 +12,7 @@ import {
 import React, { useEffect } from 'react';
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 
-export default function Index({
+export default function DateMultiplePicker({
   startDate = subYears(new Date(), 100),
   endDate = addYears(new Date(), 100),
   scheduleDate = [],
@@ -24,7 +24,9 @@ export default function Index({
   startDate?: Date;
   endDate?: Date;
   scheduleDate?: Date[];
+  // eslint-disable-next-line no-unused-vars
   onDateChangeRange?: (date: Date[]) => void;
+  // eslint-disable-next-line no-unused-vars
   onDateChangeMultiple?: (date: Date[]) => void;
 }) {
   const [standardDate, setStandardDate] = React.useState<Date>(new Date());
@@ -37,7 +39,7 @@ export default function Index({
       eachDayOfInterval({
         start: startOfMonth(startOfDay(standardDate)),
         end: endOfMonth(standardDate),
-      }).filter((date) => date >= startDate && date <= endDate)
+      }).filter((date) => date >= startDate && date <= endDate),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [standardDate]);
@@ -65,7 +67,7 @@ export default function Index({
     (date: Date) => {
       setSelectedDate((prev) => {
         const index = prev.findIndex(
-          (d) => d.toDateString() === date.toDateString()
+          (d) => d.toDateString() === date.toDateString(),
         );
         if (index !== -1) {
           const newSelectedDate = [...prev];
@@ -79,7 +81,7 @@ export default function Index({
         }
       });
     },
-    [multiple]
+    [multiple],
   );
 
   const getDayClass = React.useCallback(
@@ -112,7 +114,7 @@ export default function Index({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [hoverDate, selectedDate]
+    [hoverDate, selectedDate],
   );
 
   return (
@@ -135,8 +137,7 @@ export default function Index({
             ) {
               setStandardDate(newDate);
             }
-          }}
-        >
+          }}>
           <AiOutlineArrowLeft />
           {subMonths(standardDate, 1).getMonth() + 1}월
         </button>
@@ -160,8 +161,7 @@ export default function Index({
             ) {
               setStandardDate(newDate);
             }
-          }}
-        >
+          }}>
           {addMonths(standardDate, 1).getMonth() + 1}월
           <AiOutlineArrowRight />
         </button>
@@ -170,29 +170,26 @@ export default function Index({
         {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((day, idx) => (
           <div
             key={idx}
-            className='flex h-10 items-center justify-center font-bold'
-          >
+            className='flex h-10 items-center justify-center font-bold'>
             {day}
           </div>
         ))}
         {Array.from(
-          Array(getDay(startOfMonth(startOfDay(standardDate)))).keys()
+          Array(getDay(startOfMonth(startOfDay(standardDate)))).keys(),
         ).map((day, idx) => (
           <div
             key={idx}
-            className='flex h-10 items-center justify-center'
-          ></div>
+            className='flex h-10 items-center justify-center'></div>
         ))}
         {monthView.map((day, idx) => (
           <div
             key={idx}
             className={`animate-appearance-in flex h-10 cursor-pointer items-center justify-center rounded-2xl transition ${getDayClass(
-              day
+              day,
             )}`}
             onMouseOver={() => setHoverDate(day)}
             onMouseOut={() => setHoverDate(undefined)}
-            onClick={() => handleDateClick(day)}
-          >
+            onClick={() => handleDateClick(day)}>
             {day.getDate()}일
           </div>
         ))}

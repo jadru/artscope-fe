@@ -13,17 +13,28 @@ module.exports = {
   ],
   extends: [
     'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:prettier/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
     'prettier',
   ],
   ignorePatterns: ['dist', '.eslintrc.js'],
   rules: {
+    'prettier/prettier': [
+      'error',
+      {
+        useTabs: false,
+        trailingComma: 'es5',
+        singleQuote: true,
+      },
+    ],
     quotes: ['error', 'single'],
     'no-unused-vars': 'warn',
     '@typescript-eslint/require-statement-exists': 'off',
     'no-console': 'warn',
     'react/react-in-jsx-scope': 'off',
+    'comma-dangle': 'off',
     'react-hooks/exhaustive-deps': 'warn',
     'react-hooks/rules-of-hooks': 'error',
     '@typescript-eslint/explicit-module-boundary-types': 'off',

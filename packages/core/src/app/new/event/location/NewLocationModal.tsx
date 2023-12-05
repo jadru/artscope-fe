@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import NewLocationSchema, {
   newLocationInputs,
 } from '@/app/new/event/location/newLocationSchema';
+import { KAKAO_MAP_API_KEY } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
 export default function NewLocationModal({
@@ -25,6 +26,7 @@ export default function NewLocationModal({
   NewLocationOnOpenChange,
   AddLocationModalOnClose,
 }: {
+  // eslint-disable-next-line no-unused-vars
   setLocation: (location: { locationId: number; locationName: string }) => void;
   NewLocationisOpen: boolean;
   NewLocationOnClose: () => void;
@@ -52,7 +54,7 @@ export default function NewLocationModal({
     jxios
       .get(`/kakaomap/local/search/address.json?query=${data.address}`, {
         headers: {
-          Authorization: 'KakaoAK ' + process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY,
+          Authorization: 'KakaoAK ' + KAKAO_MAP_API_KEY,
         },
       })
       .then((res) => {
@@ -97,8 +99,7 @@ export default function NewLocationModal({
     <Modal
       isOpen={NewLocationisOpen}
       onOpenChange={NewLocationOnOpenChange}
-      size='full'
-    >
+      size='full'>
       <ModalContent>
         {() => (
           <>
@@ -111,8 +112,7 @@ export default function NewLocationModal({
               {address !== undefined && (
                 <form
                   className='mx-auto flex w-full max-w-2xl flex-col gap-2'
-                  onSubmit={handleSubmit(onSubmit)}
-                >
+                  onSubmit={handleSubmit(onSubmit)}>
                   <Input
                     label='장소 이름'
                     placeholder='금샘 미술관'
@@ -155,8 +155,7 @@ export default function NewLocationModal({
                     color='primary'
                     variant='shadow'
                     disabled={isSubmitting}
-                    isLoading={isSubmitting}
-                  >
+                    isLoading={isSubmitting}>
                     장소 등록
                   </Button>
                 </form>
