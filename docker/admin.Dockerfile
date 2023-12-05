@@ -7,13 +7,13 @@ FROM base AS builder
 COPY .yarnrc.yml package.json yarn.lock ./
 COPY packages/admin/package.json ./packages/admin/
 
-RUN yarn set version berry
 
 COPY . .
 
 COPY .env ./packages/admin/.env
 
-RUN yarn workspaces focus @artscope/admin
+RUN yarn set version berry
+RUN yarn install
 RUN yarn admin build
 
 # 단계 2: 프로덕션 환경
