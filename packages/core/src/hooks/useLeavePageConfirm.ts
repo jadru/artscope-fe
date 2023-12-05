@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 export const useLeavePageConfirm = (
   isConfirm = true,
-  message = '페이지를 나가시겠습니까?',
+  message = '페이지를 나가시겠습니까?'
 ) => {
   useEffect(() => {
     const handler = () => {
