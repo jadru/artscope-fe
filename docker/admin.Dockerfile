@@ -17,20 +17,19 @@ RUN yarn workspace @artscope/admin install
 RUN yarn workspace @artscope/admin build
 
 # 단계 2: 프로덕션 환경
-FROM nginx:alpine as runner
+FROM nginx:stable-alpine as runner
 
 ENV NODE_ENV=production
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 reactjs
 
-RUN chown -R reactjs:nodejs /var/cache/nginx
 COPY --from=builder --chown=reactjs:nodejs /app/packages/admin/dist /usr/share/nginx/html
 #COPY --from=builder --chown=reactjs:nodejs /app/node_modules /usr/share/nginx/html/node_modules
 
 RUN rm /etc/nginx/conf.d/default.conf
 
-COPY packages/admin/nginx.conf /etc/nginx/conf.d/default.conf
+COPY packages/admin/default.conf /etc/nginx/conf.d/default.conf
 
 USER reactjs
 
