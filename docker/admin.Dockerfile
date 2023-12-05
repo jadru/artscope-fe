@@ -17,7 +17,6 @@ COPY .env ./packages/admin/.env
 
 RUN yarn set version berry
 
-
 RUN yarn workspace @artscope/admin build
 
 # 단계 2: 프로덕션 환경
@@ -28,6 +27,7 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 reactjs
 
+RUN chown -R reactjs:nodejs /var/cache/nginx
 COPY --from=builder --chown=reactjs:nodejs /app/packages/admin/dist /usr/share/nginx/html
 
 RUN rm /etc/nginx/conf.d/default.conf

@@ -55,6 +55,8 @@ jobs:
             yarn.lock
             tsconfig.base.json
             .eslintrc
+            docker/core.Dockerfile
+            docker/admin.Dockerfile
             
 
       - name: Set branch-based environment variables
