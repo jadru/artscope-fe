@@ -21,18 +21,12 @@ FROM nginxinc/nginx-unprivileged:latest as runner
 
 ENV NODE_ENV=production
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 reactjs
-
-COPY --from=builder --chown=reactjs:nodejs /app/packages/admin/dist /usr/share/nginx/html
+COPY --from=builder /app/packages/admin/dist /usr/share/nginx/html
 #COPY --from=builder --chown=reactjs:nodejs /app/node_modules /usr/share/nginx/html/node_modules
 
 RUN rm /etc/nginx/conf.d/default.conf
 
-RUN sed -i 's/user nginx;/#user nginx;/g' /etc/nginx/nginx.conf
 COPY packages/admin/default.conf /etc/nginx/conf.d/default.conf
-
-USER reactjs
 
 EXPOSE 3000
 ENV PORT 3000
