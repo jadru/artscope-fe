@@ -24,6 +24,9 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 reactjs
 
+RUN mkdir -p /var/run/nginx
+RUN chown -R reactjs:nodejs /var/run/nginx
+
 RUN chown -R reactjs:nodejs /var/cache/nginx
 COPY --from=builder --chown=reactjs:nodejs /app/packages/admin/dist /usr/share/nginx/html
 #COPY --from=builder --chown=reactjs:nodejs /app/node_modules /usr/share/nginx/html/node_modules
