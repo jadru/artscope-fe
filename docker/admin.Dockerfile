@@ -29,6 +29,7 @@ COPY --from=builder --chown=reactjs:nodejs /app/packages/admin/dist /usr/share/n
 
 RUN rm /etc/nginx/conf.d/default.conf
 
+RUN sed -i 's/user nginx;/#user nginx;/g' /etc/nginx/nginx.conf
 COPY packages/admin/default.conf /etc/nginx/conf.d/default.conf
 
 USER reactjs
