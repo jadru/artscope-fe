@@ -17,7 +17,7 @@ RUN yarn workspace @artscope/admin install
 RUN yarn workspace @artscope/admin build
 
 # 단계 2: 프로덕션 환경
-FROM nginx:stable-alpine as runner
+FROM nginxinc/nginx-unprivileged:latest as runner
 
 ENV NODE_ENV=production
 
