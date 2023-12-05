@@ -2,22 +2,19 @@
 FROM node:18-slim as base
 WORKDIR /app
 
-FROM base AS deps
+FROM base AS builder
 
 COPY .yarnrc.yml package.json yarn.lock ./
 COPY packages/admin/package.json ./packages/admin/
 
 RUN yarn set version berry
-RUN yarn workspace @artscope/admin install
 
-FROM base AS builder
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
 COPY .env ./packages/admin/.env
 
-RUN yarn set version berry
-
-RUN yarn workspace @artscope/admin build
+RUN yarn workspaces focus @artscope/admin
+RUN yarn admin build
 
 # 단계 2: 프로덕션 환경
 FROM nginx:alpine as runner
@@ -29,6 +26,7 @@ RUN adduser --system --uid 1001 reactjs
 
 RUN chown -R reactjs:nodejs /var/cache/nginx
 COPY --from=builder --chown=reactjs:nodejs /app/packages/admin/dist /usr/share/nginx/html
+#COPY --from=builder --chown=reactjs:nodejs /app/node_modules /usr/share/nginx/html/node_modules
 
 RUN rm /etc/nginx/conf.d/default.conf
 
