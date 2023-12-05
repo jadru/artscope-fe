@@ -13,8 +13,8 @@ COPY . .
 COPY .env ./packages/admin/.env
 
 RUN yarn set version berry
-RUN yarn install
-RUN yarn admin build
+RUN yarn workspace @artscope/admin install
+RUN yarn workspace @artscope/admin build
 
 # 단계 2: 프로덕션 환경
 FROM nginx:alpine as runner
