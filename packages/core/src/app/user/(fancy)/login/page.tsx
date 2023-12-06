@@ -8,7 +8,7 @@ import { AiOutlineGoogle } from 'react-icons/ai';
 
 import Title from '@/components/Title';
 
-import LoginForm from '@/app/user/login/LoginForm';
+import LoginForm from '@/app/user/(fancy)/login/LoginForm';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import { useUser } from '@/states';
 
@@ -30,7 +30,7 @@ const Login = () => {
       <p></p>
       <Button
         color='warning'
-        variant='flat'
+        variant='solid'
         fullWidth
         size='lg'
         startContent={<AiOutlineGoogle className='h-6 w-6 text-lg' />}
