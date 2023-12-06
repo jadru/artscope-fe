@@ -26,8 +26,11 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install yarn
-        run: npm install -g yarn
+      - name: Install corepack
+        run: npm install -g corepack
+
+      - name: Enable corepack
+        run: corepack enable
 
       - name: Check build
         run: |
