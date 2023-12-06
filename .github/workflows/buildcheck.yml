@@ -28,6 +28,6 @@ jobs:
 
       - name: Check build
         run: |
-          yarn set version berry
+          yarn set version from sources
           yarn install
           yarn core build
