@@ -27,6 +27,7 @@ COPY --chown=nginx:nginx packages/admin/default.conf /etc/nginx/conf.d/default.c
 COPY --from=builder /app/packages/admin/dist /usr/share/nginx/html
 #COPY --from=builder --chown=reactjs:nodejs /app/node_modules /usr/share/nginx/html/node_modules
 
+RUN chmod -R 777 /var/log/nginx
 VOLUME /usr/share/nginx/html
 VOLUME /etc/nginx/conf.d
 
