@@ -13,8 +13,7 @@ export default function LoginNeeded({ href }: { href: string }) {
         variant='bordered'
         color='primary'
         className='opacity-50 hover:opacity-100'
-        fullWidth
-      >
+        fullWidth>
         로그인이 필요합니다.
       </Button>
     </Link>

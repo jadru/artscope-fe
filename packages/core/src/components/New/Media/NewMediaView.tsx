@@ -74,7 +74,7 @@ export default ({ setFileUrls, fileUrls, onlyImage, header }: Props) => {
     } else if (link.startsWith('https://youtu.be/')) {
       link = link.replace(
         'https://youtu.be/',
-        'https://www.youtube.com/watch?v=',
+        'https://www.youtube.com/watch?v='
       );
     } else {
       alert('유튜브 링크를 입력해주세요');
@@ -98,7 +98,7 @@ export default ({ setFileUrls, fileUrls, onlyImage, header }: Props) => {
     if (confirm('미디어를 삭제하시겠습니까?')) {
       setImgs((prev) => prev.filter((_, i) => i !== index));
       setFileUrls((prev: ArtWorkMediaType[]) =>
-        prev.filter((_, i) => i !== index),
+        prev.filter((_, i) => i !== index)
       );
     }
   };
@@ -146,7 +146,7 @@ export default ({ setFileUrls, fileUrls, onlyImage, header }: Props) => {
                         imgs[index]
                           ? 'https://img.youtube.com/vi/' +
                             imgs[index].substring(
-                              imgs[index].indexOf('=') + 1,
+                              imgs[index].indexOf('=') + 1
                             ) +
                             '/default.jpg'
                           : imgs[index]
@@ -162,7 +162,7 @@ export default ({ setFileUrls, fileUrls, onlyImage, header }: Props) => {
                     <AiFillCloseCircle className='h-6 w-6 rounded-full border border-white' />
                   </button>
                 </div>
-              ),
+              )
           )}
 
         {imgs.length < 10 && (
@@ -194,7 +194,7 @@ export default ({ setFileUrls, fileUrls, onlyImage, header }: Props) => {
                       if (e.key === 'Enter') {
                         if (fileUrls.length === 0) {
                           toast.warn(
-                            '첫번째 파일은 썸네일이므로, 이미지나 동영상을 업로드해주세요.',
+                            '첫번째 파일은 썸네일이므로, 이미지나 동영상을 업로드해주세요.'
                           );
                           return;
                         }

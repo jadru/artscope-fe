@@ -37,9 +37,13 @@ type scheduleSetupType = {
   step2: scheduleSetupStep2Type;
   step3: scheduleSetupStep3Type;
   step4: scheduleSetupStep4Type;
+  // eslint-disable-next-line no-unused-vars
   setStep1: (step1: scheduleSetupStep1Type) => void;
+  // eslint-disable-next-line no-unused-vars
   setStep2: (step2: scheduleSetupStep2Type) => void;
+  // eslint-disable-next-line no-unused-vars
   setStep3: (step3: scheduleSetupStep3Type) => void;
+  // eslint-disable-next-line no-unused-vars
   setStep4: (step4: scheduleSetupStep4Type) => void;
   resetSteps: () => void;
 };

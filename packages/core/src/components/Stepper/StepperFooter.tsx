@@ -6,6 +6,7 @@ type StepperFooterProps = {
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
   totalStepSize: number;
   activeStep: number;
+  // eslint-disable-next-line no-unused-vars
   onFinish?: (step: number) => void;
   isDone: (boolean | undefined)[];
 };
@@ -21,8 +22,7 @@ const StepperFooter = ({
     {activeStep > 0 ? (
       <Button
         startContent={<BiArrowToLeft />}
-        onClick={() => setActiveStep((prev) => prev - 1)}
-      >
+        onClick={() => setActiveStep((prev) => prev - 1)}>
         뒤로가기
       </Button>
     ) : (
@@ -33,8 +33,7 @@ const StepperFooter = ({
         color='primary'
         startContent={<BiArrowToRight />}
         onClick={() => setActiveStep((prev) => prev + 1)}
-        disabled={isDone[activeStep] === undefined}
-      >
+        disabled={isDone[activeStep] === undefined}>
         다음
       </Button>
     ) : (
@@ -42,8 +41,7 @@ const StepperFooter = ({
         color='primary'
         startContent={<BiCheck />}
         onClick={() => (onFinish ? onFinish(activeStep) : undefined)}
-        disabled={isDone[activeStep] === undefined}
-      >
+        disabled={isDone[activeStep] === undefined}>
         완료
       </Button>
     )}

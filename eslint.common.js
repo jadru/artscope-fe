@@ -26,11 +26,20 @@ module.exports = {
       {
         useTabs: false,
         trailingComma: 'es5',
+      },
+      'warn',
+      {
         singleQuote: true,
+        semi: true,
       },
     ],
-    quotes: ['error', 'single'],
-    'no-unused-vars': 'warn',
+    quotes: [2, 'single', { avoidEscape: true }],
+    '@typescript-eslint/quotes': [
+      'error',
+      'single',
+      { avoidEscape: true, allowTemplateLiterals: true },
+    ],
+    'no-unused-vars': 'off',
     '@typescript-eslint/require-statement-exists': 'off',
     'no-console': 'warn',
     'react/react-in-jsx-scope': 'off',

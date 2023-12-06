@@ -15,8 +15,7 @@ const StepperHeader = ({ titlesWithIcon, activeStep }: StepperHeaderProps) => (
           key={titleWithIcon.title}
           className={`md:text-medium flex items-center justify-center gap-0.5 rounded-xl border p-1.5 text-sm ${
             activeStep === index ? 'bg-default-200' : 'bg-default-50'
-          }`}
-        >
+          }`}>
           {activeStep === index && titleWithIcon.icon} {titleWithIcon.title}
         </div>
       ))}

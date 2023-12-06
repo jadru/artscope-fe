@@ -18,8 +18,7 @@ export default function MediaSlider({ medias }: { medias: MediaTypeInfo[] }) {
       onIndexChange={(details) => setCurrentIndex(details.index)}
       className='relative w-full overflow-hidden'
       orientation='horizontal'
-      align='center'
-    >
+      align='center'>
       <Carousel.Viewport>
         <Carousel.ItemGroup>
           {medias.map((image, index) => (

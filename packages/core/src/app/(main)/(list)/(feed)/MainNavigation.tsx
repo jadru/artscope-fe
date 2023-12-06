@@ -93,8 +93,7 @@ export default function MainNavigation() {
                 : pathname.startsWith(item.slug)
                 ? 'underline'
                 : ''
-            }`}
-          >
+            }`}>
             {item.icon}
             <p className='text-lg'>{item.text}</p>
           </Link>

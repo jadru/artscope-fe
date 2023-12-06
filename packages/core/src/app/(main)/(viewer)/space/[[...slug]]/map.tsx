@@ -27,8 +27,7 @@ export default function MapPage({
       <Map
         center={{ lat: latitude, lng: longitude }}
         style={{ width: '100%', height: '360px' }}
-        level={3}
-      >
+        level={3}>
         <MapMarker position={{ lat: latitude, lng: longitude }}>
           <div className='flex flex-col rounded-xl p-3'>
             <b>{name}</b>

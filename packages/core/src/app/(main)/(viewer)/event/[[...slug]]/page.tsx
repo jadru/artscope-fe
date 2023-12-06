@@ -167,8 +167,7 @@ export default async function Event({
           <CalendarButton
             className='flex items-center gap-1 hover:font-bold hover:underline'
             data={data}
-            scheduleid={scheduleId}
-          >
+            scheduleid={scheduleId}>
             <BiCalendar size={20} />
             캘린더에 추가
           </CalendarButton>
@@ -179,8 +178,7 @@ export default async function Event({
           />
           <LocationButton
             location={data.location}
-            className='flex items-center gap-1 hover:font-bold hover:underline md:hidden'
-          >
+            className='flex items-center gap-1 hover:font-bold hover:underline md:hidden'>
             <BsMap size={20} />
             네이버 지도 보기
           </LocationButton>
@@ -199,8 +197,7 @@ export default async function Event({
           <ScheduleAddButton
             eventid={data.id}
             eventAuthorUsername={data.authorUserName}
-            className='flex items-center gap-1 text-lg hover:font-bold hover:underline'
-          >
+            className='flex items-center gap-1 text-lg hover:font-bold hover:underline'>
             <BiPlus size={20} />
             스케줄 추가
           </ScheduleAddButton>
@@ -238,16 +235,14 @@ export default async function Event({
                     className='flex items-center gap-1 hover:font-bold hover:underline'
                     scheduleid={schedule.id}
                     eventAuthorUsername={data.authorUserName}
-                    eventid={data.id}
-                  >
+                    eventid={data.id}>
                     <AiOutlineDelete size={20} />
                     삭제
                   </SchduleDeleteButton>
                   <CalendarButton
                     data={data}
                     scheduleid={schedule.id}
-                    className='flex items-center gap-1 hover:font-bold hover:underline'
-                  >
+                    className='flex items-center gap-1 hover:font-bold hover:underline'>
                     <BiCalendar size={20} />
                     캘린더에 추가
                   </CalendarButton>
@@ -258,8 +253,7 @@ export default async function Event({
             previousEvents.map((schedule) => (
               <div
                 key={schedule.id}
-                className='text-default-400 flex flex-col py-2.5'
-              >
+                className='text-default-400 flex flex-col py-2.5'>
                 <h4>
                   {format(
                     new Date(schedule.startDateTime),

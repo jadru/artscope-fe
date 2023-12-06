@@ -36,8 +36,7 @@ const OpengraphCard = ({
       href={encodeURI(externalUrl)}
       target='_blank'
       className='group mt-1.5 hover:text-black'
-      onClick={(e) => e.stopPropagation()}
-    >
+      onClick={(e) => e.stopPropagation()}>
       <div className='group-hover:bg-default-200 flex h-24 rounded-2xl border transition'>
         {ogData.ogImage && ogData.ogImage.startsWith('http') && (
           <ASNextImage

@@ -73,8 +73,7 @@ export default function SinglePostItemAction({
                 like ? 'text-red-500' : 'text-gray-500'
               }`}
               size='sm'
-              onClick={handleLike}
-            >
+              onClick={handleLike}>
               {feed.likes + (like ? 1 : 0) + (firstLike ? -1 : 0)}
             </Button>
           </DebounceClick>
@@ -83,8 +82,7 @@ export default function SinglePostItemAction({
               startContent={<AiOutlineMessage className='h-5 w-5' />}
               variant='light'
               size='sm'
-              className='text-md text-gray-500 hover:text-blue-500'
-            >
+              className='text-md text-gray-500 hover:text-blue-500'>
               {feed.comments}
             </Button>
           </DebounceClick>
@@ -111,8 +109,7 @@ export default function SinglePostItemAction({
                   onClick={(e) => {
                     e.stopPropagation();
                     push(`/edit/post/${feed.id}`);
-                  }}
-                >
+                  }}>
                   수정
                 </Button>
               </DebounceClick>
@@ -122,8 +119,7 @@ export default function SinglePostItemAction({
                   variant='light'
                   size='sm'
                   className='text-md text-gray-500 hover:text-red-500'
-                  onClick={handleDelete}
-                >
+                  onClick={handleDelete}>
                   삭제
                 </Button>
               </DebounceClick>
@@ -151,8 +147,7 @@ export default function SinglePostItemAction({
                       });
                     });
               }
-            }}
-          >
+            }}>
             공유
           </Button>
         </div>

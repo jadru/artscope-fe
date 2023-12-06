@@ -23,8 +23,7 @@ export default function AgoraCommentMessage({
         ) : (
           <Link
             href={`/profile/${comment.author.username}`}
-            className='text-default-700 font-bold hover:underline'
-          >
+            className='text-default-700 font-bold hover:underline'>
             {comment.author.name}{' '}
             {comment.author.username ? '@' + comment.author.username : ''}
           </Link>
@@ -37,8 +36,7 @@ export default function AgoraCommentMessage({
               : voteStatus === 'agree'
               ? 'bg-blue-500'
               : 'bg-yellow-400'
-          } rounded-2xl px-3 py-1 text-sm font-bold text-white`}
-        >
+          } rounded-2xl px-3 py-1 text-sm font-bold text-white`}>
           {comment.vote}
         </div>
       </div>

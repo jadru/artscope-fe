@@ -30,8 +30,7 @@ export default function SinglePostMedia({ feed }: { feed: SinglePostType }) {
           }
           nextArrow={
             <AiOutlineArrowRight size={30} className='mr-2 bg-white/50' />
-          }
-        >
+          }>
           {feed.medias &&
             feed.medias.slice(1).map((item) => (
               <div
@@ -42,8 +41,7 @@ export default function SinglePostMedia({ feed }: { feed: SinglePostType }) {
                   })`,
                 }}
                 onClick={() => setDetailedImage(item.mediaUrl)}
-                key={item.id}
-              ></div>
+                key={item.id}></div>
             ))}
         </Slide>
       </div>

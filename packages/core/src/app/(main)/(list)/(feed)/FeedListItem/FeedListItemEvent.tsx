@@ -15,8 +15,7 @@ export default function FeedListItemEvent({ feed }: { feed: feedItemType }) {
       className='flex w-full cursor-pointer space-x-2 rounded-xl bg-white px-3.5 py-2 transition-colors hover:bg-gray-100 md:mx-0'
       onClick={(e) => {
         e.stopPropagation();
-      }}
-    >
+      }}>
       <div className='flex w-full flex-col justify-between text-left'>
         <div className='flex items-start justify-between'>
           <div className='flex h-full w-[calc(100%-104px)] flex-col items-start justify-between gap-1'>

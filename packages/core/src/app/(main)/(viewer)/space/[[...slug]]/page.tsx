@@ -42,8 +42,7 @@ export default async function SpacePage({
           <Link
             href={data.snsUrl}
             target='_blank'
-            className='flex items-center gap-1'
-          >
+            className='flex items-center gap-1'>
             <AiOutlineLink size={24} />
             <StandardLabel label={data.snsUrl} />
           </Link>
@@ -52,8 +51,7 @@ export default async function SpacePage({
           <Link
             href={data.webSiteUrl}
             target='_blank'
-            className='flex items-center gap-1'
-          >
+            className='flex items-center gap-1'>
             <AiOutlineLink size={24} />
             <StandardLabel label={data.webSiteUrl} />
           </Link>

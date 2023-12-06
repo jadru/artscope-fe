@@ -10,8 +10,7 @@ const ArtworkItem = ({ artwork: aw }: { artwork: ArtworkType }) => {
   return (
     <Link
       href={'/artwork/' + aw.artwork.id}
-      className='group cursor-pointer rounded-xl transition'
-    >
+      className='group cursor-pointer rounded-xl transition'>
       <div>
         <div className='overflow-visible rounded-t-2xl bg-black p-0'>
           <ASNextImage

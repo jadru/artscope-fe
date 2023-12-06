@@ -154,8 +154,7 @@ export default function Events() {
                 group.exhibitions.map((date) => (
                   <div
                     className='relative flex flex-col md:flex-row'
-                    key={date.date}
-                  >
+                    key={date.date}>
                     <div className='flex w-28 flex-col items-start gap-0 self-start bg-transparent pt-2 md:sticky md:top-16'>
                       <h2 className='font-title py-1 text-[1.4rem]'>
                         {date.date}

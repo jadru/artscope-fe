@@ -51,8 +51,7 @@ export default function FeedListItemPostAction({
           } else {
             push('/user/login');
           }
-        }}
-      >
+        }}>
         {like ? (
           <AiFillLike className='mr-2 h-5 w-5 text-red-500' />
         ) : (
@@ -65,8 +64,7 @@ export default function FeedListItemPostAction({
         onClick={(e) => {
           e.stopPropagation();
           push(`/post/${feed.id}`);
-        }}
-      >
+        }}>
         <AiOutlineMessage className='mr-2 h-5 w-5' />
         {feed.comments}
       </button>
@@ -86,8 +84,7 @@ export default function FeedListItemPostAction({
             e.stopPropagation();
             push(`/edit/post/${feed.id}`);
           }}
-          className='text-md flex p-2 text-gray-500 hover:text-purple-500'
-        >
+          className='text-md flex p-2 text-gray-500 hover:text-purple-500'>
           <AiOutlineEdit className='h-5 w-5' />
         </button>
       )}
@@ -110,8 +107,7 @@ export default function FeedListItemPostAction({
                   });
                 });
           }
-        }}
-      >
+        }}>
         <AiOutlineShareAlt className='h-5 w-5' />
       </button>
     </div>

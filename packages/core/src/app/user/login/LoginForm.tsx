@@ -56,8 +56,7 @@ export default function LoginForm() {
           <button
             className='focus:outline-none'
             type='button'
-            onClick={togglePwInputVisible}
-          >
+            onClick={togglePwInputVisible}>
             {pwInputVisible ? (
               <AiFillEyeInvisible className='text-default-400 pointer-events-none text-2xl' />
             ) : (

@@ -162,8 +162,7 @@ const NewArtwork = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('bold') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiBold size={25} />
           </button>
           <button
@@ -174,8 +173,7 @@ const NewArtwork = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('italic') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiItalic size={25} />
           </button>
           <button
@@ -186,8 +184,7 @@ const NewArtwork = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('strike') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiStrikethrough size={25} />
           </button>
           <button
@@ -198,8 +195,7 @@ const NewArtwork = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('underline') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiUnderline size={25} />
           </button>
           <button
@@ -210,8 +206,7 @@ const NewArtwork = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('bulletList') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiListUl size={25} />
           </button>
           <button
@@ -222,8 +217,7 @@ const NewArtwork = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('orderedList') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiListOl size={25} />
           </button>
         </div>
@@ -245,8 +239,7 @@ const NewArtwork = () => {
           disabled={isUpload}
           color='primary'
           className={`
-            h-12 ${isUpload ? 'opacity-20' : ''}`}
-        >
+            h-12 ${isUpload ? 'opacity-20' : ''}`}>
           작품 수정
         </Button>
       </div>
