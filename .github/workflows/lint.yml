@@ -22,6 +22,12 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install corepack
+        run: npm install -g corepack
+
+      - name: Enable corepack
+        run: corepack enable
+
       - name: 📥 Download deps
         uses: u0reo/npm-install@fix/restore-failure
         with:
