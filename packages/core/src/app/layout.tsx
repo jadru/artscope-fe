@@ -134,6 +134,7 @@ export default function RootLayout({
             </Script>
           </>
         )}
+
         <Providers>{children}</Providers>
       </body>
     </html>
