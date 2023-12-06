@@ -22,13 +22,10 @@ module.exports = {
   ignorePatterns: ['dist', '.eslintrc.js'],
   rules: {
     'prettier/prettier': [
-      'error',
+      'warn',
       {
         useTabs: false,
         trailingComma: 'es5',
-      },
-      'warn',
-      {
         singleQuote: true,
         semi: true,
       },

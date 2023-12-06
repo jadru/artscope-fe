@@ -1,15 +1,14 @@
 'use client';
 
+import { Button } from '@nextui-org/react';
 import Link from 'next/link';
 import React from 'react';
 import { BiBrush, BiCalendar, BiGroup } from 'react-icons/bi';
 import { GiTalk } from 'react-icons/gi';
 
 import Footer from '@/components/Footer';
-import LoginModal from '@/components/Navbar/LoginModalButton';
 
 import Logo from '@/assets/images/logo_long.svg';
-import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 
 export default function Page() {
   return (
@@ -27,15 +26,15 @@ export default function Page() {
               <h1 className='text-3xl font-bold tracking-tighter sm:text-5xl md:text-6xl'>
                 예술가를 위한 커뮤니티, Artscope입니다.
               </h1>
-              <p className='max-w-[600px] text-zinc-500 md:text-xl dark:text-zinc-400'>
+              <p className='max-w-[600px] text-zinc-500 md:text-xl dark:text-zinc-400 pb-4'>
                 예술가들이 자신의 작품을 공유하고, 다른 예술가들과 소통하며,
                 함께 프로젝트를 진행할 수 있는 공간을 제공합니다.
               </p>
-              <LoginModal
-                btnText='커뮤니티에 참여하기'
-                title='로그인 / 회원가입'
-                link={NEXT_PUBLIC_API_URL + '/oauth2/authorization/google'}
-              />
+              <Link href='/user/login' className='appearance-none'>
+                <Button color='primary' variant='flat'>
+                  커뮤니티에 참여하기
+                </Button>
+              </Link>
             </div>
           </div>
         </section>

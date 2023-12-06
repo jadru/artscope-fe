@@ -3,8 +3,8 @@
 import { Card, CardBody, Tab, Tabs } from '@nextui-org/react';
 import React from 'react';
 
-import ArtistForm from '@/app/user/apply/ArtistForm';
-import CuratorForm from '@/app/user/apply/CuratorForm';
+import ArtistForm from '@/app/user/(center)/apply/ArtistForm';
+import CuratorForm from '@/app/user/(center)/apply/CuratorForm';
 
 const SignupForm = () => {
   return (
