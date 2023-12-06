@@ -1,0 +1,29 @@
+name: build-check
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: "true"
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+
+      - name: Check build
+        run: |
+          yarn set version berry
+          yarn install
+          yarn core build
