@@ -23,24 +23,20 @@ ENV NODE_ENV=production
 
 
 RUN rm /etc/nginx/conf.d/default.conf
-RUN touch /var/run/nginx.pid && \
-    chown -R nginx:nginx /var/cache/nginx /var/run/nginx.pid
 
+RUN mkdir -p /var/cache/nginx && chown -R nginx:nginx /var/cache/nginx && \
+    mkdir -p /var/log/nginx  && chown -R nginx:nginx /var/log/nginx && \
+    mkdir -p /var/lib/nginx  && chown -R nginx:nginx /var/lib/nginx && \
+    touch /run/nginx.pid && chown -R nginx:nginx /run/nginx.pid && \
+    mkdir -p /etc/nginx/templates /etc/nginx/ssl/certs && \
+    chown -R nginx:nginx /etc/nginx && \
+    chmod -R 777 /etc/nginx/conf.d
+
+RUN sed -i 's/user nginx;/#user nginx;/g' /etc/nginx/nginx.conf
 
 USER nginx
 COPY --chown=nginx:nginx packages/admin/default.conf /etc/nginx/conf.d/default.conf
 COPY --chown=nginx:nginx --from=builder /app/packages/admin/dist /usr/share/nginx/html
-
-RUN mkdir -p /var/cache/nginx/
-RUN mkdir -p /var/log/nginx
-RUN chown -R nginx:nginx /var/cache/nginx
-RUN chown -R nginx:nginx /var/log/nginx
-RUN chmod -R 777 /var/cache/nginx
-RUN chmod -R 777 /var/log/nginx
-
-
-VOLUME /usr/share/nginx/html
-VOLUME /etc/nginx/conf.d
 
 EXPOSE 3000
 ENV PORT 3000
