@@ -19,14 +19,14 @@ export default function DashboardLayout({
   return (
     <div className='w-screen md:h-screen flex-col md:flex-row flex'>
       <ASNextImage
-        src='https://picsum.photos/720/360.webp/?grayscale'
+        src='https://picsum.photos/1280/720.webp/?grayscale'
         alt='test'
         placeholder='blur'
         blurDataURL={
           'src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs='
         }
-        width={720}
-        height={360}
+        width={1280}
+        height={720}
         className='absolute top-0 left-0 w-screen h-screen -z-40 object-cover bg-black'
       />
       <div className='md:w-1/2 xl:w-2/3 md:h-screen w-full h-12'>
@@ -36,8 +36,8 @@ export default function DashboardLayout({
           <Logo className='group-hover:fill-gray-700 h-14 w-44 overflow-hidden fill-white px-6 pb-1 pt-8 transition duration-100' />
         </Link>
       </div>
-      <div className='w-full md:w-1/2 xl:w-1/3 md:h-screen py-6 px-3 md:px-12 md:py-24 h-[calc(100vh-3rem)] flex items-center justify-center'>
-        <div className='bg-white/80 backdrop-blur-2xl rounded-2xl px-4 py-6 lg:px-6 lg:py-8 flex flex-col gap-2 overflow-y-scroll justify-center'>
+      <div className='w-full md:w-1/2 xl:w-1/3 md:h-screen py-6 px-3 md:px-8 md:py-12 max-h-screen h-[calc(100vh-3rem)] overflow-y-auto flex items-start justify-start'>
+        <div className='bg-white/80 backdrop-blur-2xl min-h-full w-full rounded-2xl px-4 py-3 lg:px-6 lg:py-6 flex flex-col gap-2 justify-center'>
           {children}
         </div>
       </div>

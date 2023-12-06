@@ -13,7 +13,7 @@ import ErrorMessageInput from '@/components/ErrorMessageInput';
 
 import signupSchema, {
   SignupInputs,
-} from '@/app/user/(center)/signup/signupSchema';
+} from '@/app/user/(fancy)/signup/signupSchema';
 import jxios from '@/utils/jxios';
 
 const SignupForm = () => {
@@ -73,7 +73,7 @@ const SignupForm = () => {
       return;
     if (!isSubmitting) {
       delete data.passwordCheck;
-      delete data.agree;
+      delete data.agreeRegulation;
       clearErrors();
       await jxios.post('/api/members', data).then(async () => {
         await jxios
@@ -153,7 +153,7 @@ const SignupForm = () => {
       <Input
         type='email'
         label='이메일'
-        variant='bordered'
+        variant='flat'
         placeholder='asdf@asdf.com'
         errorMessage={errors.email?.message}
         onValueChange={(value) => {
@@ -166,7 +166,7 @@ const SignupForm = () => {
       <Input
         type='text'
         label='활동명'
-        variant='bordered'
+        variant='flat'
         placeholder='길동홍'
         errorMessage={errors.name?.message}
         isInvalid={!!errors.name}
@@ -175,7 +175,7 @@ const SignupForm = () => {
       <Input
         type='text'
         label='아이디'
-        variant='bordered'
+        variant='flat'
         placeholder='gil-dong-hong'
         onValueChange={(value) => {
           setValue('username', value);
@@ -188,7 +188,7 @@ const SignupForm = () => {
       <Input
         type='password'
         label='비밀번호'
-        variant='bordered'
+        variant='flat'
         placeholder='****'
         errorMessage={errors.password?.message}
         isInvalid={!!errors.password}
@@ -197,7 +197,7 @@ const SignupForm = () => {
       <Input
         type='password'
         label='비밀번호 확인'
-        variant='bordered'
+        variant='flat'
         placeholder='****'
         errorMessage={errors.passwordCheck?.message}
         isInvalid={!!errors.passwordCheck}
@@ -208,10 +208,12 @@ const SignupForm = () => {
           <Checkbox
             required
             defaultSelected
-            {...register('agree')}
-            onValueChange={(isSelected) => setValue('agree', isSelected)}
+            {...register('agreeRegulation')}
+            onValueChange={(isSelected) =>
+              setValue('agreeRegulation', isSelected)
+            }
           />
-          <label className='ml-2 cursor-pointer'>
+          <label className='ml-1 cursor-pointer'>
             <span className='text-gray-500'>
               <Link
                 className='text-secondary font-bold'
@@ -219,12 +221,12 @@ const SignupForm = () => {
                 target='_blank'>
                 이용 약관
               </Link>
-              과{' '}
+              , 개인정보{' '}
               <Link
                 className='text-secondary font-bold'
                 href='https://plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/consent/1.html'
                 target='_blank'>
-                개인정보 수집 및 이용
+                수집과 이용
               </Link>
               {', '}
               <Link
@@ -237,23 +239,22 @@ const SignupForm = () => {
             </span>
           </label>
           <ErrorMessageInput>
-            {errors.agree ? errors.agree.message : ''}
+            {errors.agreeRegulation ? errors.agreeRegulation.message : ''}
           </ErrorMessageInput>
         </div>
         <div className='w-full max-w-md items-center justify-center'>
           <Checkbox
             defaultSelected
-            {...register('agree')}
-            onValueChange={(isSelected) => setValue('agree', isSelected)}
+            {...register('agreeMarketing')}
+            onValueChange={(isSelected) =>
+              setValue('agreeMarketing', isSelected)
+            }
           />
-          <label className='ml-2 cursor-pointer'>
+          <label className='ml-1 cursor-pointer'>
             <span className='text-gray-500'>
               뉴스레터 등 유용한 정보 알림 메일을 받겠습니다.
             </span>
           </label>
-          <ErrorMessageInput>
-            {errors.agree ? errors.agree.message : ''}
-          </ErrorMessageInput>
         </div>
       </div>
       <Button

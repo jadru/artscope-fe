@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 
-import { loginInputs, loginSchema } from '@/app/user/login/loginSchema';
+import { loginInputs, loginSchema } from '@/app/user/(fancy)/login/loginSchema';
 import { onLogin } from '@/auth/onLogin';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
@@ -42,7 +42,7 @@ export default function LoginForm() {
       <Input
         type='text'
         label='아이디'
-        variant='bordered'
+        variant='flat'
         placeholder='아이디를 입력해주세요'
         errorMessage={errors.username?.message}
         isInvalid={!!errors.username}
@@ -50,7 +50,7 @@ export default function LoginForm() {
       />
       <Input
         label='비밀번호'
-        variant='bordered'
+        variant='flat'
         placeholder='비밀번호를 입력해주세요'
         endContent={
           <button
@@ -70,7 +70,7 @@ export default function LoginForm() {
         {...register('password')}
       />
 
-      <Button type='submit' variant='flat' color='primary' fullWidth>
+      <Button type='submit' variant='solid' color='primary' fullWidth>
         로그인
       </Button>
     </form>
