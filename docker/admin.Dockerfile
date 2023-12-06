@@ -21,19 +21,19 @@ FROM nginx:alpine as runner
 
 ENV NODE_ENV=production
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 reactjs
 
 RUN rm /etc/nginx/conf.d/default.conf
+RUN  touch /var/run/nginx.pid && \
+     chown -R nginx:nginx /var/cache/nginx /var/run/nginx.pid
 
+USER nginx
 COPY --chown=nginx:nginx packages/admin/default.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/packages/admin/dist /usr/share/nginx/html
+COPY --chown=nginx:nginx --from=builder /app/packages/admin/dist /usr/share/nginx/html
 
 RUN mkdir -p /var/log/nginx
-RUN chown -R reactjs:nodejs /var/log/nginx
+RUN chown -R nginx:nginx /var/log/nginx
 RUN chmod -R 777 /var/log/nginx
 
-USER reactjs
 
 VOLUME /usr/share/nginx/html
 VOLUME /etc/nginx/conf.d
