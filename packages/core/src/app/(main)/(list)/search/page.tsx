@@ -37,13 +37,13 @@ export default function Search() {
           url = '/api/search';
           break;
         case 'ARTWORK':
-          url = '/api/search/artworks';
+          url = '/api/search/artwork';
           break;
         case 'POST':
-          url = '/api/search/posts';
+          url = '/api/search/post';
           break;
         case 'AGORA':
-          url = '/api/search/agoras';
+          url = '/api/search/agora';
           break;
         default:
           url = '/api/search';
@@ -58,20 +58,21 @@ export default function Search() {
           },
         })
         .then((res) => {
-          if (url === '/api/search/artworks') {
+          if (tab === 'ARTWORK') {
             setData({
               searchArtworks: res.data,
             });
-          } else if (url === '/api/search/posts') {
+          } else if (tab === 'POST') {
             setData({
               searchPosts: res.data,
             });
-          } else if (url === '/api/search/agoras') {
+          } else if (tab === 'AGORA') {
             setData({
               searchAgoras: res.data,
             });
+          } else {
+            setData(res.data);
           }
-          setData(res.data);
         });
     },
     [router, tab]
