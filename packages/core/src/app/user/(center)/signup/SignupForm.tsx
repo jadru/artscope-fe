@@ -11,7 +11,9 @@ import { toast } from 'react-toastify';
 
 import ErrorMessageInput from '@/components/ErrorMessageInput';
 
-import signupSchema, { SignupInputs } from '@/app/user/signup/signupSchema';
+import signupSchema, {
+  SignupInputs,
+} from '@/app/user/(center)/signup/signupSchema';
 import jxios from '@/utils/jxios';
 
 const SignupForm = () => {
@@ -147,7 +149,7 @@ const SignupForm = () => {
   };
 
   return (
-    <form className='space-y-2' onSubmit={handleSubmit(onSubmit)}>
+    <form className='space-y-2 py-4' onSubmit={handleSubmit(onSubmit)}>
       <Input
         type='email'
         label='이메일'
@@ -201,32 +203,58 @@ const SignupForm = () => {
         isInvalid={!!errors.passwordCheck}
         {...register('passwordCheck')}
       />
-      <div className='w-full max-w-md items-center justify-center'>
-        <Checkbox
-          {...register('agree')}
-          onValueChange={(isSelected) => setValue('agree', isSelected)}
-        />
-        <label className='ml-2 cursor-pointer'>
-          <span className='text-gray-500'>
-            <Link
-              className='link-primary link'
-              href='https://plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/consent/1.html'
-              target='_blank'>
-              개인정보 수집 및 이용
-            </Link>
-            {' 및 '}
-            <Link
-              className='link-primary link'
-              href='https://www.plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/privacy-policy'
-              target='_blank'>
-              개인정보 처리방침
-            </Link>
-            에 동의합니다.
-          </span>
-        </label>
-        <ErrorMessageInput>
-          {errors.agree ? errors.agree.message : ''}
-        </ErrorMessageInput>
+      <div className='pt-4'>
+        <div className='w-full max-w-md items-center justify-center'>
+          <Checkbox
+            required
+            defaultSelected
+            {...register('agree')}
+            onValueChange={(isSelected) => setValue('agree', isSelected)}
+          />
+          <label className='ml-2 cursor-pointer'>
+            <span className='text-gray-500'>
+              <Link
+                className='text-secondary font-bold'
+                href='https://plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/consent/1.html'
+                target='_blank'>
+                이용 약관
+              </Link>
+              과{' '}
+              <Link
+                className='text-secondary font-bold'
+                href='https://plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/consent/1.html'
+                target='_blank'>
+                개인정보 수집 및 이용
+              </Link>
+              {', '}
+              <Link
+                className='text-secondary font-bold'
+                href='https://www.plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/privacy-policy'
+                target='_blank'>
+                처리방침
+              </Link>
+              에 동의합니다.
+            </span>
+          </label>
+          <ErrorMessageInput>
+            {errors.agree ? errors.agree.message : ''}
+          </ErrorMessageInput>
+        </div>
+        <div className='w-full max-w-md items-center justify-center'>
+          <Checkbox
+            defaultSelected
+            {...register('agree')}
+            onValueChange={(isSelected) => setValue('agree', isSelected)}
+          />
+          <label className='ml-2 cursor-pointer'>
+            <span className='text-gray-500'>
+              뉴스레터 등 유용한 정보 알림 메일을 받겠습니다.
+            </span>
+          </label>
+          <ErrorMessageInput>
+            {errors.agree ? errors.agree.message : ''}
+          </ErrorMessageInput>
+        </div>
       </div>
       <Button
         type='submit'

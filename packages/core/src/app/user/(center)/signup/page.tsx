@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 import Title from '@/components/Title';
 
-import SignupForm from '@/app/user/signup/SignupForm';
+import SignupForm from '@/app/user/(center)/signup/SignupForm';
 import { useUser } from '@/states';
 
 const SignupPage = () => {
@@ -22,7 +22,7 @@ const SignupPage = () => {
     <>
       <Title
         title='회원가입'
-        description='회원가입을 하시면 다양한 서비스를 이용하실 수 있습니다.'
+        description='회원가입을 하시면 Artscope의 모든 서비스를 무료로 이용하실 수 있습니다.'
       />
       <SignupForm />
     </>
