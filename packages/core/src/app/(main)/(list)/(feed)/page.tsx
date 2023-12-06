@@ -1,7 +1,7 @@
 'use client';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import React, { useEffect, useRef } from 'react';
 
 import NewPostButton from '@/components/New/Posts/NewPostModalButton';
@@ -15,6 +15,7 @@ import {
   jsonLdThumb,
 } from '@/app/(main)/(list)/(feed)/searchSchema';
 import SkeletonFeed from '@/app/(main)/(list)/(feed)/SkeletonFeed';
+import { getRefreshToken } from '@/auth/cookieTokenManager';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
@@ -34,8 +35,8 @@ const fetchFeeds = async ({ pageParam = 0 }) =>
 
 export default function Feeds() {
   const bottom = useRef(null);
-  const { user } = useUser();
-
+  const { user, isLogin } = useUser();
+  const { push } = useRouter();
   const {
     data,
     fetchNextPage,
@@ -52,6 +53,16 @@ export default function Feeds() {
       return lastPage.hasNext ? allPages.length : null;
     },
   });
+
+  useEffect(() => {
+    const getRefresh = async () => {
+      const token = await getRefreshToken();
+      if (!token) {
+        push('/about');
+      }
+    };
+    getRefresh();
+  }, [isLogin, push]);
 
   useEffect(() => {
     refetch();

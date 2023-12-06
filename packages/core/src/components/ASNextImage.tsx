@@ -3,8 +3,11 @@ import Image, { ImageProps } from 'next/image';
 export default function ASNextImage(Props: ImageProps) {
   return (
     <Image
-      placeholder='blur'
-      blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBAB  bWyZJf74GZgAAAABJRU5ErkJggg=='
+      placeholder={Props.placeholder ?? 'blur'}
+      blurDataURL={
+        Props.blurDataURL ??
+        'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='
+      }
       unoptimized={
         typeof Props.src === 'string' ? Props.src.startsWith('http') : false
       }

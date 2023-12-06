@@ -25,49 +25,29 @@ const Login = () => {
     <>
       <Title
         title='로그인'
-        description={
-          <>
-            로그인 및 회원가입시
-            <br />
-            <Link
-              href='https://plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/consent/1.html'
-              target='_blank'
-              className='font-bold text-black underline'>
-              개인정보 수집 및 이용 동의서
-            </Link>
-            {' 및 '}
-            <Link
-              href='https://www.plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/privacy-policy'
-              target='_blank'
-              className='font-bold text-black underline'>
-              개인정보 처리방침
-            </Link>
-            에
-            <br />
-            동의하게 됩니다.
-          </>
-        }
+        description='한번의 로그인으로 포트폴리오를 만들고 다른 아티스트들과 소통하세요.'
       />
       <p></p>
+      <Button
+        color='warning'
+        variant='flat'
+        fullWidth
+        size='lg'
+        startContent={<AiOutlineGoogle className='h-6 w-6 text-lg' />}
+        onClick={() =>
+          router.push(NEXT_PUBLIC_API_URL + '/oauth2/authorization/google')
+        }>
+        구글로 로그인 또는 회원가입
+      </Button>
+      <p className='text-center'>또는</p>
       <LoginForm />
-      <div className='flex gap-1'>
-        <Button
-          color='secondary'
-          variant='flat'
-          onClick={() => router.push('/user/signup')}
-          className='w-1/2'>
+      <div className='flex w-full justify-between'>
+        <Link href='/user/signup' className='hover:underline'>
           회원가입
-        </Button>
-        <Button
-          color='warning'
-          variant='flat'
-          className='w-1/2'
-          startContent={<AiOutlineGoogle className='h-6 w-6 text-lg' />}
-          onClick={() =>
-            router.push(NEXT_PUBLIC_API_URL + '/oauth2/authorization/google')
-          }>
-          구글로 로그인
-        </Button>
+        </Link>
+        <Link href='/user/find' className='hover:underline'>
+          아이디 / 비밀번호 찾기
+        </Link>
       </div>
     </>
   );
