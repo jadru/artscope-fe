@@ -1,17 +1,15 @@
 'use client';
 
-import { Kbd } from '@nextui-org/react';
+import { Kbd, Tab, Tabs } from '@nextui-org/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { MdArrowForwardIos } from 'react-icons/md';
 
-import ResponsiveGrid from '@/components/ResponsiveGrid';
 import Title from '@/components/Title';
 
-import FeedListItemPost from '@/app/(main)/(list)/(feed)/FeedListItem/FeedListItemPost';
-import AgoraItem from '@/app/(main)/(list)/agoras/AgoraItem';
-import ArtworkItem from '@/app/(main)/(list)/artworks/ArtworkItem';
+import AgoraSearchList from '@/app/(main)/(list)/search/agoraSearchList';
+import ArtworkSearchList from '@/app/(main)/(list)/search/artworkSearchList';
+import PostSearchList from '@/app/(main)/(list)/search/postSearchList';
 import jxios from '@/utils/jxios';
 
 import { searchType } from '@/types/search';
@@ -19,29 +17,68 @@ import { searchType } from '@/types/search';
 export default function Search() {
   const [data, setData] = useState<searchType>();
   const searchParams = useSearchParams();
-  const { push } = useRouter();
+  const router = useRouter();
   const initialSearchKeyword = searchParams.get('c');
-  const initialSearchType = searchParams.get('type');
+  const [tab, setTab] = useState(searchParams.get('type') ?? 'ALL');
 
+  useEffect(() => {
+    if (tab !== searchParams.get('type'))
+      setTab(searchParams.get('type') ?? 'ALL');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
   const fetchSearch = useCallback(
     async (search: string | null, searchType: string | null) => {
-      push(`/search?c=${search ?? ''}&type=${searchType ?? 'ALL'}`);
+      router.push(
+        `/search?c=${search ?? ''}&type=${searchType ?? tab ?? 'ALL'}`
+      );
+      let url = '';
+      switch (tab) {
+        case 'ALL':
+          url = '/api/search';
+          break;
+        case 'ARTWORK':
+          url = '/api/search/artworks';
+          break;
+        case 'POST':
+          url = '/api/search/posts';
+          break;
+        case 'AGORA':
+          url = '/api/search/agoras';
+          break;
+        default:
+          url = '/api/search';
+          break;
+      }
+
       await jxios
-        .get('/api/search', {
+        .get(url, {
           params: {
             keyword: search ?? '',
-            size: 6,
+            size: tab === 'ALL' ? 6 : 24,
           },
         })
         .then((res) => {
+          if (url === '/api/search/artworks') {
+            setData({
+              searchArtworks: res.data,
+            });
+          } else if (url === '/api/search/posts') {
+            setData({
+              searchPosts: res.data,
+            });
+          } else if (url === '/api/search/agoras') {
+            setData({
+              searchAgoras: res.data,
+            });
+          }
           setData(res.data);
         });
     },
-    [push]
+    [router, tab]
   );
 
   useEffect(() => {
-    fetchSearch(initialSearchKeyword, initialSearchType ?? 'ALL');
+    fetchSearch(initialSearchKeyword, tab ?? 'ALL');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchSearch]);
 
@@ -54,7 +91,7 @@ export default function Search() {
           type='search'
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
-              fetchSearch(e.currentTarget.value, initialSearchType ?? 'ALL');
+              fetchSearch(e.currentTarget.value, tab ?? 'ALL');
             }
           }}
           defaultValue={initialSearchKeyword ?? ''}
@@ -66,118 +103,52 @@ export default function Search() {
           Enter
         </Kbd>
       </div>
+      <div>
+        <Tabs
+          key='ALL'
+          variant='solid'
+          selectedKey={tab}
+          onSelectionChange={(key) => {
+            router.push(`/search?c=${initialSearchKeyword ?? ''}&type=${key}`, {
+              shallow: true,
+            });
+            setTab(key as string);
+          }}
+          disabledKeys={['EVENT']}
+          aria-label='Tabs variants'>
+          <Tab key='ALL' title='통합 검색' />
+          <Tab key='ARTWORK' title='작품' />
+          <Tab key='POST' title='포스트' />
+          <Tab key='AGORA' title='아고라' />
+          <Tab key='EVENT' title='이벤트' />
+        </Tabs>
+      </div>
       {data &&
-        (data.searchArtworks.artworks.length > 0 ? (
-          <div className='border-default-400 w-full rounded-2xl border py-2'>
-            <>
-              <h3 className='mx-3 mb-2'>아트워크 검색 결과</h3>
-              <div className='px-2'>
-                <ResponsiveGrid>
-                  {data.searchArtworks.artworks.map((item) => (
-                    <ArtworkItem
-                      artwork={{ artwork: item, isLiked: false }}
-                      key={item.id}
-                    />
-                  ))}
-                </ResponsiveGrid>
-                {data.searchArtworks.pageInfo.totalElements > 6 && (
-                  <div className='hover:bg-default-100 mx-2 flex cursor-pointer items-center justify-start rounded-2xl px-3 py-2 transition'>
-                    <p>
-                      {data.searchArtworks.pageInfo.totalElements}개의 아트워크
-                      검색결과 더보기
-                    </p>
-                    <MdArrowForwardIos className='ml-1 inline' />
-                  </div>
-                )}
-              </div>
-            </>
-          </div>
-        ) : (
-          <div className='border-default-400 w-full rounded-2xl border py-2'>
-            <h3 className='text-default-500 py-14 text-center'>
-              아트워크 검색 결과가 없습니다.
-            </h3>
-          </div>
-        ))}
-
-      {data &&
-        (data.searchPosts.posts.length > 0 ? (
-          <div className='border-default-400 w-full rounded-2xl border py-2'>
-            <h3 className='mx-3 mb-2'>포스트 검색 결과</h3>
-            <div className='px-2'>
-              {data.searchPosts.posts.map((item) => (
-                <FeedListItemPost feed={item} key={item.id} />
-              ))}
-            </div>
-            {data.searchPosts.pageInfo.totalElements > 6 && (
-              <div className='hover:bg-default-100 mx-2 flex cursor-pointer items-center justify-start rounded-2xl px-3 py-2 transition'>
-                <p>
-                  {data.searchPosts.pageInfo.totalElements}개의 포스트 검색결과
-                  더보기
-                </p>
-                <MdArrowForwardIos className='ml-1 inline' />
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className='border-default-400 w-full rounded-2xl border py-2'>
-            <h3 className='text-default-500 py-14 text-center'>
-              포스트 검색 결과가 없습니다.
-            </h3>
-          </div>
-        ))}
-      {data &&
-        (data.searchAgoras.agoras.length > 0 ? (
-          <div className='border-default-400 w-full rounded-2xl border py-2'>
-            <h3 className='mx-3 mb-2'>아고라 검색 결과</h3>
-            <div className='px-2'>
-              {data.searchAgoras.agoras.map((item) => (
-                <AgoraItem agora={item} key={item.id} />
-              ))}
-            </div>
-            {data.searchAgoras.pageInfo.totalElements > 6 && (
-              <div className='hover:bg-default-100 mx-2 flex cursor-pointer items-center justify-start rounded-2xl px-3 py-2 transition'>
-                <p>
-                  {data.searchAgoras.pageInfo.totalElements}개의 아고라 검색결과
-                  더보기
-                </p>
-                <MdArrowForwardIos className='ml-1 inline' />
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className='border-default-400 w-full rounded-2xl border py-2'>
-            <h3 className='text-default-500 py-14 text-center'>
-              아고라 검색 결과가 없습니다.
-            </h3>
-          </div>
-        ))}
-      {/* {data && */}
-      {/*   (data.searchExhibitions.exhibitions.length > 0 ? ( */}
-      {/*     <div className='border-default-400 w-full rounded-2xl border py-2'> */}
-      {/*       <h3 className='mx-3 mb-2'>이벤트 검색 결과</h3> */}
-      {/*       <div className='px-2'> */}
-      {/*         {data.searchExhibitions.exhibitions.map((item) => ( */}
-      {/*           <EventListItem event={item} key={item.id} /> */}
-      {/*         ))} */}
-      {/*       </div> */}
-      {/*       {data.searchExhibitions.pageInfo.totalElements > 6 && ( */}
-      {/*         <div className='hover:bg-default-100 mx-2 flex cursor-pointer items-center justify-start rounded-2xl px-3 py-2 transition'> */}
-      {/*           <p> */}
-      {/*             {data.searchExhibitions.pageInfo.totalElements}개의 이벤트 */}
-      {/*             검색결과 더보기 */}
-      {/*           </p> */}
-      {/*           <MdArrowForwardIos className='ml-1 inline' /> */}
-      {/*         </div> */}
-      {/*       )} */}
-      {/*     </div> */}
-      {/*   ) : ( */}
-      {/*     <div className='border-default-400 w-full rounded-2xl border py-2'> */}
-      {/*       <h3 className='text-default-500 py-14 text-center'> */}
-      {/*         이벤트 검색 결과가 없습니다. */}
-      {/*       </h3> */}
-      {/*     </div> */}
-      {/*   ))} */}
+        data.searchArtworks &&
+        data.searchArtworks.artworks.length > 0 && (
+          <ArtworkSearchList
+            artworks={data.searchArtworks.artworks}
+            pageInfo={data.searchArtworks.pageInfo}
+            initialSearchKeyword={initialSearchKeyword}
+            expanded={tab === 'ARTWORK'}
+          />
+        )}
+      {data && data.searchPosts && data.searchPosts.posts.length > 0 && (
+        <PostSearchList
+          posts={data.searchPosts.posts}
+          pageInfo={data.searchPosts.pageInfo}
+          initialSearchKeyword={initialSearchKeyword}
+          expanded={tab === 'POST'}
+        />
+      )}
+      {data && data.searchAgoras && data.searchAgoras.agoras.length > 0 && (
+        <AgoraSearchList
+          agoras={data.searchAgoras.agoras}
+          pageInfo={data.searchAgoras.pageInfo}
+          initialSearchKeyword={initialSearchKeyword}
+          expanded={tab === 'AGORA'}
+        />
+      )}
     </div>
   );
 }
