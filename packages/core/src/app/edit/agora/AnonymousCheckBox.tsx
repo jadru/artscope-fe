@@ -31,8 +31,7 @@ const AnonymousCheckBox = ({
     onSelectionChange={(select) => {
       if (Array.from(select)[0] === 'true') setAnonymousType(true);
       else setAnonymousType(false);
-    }}
-  >
+    }}>
     {AnonymousSelectItems.map((item) => (
       <SelectItem key={String(item.value)} startContent={item.icon}>
         {item.label}

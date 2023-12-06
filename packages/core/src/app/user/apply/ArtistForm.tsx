@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
+// eslint-disable-next-line no-unused-vars
 import { ArtistForm } from '@/types/member';
 
 const artistSchema = yup.object().shape({

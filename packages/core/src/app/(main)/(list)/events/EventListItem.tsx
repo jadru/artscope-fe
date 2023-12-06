@@ -16,13 +16,11 @@ export default function EventListItem({
   return (
     <Link
       className='hover:bg-default-100 group-hover:bg-default-100 group flex flex-row items-center justify-between rounded-2xl bg-white px-1.5 py-1 transition md:z-10'
-      href={`/event/${event.id}?scheduleId=${event.eventSchedule.id}`}
-    >
+      href={`/event/${event.id}?scheduleId=${event.eventSchedule.id}`}>
       <div
         className={`text-default-800 flex flex-col justify-between overflow-x-hidden break-keep tracking-tight ${
           event.thumbnail.mediaUrl ? 'w-[calc(100%-3rem)]' : 'w-full'
-        }`}
-      >
+        }`}>
         <h4 className='font-title flex w-full justify-between text-[1.1rem]'>
           <StandardLabel label={event.title} />
         </h4>

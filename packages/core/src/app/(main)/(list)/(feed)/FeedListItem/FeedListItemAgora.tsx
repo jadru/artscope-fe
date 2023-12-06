@@ -17,15 +17,13 @@ export default function FeedListItemAgora({ feed }: { feed: feedItemType }) {
       className='flex w-full cursor-pointer space-x-2 rounded-xl bg-white px-3.5 py-3 transition-colors hover:bg-gray-100 md:mx-0'
       onClick={(e) => {
         e.stopPropagation();
-      }}
-    >
+      }}>
       <div className='flex w-full flex-col justify-between text-left'>
         <div className='flex justify-between'>
           <div
             className={`text-default-800 flex flex-col justify-between overflow-x-hidden break-keep tracking-tight ${
               feed.thumbnailUrl ? 'w-[calc(100%-3rem)]' : 'w-full'
-            }`}
-          >
+            }`}>
             <div className='line-clamp-3'>
               <h4 className='font-title flex w-full justify-between text-[1.1rem]'>
                 <StandardLabel label={feed.title} />

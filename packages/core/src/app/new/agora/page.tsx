@@ -56,7 +56,7 @@ const NewArtwork = () => {
           medias.length > 0 &&
           medias.reduce(
             (acc, cur) => (cur.file ? cur.file.size + acc : acc),
-            0,
+            0
           ) /
             1000000 >
             100
@@ -92,7 +92,7 @@ const NewArtwork = () => {
           'dto',
           new Blob([JSON.stringify(newState.dto)], {
             type: 'application/json',
-          }),
+          })
         );
         await jxios
           .post('/api/agoras', formData, {
@@ -116,7 +116,7 @@ const NewArtwork = () => {
         setIsUpload(false);
       }
     },
-    500,
+    500
   );
 
   return (

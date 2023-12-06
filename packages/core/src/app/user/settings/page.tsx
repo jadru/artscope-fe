@@ -136,8 +136,7 @@ export default function SettingsPage() {
       <div className='flex flex-col items-center justify-between'>
         <button
           onClick={() => inputRef?.current?.click()}
-          className='group relative my-2'
-        >
+          className='group relative my-2'>
           {data.picture ? (
             <ASNextImage
               src={data.picture}
@@ -185,8 +184,7 @@ export default function SettingsPage() {
         <Button
           color={usernameVerify ? 'primary' : 'default'}
           disabled={!usernameVerify}
-          onClick={changeUsername}
-        >
+          onClick={changeUsername}>
           아이디 변경
         </Button>
       </div>
@@ -200,8 +198,7 @@ export default function SettingsPage() {
         <Button
           color={data.name === nameEdit ? 'default' : 'primary'}
           disabled={data.name === nameEdit}
-          onClick={changeName}
-        >
+          onClick={changeName}>
           활동명 변경
         </Button>
       </div>

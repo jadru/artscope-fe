@@ -117,8 +117,7 @@ export default async function ArtworkPage({
                   }
                   title='YouTube video player'
                   allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                  allowFullScreen
-                ></iframe>
+                  allowFullScreen></iframe>
               )) || (
                 <video
                   className='relative h-auto w-full rounded-xl'

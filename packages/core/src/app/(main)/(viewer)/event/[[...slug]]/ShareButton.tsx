@@ -44,8 +44,7 @@ export default function ShareButton({
                 });
               });
         }
-      }}
-    >
+      }}>
       <BiShare size={20} />
       공유하기
     </button>

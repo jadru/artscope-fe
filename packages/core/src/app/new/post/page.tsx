@@ -32,7 +32,7 @@ const NewPost = () => {
         if (
           fileUrls.reduce(
             (acc, cur) => (cur.file ? cur.file.size + acc : acc),
-            0,
+            0
           ) /
             1000000 >
           100
@@ -63,7 +63,7 @@ const NewPost = () => {
           'dto',
           new Blob([JSON.stringify(newState.dto)], {
             type: 'application/json',
-          }),
+          })
         );
         await jxios
           .post('/api/posts', formData, {
@@ -88,7 +88,7 @@ const NewPost = () => {
         setIsUpload(false);
       }
     },
-    500,
+    500
   );
 
   return (
