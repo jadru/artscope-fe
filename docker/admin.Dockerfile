@@ -23,8 +23,9 @@ ENV NODE_ENV=production
 
 
 RUN rm /etc/nginx/conf.d/default.conf
-RUN  touch /var/run/nginx.pid && \
-     chown -R nginx:nginx /var/cache/nginx /var/run/nginx.pid \
+RUN touch /var/run/nginx.pid && \
+    chown -R nginx:nginx /var/cache/nginx /var/run/nginx.pid
+
 
 USER nginx
 COPY --chown=nginx:nginx packages/admin/default.conf /etc/nginx/conf.d/default.conf
