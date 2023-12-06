@@ -21,12 +21,13 @@ FROM nginxinc/nginx-unprivileged:latest as runner
 
 ENV NODE_ENV=production
 
+RUN rm /etc/nginx/conf.d/default.conf
+
 COPY packages/admin/default.conf /etc/nginx/conf.d/default.conf
-RUN chmod 777 /var/cache/nginx /var/run /var/log/nginx /etc/nginx/conf.d/default.conf
+RUN chmod 777 /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/packages/admin/dist /usr/share/nginx/html
 #COPY --from=builder --chown=reactjs:nodejs /app/node_modules /usr/share/nginx/html/node_modules
 
-RUN rm /etc/nginx/conf.d/default.conf
 
 
 EXPOSE 3000
