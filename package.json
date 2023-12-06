@@ -11,12 +11,12 @@
     "admin": "yarn workspace @artscope/admin",
     "lint": "eslint ./packages --ext .ts,.tsx,.js,.jsx --cache",
     "lint:fix": "eslint src --fix && yarn format",
-    "lint:strict": "eslint --max-warnings=0 src",
+    "lint:strict": "eslint --max-warnings=0 ./packages",
     "typecheck": "yarn workspace @artscope/core typecheck",
     "test:watch": "yarn workspace @artscope/core --watch",
     "test": "yarn workspace @artscope/core test",
-    "format": "prettier -w .",
-    "format:check": "prettier -c .",
+    "format": "prettier -w ./packages",
+    "format:check": "prettier -c ./packages",
     "prepare": "husky install"
   },
   "devDependencies": {
