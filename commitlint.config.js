@@ -18,4 +18,13 @@ module.exports = {
       ],
     ],
   },
+  'type-case': [
+    0,
+    'always',
+    'lower-case',
+    'sentence-case',
+    'start-case',
+    'pascal-case',
+    'upper-case',
+  ],
 };

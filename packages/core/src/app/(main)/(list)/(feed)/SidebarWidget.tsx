@@ -44,8 +44,7 @@ export default function SidebarWidget() {
     <div
       ref={containerRef}
       className='sticky w-full space-y-2 self-start pb-4 pt-0'
-      style={{ top: topStyle }}
-    >
+      style={{ top: topStyle }}>
       {!isMobile && (
         <>
           <RecentPostWidget />
@@ -59,22 +58,19 @@ export default function SidebarWidget() {
           <Link
             href='https://jadru.notion.site/Artscope-5d99f78df8c64d019bd21a02eb1f80d2?pvs=4'
             target='_blank'
-            className='hover:text-primary text-[0.88rem]'
-          >
+            className='hover:text-primary text-[0.88rem]'>
             가이드
           </Link>
           <Link
             href='https://forms.gle/F9V9gppnKXXBRE4d6'
             target='_blank'
-            className='hover:text-primary text-[0.88rem]'
-          >
+            className='hover:text-primary text-[0.88rem]'>
             피드백
           </Link>
           <Link
             href='https://www.plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/privacy-policy'
             target='_blank'
-            className='hover:text-primary text-[0.88rem]'
-          >
+            className='hover:text-primary text-[0.88rem]'>
             개인정보 처리방침
           </Link>
         </div>
@@ -82,15 +78,13 @@ export default function SidebarWidget() {
           <Link
             href='https://www.instagram.com/artscope.kr/'
             target='_blank'
-            className='hover:text-primary flex items-center gap-0.5'
-          >
+            className='hover:text-primary flex items-center gap-0.5'>
             <FiInstagram size={18} />
           </Link>
           <Link
             href='https://mediaxi.kr/'
             target='_blank'
-            className='hover:text-primary flex items-center gap-0.5'
-          >
+            className='hover:text-primary flex items-center gap-0.5'>
             <FiCompass size={18} />
           </Link>
           <p className='px-2 text-center text-[0.88rem]'>© 2023 Artscope.</p>

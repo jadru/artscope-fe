@@ -4,6 +4,7 @@ import { profileApiResponseType } from '@/types/profile';
 
 type userType = {
   user: profileApiResponseType | undefined;
+  // eslint-disable-next-line no-unused-vars
   setUser: (user: profileApiResponseType | undefined) => void;
   clearUser: () => void;
   setNotLogin: () => void;

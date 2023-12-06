@@ -9,11 +9,13 @@ type Props = {
   index: number;
 };
 
+// eslint-disable-next-line no-unused-vars
 const _maxTagCount = 20;
 
 export default function Index({ schedule, setSchedule, index }: Props) {
   const [search, setSearch] = React.useState<string>();
 
+  // eslint-disable-next-line no-unused-vars
   const _handleAddUsername = (username: string) => {
     if (username === '') return;
     schedule[index].participants.length === 0
@@ -68,8 +70,7 @@ export default function Index({ schedule, setSchedule, index }: Props) {
               }}
               className='animate-appearance-in m-1 h-8 rounded-xl bg-blue-50'
               size='lg'
-              key={item.name ?? item.username}
-            >
+              key={item.name ?? item.username}>
               {item.name ?? item.username}
             </Chip>
           ))}
@@ -77,8 +78,7 @@ export default function Index({ schedule, setSchedule, index }: Props) {
         <div className='relative m-1 h-8 w-40 rounded-xl bg-blue-50'>
           <Kbd
             keys={['enter']}
-            className='absolute bottom-auto right-2 top-1/2 -translate-y-1/2'
-          ></Kbd>
+            className='absolute bottom-auto right-2 top-1/2 -translate-y-1/2'></Kbd>
           <input
             className='m-1 h-6 max-h-6 w-32 rounded-xl !border-0 bg-transparent p-2 focus:border-none focus:shadow-none focus:shadow-transparent focus:ring-0'
             placeholder='참여 예술가 추가'

@@ -32,16 +32,14 @@ const Login = () => {
             <Link
               href='https://plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/consent/1.html'
               target='_blank'
-              className='font-bold text-black underline'
-            >
+              className='font-bold text-black underline'>
               개인정보 수집 및 이용 동의서
             </Link>
             {' 및 '}
             <Link
               href='https://www.plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/privacy-policy'
               target='_blank'
-              className='font-bold text-black underline'
-            >
+              className='font-bold text-black underline'>
               개인정보 처리방침
             </Link>
             에
@@ -57,8 +55,7 @@ const Login = () => {
           color='secondary'
           variant='flat'
           onClick={() => router.push('/user/signup')}
-          className='w-1/2'
-        >
+          className='w-1/2'>
           회원가입
         </Button>
         <Button
@@ -68,8 +65,7 @@ const Login = () => {
           startContent={<AiOutlineGoogle className='h-6 w-6 text-lg' />}
           onClick={() =>
             router.push(NEXT_PUBLIC_API_URL + '/oauth2/authorization/google')
-          }
-        >
+          }>
           구글로 로그인
         </Button>
       </div>

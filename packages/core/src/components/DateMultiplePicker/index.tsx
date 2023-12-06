@@ -39,7 +39,7 @@ export default function DateMultiplePicker({
       eachDayOfInterval({
         start: startOfMonth(startOfDay(standardDate)),
         end: endOfMonth(standardDate),
-      }).filter((date) => date >= startDate && date <= endDate),
+      }).filter((date) => date >= startDate && date <= endDate)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [standardDate]);
@@ -67,7 +67,7 @@ export default function DateMultiplePicker({
     (date: Date) => {
       setSelectedDate((prev) => {
         const index = prev.findIndex(
-          (d) => d.toDateString() === date.toDateString(),
+          (d) => d.toDateString() === date.toDateString()
         );
         if (index !== -1) {
           const newSelectedDate = [...prev];
@@ -81,7 +81,7 @@ export default function DateMultiplePicker({
         }
       });
     },
-    [multiple],
+    [multiple]
   );
 
   const getDayClass = React.useCallback(
@@ -114,7 +114,7 @@ export default function DateMultiplePicker({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [hoverDate, selectedDate],
+    [hoverDate, selectedDate]
   );
 
   return (
@@ -175,7 +175,7 @@ export default function DateMultiplePicker({
           </div>
         ))}
         {Array.from(
-          Array(getDay(startOfMonth(startOfDay(standardDate)))).keys(),
+          Array(getDay(startOfMonth(startOfDay(standardDate)))).keys()
         ).map((day, idx) => (
           <div
             key={idx}
@@ -185,7 +185,7 @@ export default function DateMultiplePicker({
           <div
             key={idx}
             className={`animate-appearance-in flex h-10 cursor-pointer items-center justify-center rounded-2xl transition ${getDayClass(
-              day,
+              day
             )}`}
             onMouseOver={() => setHoverDate(day)}
             onMouseOut={() => setHoverDate(undefined)}

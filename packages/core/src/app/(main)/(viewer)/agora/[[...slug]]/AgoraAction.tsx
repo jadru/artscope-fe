@@ -141,8 +141,7 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
               handleVote('disagree');
             }
           }}
-          disabled={button !== undefined && button !== 'disagree'}
-        >
+          disabled={button !== undefined && button !== 'disagree'}>
           {/* <BiX size={30} /> */}
           <p>
             {data.agora.disagreeText} {disagreeCount}
@@ -163,8 +162,7 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
               handleVote('natural');
             }
           }}
-          disabled={button !== undefined && button !== 'natural'}
-        >
+          disabled={button !== undefined && button !== 'natural'}>
           {/* <BiQuestionMark size={23} /> */}
           <p>
             {data.agora.naturalText} {naturalCount}
@@ -185,8 +183,7 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
               handleVote('agree');
             }
           }}
-          disabled={button !== undefined && button !== 'agree'}
-        >
+          disabled={button !== undefined && button !== 'agree'}>
           {/* <BiCircle size={23} /> */}
           <p>
             {data.agora.agreeText} {agreeCount}
@@ -196,12 +193,10 @@ export default function AgoraAction({ data }: { data: AgoraDetailType }) {
       {modal && (
         <div
           className='fixed left-0 top-0 z-[51] mx-auto flex h-screen w-screen items-center justify-center bg-black/50'
-          onClick={() => setModal(false)}
-        >
+          onClick={() => setModal(false)}>
           <div
             className='h-screen w-screen bg-white md:h-[400px] md:w-[500px] md:rounded-3xl'
-            onClick={(e) => e.stopPropagation()}
-          >
+            onClick={(e) => e.stopPropagation()}>
             <div className='flex h-[calc(100vh-70px)] w-screen flex-col justify-center gap-3 p-4 md:h-[400px] md:w-[500px]'>
               <textarea
                 id='opinion'

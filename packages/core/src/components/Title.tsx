@@ -18,8 +18,7 @@ const Title = ({
   <div
     className={`flex flex-col justify-between ${
       divider ? 'border-b' : ''
-    } md:flex-row ${className} px-3 py-3`}
-  >
+    } md:flex-row ${className} px-3 py-3`}>
     <div>
       <h1 className='text-3xl font-bold'>{title}</h1>
       {description && (

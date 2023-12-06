@@ -10,8 +10,7 @@ export default function ArtworkTags({ tags }: { tags: string[] }) {
             <Link
               href={'/search?c=' + value}
               key={value}
-              className='border-default-300 bg-default-100 text-default-600 hover:border-default-800 hover:bg-default-200 rounded-full border px-2 pb-0.5 pt-1 transition-colors duration-200'
-            >
+              className='border-default-300 bg-default-100 text-default-600 hover:border-default-800 hover:bg-default-200 rounded-full border px-2 pb-0.5 pt-1 transition-colors duration-200'>
               {value}
             </Link>
           )

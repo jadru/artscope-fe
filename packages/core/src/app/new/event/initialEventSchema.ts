@@ -7,7 +7,7 @@ export const initialEventSchema: CreateEventType = {
     title: '',
     description: '',
     eventType: 'STANDARD',
-    price: 0,
+    price: '',
     medias: [],
     thumbnail: { mediaType: 'image' },
     link: '',

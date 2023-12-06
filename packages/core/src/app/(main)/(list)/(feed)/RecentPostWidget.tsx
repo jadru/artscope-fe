@@ -30,13 +30,11 @@ export default function RecentPostWidget() {
           <button
             className='hover:border-default-300 w-full truncate rounded-xl border border-transparent px-2.5 py-1.5 text-left transition-colors hover:bg-white'
             key={p.id}
-            onClick={() => push('/post/' + p.id)}
-          >
+            onClick={() => push('/post/' + p.id)}>
             <MarkdownViewer
               className='line-clamp-1 !text-[0.9rem]'
               ignoreMarkdown
-              ignoreHTML
-            >
+              ignoreHTML>
               {p.content}
             </MarkdownViewer>
           </button>

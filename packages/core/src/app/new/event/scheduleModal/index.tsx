@@ -129,8 +129,7 @@ export default function ScheduleModal(Props: ScheduleModalProps) {
         onPress={onOpen}
         color='primary'
         startContent={<BiCalendar />}
-        variant='light'
-      >
+        variant='light'>
         스케줄 {Props.schedule.length > 0 ? '수정' : '생성'}
       </Button>
       <Modal
@@ -139,8 +138,7 @@ export default function ScheduleModal(Props: ScheduleModalProps) {
         onOpenChange={onOpenChange}
         isDismissable={false}
         size='3xl'
-        scrollBehavior='inside'
-      >
+        scrollBehavior='inside'>
         <ModalContent>
           {(onClose) => (
             <>
@@ -161,8 +159,7 @@ export default function ScheduleModal(Props: ScheduleModalProps) {
                       handleStep3();
                     }
                     onClose();
-                  }}
-                >
+                  }}>
                   <Step1
                     schedule={Props.schedule}
                     setSchedule={Props.setSchedule}

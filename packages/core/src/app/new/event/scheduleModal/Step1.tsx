@@ -34,8 +34,7 @@ export default function Step1({
             isDayRotate: value,
             isDone: !value,
           });
-        }}
-      >
+        }}>
         이벤트가 이틀 이상 반복됩니다.
       </Checkbox>
       <Checkbox
@@ -46,8 +45,7 @@ export default function Step1({
             isDayRotate: !value,
             isDone: value ? undefined : true,
           });
-        }}
-      >
+        }}>
         이벤트가 하루만에 끝납니다.
       </Checkbox>
       {step1.isDayRotate === true && (
@@ -70,8 +68,7 @@ export default function Step1({
               if (value) {
                 setSchedule([initialScheduleSchema]);
               }
-            }}
-          >
+            }}>
             일정이 하나면 충분합니다.
           </Checkbox>
           <Checkbox
@@ -85,8 +82,7 @@ export default function Step1({
               if (!value) {
                 setSchedule([initialScheduleSchema]);
               }
-            }}
-          >
+            }}>
             2개 이상 세션이 있습니다.
           </Checkbox>
         </>
@@ -117,8 +113,7 @@ export default function Step1({
                           },
                     ]);
                   }}
-                  className='text-default-500 hover:text-default-900 flex items-center justify-center gap-2 text-sm'
-                >
+                  className='text-default-500 hover:text-default-900 flex items-center justify-center gap-2 text-sm'>
                   + 일정 추가
                 </button>
               )}
@@ -127,8 +122,7 @@ export default function Step1({
               {schedule.map((item, index) => (
                 <div
                   key={item.id}
-                  className='flex flex-col gap-3 rounded-xl border p-2'
-                >
+                  className='flex flex-col gap-3 rounded-xl border p-2'>
                   <div className='flex justify-between'>
                     <div className='flex items-center justify-start gap-1'>
                       <AddLocation
@@ -170,8 +164,7 @@ export default function Step1({
                                   (deleteItem) => deleteItem.id !== item.id
                                 )
                           )
-                        }
-                      >
+                        }>
                         삭제
                       </button>
                     )}

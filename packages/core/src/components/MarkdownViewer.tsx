@@ -30,8 +30,7 @@ export default function MarkdownViewer({
               [rehypeExternalLinks, { target: '_blank', rel: 'noreferrer' }],
               rehypeRaw,
             ]
-      }
-    >
+      }>
       {lodash.unescape(decode(children))}
     </ReactMarkdown>
   );

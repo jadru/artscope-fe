@@ -52,8 +52,7 @@ export default function Step3() {
               ...step3,
               hasSpecialTime: value,
             });
-          }}
-        >
+          }}>
           요일별로 운영시간이 다릅니다.
         </Checkbox>
         {step3.hasSpecialTime && (
@@ -84,8 +83,7 @@ export default function Step3() {
                         ),
                       });
                     }
-                  }}
-                >
+                  }}>
                   {day}
                 </Checkbox>
               ))}
@@ -99,8 +97,7 @@ export default function Step3() {
             .map((time, index) => (
               <div
                 className='flex flex-col gap-2 rounded-2xl border-2 p-3'
-                key={time.dayOfWeek}
-              >
+                key={time.dayOfWeek}>
                 <p>
                   {['일', '월', '화', '수', '목', '금', '토'][time.dayOfWeek]}
                   요일 오픈하는 시간을 알려주세요.

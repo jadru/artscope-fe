@@ -24,6 +24,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
   const { user, isLogin } = useUser();
   const { push } = useRouter();
   const pathname = usePathname();
+  // eslint-disable-next-line no-unused-vars
   const _theme = theme;
 
   const ProfileDropdown = () =>
@@ -58,8 +59,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
                 push('/user/signout');
                 break;
             }
-          }}
-        >
+          }}>
           <DropdownItem key='profile' className='h-14 gap-1'>
             <p className='text-lg font-semibold'>{user.name}</p>
             <p className='font-semibold'>@{user.username}</p>
@@ -80,8 +80,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
       return (
         <button
           className='bg border-default-700 text-default-700 hover:bg-default-100 flex h-10 w-20 items-center justify-center gap-1 rounded-lg'
-          onClick={() => push('/user/apply')}
-        >
+          onClick={() => push('/user/apply')}>
           <BiPen size={23} />
           <p className='pt-0.5'>정보 입력</p>
         </button>
@@ -100,8 +99,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
             variant='flat'
             onAction={(key) => {
               push(key as string);
-            }}
-          >
+            }}>
             <DropdownItem key='/new/post'>새 포스트</DropdownItem>
             <DropdownItem key='/new/artwork'>새 작품</DropdownItem>
             <DropdownItem key='/new/event'>새 이벤트</DropdownItem>
@@ -117,8 +115,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
         <div className='mx-auto flex max-w-screen-sm flex-col items-start justify-between px-2.5 md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl'>
           <Link
             className='text-medium group box-border flex h-12 basis-0 cursor-pointer appearance-none flex-row flex-nowrap items-end justify-start whitespace-nowrap bg-transparent no-underline md:hidden'
-            href='/'
-          >
+            href='/'>
             <Logo className='h-12 w-32 overflow-hidden fill-black px-2 pb-0 pt-2 transition duration-100' />
           </Link>
           <div className='flex h-14 w-full items-center justify-between'>
@@ -135,8 +132,7 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
                       : pathname.startsWith(item.slug)
                       ? 'underline'
                       : ''
-                  }`}
-                >
+                  }`}>
                   {item.name}
                 </Link>
               ))}
@@ -145,15 +141,13 @@ export default function Navbar({ theme }: { theme: 'light' | 'dark' }) {
                 key='search'
                 className={`px-2 py-2 font-bold decoration-2 underline-offset-4 transition hover:underline ${
                   pathname.startsWith('/search') ? 'text-indigo-700' : ''
-                }`}
-              >
+                }`}>
                 <BiSearch size={17} className='mt-0.5 stroke-1' />
               </Link>
             </div>
             <Link
               href='/'
-              className='text-medium group box-border hidden h-10 basis-0 cursor-pointer appearance-none flex-row flex-nowrap items-end justify-start whitespace-nowrap bg-transparent no-underline md:flex'
-            >
+              className='text-medium group box-border hidden h-10 basis-0 cursor-pointer appearance-none flex-row flex-nowrap items-end justify-start whitespace-nowrap bg-transparent no-underline md:flex'>
               <Logo className='group-hover:fill-primary h-10 w-32 overflow-hidden fill-black px-2 pb-1 pt-1 transition duration-100' />
             </Link>
             <div className='flex gap-1.5'>

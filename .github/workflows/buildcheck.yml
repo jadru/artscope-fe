@@ -1,0 +1,39 @@
+name: build-check
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: "true"
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install corepack
+        run: npm install -g corepack
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Check build
+        run: |
+          yarn set version from sources
+          yarn install --immutable --immutable-cache
+          yarn core build

@@ -32,8 +32,7 @@ export default function NewTagView({ tagCount, setTagCount }: Props) {
             className='animate-appearance-in m-1 h-8'
             size='lg'
             key={item}
-            startContent={<FaHashtag />}
-          >
+            startContent={<FaHashtag />}>
             {item}
           </Chip>
         ))}
@@ -42,8 +41,7 @@ export default function NewTagView({ tagCount, setTagCount }: Props) {
           <FaHashtag className='absolute bottom-auto left-2 top-1/2 -translate-y-1/2' />
           <Kbd
             keys={['enter']}
-            className='absolute bottom-auto right-2 top-1/2 -translate-y-1/2'
-          ></Kbd>
+            className='absolute bottom-auto right-2 top-1/2 -translate-y-1/2'></Kbd>
           <input
             className='m-1 ml-5 h-6 max-h-6 w-24 rounded-full !border-0 bg-transparent p-2 focus:border-none focus:shadow-none focus:shadow-transparent focus:ring-0'
             placeholder='태그 추가'

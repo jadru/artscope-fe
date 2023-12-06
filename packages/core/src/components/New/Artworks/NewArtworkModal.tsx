@@ -46,7 +46,6 @@ export default function NewArtworkModal({
   const [isExpanded, setIsExpanded] = useState(false);
   const [publicType, setPublicType] = useState<PublicType>('public');
   const [fileUrls, setFileUrls] = useState<ArtWorkMediaType[]>([]);
-  const [imgs, setImgs] = useState<string[]>([]);
   const [isUpload, setIsUpload] = useState(false);
   const [tagCount, setTagCount] = useState<string[]>([]);
   const [postContent, setPostContent] = useState<string>('');
@@ -75,7 +74,7 @@ export default function NewArtworkModal({
     ) {
       preventGoBack();
     }
-  }, [imgs, isOpen, postContent, postTitle, publicType, tagCount, fileUrls]);
+  }, [isOpen, postContent, postTitle, publicType, tagCount, fileUrls]);
 
   const handleCreateSaveButton = async () => {
     if (isUpload) return;
@@ -203,7 +202,6 @@ export default function NewArtworkModal({
 
   const resetAfterUpload = () => {
     setFileUrls([]);
-    setImgs([]);
     setTagCount([]);
     setPostContent('');
     setPostTitle('');
@@ -220,8 +218,7 @@ export default function NewArtworkModal({
         ) && onClose();
       }}
       size={isExpanded ? 'full' : 'xl'}
-      className='!max-h-screen transition-all duration-100'
-    >
+      className='!max-h-screen transition-all duration-100'>
       <ModalContent>
         {(onClose) => (
           <>
@@ -229,8 +226,7 @@ export default function NewArtworkModal({
               <button
                 onClick={() => {
                   setIsExpanded(!isExpanded);
-                }}
-              >
+                }}>
                 {isExpanded ? (
                   <AiOutlineFullscreenExit className='h-6 w-6 text-lg hover:text-blue-600' />
                 ) : (
@@ -258,12 +254,7 @@ export default function NewArtworkModal({
               </div>
               <div className='max-w-full gap-1'>
                 <NewTagView tagCount={tagCount} setTagCount={setTagCount} />
-                <NewMediaView
-                  fileUrls={fileUrls}
-                  setFileUrls={setFileUrls}
-                  setImgs={setImgs}
-                  imgs={imgs}
-                />
+                <NewMediaView fileUrls={fileUrls} setFileUrls={setFileUrls} />
               </div>
             </ModalBody>
             <Divider />
@@ -274,8 +265,7 @@ export default function NewArtworkModal({
                 onPress={handleCreateSaveButton}
                 disabled={isUpload}
                 isLoading={isUpload}
-                fullWidth
-              >
+                fullWidth>
                 {submitBtnText}
               </Button>
             </ModalFooter>
