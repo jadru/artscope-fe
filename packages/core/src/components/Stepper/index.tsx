@@ -15,6 +15,7 @@ export type titleWithIcon = {
 type StepperProps = {
   titlesWithIcon: titleWithIcon[];
   children: React.ReactNode[];
+  // eslint-disable-next-line no-unused-vars
   onFinish?: (step: number) => void;
   isDone: (boolean | undefined)[];
 };

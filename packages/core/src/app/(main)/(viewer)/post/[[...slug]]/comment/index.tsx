@@ -115,8 +115,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
             className='ml-2'
             color='primary'
             size='lg'
-            onClick={submitComment}
-          >
+            onClick={submitComment}>
             작성
           </Button>
         </div>
@@ -155,8 +154,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                         return;
                       }
                       setTocomment(comment.id);
-                    }}
-                  >
+                    }}>
                     댓글
                   </h5>
 
@@ -164,8 +162,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                     (user?.username === comment.authorUsername || isAdmin) && (
                       <h5
                         className='ml-2 cursor-pointer text-lg font-bold text-gray-500 hover:underline'
-                        onClick={() => handleCommentDelete(comment.id)}
-                      >
+                        onClick={() => handleCommentDelete(comment.id)}>
                         삭제
                       </h5>
                     )}
@@ -205,8 +202,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                               isLogin
                                 ? setTocomment(reComment.id)
                                 : push('/user/login');
-                            }}
-                          >
+                            }}>
                             댓글
                           </h5>
                           {user &&
@@ -216,8 +212,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                                 className='ml-2 cursor-pointer text-lg font-bold text-gray-500 hover:underline'
                                 onClick={() =>
                                   handleCommentDelete(reComment.id)
-                                }
-                              >
+                                }>
                                 삭제
                               </h5>
                             )}
@@ -227,8 +222,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                             className='cursor-pointer font-bold text-blue-500 hover:underline'
                             onClick={() =>
                               push('/profile/' + reComment.authorUsername)
-                            }
-                          >
+                            }>
                             {reComment.mentionUsername
                               ? '@' + reComment.mentionUsername + '  '
                               : ''}
@@ -256,8 +250,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                           className='ml-2'
                           color='primary'
                           size='lg'
-                          onClick={submitRecomment}
-                        >
+                          onClick={submitRecomment}>
                           작성
                         </Button>
                       </div>
@@ -285,8 +278,7 @@ export default function Index({ post: PostData }: { post: SinglePostType }) {
                   className='ml-2'
                   color='primary'
                   size='lg'
-                  onClick={submitRecomment}
-                >
+                  onClick={submitRecomment}>
                   작성
                 </Button>
               </div>

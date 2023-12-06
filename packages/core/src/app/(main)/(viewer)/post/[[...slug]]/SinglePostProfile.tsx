@@ -9,8 +9,7 @@ export default function SinglePostProfile({ feed }: { feed: SinglePostType }) {
   return (
     <Link
       className='cursor-pointer p-0'
-      href={`/profile/${feed.authorUsername}`}
-    >
+      href={`/profile/${feed.authorUsername}`}>
       <div className='flex flex-row items-start justify-start gap-2 p-3 transition hover:underline'>
         <ASNextImage
           src={feed.authorProfileImageUrl || 'prod/images/default.jpg'}
@@ -26,8 +25,7 @@ export default function SinglePostProfile({ feed }: { feed: SinglePostType }) {
           <p
             className={`${
               feed.authorDescription ? 'ml-0.5 inline w-full' : ''
-            } text-default-500 line-clamp-1 text-[0.9rem]`}
-          >
+            } text-default-500 line-clamp-1 text-[0.9rem]`}>
             @{feed.authorUsername}{' '}
             {feed.authorDescription
               ? '- ' + <StandardLabel label={feed.authorDescription} />

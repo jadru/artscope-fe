@@ -51,8 +51,7 @@ export default function IndexLegacy({
         theme === 'light'
           ? 'text-default-900 bg-white'
           : 'bg-default-900 text-white'
-      } border-default-200 border-b`}
-    >
+      } border-default-200 border-b`}>
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
@@ -61,8 +60,7 @@ export default function IndexLegacy({
         <NavbarBrand>
           <div
             onClick={() => push('/')}
-            className='text-medium group box-border flex flex-grow basis-0 cursor-pointer flex-row flex-nowrap items-center justify-start whitespace-nowrap bg-transparent no-underline'
-          >
+            className='text-medium group box-border flex flex-grow basis-0 cursor-pointer flex-row flex-nowrap items-center justify-start whitespace-nowrap bg-transparent no-underline'>
             <Logo className='group-hover:fill-secondary h-20 w-24 overflow-hidden fill-[#22bce0] transition duration-100' />
           </div>
         </NavbarBrand>
@@ -72,8 +70,7 @@ export default function IndexLegacy({
           'hidden gap-4 sm:flex ' +
           (theme === 'light' ? 'text-default-700' : 'text-dark-200')
         }
-        justify='center'
-      >
+        justify='center'>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item.name}-${index}`}>
             <Link
@@ -90,8 +87,7 @@ export default function IndexLegacy({
                     ? 'text-primary'
                     : 'text-secondary'
                   : ''
-              }`}
-            >
+              }`}>
               {item.name}
             </Link>
           </NavbarMenuItem>
@@ -139,8 +135,7 @@ export default function IndexLegacy({
                     push('/user/signout');
                     break;
                 }
-              }}
-            >
+              }}>
               <DropdownItem key='profile' className='h-14 gap-1'>
                 <p className='text-lg font-semibold'>{user.name}</p>
                 <p className='font-semibold'>@{user.username}</p>
@@ -187,8 +182,7 @@ export default function IndexLegacy({
               }`}
               onClick={() => {
                 setIsMobileMenuOpen(false);
-              }}
-            >
+              }}>
               {item.name}
             </Link>
           </NavbarMenuItem>

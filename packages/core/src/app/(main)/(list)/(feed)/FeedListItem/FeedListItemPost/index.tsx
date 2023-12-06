@@ -29,16 +29,14 @@ export default function Index({ feed }: { feed: feedItemType }) {
       onClick={(e) => {
         e.stopPropagation();
         push(`/post/${feed.id}`);
-      }}
-    >
+      }}>
       <div>
         <button
           onClick={(e) => {
             e.stopPropagation();
             push(`/profile/${feed.authorUsername}`);
           }}
-          className='bg-dark hover:border-default-500 flex-shrink-0 overflow-hidden rounded-full border border-transparent transition hover:opacity-80'
-        >
+          className='bg-dark hover:border-default-500 flex-shrink-0 overflow-hidden rounded-full border border-transparent transition hover:opacity-80'>
           <ASNextImage
             src={feed.authorProfileImageUrl ?? 'prod/images/default.jpg'}
             alt={feed.authorName}
@@ -57,8 +55,7 @@ export default function Index({ feed }: { feed: feedItemType }) {
                 onClick={(e) => {
                   e.stopPropagation();
                   push(`/profile/${feed.authorUsername}`);
-                }}
-              >
+                }}>
                 <p className='font-title inline text-[0.9rem] transition group-hover:text-blue-600 '>
                   <StandardLabel label={feed.authorName} />
                 </p>

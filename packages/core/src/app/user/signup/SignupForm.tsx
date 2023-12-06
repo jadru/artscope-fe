@@ -211,16 +211,14 @@ const SignupForm = () => {
             <Link
               className='link-primary link'
               href='https://plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/consent/1.html'
-              target='_blank'
-            >
+              target='_blank'>
               개인정보 수집 및 이용
             </Link>
             {' 및 '}
             <Link
               className='link-primary link'
               href='https://www.plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/privacy-policy'
-              target='_blank'
-            >
+              target='_blank'>
               개인정보 처리방침
             </Link>
             에 동의합니다.
@@ -236,8 +234,7 @@ const SignupForm = () => {
         color='primary'
         fullWidth
         disabled={isSubmitting}
-        isLoading={isSubmitting}
-      >
+        isLoading={isSubmitting}>
         회원가입
       </Button>
     </form>

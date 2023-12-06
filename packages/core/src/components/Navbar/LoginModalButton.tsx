@@ -43,8 +43,7 @@ export default function LoginModal({
         onPress={onOpen}
         variant='flat'
         color='primary'
-        className='text-[0.8rem]'
-      >
+        className='text-[0.8rem]'>
         {btnText}
       </Button>
       <Modal backdrop='blur' isOpen={isOpen} onClose={onClose}>
@@ -82,16 +81,16 @@ export default function LoginModal({
                   variant='shadow'
                   fullWidth
                   onPress={handleLogin}
-                  startContent={<AiOutlineGoogle className='h-6 w-6 text-lg' />}
-                >
+                  startContent={
+                    <AiOutlineGoogle className='h-6 w-6 text-lg' />
+                  }>
                   {title}하기
                 </Button>
                 <Button
                   color='secondary'
                   variant='light'
                   fullWidth
-                  onPress={handleNativeLogin}
-                >
+                  onPress={handleNativeLogin}>
                   이메일로 로그인 / 회원가입하기
                 </Button>
               </ModalFooter>

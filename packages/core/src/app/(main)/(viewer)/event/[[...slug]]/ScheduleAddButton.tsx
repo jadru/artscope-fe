@@ -43,7 +43,9 @@ export default function ScheduleAddButton(Props: SchduleAddButtonProps) {
 
   const handleAddSchedule = async () =>
     jxios.post(`/api/exhibitions/${Props.eventid}/schedule`, {
+      // eslint-disable-next-line
       startDateTime: format(schedule[0].startDateTime, "yyyy-MM-dd'T'HH:mm"),
+      // eslint-disable-next-line
       endDateTime: format(schedule[0].endDateTime, "yyyy-MM-dd'T'HH:mm"),
       locationId: schedule[0].locationId,
       detailLocation: schedule[0].detailLocation,
@@ -58,8 +60,7 @@ export default function ScheduleAddButton(Props: SchduleAddButtonProps) {
         onOpenChange={onOpenChange}
         placement='top-center'
         hideCloseButton
-        isDismissable={false}
-      >
+        isDismissable={false}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -96,8 +97,7 @@ export default function ScheduleAddButton(Props: SchduleAddButtonProps) {
                 />
                 <LocalizationProvider
                   dateAdapter={AdapterDateFns}
-                  adapterLocale={ko}
-                >
+                  adapterLocale={ko}>
                   <div className='flex flex-col gap-2'>
                     <DateTimePicker
                       label='시작 시간'
@@ -147,8 +147,7 @@ export default function ScheduleAddButton(Props: SchduleAddButtonProps) {
                   onPress={() => {
                     setSchedule([initialScheduleSchema]);
                     onClose();
-                  }}
-                >
+                  }}>
                   취소
                 </Button>
                 <Button
@@ -157,8 +156,7 @@ export default function ScheduleAddButton(Props: SchduleAddButtonProps) {
                     handleAddSchedule();
                     onClose();
                     refresh();
-                  }}
-                >
+                  }}>
                   추가
                 </Button>
               </ModalFooter>

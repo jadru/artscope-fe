@@ -9,37 +9,32 @@ export default function Footer() {
         <Link
           href='https://jadru.notion.site/Artscope-5d99f78df8c64d019bd21a02eb1f80d2?pvs=4'
           target='_blank'
-          className='hover:text-primary font-bold'
-        >
+          className='hover:text-primary font-bold'>
           가이드
         </Link>
         <Link
           href='https://forms.gle/F9V9gppnKXXBRE4d6'
           target='_blank'
-          className='hover:text-primary font-bold'
-        >
+          className='hover:text-primary font-bold'>
           피드백
         </Link>
         <Link
           href='https://www.plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/privacy-policy'
           target='_blank'
-          className='hover:text-primary font-bold'
-        >
+          className='hover:text-primary font-bold'>
           개인정보 처리방침
         </Link>
         <Divider orientation='vertical' />
         <Link
           href='https://www.instagram.com/artscope.kr/'
           target='_blank'
-          className='hover:text-primary flex items-center gap-0.5'
-        >
+          className='hover:text-primary flex items-center gap-0.5'>
           <FiInstagram size={20} />
         </Link>
         <Link
           href='https://mediaxi.kr/'
           target='_blank'
-          className='hover:text-primary flex items-center gap-0.5'
-        >
+          className='hover:text-primary flex items-center gap-0.5'>
           <FiCompass size={20} />
         </Link>
       </div>

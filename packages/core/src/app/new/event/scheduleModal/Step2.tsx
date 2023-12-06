@@ -41,8 +41,7 @@ export default function Step2() {
             <Checkbox
               onValueChange={(value) => {
                 setHoliday(value);
-              }}
-            >
+              }}>
               휴일이 있습니다.
             </Checkbox>
           )}

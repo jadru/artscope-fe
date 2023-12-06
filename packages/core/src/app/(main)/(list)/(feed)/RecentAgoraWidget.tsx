@@ -35,8 +35,7 @@ export default function RecentAgoraWidget() {
           <button
             className='hover:border-default-300 w-full truncate rounded-xl border border-transparent px-2.5 py-1.5 text-left transition-colors hover:bg-white'
             key={agora.id}
-            onClick={() => push('/agora/' + agora.id)}
-          >
+            onClick={() => push('/agora/' + agora.id)}>
             <MarkdownViewer className='line-clamp-1' ignoreMarkdown ignoreHTML>
               {agora.title}
             </MarkdownViewer>

@@ -10,51 +10,40 @@ import ResponsiveGrid from '@/components/ResponsiveGrid';
 import Title from '@/components/Title';
 
 import FeedListItemPost from '@/app/(main)/(list)/(feed)/FeedListItem/FeedListItemPost';
+import AgoraItem from '@/app/(main)/(list)/agoras/AgoraItem';
 import ArtworkItem from '@/app/(main)/(list)/artworks/ArtworkItem';
 import jxios from '@/utils/jxios';
 
 import { searchType } from '@/types/search';
 
 export default function Search() {
-  const [search, setSearch] = useState('');
-  const [searchType, setSearchType] = useState<string>('all');
   const [data, setData] = useState<searchType>();
   const searchParams = useSearchParams();
   const { push } = useRouter();
   const initialSearchKeyword = searchParams.get('c');
   const initialSearchType = searchParams.get('type');
 
-  useEffect(() => {
-    if (initialSearchKeyword) {
-      setSearch(initialSearchKeyword);
-    }
-  }, [initialSearchKeyword]);
+  const fetchSearch = useCallback(
+    async (search: string | null, searchType: string | null) => {
+      push(`/search?c=${search ?? ''}&type=${searchType ?? 'ALL'}`);
+      await jxios
+        .get('/api/search', {
+          params: {
+            keyword: search ?? '',
+            size: 6,
+          },
+        })
+        .then((res) => {
+          setData(res.data);
+        });
+    },
+    [push]
+  );
 
   useEffect(() => {
-    if (initialSearchType) {
-      setSearchType(initialSearchType);
-    }
-  }, [initialSearchType]);
-
-  const fetchSearch = useCallback(async () => {
-    push(`/search?c=${search}&type=${searchType}`);
-    await jxios
-      .get('/api/search', {
-        params: {
-          keyword: search,
-          size: 6,
-        },
-      })
-      .then((res) => {
-        setData(res.data);
-      });
-  }, [search, push, searchType]);
-
-  useEffect(() => {
-    if (search.length > 0) {
-      fetchSearch();
-    }
-  }, [search, fetchSearch]);
+    fetchSearch(initialSearchKeyword, initialSearchType ?? 'ALL');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchSearch]);
 
   return (
     <div className='mb-2 flex flex-col items-stretch justify-center gap-2 px-2'>
@@ -63,13 +52,12 @@ export default function Search() {
         <AiOutlineSearch className='inline' size={25} />
         <input
           type='search'
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              fetchSearch();
+            if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+              fetchSearch(e.currentTarget.value, initialSearchType ?? 'ALL');
             }
           }}
+          defaultValue={initialSearchKeyword ?? ''}
           autoFocus={!initialSearchKeyword}
           placeholder='검색어를 입력하세요'
           className='inline h-full w-full border-0 bg-transparent text-2xl focus:border-0 focus:outline-none focus:ring-0'
@@ -138,6 +126,58 @@ export default function Search() {
             </h3>
           </div>
         ))}
+      {data &&
+        (data.searchAgoras.agoras.length > 0 ? (
+          <div className='border-default-400 w-full rounded-2xl border py-2'>
+            <h3 className='mx-3 mb-2'>아고라 검색 결과</h3>
+            <div className='px-2'>
+              {data.searchAgoras.agoras.map((item) => (
+                <AgoraItem agora={item} key={item.id} />
+              ))}
+            </div>
+            {data.searchAgoras.pageInfo.totalElements > 6 && (
+              <div className='hover:bg-default-100 mx-2 flex cursor-pointer items-center justify-start rounded-2xl px-3 py-2 transition'>
+                <p>
+                  {data.searchAgoras.pageInfo.totalElements}개의 아고라 검색결과
+                  더보기
+                </p>
+                <MdArrowForwardIos className='ml-1 inline' />
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className='border-default-400 w-full rounded-2xl border py-2'>
+            <h3 className='text-default-500 py-14 text-center'>
+              아고라 검색 결과가 없습니다.
+            </h3>
+          </div>
+        ))}
+      {/* {data && */}
+      {/*   (data.searchExhibitions.exhibitions.length > 0 ? ( */}
+      {/*     <div className='border-default-400 w-full rounded-2xl border py-2'> */}
+      {/*       <h3 className='mx-3 mb-2'>이벤트 검색 결과</h3> */}
+      {/*       <div className='px-2'> */}
+      {/*         {data.searchExhibitions.exhibitions.map((item) => ( */}
+      {/*           <EventListItem event={item} key={item.id} /> */}
+      {/*         ))} */}
+      {/*       </div> */}
+      {/*       {data.searchExhibitions.pageInfo.totalElements > 6 && ( */}
+      {/*         <div className='hover:bg-default-100 mx-2 flex cursor-pointer items-center justify-start rounded-2xl px-3 py-2 transition'> */}
+      {/*           <p> */}
+      {/*             {data.searchExhibitions.pageInfo.totalElements}개의 이벤트 */}
+      {/*             검색결과 더보기 */}
+      {/*           </p> */}
+      {/*           <MdArrowForwardIos className='ml-1 inline' /> */}
+      {/*         </div> */}
+      {/*       )} */}
+      {/*     </div> */}
+      {/*   ) : ( */}
+      {/*     <div className='border-default-400 w-full rounded-2xl border py-2'> */}
+      {/*       <h3 className='text-default-500 py-14 text-center'> */}
+      {/*         이벤트 검색 결과가 없습니다. */}
+      {/*       </h3> */}
+      {/*     </div> */}
+      {/*   ))} */}
     </div>
   );
 }

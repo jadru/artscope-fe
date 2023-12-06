@@ -12,10 +12,8 @@
   "quoteProps": "as-needed",
   "requirePragma": false,
   "semi": true,
-
   "singleQuote": true,
   "tabWidth": 2,
   "useTabs": false,
   "trailingComma": "es5",
-  "disableLanguages": []
 }

@@ -74,8 +74,7 @@ export default function AddLocation({
     <>
       <button
         className='hover:bg-default-100 flex h-12 w-44 items-center justify-center rounded-xl border px-2'
-        onClick={() => onOpen()}
-      >
+        onClick={() => onOpen()}>
         {location.locationId ? (
           <>
             <BiBuilding size={23} />
@@ -106,8 +105,7 @@ export default function AddLocation({
                   />
                   <button
                     className='order-default-500 hover:bg-default-100 flex items-center gap-1 break-keep rounded-xl border-2 px-3 py-2'
-                    onClick={NewLocationOnOpen}
-                  >
+                    onClick={NewLocationOnOpen}>
                     <BiPlus size={23} />
                     <p>장소추가</p>
                   </button>
@@ -118,8 +116,7 @@ export default function AddLocation({
                       <div
                         className='cursor-pointer border-b py-2 hover:underline'
                         key={location.locationId}
-                        onClick={() => handleLocationClick(location)}
-                      >
+                        onClick={() => handleLocationClick(location)}>
                         <h5>
                           <b>
                             <StandardLabel label={location.name} />

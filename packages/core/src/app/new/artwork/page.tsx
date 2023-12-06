@@ -41,7 +41,7 @@ const NewArtwork = () => {
         if (
           medias.reduce(
             (acc, cur) => (cur.file ? cur.file.size + acc : acc),
-            0,
+            0
           ) /
             1000000 >
           100
@@ -54,7 +54,7 @@ const NewArtwork = () => {
         const newState = { ...initialArtWork };
         newState.dto.title = markdown.slice(1, markdown.indexOf('\n')).trim();
         newState.dto.description = markdownContent.slice(
-          markdownContent.indexOf('\n') + 2,
+          markdownContent.indexOf('\n') + 2
         );
         newState.dto.tags = tagCount;
         newState.dto.visible = publicType === 'public';
@@ -63,11 +63,11 @@ const NewArtwork = () => {
         if (medias[0].mediaType === 'video') {
           const cover = (await getVideoCoverFromLocal(
             medias[0].file as File,
-            1.5,
+            1.5
           )) as Blob;
           formData.append(
             'thumbnailFile',
-            new File([cover], 'thumbnail.jpg', { type: 'image/jpeg' }),
+            new File([cover], 'thumbnail.jpg', { type: 'image/jpeg' })
           );
         } else if (medias[0].mediaType === 'image') {
           formData.append('thumbnailFile', medias[0].file as File);
@@ -78,7 +78,7 @@ const NewArtwork = () => {
               await fetch(
                 'https://img.youtube.com/vi/' +
                   medias[0].linkUrl.substring(
-                    medias[0].linkUrl.indexOf('=') + 1,
+                    medias[0].linkUrl.indexOf('=') + 1
                   ) +
                   '/maxresdefault.jpg',
                 {
@@ -88,9 +88,9 @@ const NewArtwork = () => {
                     Accept: '*/*',
                     'Content-Type': 'image/jpeg',
                   },
-                },
+                }
               ).then((res) => res.blob()),
-              'yt_thumbnail.jpg',
+              'yt_thumbnail.jpg'
             );
         }
         newState.dto.medias = [];
@@ -100,7 +100,7 @@ const NewArtwork = () => {
                 'mediaFiles',
                 new File([media.linkUrl as string], 'mediaFiles', {
                   type: 'text/plain',
-                }),
+                })
               )
             : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
@@ -118,7 +118,7 @@ const NewArtwork = () => {
           // @ts-ignore
           new Blob([JSON.stringify(newState.dto)], {
             type: 'application/json',
-          }),
+          })
         );
         await jxios
           .post('/api/artworks', formData, {
@@ -142,7 +142,7 @@ const NewArtwork = () => {
         setIsUpload(false);
       }
     },
-    500,
+    500
   );
 
   return (

@@ -16,8 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <div
-      className={`container mx-auto flex flex-col items-center justify-center ${className}`}
-    >
+      className={`container mx-auto flex flex-col items-center justify-center ${className}`}>
       <div className={`container ${maxWidth}`}>{children}</div>
     </div>
   );

@@ -30,8 +30,7 @@ export default function SingleEventMedia({ feed }: { feed: EventDetailType }) {
           }
           nextArrow={
             <AiOutlineArrowRight size={30} className='mr-2 bg-white/50' />
-          }
-        >
+          }>
           {feed.medias &&
             feed.medias.slice(1).map((item) => (
               <div
@@ -42,8 +41,7 @@ export default function SingleEventMedia({ feed }: { feed: EventDetailType }) {
                   })`,
                 }}
                 onClick={() => setDetailedImage(item.mediaUrl)}
-                key={item.mediaUrl}
-              ></div>
+                key={item.mediaUrl}></div>
             ))}
         </Slide>
       </div>
