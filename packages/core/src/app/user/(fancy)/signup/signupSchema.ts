@@ -15,10 +15,11 @@ const signupSchema = yup.object().shape({
     .string()
     .oneOf([yup.ref('password')], '비밀번호가 일치하지 않습니다.')
     .required('비밀번호를 한번 더 입력해주세요.'),
-  agree: yup
+  agreeRegulation: yup
     .boolean()
     .oneOf([true], '약관에 동의해주세요.')
     .required('약관에 동의해주세요.'),
+  agreeMarketing: yup.boolean(),
 });
 
 export interface SignupInputs {
@@ -27,7 +28,8 @@ export interface SignupInputs {
   email: string;
   passwordCheck?: string;
   name: string;
-  agree?: boolean;
+  agreeRegulation?: boolean;
+  agreeMarketing?: boolean;
 }
 
 export default signupSchema;
