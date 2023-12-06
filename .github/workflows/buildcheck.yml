@@ -26,6 +26,9 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install yarn
+        run: npm install -g yarn
+
       - name: Check build
         run: |
           yarn set version from sources
