@@ -1,17 +1,19 @@
-import { Bold } from '@tiptap/extension-bold';
-import { BulletList } from '@tiptap/extension-bullet-list';
-import { Document } from '@tiptap/extension-document';
-import { Heading } from '@tiptap/extension-heading';
-import { History } from '@tiptap/extension-history';
-import { Italic } from '@tiptap/extension-italic';
-import { Link } from '@tiptap/extension-link';
-import { ListItem } from '@tiptap/extension-list-item';
-import { OrderedList } from '@tiptap/extension-ordered-list';
-import { Paragraph } from '@tiptap/extension-paragraph';
-import { Placeholder } from '@tiptap/extension-placeholder';
-import { Strike } from '@tiptap/extension-strike';
-import { Text } from '@tiptap/extension-text';
-import { Underline } from '@tiptap/extension-underline';
+import Bold from '@tiptap/extension-bold';
+import BulletList from '@tiptap/extension-bullet-list';
+import Document from '@tiptap/extension-document';
+import Dropcursor from '@tiptap/extension-dropcursor';
+import Heading from '@tiptap/extension-heading';
+import History from '@tiptap/extension-history';
+import Image from '@tiptap/extension-image';
+import Italic from '@tiptap/extension-italic';
+import Link from '@tiptap/extension-link';
+import ListItem from '@tiptap/extension-list-item';
+import OrderedList from '@tiptap/extension-ordered-list';
+import Paragraph from '@tiptap/extension-paragraph';
+import Placeholder from '@tiptap/extension-placeholder';
+import Strike from '@tiptap/extension-strike';
+import Text from '@tiptap/extension-text';
+import Underline from '@tiptap/extension-underline';
 import { EditorContent, useEditor } from '@tiptap/react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -33,11 +35,11 @@ type StandardEditorProps = {
   onSubmit: (markdown: string, medias: ArtWorkMediaType[]) => void;
   isUpload: boolean;
   submitText?: string;
-  editContent?: string;
   mediaFileRequired?: boolean;
   onlyImage?: boolean;
   footer?: React.ReactNode;
   children?: React.ReactNode;
+  isDraggableMedia?: boolean;
 };
 
 export default function StandardEditor({
@@ -47,7 +49,7 @@ export default function StandardEditor({
   onSubmit,
   isUpload,
   submitText,
-  editContent = undefined,
+  isDraggableMedia = false,
   mediaFileRequired = false,
   onlyImage = false,
   footer = <div className='h-1 w-1'></div>,
@@ -93,6 +95,13 @@ export default function StandardEditor({
       Underline,
       BulletList,
       History,
+      Image.configure({
+        inline: true,
+        allowBase64: true,
+      }),
+      Dropcursor.configure({
+        color: '#ff0000',
+      }),
       ListItem,
       OrderedList,
       Paragraph,
@@ -107,11 +116,7 @@ export default function StandardEditor({
         showOnlyCurrent: false,
       }),
     ],
-    content: editContent
-      ? editContent
-      : headingRequired
-      ? '<h1></h1><p></p>'
-      : '',
+    content: '',
     autofocus: true,
   });
 
@@ -150,8 +155,8 @@ export default function StandardEditor({
                 onlyImage={onlyImage}
               />
             )}
+            {children ?? ''}
           </div>
-          {children ?? ''}
           <EditorFooter
             isUpload={isUpload}
             onSubmit={handleSubmit}

@@ -21,7 +21,7 @@ export default function MarkdownViewer({
 }) {
   return (
     <ReactMarkdown
-      className={'markdown-viewer break-all ' + className}
+      className={'markdown-viewer break-all space-y-2 ' + className}
       remarkPlugins={ignoreMarkdown ? [remarkGfm, strip] : [remarkGfm]}
       rehypePlugins={
         ignoreHTML
