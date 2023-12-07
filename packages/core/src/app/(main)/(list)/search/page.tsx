@@ -108,6 +108,7 @@ export default function Search() {
         <Tabs
           key='ALL'
           variant='solid'
+          fullWidth
           selectedKey={tab}
           onSelectionChange={(key) => {
             router.push(`/search?c=${initialSearchKeyword ?? ''}&type=${key}`, {

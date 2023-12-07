@@ -102,6 +102,7 @@ export default function ArtistForm({
         defaultValue={isEdit?.history}
         errorMessage={errors.history?.message}
         required
+        maxRows={50}
         isInvalid={!!errors.history}
         {...register('history')}
       />

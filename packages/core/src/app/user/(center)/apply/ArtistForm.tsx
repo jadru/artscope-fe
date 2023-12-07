@@ -81,6 +81,7 @@ export default function ArtistForm({
         placeholder='OO전시 참여, OO상 수상 등'
         defaultValue={isEdit?.history}
         errorMessage={errors.history?.message}
+        maxRows={50}
         required
         isInvalid={!!errors.history}
         {...register('history')}

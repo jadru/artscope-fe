@@ -4,8 +4,6 @@ import React from 'react';
 import ASNextImage from '@/components/ASNextImage';
 import StandardLabel from '@/components/StandardLabel';
 
-import { editAndPostShortCalculatorKO } from '@/utils/timeCalculator';
-
 import { feedItemType } from '@/types/feed';
 
 const FeedListItemArtwork = ({ feed }: { feed: feedItemType }) => {
@@ -31,9 +29,6 @@ const FeedListItemArtwork = ({ feed }: { feed: feedItemType }) => {
           </div>
           <p className='text-default-500 flex w-1/3 flex-col justify-between truncate pl-1 text-right font-bold'>
             <StandardLabel label={feed.authorName} />
-            <span className='text-default-500 text-right text-[0.86rem] font-normal'>
-              {editAndPostShortCalculatorKO(feed.createdTime, feed.updatedTime)}
-            </span>
           </p>
         </div>
       </div>
