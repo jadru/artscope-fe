@@ -11,7 +11,7 @@ import NavBar from '@/components/Navbar';
 export default function Error({}: { error: Error; reset: () => void }) {
   return (
     <>
-      <NavBar theme='light' />
+      <NavBar />
       <div className='flex min-h-screen flex-col items-center justify-center text-center text-black dark:text-gray-200'>
         <RiAlarmWarningFill
           size={60}

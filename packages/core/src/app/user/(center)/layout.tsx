@@ -16,7 +16,7 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-      <Navbar theme='light' />
+      <Navbar />
       <div className='container mx-auto flex min-h-[calc(100vh-10rem)] max-w-md flex-col items-stretch gap-2 p-4 pb-3'>
         {children}
       </div>
