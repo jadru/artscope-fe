@@ -152,6 +152,8 @@ const NewArtwork = () => {
       submitText='작품 업로드'
       headingRequired
       documentHeading={1}
+      isDraggableMedia
+      mediaFileRequired
       placeholderText='작품에 대한 설명을 자유롭게 작성해주세요.'
       footer={
         <PublicTypeCheckBox

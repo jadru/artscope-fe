@@ -200,7 +200,9 @@ __metadata:
     "@tanstack/react-query-devtools": "npm:^5.0.0"
     "@testing-library/jest-dom": "npm:^6.1.4"
     "@testing-library/react": "npm:^14.1.0"
+    "@tiptap/extension-dropcursor": "npm:^2.1.13"
     "@tiptap/extension-history": "npm:^2.1.12"
+    "@tiptap/extension-image": "npm:^2.1.13"
     "@tiptap/extension-link": "npm:^2.1.12"
     "@tiptap/extension-placeholder": "npm:^2.1.12"
     "@tiptap/extension-underline": "npm:^2.1.12"
@@ -7067,6 +7069,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tiptap/extension-dropcursor@npm:^2.1.13":
+  version: 2.1.13
+  resolution: "@tiptap/extension-dropcursor@npm:2.1.13"
+  peerDependencies:
+    "@tiptap/core": ^2.0.0
+    "@tiptap/pm": ^2.0.0
+  checksum: a68bbad3c7ab28f4c01617694317e4f014f8ea845790f01581e6bc6e02ad6625f9aed5589032b20bb3fcae24bf026a0a4964b5de0d0f437241c63085c7ac30b9
+  languageName: node
+  linkType: hard
+
 "@tiptap/extension-floating-menu@npm:^2.1.12":
   version: 2.1.12
   resolution: "@tiptap/extension-floating-menu@npm:2.1.12"
@@ -7124,6 +7136,15 @@ __metadata:
     "@tiptap/core": ^2.0.0
     "@tiptap/pm": ^2.0.0
   checksum: 6199dbb94c0e92e5f39e7621d466c46e5bc69750cfda3fd83d947e19234f992635bac2afba7e45e2634b563ffb3095f6179d58bab708e52b494161184e77c5af
+  languageName: node
+  linkType: hard
+
+"@tiptap/extension-image@npm:^2.1.13":
+  version: 2.1.13
+  resolution: "@tiptap/extension-image@npm:2.1.13"
+  peerDependencies:
+    "@tiptap/core": ^2.0.0
+  checksum: 15fc359e39b8ce46c1dc0be9ceff3dafb2a7195a08e504c3034bddf31caa388ad73560b14a3f3413ccc44a2b5d03fd9e5c7899f46d04055c8fc924ba3d3e3b02
   languageName: node
   linkType: hard
 

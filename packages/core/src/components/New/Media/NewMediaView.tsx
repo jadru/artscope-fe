@@ -20,10 +20,19 @@ type Props = {
   fileUrls: ArtWorkMediaType[];
   setFileUrls: React.Dispatch<React.SetStateAction<ArtWorkMediaType[]>>;
   onlyImage?: boolean;
+  onAddMedia?: (media: ArtWorkMediaType) => void;
+  onDeleteMedia?: (index: number) => void;
   header?: string;
 };
 
-export default ({ setFileUrls, fileUrls, onlyImage, header }: Props) => {
+export default ({
+  setFileUrls,
+  fileUrls,
+  onlyImage,
+  header,
+  onAddMedia,
+  onDeleteMedia,
+}: Props) => {
   const [uploadPopoverOpen, setUploadPopoverOpen] = useState(false);
   const [imgs, setImgs] = useState<string[]>([]);
   const handleFileAdded = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +60,16 @@ export default ({ setFileUrls, fileUrls, onlyImage, header }: Props) => {
           description: '',
         },
       ]);
+      onAddMedia &&
+        onAddMedia({
+          mediaType: files[i].type.startsWith('image')
+            ? 'image'
+            : files[i].type.startsWith('video')
+            ? 'video'
+            : 'audio',
+          file: files[i],
+          description: '',
+        });
     }
     setUploadPopoverOpen(false);
   };
@@ -96,6 +115,7 @@ export default ({ setFileUrls, fileUrls, onlyImage, header }: Props) => {
 
   const handleDeleteFile = (index: number) => {
     if (confirm('미디어를 삭제하시겠습니까?')) {
+      onDeleteMedia && onDeleteMedia(index);
       setImgs((prev) => prev.filter((_, i) => i !== index));
       setFileUrls((prev: ArtWorkMediaType[]) =>
         prev.filter((_, i) => i !== index)
