@@ -12,8 +12,8 @@ import jxios from '@/utils/jxios';
 import { ArtistForm, CuratorForm } from '@/types/member';
 
 const curatorSchema = yup.object().shape({
-  introduction: yup.string().required('기획자 소개를 입력해주세요.'),
-  history: yup.string().required('활동 정보를 입력해주세요.'),
+  introduction: yup.string().max(1000).required('기획자 소개를 입력해주세요.'),
+  history: yup.string().max(1000).required('연혁을 입력해주세요.'),
   snsUrl: yup
     .string()
     .url('URL을 입력해주세요')
