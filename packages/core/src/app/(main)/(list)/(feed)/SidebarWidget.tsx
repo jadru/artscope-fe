@@ -54,12 +54,18 @@ export default function SidebarWidget() {
         </>
       )}
       <div className='space-y-0.5'>
-        <div className='text-default-500 flex items-center justify-center gap-2'>
+        <div className='text-default-500 flex items-center justify-center gap-2 flex-wrap'>
           <Link
             href='https://jadru.notion.site/Artscope-5d99f78df8c64d019bd21a02eb1f80d2?pvs=4'
             target='_blank'
             className='hover:text-primary text-[0.88rem]'>
             가이드
+          </Link>
+          <Link
+            href='https://jadru.notion.site/Artscope-6cd68452a7114d4facc175d70d20443b?pvs=4'
+            target='_blank'
+            className='hover:text-primary text-[0.88rem]'>
+            이용 약관
           </Link>
           <Link
             href='https://forms.gle/F9V9gppnKXXBRE4d6'
@@ -68,7 +74,7 @@ export default function SidebarWidget() {
             피드백
           </Link>
           <Link
-            href='https://www.plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/privacy-policy'
+            href='https://plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/privacy-policy'
             target='_blank'
             className='hover:text-primary text-[0.88rem]'>
             개인정보 처리방침

@@ -12,8 +12,11 @@ import jxios from '@/utils/jxios';
 import { ArtistForm } from '@/types/member';
 
 const artistSchema = yup.object().shape({
-  introduction: yup.string().required('아티스트 소개를 입력해주세요.'),
-  history: yup.string().required('활동 정보를 입력해주세요.'),
+  introduction: yup
+    .string()
+    .max(1000)
+    .required('아티스트 소개를 입력해주세요.'),
+  history: yup.string().max(1000).required('활동 정보를 입력해주세요.'),
   snsUrl: yup
     .string()
     .url('URL을 입력해주세요')
@@ -34,6 +37,7 @@ export default function ArtistForm({
     formState: { errors, isSubmitting },
   } = useForm<ArtistForm>({
     resolver: yupResolver(artistSchema),
+    mode: 'onBlur',
   });
 
   const onArtistInfoSubmit = (data: ArtistForm) => {
