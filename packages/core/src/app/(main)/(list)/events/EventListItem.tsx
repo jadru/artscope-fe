@@ -1,6 +1,4 @@
-import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
@@ -13,10 +11,11 @@ export default function EventListItem({
 }: {
   event: SingleEventTypeOnList;
 }) {
+  const { push } = useRouter();
   return (
-    <Link
-      className='hover:bg-default-100 group-hover:bg-default-100 group flex flex-row items-center justify-between rounded-2xl bg-white px-1.5 py-1 transition md:z-10'
-      href={`/event/${event.id}?scheduleId=${event.eventSchedule.id}`}>
+    <div
+      onClick={() => push(`/event/${event.id}`)}
+      className='cursor-pointer hover:bg-default-100 group-hover:bg-default-100 group flex flex-row items-center justify-between rounded-2xl bg-white px-1.5 py-1 transition md:z-10'>
       <div
         className={`text-default-800 flex flex-col justify-between overflow-x-hidden break-keep tracking-tight ${
           event.thumbnail.mediaUrl ? 'w-[calc(100%-3rem)]' : 'w-full'
@@ -27,18 +26,14 @@ export default function EventListItem({
         <div className='flex flex-col gap-0.5'>
           <div className='flex flex-col gap-1 md:flex-row'>
             <h4 className='font-normal'>
-              {format(new Date(event.eventSchedule.startDateTime), 'a hh:mm', {
-                locale: ko,
-              })}
-              -
-              {format(new Date(event.eventSchedule.endDateTime), 'a hh:mm', {
-                locale: ko,
-              })}
+              {event.startDate === event.endDate
+                ? event.startDate
+                : event.startDate + ' - ' + event.endDate}
             </h4>
           </div>
           <h4 className='font-normal'>
-            <StandardLabel label={event.eventSchedule.locationName} />{' '}
-            <StandardLabel label={event.eventSchedule.detailLocation} />
+            <StandardLabel label={event.locationName} />{' '}
+            <StandardLabel label={event.detailLocation} />
           </h4>
           <p>{event.eventType}</p>
         </div>
@@ -50,6 +45,6 @@ export default function EventListItem({
         width={70}
         height={70}
       />
-    </Link>
+    </div>
   );
 }

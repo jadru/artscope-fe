@@ -28,12 +28,13 @@ export default function Events() {
 
   const fetchEvents = async (page: number) =>
     await jxios
-      .get('/api/exhibitions', {
+      .get('/api/events', {
         params: {
           page: page,
           size: LIMIT,
           startDate: format(startDate, 'yyyy-MM-dd'),
           eventType: 'ALL',
+          sortDirection: 'ASC',
         },
       })
       .then(
@@ -45,26 +46,11 @@ export default function Events() {
         } => {
           const eventDatas = res.data as EventResponseType;
           const events = [] as EventViewType[];
-          eventDatas.exhibitions.length > 0 &&
-            eventDatas.exhibitions.forEach((event) => {
-              if (
-                events.find(
-                  (ii) =>
-                    ii.date ===
-                    format(
-                      new Date(event.eventSchedule.startDateTime),
-                      'yyyy-MM-dd'
-                    )
-                )
-              ) {
+          eventDatas.events.length > 0 &&
+            eventDatas.events.forEach((event) => {
+              if (events.find((ii) => ii.date === event.startDate)) {
                 events.forEach((ii) => {
-                  if (
-                    ii.date ===
-                    format(
-                      new Date(event.eventSchedule.startDateTime),
-                      'yyyy-MM-dd'
-                    )
-                  ) {
+                  if (ii.date === event.startDate) {
                     ii.event.push(event);
                   }
                 });
@@ -73,10 +59,7 @@ export default function Events() {
                   event: [event],
                   dayOfWeek: '',
                   dayOfWeekKor: '',
-                  date: format(
-                    new Date(event.eventSchedule.startDateTime),
-                    'yyyy-MM-dd'
-                  ),
+                  date: event.startDate,
                 });
               }
             });

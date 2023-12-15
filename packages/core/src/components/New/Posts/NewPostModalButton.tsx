@@ -2,11 +2,7 @@
 
 import Link from 'next/link';
 import React from 'react';
-import {
-  BiSolidCalendar,
-  BiSolidNetworkChart,
-  BiSolidZap,
-} from 'react-icons/bi';
+import { BiSolidCalendar, BiSolidZap } from 'react-icons/bi';
 
 import UserInfo from '@/components/UserInfo';
 
@@ -40,12 +36,6 @@ export default function NewPostButton({ placeholder }: Props) {
             className='bg-default-100 flex items-center gap-0.5 rounded-xl border-2 border-transparent p-1.5 text-[0.8rem] transition hover:border-yellow-600 hover:text-yellow-600'>
             <BiSolidCalendar />
             이벤트 작성
-          </Link>{' '}
-          <Link
-            href='/new/agora'
-            className='bg-default-100 flex items-center gap-0.5 rounded-xl border-2 border-transparent p-1.5 text-[0.8rem] transition hover:border-green-600 hover:text-green-600'>
-            <BiSolidNetworkChart />
-            아고라 시작
           </Link>
         </div>
       </div>
