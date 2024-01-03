@@ -1,11 +1,7 @@
 'use client';
 
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import { notFound } from 'next/dist/client/components/not-found';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -18,8 +14,7 @@ import EventListItem from '@/app/(main)/(list)/events/EventListItem';
 import SkeletonEvent from '@/app/(main)/(list)/events/SkeletonEvent';
 import jxios from '@/utils/jxios';
 
-import { pageInfoType } from '@/types/default';
-import { EventResponseType, EventViewType } from '@/types/event';
+import { EventResponseType } from '@/types/event';
 
 export default function Events() {
   const [startDate, setStartDate] = useState<Date>(new Date());
@@ -37,48 +32,7 @@ export default function Events() {
           sortDirection: 'ASC',
         },
       })
-      .then(
-        (
-          res
-        ): {
-          pageInfo: pageInfoType;
-          exhibitions: EventViewType[];
-        } => {
-          const eventDatas = res.data as EventResponseType;
-          const events = [] as EventViewType[];
-          eventDatas.events.length > 0 &&
-            eventDatas.events.forEach((event) => {
-              if (events.find((ii) => ii.date === event.startDate)) {
-                events.forEach((ii) => {
-                  if (ii.date === event.startDate) {
-                    ii.event.push(event);
-                  }
-                });
-              } else {
-                events.push({
-                  event: [event],
-                  dayOfWeek: '',
-                  dayOfWeekKor: '',
-                  date: event.startDate,
-                });
-              }
-            });
-
-          return {
-            pageInfo: res.data.pageInfo as pageInfoType,
-            exhibitions: events.map((event) => {
-              return {
-                date: format(new Date(event.date), 'MMM do'),
-                dayOfWeek: format(new Date(event.date), 'EEE'),
-                dayOfWeekKor: format(new Date(event.date), 'EEE', {
-                  locale: ko,
-                }),
-                event: event.event,
-              };
-            }),
-          };
-        }
-      )
+      .then((res) => res.data as EventResponseType)
       .catch((err) => {
         throw Error(err);
       });
@@ -119,43 +73,15 @@ export default function Events() {
   return (
     <div>
       <Title title='Events' description='다양한 이벤트를 살펴보세요.'>
-        <div className='mt-3 flex flex-col justify-start gap-2 px-3 md:flex-row'>
-          <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ko}>
-            <DatePicker
-              label='시작일'
-              value={startDate}
-              onChange={(date) => setStartDate(date ?? new Date())}
-            />
-          </LocalizationProvider>
-        </div>
+        <div></div>
       </Title>
       {!isLoading ? (
         <>
-          <div className='relative mx-3 space-y-3 md:mx-1'>
+          <div className='grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3'>
             {isSuccess &&
               data.pages.map((group) =>
-                group.exhibitions.map((date) => (
-                  <div
-                    className='relative flex flex-col md:flex-row'
-                    key={date.date}>
-                    <div className='flex w-28 flex-col items-start gap-0 self-start bg-transparent pt-2 md:sticky md:top-16'>
-                      <h2 className='font-title py-1 text-[1.4rem]'>
-                        {date.date}
-                      </h2>
-                      <span className='text-default-500 font-title text-[1.1rem]'>
-                        {date.dayOfWeek} / {date.dayOfWeekKor}요일
-                      </span>
-                    </div>
-                    <div className='ml-1 flex w-full flex-col gap-4 py-1 md:w-[calc(100%-7rem)]'>
-                      {date.event &&
-                        date.event.map((exhibition) => (
-                          <EventListItem
-                            event={exhibition}
-                            key={exhibition.id}
-                          />
-                        ))}
-                    </div>
-                  </div>
+                group.events.map((event) => (
+                  <EventListItem event={event} key={event.id} />
                 ))
               )}
           </div>
@@ -196,7 +122,7 @@ export default function Events() {
           />
         </div>
       )}
-      {data && data.pages[0].exhibitions.length === 0 && (
+      {data && data.pages[0].events.length === 0 && (
         <h3 className='text-center'>아직 작성된 이벤트가 없습니다.</h3>
       )}
     </div>

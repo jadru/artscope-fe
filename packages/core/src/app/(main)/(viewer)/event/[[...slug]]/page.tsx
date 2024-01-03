@@ -3,7 +3,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React from 'react';
-import { BiWon } from 'react-icons/bi';
+import { BiCalendar, BiWon } from 'react-icons/bi';
 import { BsInfoLg, BsMap } from 'react-icons/bs';
 
 import MarkdownViewer from '@/components/MarkdownViewer';
@@ -11,9 +11,11 @@ import MediaSlider from '@/components/MediaSlider';
 import ProfileComponent from '@/components/Profile';
 import StandardLabel, { standardLabel } from '@/components/StandardLabel';
 
+import CalendarButton from '@/app/(main)/(viewer)/event/[[...slug]]/CalendarButton';
 import EventEditDelete from '@/app/(main)/(viewer)/event/[[...slug]]/EventEditDelete';
 import eventTypeToKO from '@/app/(main)/(viewer)/event/[[...slug]]/eventTypeToKO';
 import LocationButton from '@/app/(main)/(viewer)/event/[[...slug]]/LocationButton';
+import ShareButton from '@/app/(main)/(viewer)/event/[[...slug]]/ShareButton';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 import { editAndPostTimeCalculatorKO } from '@/utils/timeCalculator';
@@ -57,10 +59,8 @@ export async function generateMetadata(
 }
 export default async function Event({
   params,
-  searchParams,
 }: {
   params: { slug: string[] };
-  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   if (!params.slug) redirect('/events');
   const id = params.slug[0];
@@ -79,10 +79,19 @@ export default async function Event({
           ? data.startDate
           : data.startDate + ' - ' + data.endDate}
       </h3>
+      {data.medias && data.medias.length > 0 && (
+        <MediaSlider medias={data.medias} />
+      )}
+      {data.thumbnail && data.medias && data.medias.length === 0 && (
+        <MediaSlider medias={[data.thumbnail]} />
+      )}
       <div>
         <h4>
           {data.location.snsUrl ? (
-            <Link href={data.location.snsUrl} className='hover:underline'>
+            <Link
+              href={data.location.snsUrl}
+              target='_blank'
+              className='hover:underline'>
               {standardLabel(data.location.name)}
             </Link>
           ) : (
@@ -101,12 +110,11 @@ export default async function Event({
           <StandardLabel label={data.price} />
         </div>
       </div>
-      {data.medias && data.medias.length > 0 && (
-        <MediaSlider medias={data.medias} />
+      {standardLabel(data.description) != '' && data.description != '\n' && (
+        <div className='bg-default-100 w-full rounded-xl px-3 py-3'>
+          <MarkdownViewer>{data.description}</MarkdownViewer>
+        </div>
       )}
-      <div className='bg-default-100 w-full rounded-xl px-3 py-3'>
-        <MarkdownViewer>{data.description}</MarkdownViewer>
-      </div>
 
       <p className='text-default-500 w-full px-2.5 text-right font-normal'>
         {editAndPostTimeCalculatorKO(data.createdTime, data.updatedTime)}
@@ -127,18 +135,13 @@ export default async function Event({
               자세한 정보 보기
             </button>
           </Link>
-          {/* <CalendarButton */}
-          {/*   className='flex items-center gap-1 hover:font-bold hover:underline' */}
-          {/*   data={data} */}
-          {/*   scheduleid={scheduleId}> */}
-          {/*   <BiCalendar size={20} /> */}
-          {/*   캘린더에 추가 */}
-          {/* </CalendarButton> */}
-          {/* <ShareButton */}
-          {/*   id={data.id} */}
-          {/*   scheduleId={scheduleId} */}
-          {/*   title={data.title} */}
-          {/* /> */}
+          <CalendarButton
+            className='flex items-center gap-1 hover:font-bold hover:underline'
+            data={data}>
+            <BiCalendar size={20} />
+            캘린더에 추가
+          </CalendarButton>
+          <ShareButton id={data.id} title={data.title} />
           <LocationButton
             location={data.location}
             className='flex items-center gap-1 hover:font-bold hover:underline md:hidden'>

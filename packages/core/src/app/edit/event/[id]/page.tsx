@@ -41,7 +41,7 @@ import { EventDetailType, EventType } from '@/types/event';
 const NewEvent = () => {
   const [link, setLink] = useState<string>('');
   const [eventType, setEventType] = useState<EventType>('STANDARD');
-  const [price, setPrice] = useState<number>(0);
+  const [price, setPrice] = useState<string>('무료');
   const { push } = useRouter();
   const [isUpload, setIsUpload] = useState(false);
   const placeholderText = '이벤트를 자유롭게 설명하세요.';
@@ -238,7 +238,7 @@ const NewEvent = () => {
           type='number'
           label='참석자 티켓 가격'
           value={String(price)}
-          onValueChange={(value) => setPrice(Number(value))}
+          onValueChange={setPrice}
           placeholder='가격을 입력해주세요'
           description='무료인 경우 0을 입력해주세요'
           endContent={
