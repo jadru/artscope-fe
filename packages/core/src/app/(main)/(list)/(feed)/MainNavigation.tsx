@@ -7,7 +7,6 @@ import {
   BiHome,
   BiSearch,
   BiSolidCalendar,
-  BiSolidNetworkChart,
   BiSolidNews,
   BiSolidPlanet,
   BiSolidZap,
@@ -40,13 +39,6 @@ const menuItems = [
     slug: '/event',
     text: '이벤트',
     icon: <BiSolidCalendar size={23} />,
-    active: true,
-  },
-  {
-    href: '/agoras',
-    slug: '/agora',
-    text: '아고라',
-    icon: <BiSolidNetworkChart size={23} />,
     active: true,
   },
   {

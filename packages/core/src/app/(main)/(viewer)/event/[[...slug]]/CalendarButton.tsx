@@ -9,16 +9,12 @@ import { EventDetailType } from '@/types/event';
 
 type CalendarButtonProps = {
   data: EventDetailType;
-  scheduleid: number;
 } & React.ComponentProps<'button'>;
 
 const CalendarButton = ({ ...props }: CalendarButtonProps) => {
-  const thisSchedule = props.data.eventSchedules.filter(
-    (ii) => ii.id === props.scheduleid
-  )[0];
   const handleIcs = async () => {
-    const startTime = new Date(thisSchedule.startDateTime);
-    const endTime = new Date(thisSchedule.endDateTime);
+    const startTime = new Date(props.data.startDate);
+    const endTime = new Date(props.data.endDate);
     ics.createEvent(
       {
         title: standardLabel(props.data.title),
@@ -42,26 +38,15 @@ const CalendarButton = ({ ...props }: CalendarButtonProps) => {
           ' ' +
           standardLabel(props.data.location.name) +
           ' ' +
-          standardLabel(thisSchedule.detailLocation),
+          standardLabel(props.data.detailLocation),
         geo: {
           lat: props.data.location.latitude,
           lon: props.data.location.longitude,
         },
 
         categories: [props.data.eventType],
-        attendees: thisSchedule.participants.map((participant) => {
-          return {
-            name: standardLabel(participant.name) ?? '',
-            dir: standardLabel(participant.username)
-              ? 'https://www.artscope.kr/profile/' + participant.username
-              : undefined,
-          };
-        }),
-        url:
-          'https://www.artscope.kr/event/' +
-          props.data.id +
-          '?scheduleId=' +
-          props.scheduleid,
+        attendees: [],
+        url: 'https://www.artscope.kr/event/' + props.data.id,
         alarms: [
           {
             action: 'display',

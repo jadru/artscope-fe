@@ -1,8 +1,10 @@
 'use client';
 
+import { Button } from '@nextui-org/react';
 import { useDebounce } from '@toss/react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { FaVoteYea } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
 import '@/styles/editor.scss';
@@ -15,7 +17,7 @@ import jxios from '@/utils/jxios';
 import { ArtWorkMediaType } from '@/types/artwork';
 
 const NewPost = () => {
-  const { push } = useRouter();
+  const { push, replace } = useRouter();
   const [isUpload, setIsUpload] = useState(false);
 
   const handleSubmitPostButton = useDebounce(
@@ -97,6 +99,23 @@ const NewPost = () => {
       onSubmit={handleSubmitPostButton}
       isUpload={isUpload}
       submitText='포스트 작성'
+      footer={
+        <Button
+          startContent={<FaVoteYea size={23} />}
+          variant='solid'
+          onClick={() => {
+            if (
+              confirm(
+                '아고라로 이동하면 편집하던 내용이 사라집니다. 이동하시겠습니까?'
+              )
+            ) {
+              replace('/new/agora');
+            }
+          }}
+          color='secondary'>
+          아고라 작성
+        </Button>
+      }
     />
   );
 };
