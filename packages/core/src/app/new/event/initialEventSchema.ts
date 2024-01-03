@@ -1,6 +1,6 @@
-import { add } from 'date-fns';
+import { addDays, format } from 'date-fns';
 
-import { CreateEventType, CreateScheduleTempType } from '@/types/event';
+import { CreateEventType } from '@/types/event';
 
 export const initialEventSchema: CreateEventType = {
   dto: {
@@ -11,18 +11,9 @@ export const initialEventSchema: CreateEventType = {
     medias: [],
     thumbnail: { mediaType: 'image' },
     link: '',
-    schedule: [],
+    startDate: format(addDays(new Date(), 1), 'yyyy-MM-dd'),
+    endDate: format(addDays(new Date(), 4), 'yyyy-MM-dd'),
   },
   mediaFiles: null,
   thumbnailFile: undefined,
-};
-
-export const initialScheduleSchema: CreateScheduleTempType = {
-  id: 0,
-  locationId: undefined,
-  locationName: '',
-  startDateTime: add(new Date(), { hours: 1 }),
-  endDateTime: add(new Date(), { hours: 3 }),
-  detailLocation: '',
-  participants: [],
 };

@@ -57,7 +57,7 @@ export default function FeedList({ data }: FeedListProps) {
       switch (feed.type) {
         case 'post':
           return <FeedListItemPost feed={feed} />;
-        case 'exhibition':
+        case 'event':
           return <FeedListItemEvent feed={feed} />;
         case 'agora':
           return <FeedListItemAgora feed={feed} />;

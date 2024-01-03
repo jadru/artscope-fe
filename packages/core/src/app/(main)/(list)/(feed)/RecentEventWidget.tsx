@@ -31,11 +31,11 @@ export default function RecentEventWidget() {
   });
   const { push } = useRouter();
   return post.data ? (
-    post.data.exhibitions.length > 0 ? (
+    post.data.events.length > 0 ? (
       <div className='bg-default-100 w-full rounded-2xl p-1'>
         <h4 className='font-title my-1.5 px-2.5'>이번주 이벤트</h4>
         <hr className='mb-1' />
-        {post.data.exhibitions.map((event) => (
+        {post.data.events.map((event) => (
           <button
             className='hover:border-default-300 w-full truncate rounded-xl border border-transparent px-2.5 py-1.5 text-left transition-colors hover:bg-white'
             key={event.id}
