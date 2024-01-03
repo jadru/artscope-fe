@@ -20,7 +20,7 @@ export async function GET(_request: Request) {
   ).then((res) => res.json());
 
   return getServerSideSitemap(
-    data.exhibitions.map((event) => ({
+    data.events.map((event) => ({
       loc: `${NEXT_PUBLIC_API_URL}/event/${event.id}`,
       changefreq: 'daily',
       priority: 0.9,

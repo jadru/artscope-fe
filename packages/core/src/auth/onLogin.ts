@@ -14,6 +14,7 @@ import { profileApiResponseType } from '@/types/profile';
 export const onLogin = async (
   tokenData: loginResponseType,
   router: AppRouterInstance,
+  // eslint-disable-next-line no-unused-vars
   setUser: (user: profileApiResponseType | undefined) => void
 ) => {
   jxios.defaults.headers.common[
@@ -26,6 +27,7 @@ export const onLogin = async (
 
 export const onGetProfile = async (
   router: AppRouterInstance,
+  // eslint-disable-next-line no-unused-vars
   setUser: (user: profileApiResponseType | undefined) => void
 ) => {
   if (await getRefreshToken()) {

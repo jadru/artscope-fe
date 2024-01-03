@@ -22,6 +22,12 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install corepack
+        run: npm install -g corepack
+
+      - name: Enable corepack
+        run: corepack enable
+
       - name: 📥 Download deps
         uses: u0reo/npm-install@fix/restore-failure
         with:
@@ -36,5 +42,5 @@ jobs:
       - name: 💅 Prettier check
         run: yarn format:check
 
-      - name: 🃏 Run jest
-        run: yarn test
+      - name: 🃏 Run build test
+        run: yarn core build

@@ -79,8 +79,7 @@ export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
             className='ml-2 h-14'
             color='primary'
             size='lg'
-            onClick={submitComment}
-          >
+            onClick={submitComment}>
             작성
           </Button>
         </div>
@@ -118,8 +117,7 @@ export default function ArtworkComment({ aw: awData }: { aw: ArtworkType }) {
                     (user?.username === comment.authorUsername || isAdmin) && (
                       <h5
                         className='ml-2 cursor-pointer text-lg font-bold text-gray-500 hover:underline'
-                        onClick={() => handleCommentDelete(comment.id)}
-                      >
+                        onClick={() => handleCommentDelete(comment.id)}>
                         삭제
                       </h5>
                     )}

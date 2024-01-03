@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const withPWA = require('next-pwa');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const path = require('path');
 const config = {
   eslint: {
     dirs: ['src'],
@@ -71,6 +73,8 @@ const config = {
     // Modify the file loader rule to ignore *.svg, since we have it handled now.
     fileLoaderRule.exclude = /\.svg$/i;
 
+    config.resolve.alias['@'] = path.join(__dirname, 'src');
+    config.resolve.alias['~'] = path.join(__dirname, 'public');
     return config;
   },
 };

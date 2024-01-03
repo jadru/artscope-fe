@@ -12,10 +12,9 @@ export type sortDirectionType = 'ASC' | 'DESC';
 export type contentType =
   | 'post'
   | 'artwork'
-  | 'exhibition'
+  | 'event'
   | 'agora'
   | 'notice'
-  | 'event'
   | 'faq'
   | 'qna'
   | 'review'

@@ -1,10 +1,10 @@
-name: Docker Image CI for Production w/ AWS CodeDeploy
+name: CI/CD
 
 on:
   push:
     branches:
       - main
-      - dev
+      - develop
 
 env:
   REGISTRY: docker.io
@@ -12,7 +12,6 @@ env:
   DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
   AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
   AWS_CODE_DEPLOY_NAME: artscope-codedeploy
-  AWS_CODE_DEPLOY_GROUP: artscope-codedeploy-frontend
 
 jobs:
   build-deploy:
@@ -22,16 +21,17 @@ jobs:
         include:
           - package: core
             pattern: packages/core/**
-            image-prod: jadru/artplatform-fe
-            image-dev: jadru/artplatform-fe
-            dockerfile-prod: ./docker/core/Dockerfile.prod
-            dockerfile-dev: ./docker/core/Dockerfile.dev
+            image: jadru/artplatform-fe
+            dockerfile: docker/core.Dockerfile
+            aws-code-deploy-group-prod: artscope-codedeploy-frontend
+            aws-code-deploy-group-dev: artscope-codedeploy-frontend-dev
           - package: admin
-            pattern: packages/admin/**
-            image-prod: jadru/artscope-admin
-            image-dev: jadru/artscope-admin
-            dockerfile-prod: ./docker/admin/Dockerfile.prod
-            dockerfile-dev: ./docker/admin/Dockerfile.dev
+            pattern: packages/core/**
+            image: jadru/artscope-admin
+            dockerfile: docker/admin.Dockerfile
+            aws-code-deploy-group-prod: artscope-codedeploy-admin
+            aws-code-deploy-group-dev: artscope-codedeploy-admin-dev
+
     permissions:
       contents: read
       packages: write
@@ -40,29 +40,43 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          submodules: "true"
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
 
       - name: Check if affected
         id: diff
-        uses: technote-space/get-diff-action@v6.1.0
+        uses: technote-space/get-diff-action@v6
         with:
           PATTERNS: |
             ${{ matrix.pattern }}
+          FILES: |
+            package.json
+            yarn.lock
+            tsconfig.base.json
+            .eslintrc
+            docker/core.Dockerfile
+            docker/admin.Dockerfile
+            
 
       - name: Set branch-based environment variables
         if: steps.diff.outputs.diff
         uses: iamtheyammer/branch-env-vars@v1.1.3
         with:
-          IMAGE_REPO: |
-            main:${{ matrix.image-prod }}
-            dev:${{ matrix.image-dev }}
-          DOCKERFILE: |
-            main:${{ matrix.dockerfile-prod }}
-            dev:${{ matrix.dockerfile-dev }}
+          IMAGE_REPO: ${{ matrix.image }}
+          DOCKERFILE: ${{ matrix.dockerfile }}
+          AWS_CODE_DEPLOY_GROUP: |
+            main: ${{ matrix.aws-code-deploy-group-prod }}
+            develop: ${{ matrix.aws-code-deploy-group-dev }}
+
       - name: Copy env from secrets
         if: steps.diff.outputs.diff
         run: |
-          main: echo ${{ secrets.ENV_PROD }} > .env
-          dev: echo ${{ secrets.ENV_DEV }} > .env
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            printf '%s\n' "${{ secrets.ENV_PROD }}" > .env
+          elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            printf '%s\n' "${{ secrets.ENV_DEV }}" > .env
+          fi
 
       - name: Setup Docker buildx
         if: steps.diff.outputs.diff
@@ -75,12 +89,12 @@ jobs:
       - name: Extract Docker metadata
         if: steps.diff.outputs.diff
         id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        uses: docker/metadata-action@v5
         with:
-          images: ${{ IMAGE_REPO }}
+          images: ${{ env.IMAGE_REPO }}
           tags: |
-            main: ${{ secrets.MAJOR }}.${{ secrets.MINOR }}
-            dev: ${{ secrets.MAJOR }}.${{ secrets.MINOR }}.dev
+            type=ref,event=branch,prefix=${{ secrets.MAJOR }}.${{ secrets.MINOR }}.
+
 
       - name: Build and Push Docker image
         id: build-and-push
@@ -90,24 +104,34 @@ jobs:
           context: .
           push: true
           file: ${{ env.DOCKERFILE }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags:  ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Write Docker image name to file
         if: steps.diff.outputs.diff
         run: |
-          main: echo "${{ env.IMAGE_NAME }}:${{ secrets.MAJOR }}.${{ secrets.MINOR }}" > fe-image.txt
-          dev: echo "${{ env.IMAGE_NAME }}:${{ secrets.MAJOR }}.${{ secrets.MINOR }}.dev" > fe-image-dev.txt
+          if [[ "${{ env.IMAGE_REPO }}" == "jadru/artplatform-fe" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "${{ steps.meta.outputs.tags }}" > fe-image.txt
+          elif [[ "${{ env.IMAGE_REPO }}" == "jadru/artplatform-fe" && "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            echo "${{ steps.meta.outputs.tags }}" > fe-image-dev.txt
+          fi
 
       - name: Create zip file for AWS CodeDeploy
         if: steps.diff.outputs.diff
         run: |
-          main: mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec.yml fe-image.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
-          dev: mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec-dev.yml fe-image-dev.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
+          if [[ "${{ env.IMAGE_REPO }}" == "jadru/artplatform-fe" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec.yml fe-image.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
+          elif [[ "${{ env.IMAGE_REPO }}" == "jadru/artplatform-fe" && "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            mkdir ${{ env.AWS_CODE_DEPLOY_NAME }} && cp -r appspec-dev.yml fe-image-dev.txt scripts ${{ env.AWS_CODE_DEPLOY_NAME }}
+          fi
+  
 
       - name: Rename appspec-dev file to appspec
-        if: dev
-        run: cd ${{ env.AWS_CODE_DEPLOY_NAME }} && mv appspec-dev.yml appspec.yml
+        if: steps.diff.outputs.diff
+        run: |
+          if [[ "${{ env.IMAGE_REPO }}" == "jadru/artplatform-fe" && "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            cd ${{ env.AWS_CODE_DEPLOY_NAME }} && mv appspec-dev.yml appspec.yml
+          fi
 
       - name: AWS Configure
         if: steps.diff.outputs.diff
@@ -120,21 +144,25 @@ jobs:
       - name: Upload to AWS S3
         if: steps.diff.outputs.diff
         run: |
-          aws deploy push \
-          --application-name ${{ env.AWS_CODE_DEPLOY_NAME }} \
-          --s3-location s3://${{ env.AWS_S3_BUCKET_NAME }}/codedeploy/$GITHUB_SHA.zip \
-          --ignore-hidden-files \
-          --source ${{ env.AWS_CODE_DEPLOY_NAME }}
+          if [[ "${{ env.IMAGE_REPO }}" == "jadru/artplatform-fe" ]]; then
+            aws deploy push \
+            --application-name ${{ env.AWS_CODE_DEPLOY_NAME }} \
+            --s3-location s3://${{ env.AWS_S3_BUCKET_NAME }}/codedeploy/$GITHUB_SHA.zip \
+            --ignore-hidden-files \
+            --source ${{ env.AWS_CODE_DEPLOY_NAME }}
+          fi
 
       - name: Delpoy to AWS EC2
         if: steps.diff.outputs.diff
         run: |
-          aws deploy create-deployment \
-          --application-name ${{ env.AWS_CODE_DEPLOY_NAME }} \
-          --deployment-config-name CodeDeployDefault.OneAtATime \
-          --deployment-group-name ${{ env.AWS_CODE_DEPLOY_GROUP }} \
-          --description "Deploy artscope frontend" \
-          --s3-location bucket=$AWS_S3_BUCKET_NAME,key=codedeploy/$GITHUB_SHA.zip,bundleType=zip
+          if [[ "${{ env.IMAGE_REPO }}" == "jadru/artplatform-fe" ]]; then
+            aws deploy create-deployment \
+            --application-name ${{ env.AWS_CODE_DEPLOY_NAME }} \
+            --deployment-config-name CodeDeployDefault.OneAtATime \
+            --deployment-group-name ${{ env.AWS_CODE_DEPLOY_GROUP }} \
+            --description "Deploy artscope frontend" \
+            --s3-location bucket=$AWS_S3_BUCKET_NAME,key=codedeploy/$GITHUB_SHA.zip,bundleType=zip
+          fi
 
       - name: Autoincrement a new minor version
         if: steps.diff.outputs.diff
@@ -145,7 +173,7 @@ jobs:
         if: steps.diff.outputs.diff
         uses: hmanzur/actions-set-secret@v2.0.0
         with:
-          name: 'MINOR'
+          name: "MINOR"
           value: ${{ env.NEW_MINOR_VERSION }}
           repository: ${{ secrets.REPO }}
           token: ${{ secrets.REPO_ACCESS_TOKEN }}

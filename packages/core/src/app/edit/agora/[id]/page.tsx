@@ -5,6 +5,7 @@ import { Bold } from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
 import { Document } from '@tiptap/extension-document';
 import { Heading } from '@tiptap/extension-heading';
+import { History } from '@tiptap/extension-history';
 import { Italic } from '@tiptap/extension-italic';
 import { Link } from '@tiptap/extension-link';
 import { ListItem } from '@tiptap/extension-list-item';
@@ -78,6 +79,7 @@ const NewArtwork = () => {
       }),
       Strike,
       Underline,
+      History,
       BulletList,
       ListItem,
       OrderedList,
@@ -175,8 +177,7 @@ const NewArtwork = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('bold') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiBold size={25} />
           </button>
           <button
@@ -187,8 +188,7 @@ const NewArtwork = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('italic') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiItalic size={25} />
           </button>
           <button
@@ -199,8 +199,7 @@ const NewArtwork = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('strike') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiStrikethrough size={25} />
           </button>
           <button
@@ -211,8 +210,7 @@ const NewArtwork = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('underline') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiUnderline size={25} />
           </button>
           <button
@@ -223,8 +221,7 @@ const NewArtwork = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('bulletList') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiListUl size={25} />
           </button>
           <button
@@ -235,8 +232,7 @@ const NewArtwork = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('orderedList') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiListOl size={25} />
           </button>
         </div>
@@ -301,8 +297,7 @@ const NewArtwork = () => {
           disabled={isUpload}
           color='primary'
           className={`
-            h-12 ${isUpload ? 'opacity-20' : ''}`}
-        >
+            h-12 ${isUpload ? 'opacity-20' : ''}`}>
           아고라 수정
         </Button>
       </div>

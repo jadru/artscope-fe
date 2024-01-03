@@ -34,8 +34,7 @@ const PublicTypeCheckBox = ({
     className='mb-1.5 w-[130px]'
     onChange={(e) => {
       setPublicType(e.target.value as PublicType);
-    }}
-  >
+    }}>
     {PublicTypeSelectItems.map((item) => (
       <SelectItem key={item.value} startContent={item.icon}>
         {item.label}

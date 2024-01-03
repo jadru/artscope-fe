@@ -32,11 +32,6 @@ export type ArtWorkApiResponseType = {
   pageInfo: pageInfoType;
 };
 
-export type ArtworkSearchApiResponseType = {
-  artworks: DetailedArtworkType[];
-  pageInfo: pageInfoType;
-};
-
 export type ArtWorkApiByMember = {
   artworks: DetailedArtworkType[];
   pageInfo: pageInfoType;

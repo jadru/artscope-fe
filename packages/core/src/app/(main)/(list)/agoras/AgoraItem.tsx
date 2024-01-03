@@ -17,10 +17,9 @@ export default function AgoraItem({ agora }: { agora: AgoraType }) {
         <div
           className={`flex w-4/5 flex-col justify-between ${
             agora.thumbnail?.mediaUrl ? 'w-[calc(100%-3rem)]' : 'w-full'
-          }`}
-        >
+          }`}>
           <div>
-            <h4 className='flex w-full justify-between text-[1.1rem]'>
+            <h4 className='font-title flex w-full justify-between text-[1.1rem]'>
               <StandardLabel label={agora.title} />{' '}
               <span className='text-default-500 text-right font-normal'>
                 {editAndPostShortCalculatorKO(

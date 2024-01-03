@@ -21,7 +21,7 @@ export default function MarkdownViewer({
 }) {
   return (
     <ReactMarkdown
-      className={'markdown-viewer break-all ' + className}
+      className={'markdown-viewer break-all space-y-2 ' + className}
       remarkPlugins={ignoreMarkdown ? [remarkGfm, strip] : [remarkGfm]}
       rehypePlugins={
         ignoreHTML
@@ -30,8 +30,7 @@ export default function MarkdownViewer({
               [rehypeExternalLinks, { target: '_blank', rel: 'noreferrer' }],
               rehypeRaw,
             ]
-      }
-    >
+      }>
       {lodash.unescape(decode(children))}
     </ReactMarkdown>
   );

@@ -17,7 +17,7 @@ import StandardLabel from '@/components/StandardLabel';
 import NewLocationModal from '@/app/new/event/location/NewLocationModal';
 import jxios from '@/utils/jxios';
 
-import { LocationDataType, LocationResponseType } from '@/types/location';
+import { LocationListItemType, LocationResponseType } from '@/types/location';
 
 export default function AddLocation({
   location,
@@ -29,7 +29,7 @@ export default function AddLocation({
   };
   setLocation: (location: { locationId: number; locationName: string }) => void;
 }) {
-  const [data, setData] = useState<LocationDataType[]>();
+  const [data, setData] = useState<LocationListItemType[]>();
   const [keyword, setKeyword] = useState<string>('');
   const [page, setPage] = useState<number>(-1);
   const [totalPage, setTotalPage] = useState<number>(0);
@@ -58,7 +58,7 @@ export default function AddLocation({
     500
   );
 
-  const handleLocationClick = (location: LocationDataType) => {
+  const handleLocationClick = (location: LocationListItemType) => {
     setLocation({
       locationId: location.locationId,
       locationName: location.name,
@@ -74,8 +74,7 @@ export default function AddLocation({
     <>
       <button
         className='hover:bg-default-100 flex h-12 w-44 items-center justify-center rounded-xl border px-2'
-        onClick={() => onOpen()}
-      >
+        onClick={() => onOpen()}>
         {location.locationId ? (
           <>
             <BiBuilding size={23} />
@@ -106,8 +105,7 @@ export default function AddLocation({
                   />
                   <button
                     className='order-default-500 hover:bg-default-100 flex items-center gap-1 break-keep rounded-xl border-2 px-3 py-2'
-                    onClick={NewLocationOnOpen}
-                  >
+                    onClick={NewLocationOnOpen}>
                     <BiPlus size={23} />
                     <p>장소추가</p>
                   </button>
@@ -118,8 +116,7 @@ export default function AddLocation({
                       <div
                         className='cursor-pointer border-b py-2 hover:underline'
                         key={location.locationId}
-                        onClick={() => handleLocationClick(location)}
-                      >
+                        onClick={() => handleLocationClick(location)}>
                         <h5>
                           <b>
                             <StandardLabel label={location.name} />

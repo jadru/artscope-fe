@@ -5,6 +5,7 @@ import { Bold } from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
 import { Document } from '@tiptap/extension-document';
 import { Heading } from '@tiptap/extension-heading';
+import { History } from '@tiptap/extension-history';
 import { Italic } from '@tiptap/extension-italic';
 import { Link } from '@tiptap/extension-link';
 import { ListItem } from '@tiptap/extension-list-item';
@@ -40,7 +41,7 @@ import { EventDetailType, EventType } from '@/types/event';
 const NewEvent = () => {
   const [link, setLink] = useState<string>('');
   const [eventType, setEventType] = useState<EventType>('STANDARD');
-  const [price, setPrice] = useState<number>(0);
+  const [price, setPrice] = useState<string>('무료');
   const { push } = useRouter();
   const [isUpload, setIsUpload] = useState(false);
   const placeholderText = '이벤트를 자유롭게 설명하세요.';
@@ -73,6 +74,7 @@ const NewEvent = () => {
       Underline,
       BulletList,
       ListItem,
+      History,
       OrderedList,
       Paragraph,
       Placeholder.configure({
@@ -164,8 +166,7 @@ const NewEvent = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('bold') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiBold size={25} />
           </button>
           <button
@@ -176,8 +177,7 @@ const NewEvent = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('italic') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiItalic size={25} />
           </button>
           <button
@@ -188,8 +188,7 @@ const NewEvent = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('strike') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiStrikethrough size={25} />
           </button>
           <button
@@ -200,8 +199,7 @@ const NewEvent = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('underline') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiUnderline size={25} />
           </button>
           <button
@@ -212,8 +210,7 @@ const NewEvent = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('bulletList') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiListUl size={25} />
           </button>
           <button
@@ -224,8 +221,7 @@ const NewEvent = () => {
             }}
             className={`hover:text-primary ${
               editor?.isActive('orderedList') ? 'text-black' : 'text-default'
-            }`}
-          >
+            }`}>
             <BiListOl size={25} />
           </button>
         </div>
@@ -242,7 +238,7 @@ const NewEvent = () => {
           type='number'
           label='참석자 티켓 가격'
           value={String(price)}
-          onValueChange={(value) => setPrice(Number(value))}
+          onValueChange={setPrice}
           placeholder='가격을 입력해주세요'
           description='무료인 경우 0을 입력해주세요'
           endContent={
@@ -257,8 +253,7 @@ const NewEvent = () => {
           value={eventType}
           onChange={(e) => setEventType(e.target.value as EventType)}
           className='w-full'
-          isRequired
-        >
+          isRequired>
           {EventTypeData.map((item) => (
             <SelectItem key={item.value} value={item.value}>
               {item.label}
@@ -282,8 +277,7 @@ const NewEvent = () => {
           disabled={isUpload}
           color='primary'
           className={`
-            h-12 ${isUpload ? 'opacity-20' : ''}`}
-        >
+            h-12 ${isUpload ? 'opacity-20' : ''}`}>
           이벤트 수정
         </Button>
       </div>

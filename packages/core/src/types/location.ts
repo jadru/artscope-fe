@@ -18,14 +18,20 @@ export type LocationDataType = {
   englishName: string;
   latitude: number;
   longitude: number;
-  link: string;
   name: string;
   phoneNumber: string;
   snsUrl: string;
   webSiteUrl: string;
 };
 
+export type LocationListItemType = {
+  locationId: number;
+  name: string;
+  englishName: string;
+  address: string;
+};
+
 export type LocationResponseType = {
-  locations: LocationDataType[];
+  locations: LocationListItemType[];
   pageInfo: pageInfoType;
 };
