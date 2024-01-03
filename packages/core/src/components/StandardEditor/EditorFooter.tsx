@@ -14,7 +14,7 @@ export default function EditorFooter({
 }) {
   return (
     <>
-      <div className='h-16'></div>;
+      <div className='h-16'></div>
       <div className='bg-default-50 fixed bottom-0 z-40 flex h-16 w-full max-w-[718px] items-center justify-between border-t px-3'>
         {footerContent}
         <Button
@@ -24,7 +24,7 @@ export default function EditorFooter({
           isLoading={isUpload}
           color='primary'
           className={`
-            h-12 ${isUpload ? 'opacity-20' : ''}`}>
+            ${isUpload ? 'opacity-20' : ''}`}>
           {isUpload ? '업로드 중...' : submitText}
         </Button>
       </div>

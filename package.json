@@ -13,8 +13,6 @@
     "lint:fix": "eslint src --fix && yarn format",
     "lint:strict": "eslint --max-warnings=0 ./packages",
     "typecheck": "yarn workspace @artscope/core typecheck",
-    "test:watch": "yarn workspace @artscope/core --watch",
-    "test": "yarn workspace @artscope/core test",
     "format": "prettier -w ./packages",
     "format:check": "prettier -c ./packages",
     "prepare": "husky install"

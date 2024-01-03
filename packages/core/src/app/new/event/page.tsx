@@ -220,12 +220,6 @@ const NewEvent = () => {
               placeholder='운영시간을 입력해주세요.'
             />
             <Input
-              label='휴무일'
-              value={operationTime}
-              onValueChange={setOperationTime}
-              placeholder='운영시간을 입력해주세요.'
-            />
-            <Input
               label='참석자 티켓 가격'
               value={price}
               onValueChange={setPrice}

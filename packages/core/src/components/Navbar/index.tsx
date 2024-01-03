@@ -16,7 +16,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className='sticky top-0 z-50 w-screen bg-white/80 backdrop-blur-2xl transition'>
+      <div className='md:sticky top-0 z-50 w-screen bg-white/80 backdrop-blur-2xl transition'>
         <div className='mx-auto flex max-w-screen-sm flex-col items-start justify-between px-2.5 md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl'>
           <div className='flex h-14 w-full items-center justify-between'>
             <Link

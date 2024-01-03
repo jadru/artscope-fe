@@ -20,9 +20,10 @@ export type EventDetailType = {
     | null;
   link: string;
   eventType: EventType;
-  eventSchedules: ScheduleResponseType[];
+  startDate: string;
+  endDate: string;
   detailLocation: string;
-  price: number;
+  price: string;
   updatedTime: Date | null;
   createdTime: Date;
   location: LocationType;
@@ -42,10 +43,12 @@ export type SingleEventType = {
   }[];
   eventType: EventType;
   link: string;
+  price: string;
   createdTime: Date;
   updatedTime: Date | null;
   author: string;
-  eventSchedule: ScheduleResponseType[];
+  startDate: string;
+  endDate: string;
 };
 
 export type EventType =
@@ -72,7 +75,7 @@ export type SearchEventType =
   | 'STANDARD';
 
 export type EventResponseType = {
-  exhibitions: SingleEventTypeOnList[];
+  events: SingleEventTypeOnList[];
   pageInfo: pageInfoType;
 };
 
@@ -87,7 +90,10 @@ export type SingleEventTypeOnList = {
   createdTime: Date;
   updatedTime: Date | null;
   author: string;
-  eventSchedule: ScheduleResponseType;
+  locationName: string;
+  detailLocation: string;
+  startDate: string;
+  endDate: string;
 };
 
 export type EventViewType = {
@@ -104,7 +110,8 @@ export type CreateEventType = {
     eventType: EventType;
     link: string;
     price: string;
-    schedule: CreateScheduleType[];
+    startDate: string;
+    endDate: string;
     medias:
       | {
           mediaType: MediaType;
@@ -116,45 +123,6 @@ export type CreateEventType = {
   };
   mediaFiles: File[] | null;
   thumbnailFile?: File | null;
-};
-
-export type ScheduleType = {
-  locationId: number;
-  detailLocation: string;
-  startDateTime: Date;
-  endDateTime: Date;
-  participants: ParticipantType[];
-};
-
-export type CreateScheduleType = {
-  locationId: number;
-  detailLocation: string;
-  startDateTime: string;
-  endDateTime: string;
-  participants: ParticipantType[];
-};
-
-export type CreateScheduleTempType = {
-  id: number;
-  locationId?: number;
-  locationName?: string;
-  detailLocation: string;
-  startDateTime: Date;
-  endDateTime: Date;
-  participants: ParticipantType[];
-};
-
-export type ScheduleResponseType = {
-  id: number;
-  locationId: number;
-  detailLocation: string;
-  startDateTime: Date;
-  endDateTime: Date;
-  participants: ParticipantType[];
-  locationAddress: string;
-  locationName: string;
-  updatedTime?: Date;
-  createdTime: Date;
 };
 
 export type ParticipantType = {

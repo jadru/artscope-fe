@@ -27,8 +27,8 @@ export default function MediaSlider({ medias }: { medias: MediaTypeInfo[] }) {
                 className='w-full rounded-xl border-2 object-cover'
                 src={image.mediaUrl}
                 alt={image.mediaUrl}
-                width={500}
-                height={300}
+                width={700}
+                height={500}
               />
             </Carousel.Item>
           ))}
