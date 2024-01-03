@@ -19,8 +19,7 @@ const LocationButton = ({ ...props }: LocationButtonProps) => {
           {}
         );
       }}
-      {...props}
-    >
+      {...props}>
       {props.children}
     </button>
   );

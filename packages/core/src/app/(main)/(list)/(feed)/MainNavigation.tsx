@@ -3,10 +3,10 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
+  BiBuilding,
   BiHome,
   BiSearch,
   BiSolidCalendar,
-  BiSolidNetworkChart,
   BiSolidNews,
   BiSolidPlanet,
   BiSolidZap,
@@ -42,10 +42,10 @@ const menuItems = [
     active: true,
   },
   {
-    href: '/agoras',
-    slug: '/agora',
-    text: '아고라',
-    icon: <BiSolidNetworkChart size={23} />,
+    href: '/spaces',
+    slug: '/space',
+    text: '공간',
+    icon: <BiBuilding size={23} />,
     active: true,
   },
   {
@@ -85,8 +85,7 @@ export default function MainNavigation() {
                 : pathname.startsWith(item.slug)
                 ? 'underline'
                 : ''
-            }`}
-          >
+            }`}>
             {item.icon}
             <p className='text-lg'>{item.text}</p>
           </Link>

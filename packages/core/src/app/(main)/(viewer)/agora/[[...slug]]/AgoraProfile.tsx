@@ -9,8 +9,7 @@ export default function AgoraProfile({ agora }: { agora: AgoraDetailType }) {
   return (
     <Link
       className='cursor-pointer p-0'
-      href={`/profile/${agora.agora.author.username}`}
-    >
+      href={`/profile/${agora.agora.author.username}`}>
       <div className='flex flex-row items-start justify-start gap-2 p-3 transition hover:underline'>
         <ASNextImage
           src={agora.agora.author.profileImageUrl ?? 'prod/images/default.jpg'}

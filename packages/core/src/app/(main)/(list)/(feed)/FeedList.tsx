@@ -47,8 +47,7 @@ export default function FeedList({ data }: FeedListProps) {
             feed.length === 1 || feed.length === 3
               ? 'grid-cols-1'
               : 'grid-cols-2'
-          }`}
-        >
+          }`}>
           {feed.map((item) => (
             <FeedListItemArtwork feed={item} key={'artwork-' + item.id} />
           ))}
@@ -58,7 +57,7 @@ export default function FeedList({ data }: FeedListProps) {
       switch (feed.type) {
         case 'post':
           return <FeedListItemPost feed={feed} />;
-        case 'exhibition':
+        case 'event':
           return <FeedListItemEvent feed={feed} />;
         case 'agora':
           return <FeedListItemAgora feed={feed} />;
@@ -69,7 +68,7 @@ export default function FeedList({ data }: FeedListProps) {
   };
 
   return (
-    <div className='flex max-w-full flex-col gap-0.5'>
+    <div className='flex max-w-full flex-col gap-4'>
       {feeds.map((feed, index) => (
         <div key={index + '-' + (Array.isArray(feed) ? 'artwork' : feed.type)}>
           {renderFeedItem(feed)}

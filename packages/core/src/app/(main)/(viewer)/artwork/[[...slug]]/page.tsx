@@ -93,9 +93,6 @@ export default async function ArtworkPage({
         picture={author.picture}
         introduction={author.introduction}
       />
-      <div className='bg-default-100 w-full rounded-xl px-3 py-3'>
-        <MarkdownViewer>{data.artwork.description}</MarkdownViewer>
-      </div>
       <div className='w-full space-y-1'>
         {data.artwork.artworkMedias.map((media, mediaIndex) => (
           <div key={media.id}>
@@ -117,8 +114,7 @@ export default async function ArtworkPage({
                   }
                   title='YouTube video player'
                   allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                  allowFullScreen
-                ></iframe>
+                  allowFullScreen></iframe>
               )) || (
                 <video
                   className='relative h-auto w-full rounded-xl'
@@ -131,6 +127,9 @@ export default async function ArtworkPage({
               )}
           </div>
         ))}
+      </div>
+      <div className='bg-default-100 w-full rounded-xl px-3 py-3'>
+        <MarkdownViewer>{data.artwork.description}</MarkdownViewer>
       </div>
       <ArtworkTags tags={data.artwork.tags} />
       <p className='text-default-500 w-full px-2.5 text-right font-normal'>

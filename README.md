@@ -27,11 +27,10 @@ $ yarn install
 ```
 
 ## How to get Admin Submodule
-    
+
 ```bash
 $ git submodule update --remote
 ```
-   
 
 ## Information
 
@@ -82,5 +81,3 @@ $ git submodule update --remote
 - Rest API connection.
 
 ## etc
-
-  

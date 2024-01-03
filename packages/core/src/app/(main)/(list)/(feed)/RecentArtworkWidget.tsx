@@ -23,14 +23,14 @@ export default function RecentArtworkWidget() {
   const { push } = useRouter();
   return post.data ? (
     post.data.length > 0 ? (
-      <div className='bg-default-100 w-full rounded-2xl p-4'>
-        <h4 className='mb-1.5 pl-1.5'>인기있는 작품</h4>
+      <div className='bg-default-100 w-full rounded-2xl p-1'>
+        <h4 className='font-title my-1.5 px-2.5'>인기있는 작품</h4>
+        <hr className='mb-1' />
         {post.data?.map((aw) => (
           <button
-            className='w-full truncate rounded-md px-2 py-1.5 text-left transition-colors hover:underline'
+            className='hover:border-default-300 w-full truncate rounded-xl border border-transparent px-2.5 py-1.5 text-left transition-colors hover:bg-white'
             key={aw.id}
-            onClick={() => push('/artwork/' + aw.id)}
-          >
+            onClick={() => push('/artwork/' + aw.id)}>
             <MarkdownViewer className='line-clamp-1' ignoreMarkdown ignoreHTML>
               {aw.title}
             </MarkdownViewer>

@@ -15,8 +15,7 @@ export default function ProfileCard({
   return (
     <Link
       href={'/profile/' + username}
-      className='hover:bg-default-100 flex appearance-none items-center justify-between rounded-2xl border-2 p-3 transition'
-    >
+      className='hover:bg-default-100 flex appearance-none items-center justify-between rounded-2xl border-2 p-3 transition'>
       <div className='flex flex-col items-start justify-center'>
         <p className='text-lg font-bold'>
           <StandardLabel label={name} /> 작가
@@ -26,6 +25,7 @@ export default function ProfileCard({
       {picture ? (
         <ASNextImage
           src={picture ?? 'prod/images/default.jpg'}
+          // eslint-disable-next-line
           alt={name + "'s profile image"}
           width={60}
           height={60}

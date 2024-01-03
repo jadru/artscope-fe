@@ -68,8 +68,7 @@ export default function ArtworkAction({ aw }: { aw: ArtworkType }) {
           onClick={() => {
             setLike(!like);
             handleLike();
-          }}
-        >
+          }}>
           {aw.artwork.likes + (like ? 1 : 0) + (firstLike ? -1 : 0)}
         </Button>
         <Button
@@ -77,8 +76,7 @@ export default function ArtworkAction({ aw }: { aw: ArtworkType }) {
           variant='light'
           size='sm'
           onClick={() => push(`/artwork/${aw.artwork.id}`)}
-          className='text-md text-gray-500 hover:text-blue-500'
-        >
+          className='text-md text-gray-500 hover:text-blue-500'>
           {aw.artwork.comments}
         </Button>
       </div>
@@ -90,8 +88,7 @@ export default function ArtworkAction({ aw }: { aw: ArtworkType }) {
               startContent={<AiOutlineEdit className='h-5 w-5' />}
               variant='light'
               size='sm'
-              className='text-md text-gray-500 hover:text-purple-500'
-            >
+              className='text-md text-gray-500 hover:text-purple-500'>
               수정
             </Button>
             <Button
@@ -105,8 +102,7 @@ export default function ArtworkAction({ aw }: { aw: ArtworkType }) {
               startContent={<AiOutlineDelete className='h-5 w-5' />}
               variant='light'
               size='sm'
-              className='text-md text-gray-500 hover:text-red-500'
-            >
+              className='text-md text-gray-500 hover:text-red-500'>
               삭제
             </Button>
           </>
@@ -136,8 +132,7 @@ export default function ArtworkAction({ aw }: { aw: ArtworkType }) {
                       });
                     });
               }
-            }}
-          >
+            }}>
             공유
           </Button>
         </DebounceClick>

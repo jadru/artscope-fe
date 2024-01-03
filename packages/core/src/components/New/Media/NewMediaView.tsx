@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Input,
   Kbd,
@@ -17,22 +19,22 @@ import { ArtWorkMediaType } from '@/types/artwork';
 type Props = {
   fileUrls: ArtWorkMediaType[];
   setFileUrls: React.Dispatch<React.SetStateAction<ArtWorkMediaType[]>>;
-  setImgs: React.Dispatch<React.SetStateAction<string[]>>;
-  imgs: string[];
   onlyImage?: boolean;
+  onAddMedia?: (media: ArtWorkMediaType) => void;
+  onDeleteMedia?: (index: number) => void;
   header?: string;
 };
 
-export default function NewMediaView({
-  fileUrls,
+export default ({
   setFileUrls,
-  setImgs,
-  imgs,
+  fileUrls,
   onlyImage,
   header,
-}: Props) {
+  onAddMedia,
+  onDeleteMedia,
+}: Props) => {
   const [uploadPopoverOpen, setUploadPopoverOpen] = useState(false);
-
+  const [imgs, setImgs] = useState<string[]>([]);
   const handleFileAdded = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (
       e.currentTarget.files &&
@@ -58,6 +60,16 @@ export default function NewMediaView({
           description: '',
         },
       ]);
+      onAddMedia &&
+        onAddMedia({
+          mediaType: files[i].type.startsWith('image')
+            ? 'image'
+            : files[i].type.startsWith('video')
+            ? 'video'
+            : 'audio',
+          file: files[i],
+          description: '',
+        });
     }
     setUploadPopoverOpen(false);
   };
@@ -103,6 +115,7 @@ export default function NewMediaView({
 
   const handleDeleteFile = (index: number) => {
     if (confirm('미디어를 삭제하시겠습니까?')) {
+      onDeleteMedia && onDeleteMedia(index);
       setImgs((prev) => prev.filter((_, i) => i !== index));
       setFileUrls((prev: ArtWorkMediaType[]) =>
         prev.filter((_, i) => i !== index)
@@ -128,8 +141,7 @@ export default function NewMediaView({
               fileUrls && (
                 <div
                   key={file.mediaType + index}
-                  className='relative h-[76px] w-[76px]'
-                >
+                  className='relative h-[76px] w-[76px]'>
                   {file.mediaType === 'image' ? (
                     <ASNextImage
                       src={imgs[index]}
@@ -166,8 +178,7 @@ export default function NewMediaView({
                   )}
                   <button
                     className='absolute right-0 top-0 flex h-6 w-6 items-center justify-center rounded-full bg-white text-red-600 shadow-md hover:text-amber-700'
-                    onClick={() => handleDeleteFile(index)}
-                  >
+                    onClick={() => handleDeleteFile(index)}>
                     <AiFillCloseCircle className='h-6 w-6 rounded-full border border-white' />
                   </button>
                 </div>
@@ -180,8 +191,7 @@ export default function NewMediaView({
             offset={20}
             showArrow
             isOpen={uploadPopoverOpen}
-            onOpenChange={(open) => setUploadPopoverOpen(open)}
-          >
+            onOpenChange={(open) => setUploadPopoverOpen(open)}>
             <PopoverTrigger>
               <div key='plus' className='relative h-[76px] w-[60px]'>
                 <button className='absolute bottom-0 left-0 flex h-16 w-16 cursor-pointer items-center justify-center rounded-md border-2 border-dotted bg-transparent'>
@@ -193,8 +203,7 @@ export default function NewMediaView({
               <div className='my-2 flex flex-col gap-2'>
                 <label
                   htmlFor='uploads'
-                  className='text-md bg-primary hover:bg-primary-700 flex h-10 cursor-pointer items-center justify-center rounded-xl px-8 text-center font-bold text-white transition-colors'
-                >
+                  className='text-md bg-primary hover:bg-primary-700 flex h-10 cursor-pointer items-center justify-center rounded-xl px-8 text-center font-bold text-white transition-colors'>
                   업로드
                 </label>
                 {!onlyImage && (
@@ -233,4 +242,4 @@ export default function NewMediaView({
       </div>
     </div>
   );
-}
+};

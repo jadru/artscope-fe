@@ -31,8 +31,7 @@ export default function EventEditDelete({
       <Button
         startContent={<AiOutlineDelete />}
         color='danger'
-        onClick={handleDelete}
-      >
+        onClick={handleDelete}>
         삭제
       </Button>
       <Button
@@ -40,8 +39,7 @@ export default function EventEditDelete({
         color='primary'
         onClick={() => {
           push(`/edit/event/${eventId}`);
-        }}
-      >
+        }}>
         수정
       </Button>
     </div>
