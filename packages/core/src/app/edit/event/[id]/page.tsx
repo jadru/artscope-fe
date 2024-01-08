@@ -93,7 +93,7 @@ const NewEvent = () => {
   });
 
   useEffect(() => {
-    jxios.get(`/api/exhibitions/${params.id}`).then((res) => {
+    jxios.get(`/api/events/${params.id}`).then((res) => {
       const data = res.data as EventDetailType;
       editor?.commands.setContent(
         '# ' + data.title + '\n\n' + data.description
@@ -126,7 +126,7 @@ const NewEvent = () => {
     };
 
     await jxios
-      .put('/api/exhibitions/' + params.id, data)
+      .put('/api/events/' + params.id, data)
       .then((res) => {
         if (res.status === 200) {
           toast.success('이벤트가 수정되었습니다.');

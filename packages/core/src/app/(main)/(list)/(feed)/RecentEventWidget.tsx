@@ -13,7 +13,7 @@ import { EventResponseType } from '@/types/event';
 
 const getEvents = async () =>
   jxios
-    .get('/api/exhibitions', {
+    .get('/api/events', {
       params: {
         page: 0,
         size: 10,

@@ -20,7 +20,7 @@ export default function EventEditDelete({
 
   const handleDelete = async () => {
     if (confirm('정말 삭제하시겠습니까?')) {
-      await jxios.delete(`/api/exhibitions/${eventId}`).then(() => {
+      await jxios.delete(`/api/events/${eventId}`).then(() => {
         toast.success('이벤트가 삭제되었습니다.');
         push('/events');
       });
