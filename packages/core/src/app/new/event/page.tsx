@@ -119,7 +119,7 @@ const NewEvent = () => {
           })
         );
         await jxios
-          .post('/api/exhibitions', formData, {
+          .post('/api/events', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               Accept: 'application/json',
