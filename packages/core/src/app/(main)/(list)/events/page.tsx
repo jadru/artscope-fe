@@ -77,7 +77,7 @@ export default function Events() {
       </Title>
       {!isLoading ? (
         <>
-          <div className='grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3'>
+          <div className='grid grid-cols-1 lg:grid-cols-2'>
             {isSuccess &&
               data.pages.map((group) =>
                 group.events.map((event) => (

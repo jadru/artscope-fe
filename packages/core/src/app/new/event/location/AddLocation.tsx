@@ -1,4 +1,5 @@
 import {
+  Button,
   Input,
   Kbd,
   Modal,
@@ -72,9 +73,9 @@ export default function AddLocation({
 
   return (
     <>
-      <button
-        className='hover:bg-default-100 flex h-12 w-44 items-center justify-center rounded-xl border px-2'
-        onClick={() => onOpen()}>
+      <Button
+        className='hover:bg-default-100 flex h-12 w-full items-center justify-center rounded-xl border px-2'
+        onPress={onOpen}>
         {location.locationId ? (
           <>
             <BiBuilding size={23} />
@@ -88,9 +89,9 @@ export default function AddLocation({
             <p className='ml-1 mt-0.5'>장소 선택</p>
           </>
         )}
-      </button>
+      </Button>
 
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {() => (
             <>
