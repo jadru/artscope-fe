@@ -120,6 +120,8 @@ export type CreateEventType = {
     thumbnail: {
       mediaType: MediaType;
     } | null;
+    locationId: number;
+    detailLocation: string;
   };
   mediaFiles: File[] | null;
   thumbnailFile?: File | null;
