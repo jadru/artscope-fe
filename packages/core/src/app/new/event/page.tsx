@@ -16,6 +16,7 @@ import StandardEditor from '@/components/StandardEditor';
 
 import { EventTypeData } from '@/app/new/event/EventTypeData';
 import { initialEventSchema } from '@/app/new/event/initialEventSchema';
+import AddLocation from '@/app/new/event/location/AddLocation';
 import jxios from '@/utils/jxios';
 
 import { ArtWorkMediaType } from '@/types/artwork';
@@ -24,9 +25,18 @@ import { EventDetailType, EventType } from '@/types/event';
 const NewEvent = () => {
   const [eventSchedule, setEventSchedule] = useState<Date[]>([]);
   const { push } = useRouter();
+
   const [isUpload, setIsUpload] = useState(false);
   const [eventType, setEventType] = useState<EventType>('EXHIBITION');
   const [operationTime, setOperationTime] = useState('');
+  const [detailedLocation, setDetailedLocation] = useState('');
+  const [location, setLocation] = useState<{
+    locationId?: number;
+    locationName?: string;
+  }>({
+    locationId: undefined,
+    locationName: undefined,
+  });
   const [price, setPrice] = useState('');
   const [link, setLink] = useState('');
 
@@ -53,6 +63,10 @@ const NewEvent = () => {
           toast.warn('파일 용량이 너무 큽니다.');
           return;
         }
+        if (location.locationId === undefined) {
+          toast.warn('장소를 선택해주세요.');
+          return;
+        }
         setIsUpload(true);
         const newState = { ...initialEventSchema };
         const markdownContent = markdown.slice(markdown.indexOf('\n') + 2);
@@ -63,6 +77,8 @@ const NewEvent = () => {
         newState.dto.link = link;
         newState.dto.eventType = eventType;
         newState.dto.price = price;
+        newState.dto.locationId = location.locationId;
+        newState.dto.detailLocation = detailedLocation;
         const formData = new FormData();
         if (medias[0].mediaType === 'video') {
           const cover = (await getVideoCoverFromLocal(
@@ -151,6 +167,7 @@ const NewEvent = () => {
         isUpload={isUpload}
         submitText='이벤트 작성'
         headingRequired
+        mediaFileRequired={true}
         documentHeading={3}
         placeholderText='이벤트에 대한 설명을 자유롭게 작성해주세요.'>
         <form>
@@ -212,26 +229,35 @@ const NewEvent = () => {
                 onDateChangeRange={setEventSchedule}
               />
             </div>
+            <h5 className='mt-2'>장소 정보 입력</h5>
+            <AddLocation location={location} setLocation={setLocation} />
+            <Input
+              label='상세 주소를 입력해주세요'
+              value={detailedLocation}
+              onValueChange={setDetailedLocation}
+              placeholder='1층 전시실 102호'
+            />
             <h5 className='mt-2'>추가 정보 입력</h5>
             <Input
-              label='운영시간'
-              value={operationTime}
-              onValueChange={setOperationTime}
-              placeholder='운영시간을 입력해주세요.'
-            />
-            <Input
-              label='참석자 티켓 가격'
-              value={price}
-              onValueChange={setPrice}
-              placeholder='가격을 입력해주세요'
-            />
-            <Input
               type='url'
-              label='링크'
+              label='관련 링크를 입력해주세요 (필수)'
+              isRequired
               value={link}
               onValueChange={setLink}
-              placeholder='관련 링크를 입력해주세요.'
+              placeholder='https://example.com'
               className='w-full'
+            />
+            <Input
+              label='운영시간을 입력해주세요'
+              value={operationTime}
+              onValueChange={setOperationTime}
+              placeholder='평일 10시 ~ 18시, 주말 12시 ~ 20시'
+            />
+            <Input
+              label='참석자 티켓 가격을 입력해주세요'
+              value={price}
+              onValueChange={setPrice}
+              placeholder='성인 10,000원, 청소년 5,000원, 어린이 무료'
             />
           </div>
         </form>

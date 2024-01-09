@@ -13,6 +13,8 @@ export const initialEventSchema: CreateEventType = {
     link: '',
     startDate: format(addDays(new Date(), 1), 'yyyy-MM-dd'),
     endDate: format(addDays(new Date(), 4), 'yyyy-MM-dd'),
+    locationId: 0,
+    detailLocation: '',
   },
   mediaFiles: null,
   thumbnailFile: undefined,
