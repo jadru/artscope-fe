@@ -1,6 +1,6 @@
 import { getServerSideSitemap } from 'next-sitemap';
 
-import { NEXT_PUBLIC_API_URL } from '@/constant/env';
+import { NEXT_PUBLIC_API_URL, NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 
 import { AgoraListType } from '@/types/agora';
 
@@ -21,7 +21,7 @@ export async function GET(_request: Request) {
 
   return getServerSideSitemap(
     data.agoras.map((agora) => ({
-      loc: `${NEXT_PUBLIC_API_URL}/agora/${agora.id}`,
+      loc: `${NEXT_PUBLIC_ROOT_URL}/agora/${agora.id}`,
       changefreq: 'daily',
       priority: 0.9,
       lastmod: String(agora.updatedTime ?? agora.createdTime),
