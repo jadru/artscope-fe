@@ -1,10 +1,12 @@
+import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { AiOutlineLink, AiOutlinePhone } from 'react-icons/ai';
 
-import StandardLabel from '@/components/StandardLabel';
+import StandardLabel, { standardLabel } from '@/components/StandardLabel';
 
 import MapPage from '@/app/(main)/(viewer)/space/[[...slug]]/map';
+import SpaceEditDelete from '@/app/(main)/(viewer)/space/[[...slug]]/SpaceEditDelete';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 import { stringToPhoneNumber } from '@/utils/stringConverter';
@@ -15,6 +17,39 @@ const fetchSpace = async (id: string) =>
   await jxios
     .get(NEXT_PUBLIC_API_URL + '/api/location/' + id)
     .then((res) => res.data as LocationDataType);
+
+export async function generateMetadata(
+  {
+    params,
+  }: {
+    params: { slug: string[] };
+  },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  if (!params.slug) redirect('/spaces');
+  const id = params.slug[0];
+  const data = await fetchSpace(id);
+  // const thumbnail = (await parent).openGraph?.images || [];
+  const previousImages = (await parent).openGraph?.images || [];
+  return {
+    title: `${standardLabel(data.name.replace(/<[^>]*>?/g, ''))} 공간`,
+    description: standardLabel(data.englishName.replace(/<[^>]*>?/g, '')),
+    openGraph: {
+      title: `${standardLabel(
+        data.name.replace(/<[^>]*>?/g, '')
+      )} 공간 | Artscope`,
+      description: standardLabel(
+        data.englishName.replace(/<[^>]*>?/g, '')
+      ).slice(0, 100),
+      url: 'https://www.artscope.kr/space/' + id,
+      type: 'article',
+      authors: ['Artscope'],
+      images: [...previousImages],
+    },
+    publisher: 'Artscope',
+  };
+}
 
 export default async function SpacePage({
   params,
@@ -57,6 +92,7 @@ export default async function SpacePage({
           </Link>
         )}
       </div>
+      <SpaceEditDelete locationId={data.id} authorUsername='admin' />
       <MapPage
         latitude={data.latitude}
         longitude={data.longitude}
