@@ -97,7 +97,6 @@ export default function Search() {
           }}
           defaultValue={initialSearchKeyword ?? ''}
           autoFocus={!initialSearchKeyword}
-          disabled={true}
           placeholder='검색어를 입력하세요'
           className='inline h-full w-full border-0 bg-transparent text-2xl focus:border-0 focus:outline-none focus:ring-0'
         />
@@ -126,10 +125,6 @@ export default function Search() {
           <Tab key='EVENT' title='이벤트' />
         </Tabs>
       </div>
-      <p className='text-center my-4'>
-        현재 서버 오류가 발생하여 검색 서비스가 제공되지 않는점 너그러운 양해
-        부탁드립니다.
-      </p>
       {data &&
         data.searchArtworks &&
         data.searchArtworks.artworks.length > 0 && (
