@@ -1,4 +1,3 @@
-import lodash from 'lodash';
 import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -42,10 +41,8 @@ export async function generateMetadata(
   // const thumbnail = (await parent).openGraph?.images || [];
   const previousImages = (await parent).openGraph?.images || [];
   return {
-    title: `${lodash
-      .unescape(data.title.replace(/<[^>]*>?/g, ''))
-      .slice(0, 20)}`,
-    description: data.description.replace(/<[^>]*>?/g, ''),
+    title: `${standardLabel(data.title).slice(0, 20)}`,
+    description: standardLabel(data.description),
     openGraph: {
       title: `${standardLabel(data.title).slice(0, 20)} 이벤트 | Artscope`,
       description: standardLabel(data.description).slice(0, 100),
