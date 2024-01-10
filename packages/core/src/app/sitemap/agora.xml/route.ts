@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { getServerSideSitemap } from 'next-sitemap';
 
 import { NEXT_PUBLIC_API_URL, NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
@@ -24,7 +25,10 @@ export async function GET(_request: Request) {
       loc: `${NEXT_PUBLIC_ROOT_URL}/agora/${agora.id}`,
       changefreq: 'daily',
       priority: 0.9,
-      lastmod: String(agora.updatedTime ?? agora.createdTime),
+      lastmod: format(
+        new Date(agora.updatedTime ?? agora.createdTime),
+        'yyyy-MM-dd'
+      ),
     }))
   );
 }
