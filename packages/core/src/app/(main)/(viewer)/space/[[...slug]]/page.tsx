@@ -33,15 +33,11 @@ export async function generateMetadata(
   // const thumbnail = (await parent).openGraph?.images || [];
   const previousImages = (await parent).openGraph?.images || [];
   return {
-    title: `${standardLabel(data.name.replace(/<[^>]*>?/g, ''))} 공간`,
-    description: standardLabel(data.englishName.replace(/<[^>]*>?/g, '')),
+    title: `${standardLabel(data.name)} 공간`,
+    description: standardLabel(data.englishName),
     openGraph: {
-      title: `${standardLabel(
-        data.name.replace(/<[^>]*>?/g, '')
-      )} 공간 | Artscope`,
-      description: standardLabel(
-        data.englishName.replace(/<[^>]*>?/g, '')
-      ).slice(0, 100),
+      title: `${standardLabel(data.name)} 공간 | Artscope`,
+      description: standardLabel(data.englishName).slice(0, 100),
       url: 'https://www.artscope.kr/space/' + id,
       type: 'article',
       authors: ['Artscope'],
