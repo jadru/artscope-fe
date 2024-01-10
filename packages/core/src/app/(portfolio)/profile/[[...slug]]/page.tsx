@@ -59,9 +59,9 @@ export async function generateMetadata(
     )} Portfolio`,
     description: data.introduction
       ? standardLabel(data.introduction.replace(/<[^>]*>?/g, ''))
-      : standardLabel(data.name) + '님의 포트폴리오입니다.',
+      : standardLabel(data.name) + '작가 Portfolio',
     openGraph: {
-      title: `${standardLabel(data.name.slice(0, 20))} 이벤트 | Artscope`,
+      title: `${standardLabel(data.name.slice(0, 20))} 작가 Portfolio`,
       description: data.introduction
         ? standardLabel(data.introduction.replace(/<[^>]*>?/g, '')).slice(
             0,

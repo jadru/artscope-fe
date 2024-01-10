@@ -2,15 +2,15 @@ import { getServerSideSitemap } from 'next-sitemap';
 
 import { NEXT_PUBLIC_API_URL, NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 
-import { PostListResponse } from '@/types/feed';
+import { LocationResponseType } from '@/types/location';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600 * 24;
 
 export async function GET(_request: Request) {
   // Method to source urls from cms
-  const data: PostListResponse = await fetch(
-    NEXT_PUBLIC_API_URL + '/api/posts?size=1000&page=0',
+  const data: LocationResponseType = await fetch(
+    NEXT_PUBLIC_API_URL + '/api/location/search?keyword=&page=0&size=1000',
     {
       method: 'GET',
       headers: {
@@ -21,11 +21,10 @@ export async function GET(_request: Request) {
   ).then((res) => res.json());
 
   return getServerSideSitemap(
-    data.posts.map((post) => ({
-      loc: `${NEXT_PUBLIC_ROOT_URL}/post/${post.id}`,
+    data.locations.map((location) => ({
+      loc: `${NEXT_PUBLIC_ROOT_URL}/space/${location.locationId}`,
       changefreq: 'daily',
       priority: 0.9,
-      lastmod: String(post.updatedTime ?? post.createdTime),
     }))
   );
 }

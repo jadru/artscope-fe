@@ -13,7 +13,7 @@ export type LocationType = {
 };
 
 export type LocationDataType = {
-  locationId: number;
+  id: number;
   address: string;
   englishName: string;
   latitude: number;

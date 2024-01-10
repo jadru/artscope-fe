@@ -16,3 +16,5 @@ Sitemap: https://dev.artscope.kr/sitemap/artwork.xml
 Sitemap: https://dev.artscope.kr/sitemap/post.xml
 Sitemap: https://dev.artscope.kr/sitemap/event.xml
 Sitemap: https://dev.artscope.kr/sitemap/agora.xml
+Sitemap: https://dev.artscope.kr/sitemap/user.xml
+Sitemap: https://dev.artscope.kr/sitemap/space.xml

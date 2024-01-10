@@ -18,6 +18,8 @@ module.exports = {
       `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/post.xml`,
       `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/event.xml`,
       `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/agora.xml`,
+      `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/user.xml`,
+      `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/space.xml`,
     ],
     policies: [
       {
