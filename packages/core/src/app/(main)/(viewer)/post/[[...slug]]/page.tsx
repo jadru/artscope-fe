@@ -39,7 +39,7 @@ export async function generateMetadata(
         data.authorName
       )} | Artscope`,
       description: standardLabel(data.content).slice(0, 100),
-      url: 'https://www.artscope.kr/artwork/' + id,
+      url: 'https://www.artscope.kr/post/' + id,
       type: 'article',
       authors: [data.authorName],
       images: [...previousImages],

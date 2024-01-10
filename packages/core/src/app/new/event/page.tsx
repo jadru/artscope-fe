@@ -17,6 +17,7 @@ import StandardEditor from '@/components/StandardEditor';
 import { EventTypeData } from '@/app/new/event/EventTypeData';
 import { initialEventSchema } from '@/app/new/event/initialEventSchema';
 import AddLocation from '@/app/new/event/location/AddLocation';
+import { KAKAO_MAP_API_KEY } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
 import { ArtWorkMediaType } from '@/types/artwork';
@@ -162,6 +163,9 @@ const NewEvent = () => {
 
   return (
     <>
+      <script
+        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_API_KEY}&libraries=services,clusterer&autoload=false`}
+      />
       <StandardEditor
         onSubmit={handleCreateSaveButton}
         isUpload={isUpload}
