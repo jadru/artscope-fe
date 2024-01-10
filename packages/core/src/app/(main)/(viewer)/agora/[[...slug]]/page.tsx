@@ -38,9 +38,7 @@ export async function generateMetadata(
   // const thumbnail = (await parent).openGraph?.images || [];
   const previousImages = (await parent).openGraph?.images || [];
   return {
-    title: `${standardLabel(data.agora.title)
-      .replace(/<[^>]*>?/g, '')
-      .slice(0, 20)} 아고라`,
+    title: `${standardLabel(data.agora.title).slice(0, 20)} 아고라`,
     description: standardLabel(data.agora.content),
     openGraph: {
       title: `${standardLabel(data.agora.title).slice(0, 20)} | Artscope`,

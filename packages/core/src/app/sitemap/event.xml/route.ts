@@ -1,6 +1,6 @@
 import { getServerSideSitemap } from 'next-sitemap';
 
-import { NEXT_PUBLIC_API_URL } from '@/constant/env';
+import { NEXT_PUBLIC_API_URL, NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 
 import { EventResponseType } from '@/types/event';
 
@@ -21,7 +21,7 @@ export async function GET(_request: Request) {
 
   return getServerSideSitemap(
     data.events.map((event) => ({
-      loc: `${NEXT_PUBLIC_API_URL}/event/${event.id}`,
+      loc: `${NEXT_PUBLIC_ROOT_URL}/event/${event.id}`,
       changefreq: 'daily',
       priority: 0.9,
       lastmod: String(event.updatedTime ?? event.createdTime),
