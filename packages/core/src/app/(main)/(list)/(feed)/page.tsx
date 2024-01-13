@@ -15,7 +15,6 @@ import {
   jsonLdThumb,
 } from '@/app/(main)/(list)/(feed)/searchSchema';
 import SkeletonFeed from '@/app/(main)/(list)/(feed)/SkeletonFeed';
-import { getRefreshToken } from '@/auth/cookieTokenManager';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
@@ -53,16 +52,6 @@ export default function Feeds() {
       return lastPage.hasNext ? allPages.length : null;
     },
   });
-
-  useEffect(() => {
-    const getRefresh = async () => {
-      const token = await getRefreshToken();
-      if (!token) {
-        push('/about');
-      }
-    };
-    getRefresh();
-  }, [isLogin, push]);
 
   useEffect(() => {
     refetch();
