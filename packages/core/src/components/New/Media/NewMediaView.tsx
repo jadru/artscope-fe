@@ -34,7 +34,6 @@ export default ({
   onDeleteMedia,
 }: Props) => {
   const [uploadPopoverOpen, setUploadPopoverOpen] = useState(false);
-  const [imgs, setImgs] = useState<string[]>([]);
   const handleFileAdded = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (
       e.currentTarget.files &&
@@ -47,7 +46,7 @@ export default ({
 
     const files = e.currentTarget.files as FileList;
     for (let i = 0; i < files.length; i++) {
-      setImgs((prev) => [...prev, URL.createObjectURL(files[i])]);
+      const url = URL.createObjectURL(files[i]);
       setFileUrls((prev) => [
         ...prev,
         {
@@ -58,6 +57,7 @@ export default ({
             : 'audio',
           file: files[i],
           description: '',
+          linkUrl: url,
         },
       ]);
       onAddMedia &&
@@ -69,6 +69,7 @@ export default ({
             : 'audio',
           file: files[i],
           description: '',
+          linkUrl: url,
         });
     }
     setUploadPopoverOpen(false);
@@ -108,19 +109,15 @@ export default ({
         description: '',
       },
     ]);
-    setImgs((prev) => [...prev, link]);
     e.currentTarget.value = '';
     setUploadPopoverOpen(false);
   };
 
   const handleDeleteFile = (index: number) => {
-    if (confirm('미디어를 삭제하시겠습니까?')) {
-      onDeleteMedia && onDeleteMedia(index);
-      setImgs((prev) => prev.filter((_, i) => i !== index));
-      setFileUrls((prev: ArtWorkMediaType[]) =>
-        prev.filter((_, i) => i !== index)
-      );
-    }
+    onDeleteMedia && onDeleteMedia(index);
+    setFileUrls((prev: ArtWorkMediaType[]) =>
+      prev.filter((_, i) => i !== index)
+    );
   };
 
   return (
@@ -144,7 +141,7 @@ export default ({
                   className='relative h-[76px] w-[76px]'>
                   {file.mediaType === 'image' ? (
                     <ASNextImage
-                      src={imgs[index]}
+                      src={file.linkUrl}
                       width={64}
                       height={64}
                       alt='image'
@@ -153,7 +150,7 @@ export default ({
                   ) : file.mediaType === 'video' ? (
                     <video
                       className='absolute bottom-0 left-0 h-16 w-16 rounded-md border bg-gray-100 object-cover'
-                      src={imgs[index]}
+                      src={file.linkUrl}
                     />
                   ) : file.mediaType === 'audio' ? (
                     <div className='absolute bottom-0 left-0 h-16 w-16 rounded-md border bg-gray-100'>
@@ -163,13 +160,13 @@ export default ({
                     <ASNextImage
                       className='absolute bottom-0 left-0 h-16 w-16 rounded-md border bg-gray-100 object-cover'
                       src={
-                        imgs[index]
+                        file.linkUrl
                           ? 'https://img.youtube.com/vi/' +
-                            imgs[index].substring(
-                              imgs[index].indexOf('=') + 1
+                            file.linkUrl.substring(
+                              file.linkUrl.indexOf('=') + 1
                             ) +
                             '/default.jpg'
-                          : imgs[index]
+                          : file.linkUrl
                       }
                       alt={'uploaded image ' + index}
                       width={64}
@@ -185,7 +182,7 @@ export default ({
               )
           )}
 
-        {imgs.length < 10 && (
+        {fileUrls.length < 10 && (
           <Popover
             placement='bottom'
             offset={20}
