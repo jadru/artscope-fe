@@ -99,9 +99,7 @@ export default function StandardEditor({
         inline: true,
         allowBase64: true,
       }),
-      Dropcursor.configure({
-        color: '#ff0000',
-      }),
+      Dropcursor,
       ListItem,
       OrderedList,
       Paragraph,
@@ -153,6 +151,14 @@ export default function StandardEditor({
                 setFileUrls={setFileUrls}
                 header='미디어 또는 링크 업로드'
                 onlyImage={onlyImage}
+                onAddMedia={(media) => {
+                  if (editor && media.linkUrl)
+                    editor
+                      .chain()
+                      .focus()
+                      .setImage({ src: media.linkUrl })
+                      .run();
+                }}
               />
             )}
             {children ?? ''}

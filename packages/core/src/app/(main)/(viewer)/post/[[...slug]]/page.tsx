@@ -10,10 +10,14 @@ import { standardLabel } from '@/components/StandardLabel';
 import PostComment from '@/app/(main)/(viewer)/post/[[...slug]]/comment';
 import SinglePostItemAction from '@/app/(main)/(viewer)/post/[[...slug]]/SinglePostItemAction';
 import SinglePostOpengraph from '@/app/(main)/(viewer)/post/[[...slug]]/SinglePostOpengraph';
-import { NEXT_PUBLIC_API_URL } from '@/constant/env';
+import {
+  NEXT_PUBLIC_API_URL,
+  NEXT_PUBLIC_MEDIA_STORAGE_URL,
+} from '@/constant/env';
 import jxios from '@/utils/jxios';
 import { editAndPostTimeCalculatorKO } from '@/utils/timeCalculator';
 
+import { MediaType } from '@/types/default';
 import { SinglePostType } from '@/types/feed';
 
 export async function generateMetadata(
@@ -60,6 +64,31 @@ export default async function SinglePost({
 }: {
   params: { slug: string[] };
 }) {
+  const regex = /!\[(.*?)]\(media_(\d+)\)/g;
+  const revertMarkdownLinks = (
+    markdown: string,
+    mediaUrls?: {
+      id: number;
+      mediaType: MediaType;
+      mediaUrl: string;
+      imageHeight: number;
+      imageWidth: number;
+    }[]
+  ): string => {
+    return markdown.replace(regex, (match, altText, index) => {
+      if (mediaUrls) {
+        const url =
+          NEXT_PUBLIC_MEDIA_STORAGE_URL +
+          '/' +
+          mediaUrls[parseInt(index, 10)].mediaUrl;
+        if (url) {
+          return `![${altText}](${url})`;
+        }
+      }
+      return match;
+    });
+  };
+
   if (!params.slug) redirect('/');
   const data = await fetchPost(params.slug[0]);
   if (!data) throw new Error('Failed to fetch data');
@@ -72,10 +101,12 @@ export default async function SinglePost({
           picture={data.authorProfileImageUrl}
         />
         <div className='bg-default-100 w-full space-y-2 rounded-xl px-3 py-3'>
-          <MarkdownViewer>{data.content}</MarkdownViewer>
+          <MarkdownViewer>
+            {revertMarkdownLinks(data.content, data.medias)}
+          </MarkdownViewer>
           <SinglePostOpengraph content={standardLabel(data.content)} />
         </div>
-        {data.medias && data.medias.length > 1 && (
+        {data.medias && data.medias.length > 1 && !regex.test(data.content) && (
           <MediaSlider medias={data.medias.slice(1)} />
         )}
         <p className='text-default-500 w-full px-2.5 text-right font-normal'>

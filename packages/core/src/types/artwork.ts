@@ -5,7 +5,7 @@ export type ArtWorkMediaType = {
   mediaType: MediaType;
   file?: File;
   description: string;
-  linkUrl?: string;
+  linkUrl: string;
 };
 
 export type ArtWorkApiRequestType = {

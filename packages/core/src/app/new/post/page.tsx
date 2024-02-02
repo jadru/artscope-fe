@@ -45,6 +45,19 @@ const NewPost = () => {
         }
         setIsUpload(true);
         const newState = { ...initialPostSchema };
+        markdown = markdown.replace(
+          /!\[(.*?)]\((.*?)\)/g,
+          (match, altText, imageUrl) => {
+            const mediaIndex = fileUrls.findIndex(
+              (media) => media.linkUrl === imageUrl
+            );
+            if (mediaIndex !== -1) {
+              return `![${altText}](media_${mediaIndex})`;
+            }
+            return match;
+          }
+        );
+        console.log(markdown);
         newState.dto.content = markdown;
 
         const formData = new FormData();
