@@ -1,12 +1,6 @@
-export const objectToParams = (obj: { [key: string]: string | number }) => {
-  return (
-    '?' +
-    Object.keys(obj)
-      .map((key) => `${key}=${obj[key]}`)
-      .join('&')
-  );
-};
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
 
-export const cls = (...classnames: string[]) => {
-  return classnames.join(' ');
-};
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}

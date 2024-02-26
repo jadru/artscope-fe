@@ -8,13 +8,14 @@ import { ToastContainer } from 'react-toastify';
 import '../styles/globals.scss';
 import 'react-toastify/dist/ReactToastify.css';
 
+import clsxm from '@/lib/clsxm';
+
 import { Providers } from '@/app/providers';
 import {
   GOOGLE_ANALYTICS_ID,
   GOOGLE_TAG_MANAGER_ID,
   NEXT_PUBLIC_ROOT_URL,
 } from '@/constant/env';
-import { cls } from '@/utils';
 
 const ibm_flex_Sans_KR = IBM_Plex_Sans_KR({
   weight: ['200', '400', '700'],
@@ -110,7 +111,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang='ko' className='light'>
-      <body className={cls(ibm_flex_Sans_KR.className, 'min-h-screen')}>
+      <body
+        className={clsxm(ibm_flex_Sans_KR.className, 'p-0 m-0 min-h-screen')}>
         <ToastContainer limit={2} hideProgressBar />
         <link rel='manifest' href='/manifest.json' />
         {GOOGLE_TAG_MANAGER_ID && (
