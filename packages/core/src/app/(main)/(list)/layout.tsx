@@ -3,7 +3,7 @@ import React from 'react';
 import Logo from '@/assets/images/logo_long.svg';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 
-import { categoryType } from '@/types/magazine';
+import { categoryType } from '@/types/article';
 
 const fetchCategories = async () =>
   await fetch(NEXT_PUBLIC_API_URL + '/api/magazine-category').then((res) =>
