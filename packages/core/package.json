@@ -9,6 +9,8 @@
     "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.525.0",
+    "@aws-sdk/s3-presigned-post": "^3.525.0",
     "@cronitorio/cronitor-rum": "^0.4.1",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
@@ -20,15 +22,17 @@
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@tanstack/react-query": "^5.18.0",
-    "@tiptap/extension-dropcursor": "^2.2.1",
-    "@tiptap/extension-history": "^2.2.1",
-    "@tiptap/extension-image": "^2.2.1",
-    "@tiptap/extension-link": "^2.2.1",
-    "@tiptap/extension-placeholder": "^2.2.1",
-    "@tiptap/extension-underline": "^2.2.1",
-    "@tiptap/pm": "^2.2.1",
-    "@tiptap/react": "^2.2.1",
-    "@tiptap/starter-kit": "^2.2.1",
+    "@tiptap/extension-color": "^2.2.4",
+    "@tiptap/extension-dropcursor": "^2.2.4",
+    "@tiptap/extension-history": "^2.2.4",
+    "@tiptap/extension-image": "^2.2.4",
+    "@tiptap/extension-link": "^2.2.4",
+    "@tiptap/extension-placeholder": "^2.2.4",
+    "@tiptap/extension-text-style": "^2.2.4",
+    "@tiptap/extension-underline": "^2.2.4",
+    "@tiptap/pm": "^2.2.4",
+    "@tiptap/react": "^2.2.4",
+    "@tiptap/starter-kit": "^2.2.4",
     "@toss/lottie": "^1.2.1",
     "@toss/react": "^1.6.1",
     "@toss/utils": "^1.4.6",
@@ -116,5 +120,8 @@
     "tailwind-merge": "^2.2.1",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3"
+  },
+  "resolutions": {
+    "prosemirror-model": "1.8.2"
   }
 }

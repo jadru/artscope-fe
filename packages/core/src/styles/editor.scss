@@ -21,6 +21,7 @@
 }
 
 .ProseMirror {
+
   > * + * {
     margin-top: 0.3em;
   }
@@ -53,7 +54,7 @@
 .tiptap {
   margin-bottom: 0.8em;
   p {
-    font-size: 1.2em;
+    font-size: 1em;
   }
   em,
   s,
@@ -75,8 +76,26 @@
     height: auto;
     max-width: 100%;
 
+    &.hover {
+      cursor: pointer;
+    }
+
     &.ProseMirror-selectednode {
       outline: 3px solid #68cef8;
+      cursor: pointer;
     }
   }
+  h1 {
+    font-size: 1.7em;
+  }
+  h2 {
+      font-size: 1.44em;
+  }
+  h3 {
+      font-size: 1.17em;
+  }
+}
+
+.ProseMirror:focus {
+  outline:none !important
 }

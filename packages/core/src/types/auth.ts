@@ -23,10 +23,9 @@ export type decodedRefreshTokenType = {
   exp: number;
 };
 
-export type roleType = (
+export type roleType =
   | 'ROLE_GUEST'
   | 'ROLE_USER'
   | 'ROLE_ARTIST'
   | 'ROLE_ADMIN'
-  | 'ROLE_CURATOR'
-)[];
+  | 'ROLE_CURATOR';
