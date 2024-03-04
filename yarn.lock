@@ -138,6 +138,7 @@ __metadata:
     "@types/react": "npm:^18.2.51"
     "@types/react-cookies": "npm:^0.1.3"
     "@types/react-dom": "npm:^18.2.18"
+    "@types/react-responsive-masonry": "npm:^2.1.3"
     "@types/uuid": "npm:^9.0.8"
     "@typescript-eslint/eslint-plugin": "npm:^6.20.0"
     "@typescript-eslint/parser": "npm:^6.20.0"
@@ -8984,6 +8985,15 @@ __metadata:
   dependencies:
     "@types/react": "npm:*"
   checksum: 10c0/88d7c6daa4659f661d0c97985d9fca492f24b421a34bb614dcd94c343aed7bea121463149e97fb01ecaa693be17b7d1542cf71ddb1705f3889a81eb2639a88aa
+  languageName: node
+  linkType: hard
+
+"@types/react-responsive-masonry@npm:^2.1.3":
+  version: 2.1.3
+  resolution: "@types/react-responsive-masonry@npm:2.1.3"
+  dependencies:
+    "@types/react": "npm:*"
+  checksum: 10c0/9d93742f6a17d61c1f80c67c264dc7b30936e1b579af289d73a62b12fb1640697a8724e3c0976870ec361404977ee7c12a877c25d5853ceb550b8e66a28e278a
   languageName: node
   linkType: hard
 
