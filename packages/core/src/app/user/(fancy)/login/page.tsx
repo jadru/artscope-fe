@@ -2,7 +2,7 @@
 
 import { Button } from '@nextui-org/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { AiOutlineGoogle } from 'react-icons/ai';
 
@@ -15,6 +15,8 @@ import { useUser } from '@/states';
 const Login = () => {
   const router = useRouter();
   const { isLogin } = useUser();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get('redirect');
 
   useEffect(() => {
     if (isLogin) {
@@ -40,7 +42,7 @@ const Login = () => {
         구글로 로그인 또는 회원가입
       </Button>
       <p className='text-center'>또는</p>
-      <LoginForm />
+      <LoginForm redirect={redirect} />
       <div className='flex w-full justify-between'>
         <Link href='/user/signup' className='hover:underline'>
           회원가입

@@ -41,7 +41,7 @@ export const menuItems = [
   // },
   // {
   //   name: '매거진',
-  //   url: '/magazine',
+  //   url: '/article',
   // },
 
   // {

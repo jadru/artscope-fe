@@ -22,6 +22,11 @@ export default function MarkdownViewer({
   return (
     <ReactMarkdown
       className={'markdown-viewer break-all space-y-2 ' + className}
+      components={{
+        img: ({ node, ...props }) => (
+          <img style={{ width: '100%' }} {...props} alt='' />
+        ),
+      }}
       remarkPlugins={ignoreMarkdown ? [remarkGfm, strip] : [remarkGfm]}
       rehypePlugins={
         ignoreHTML
