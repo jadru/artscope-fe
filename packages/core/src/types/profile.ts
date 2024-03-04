@@ -1,5 +1,3 @@
-import { roleType } from '@/types/auth';
-
 export type roleStatus =
   | 'NONE'
   | 'ARTIST_REJECTED'
@@ -23,7 +21,7 @@ export type profileApiType = {
   history: string | undefined;
   companyName: string | undefined;
   companyRole: string | undefined;
-  authrities: roleType;
+  authrities: string;
   allowEmailReceive?: Date;
   allowEmailDateTime: boolean;
   createdTime: Date;

@@ -16,6 +16,8 @@ export const NEXT_PUBLIC_ROOT_URL = process.env.NEXT_PUBLIC_ROOT_URL;
 export const NEXT_PUBLIC_MEDIA_STORAGE_URL =
   'https://' + process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL;
 
+export const S3_PATH = process.env.S3_PATH;
+
 export const CRONITOR_ANALYTICS_KEY = process.env.CRONITOR_ANALYTICS_ID;
 
 export const KAKAO_MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY;
