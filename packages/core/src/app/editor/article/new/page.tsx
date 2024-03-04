@@ -44,6 +44,7 @@ const EditPost = () => {
   const { push } = useRouter();
   const [insertImage, setInsertImage] = useState<string[]>([]);
   const [isUpload, setIsUpload] = useState(false);
+  const [title, setTitle] = useState('');
   const placeholder = '예술을 공유하세요.';
   const params = useParams();
 
@@ -91,9 +92,19 @@ const EditPost = () => {
         setIsUpload(false);
         return;
       }
-      await jxios.post(`/api/magazines/${params.id}`, { content });
+      if (title === '') {
+        toast.error('제목을 입력해주세요.');
+        setIsUpload(false);
+        return;
+      }
+      await jxios.post('/api/magazines', {
+        title,
+        content,
+        categoryId: 1,
+        mediaUrls: [NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + insertImage[0]],
+      });
       toast.success('아티클이 작성 되었습니다.');
-      push('/post/' + params.id);
+      push('/article/' + params.id);
     } catch (err) {
       toast.error((err as string) || '아티클 업로드에 실패했습니다.');
     } finally {
@@ -152,6 +163,7 @@ const EditPost = () => {
             src: NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + data.fields.key,
           })
           .run();
+        setInsertImage((prev) => [...prev, data.fields.key]);
       }
     }
   };
@@ -297,6 +309,8 @@ const EditPost = () => {
         id='title'
         className='w-full h-16 px-3 text-3xl focus:outline-none -mb-2'
         placeholder='제목을 입력하세요.'
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === 'Tab') {
             e.preventDefault();

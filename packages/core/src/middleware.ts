@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { roleType } from '@/types/auth';
 
-const verifyUserRole = async (accessToken: string, role: roleType) => {
+const verifyUserRole = async (role: roleType, accessToken?: string) => {
+  if (!accessToken) return false;
   const jwt_decode = jwtDecode(accessToken) as {
     auth: string;
     sub: string;
@@ -22,35 +23,28 @@ export async function middleware(request: NextRequest) {
   const { cookies } = request;
   const accessToken = cookies.get('access-token');
 
-  if (!accessToken) {
-    return NextResponse.redirect(
-      new URL(
-        `/user/login?redirect=${encodeURIComponent(request.url)}`,
-        request.url
-      )
-    );
+  const redirectUrl = new URL(
+    `/user/login?redirect=${encodeURIComponent(request.url)}`,
+    request.nextUrl.origin
+  );
+
+  if (!accessToken || !accessToken.value) {
+    return NextResponse.redirect(redirectUrl);
   }
 
-  if (
-    request.nextUrl.pathname.startsWith('/editor') &&
-    (await verifyUserRole(accessToken.value, 'ROLE_ARTIST'))
-  ) {
-    return NextResponse.redirect(
-      new URL(
-        `/user/login?redirect=${encodeURIComponent(request.url)}`,
-        request.url
-      )
-    );
-  } else if (
-    request.nextUrl.pathname.startsWith('/admin') &&
-    (await verifyUserRole(accessToken.value, 'ROLE_ADMIN'))
-  ) {
-    return NextResponse.redirect(
-      new URL(
-        `/user/login?redirect=${encodeURIComponent(request.url)}`,
-        request.url
-      )
-    );
+  // 역할별 경로 접근 권한 설정
+  const roleAccessMap: {
+    [path: string]: roleType;
+  } = {
+    '/editor': 'ROLE_ARTIST',
+    '/admin': 'ROLE_ADMIN',
+  };
+
+  for (const [path, role] of Object.entries(roleAccessMap)) {
+    if (request.nextUrl.pathname.startsWith(path)) {
+      if (await verifyUserRole(role, accessToken.value))
+        return NextResponse.next();
+    }
   }
 
   return NextResponse.next();
