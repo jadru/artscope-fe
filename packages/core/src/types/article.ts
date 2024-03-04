@@ -8,7 +8,8 @@ export type articleListType = {
 export type articleItemType = {
   id: number;
   title: string;
-  contents: string;
+  content: string;
+  mediaUrls: string[];
   category: string;
   views: number;
   likes: number;
@@ -16,6 +17,7 @@ export type articleItemType = {
   author: authorType;
   createdTime: string;
   updatedTime: string;
+  magazineComments: magazinCommentType[];
 };
 
 export type authorType = {
@@ -30,6 +32,14 @@ export type articleCategoryType = {
   id: number;
   name: string;
   description?: string;
+  createdTime: string;
+  updatedTime: string;
+};
+
+export type magazinCommentType = {
+  id: number;
+  contents: string;
+  likes: number;
   createdTime: string;
   updatedTime: string;
 };

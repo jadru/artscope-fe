@@ -13,7 +13,7 @@ import jxios from '@/utils/jxios';
 
 import { loginResponseType } from '@/types/auth';
 
-export default function LoginForm() {
+export default function LoginForm({ redirect }: { redirect: string | null }) {
   const {
     register,
     handleSubmit,
@@ -31,7 +31,7 @@ export default function LoginForm() {
     (await jxios.post('/api/login', loginData).then(async (res) => {
       const tokenData: loginResponseType = res.data;
       if (res.status === 200 && tokenData.accessToken) {
-        await onLogin(tokenData, router, setUser);
+        await onLogin(tokenData, router, setUser, redirect);
       } else {
         toast.error(res.data);
       }
