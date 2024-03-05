@@ -36,7 +36,7 @@
       "prettier -w"
     ],
     "src/**/*.{css,scss,md,webmanifest}": [
-      "prettier -w"
+      "prettier -w" 
     ]
   }
 }
