@@ -21,7 +21,6 @@
 }
 
 .ProseMirror {
-
   > * + * {
     margin-top: 0.3em;
   }
@@ -89,13 +88,13 @@
     font-size: 1.7em;
   }
   h2 {
-      font-size: 1.44em;
+    font-size: 1.44em;
   }
   h3 {
-      font-size: 1.17em;
+    font-size: 1.17em;
   }
 }
 
 .ProseMirror:focus {
-  outline:none !important
+  outline: none !important;
 }
