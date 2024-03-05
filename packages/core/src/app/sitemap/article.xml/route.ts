@@ -3,15 +3,15 @@ import { getServerSideSitemap } from 'next-sitemap';
 
 import { NEXT_PUBLIC_API_URL, NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 
-import { PostListResponse } from '@/types/feed';
+import { articleListType } from '@/types/article';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600 * 24;
 
 export async function GET(_request: Request) {
   // Method to source urls from cms
-  const data: PostListResponse = await fetch(
-    NEXT_PUBLIC_API_URL + '/api/posts?size=1000&page=0',
+  const data: articleListType = await fetch(
+    NEXT_PUBLIC_API_URL + '/api/magazines?size=1000&page=0',
     {
       method: 'GET',
       headers: {
@@ -22,12 +22,12 @@ export async function GET(_request: Request) {
   ).then((res) => res.json());
 
   return getServerSideSitemap(
-    data.posts.map((post) => ({
-      loc: `${NEXT_PUBLIC_ROOT_URL}/post/${post.id}`,
+    data.magazines.map((magazines) => ({
+      loc: `${NEXT_PUBLIC_ROOT_URL}/post/${magazines.id}`,
       changefreq: 'daily',
       priority: 0.9,
       lastmod: format(
-        new Date(post.updatedTime ?? post.createdTime),
+        new Date(magazines.updatedTime ?? magazines.createdTime),
         'yyyy-MM-dd'
       ),
     }))
