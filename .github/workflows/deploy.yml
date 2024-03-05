@@ -13,8 +13,7 @@ env:
   AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
   AWS_CODE_DEPLOY_NAME: artscope-codedeploy
 
-permissions:
-  contents: write
+permissions: write-all
 
 jobs:
   build-deploy:
