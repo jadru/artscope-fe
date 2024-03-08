@@ -34,8 +34,7 @@ const RedirectOAuth2 = () => {
           await onLogin(
             ressponseRefreshToken.data as loginResponseType,
             router,
-            setUser,
-            ''
+            setUser
           );
         })
         .catch(() => {
