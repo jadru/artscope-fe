@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/pagination';
 
 import ArticleItem from '@/app/(main)/(list)/(main)/ArticleItem';
-import Logo from '@/assets/images/logo_long.svg';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
@@ -54,7 +53,6 @@ export default function ArticleList() {
 
   return (
     <div>
-      <Logo className='m-8 group-hover:fill-primary w-52 overflow-hidden fill-black transition duration-100 z-40' />
       {isLoading && (
         <div className='w-full'>
           <p>Loading...</p>
@@ -70,7 +68,7 @@ export default function ArticleList() {
       )}
       {isSuccess && (
         <>
-          <div className='container grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4'>
+          <div className='container w-max-screen-md grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 pt-20'>
             {data?.magazines.map((article) => (
               <ArticleItem key={article.id} article={article} />
             ))}
