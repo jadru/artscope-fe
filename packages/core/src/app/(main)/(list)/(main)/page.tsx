@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import React, { useEffect } from 'react';
 
+import useToken from '@/hooks/useToken';
+
 import ArticleSection from '@/app/(main)/(list)/(main)/ArticleSection';
 import {
   jsonLdNav,
@@ -31,6 +33,7 @@ const fetchFeeds = async () =>
     .then((res) => res.data as articleListType);
 
 export default function Feeds() {
+  useToken();
   const { user, isLogin } = useUser();
   const { data, isLoading, refetch, isSuccess, isError } = useQuery({
     queryKey: ['main'],
