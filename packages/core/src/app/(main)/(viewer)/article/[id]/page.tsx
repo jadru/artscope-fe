@@ -1,8 +1,8 @@
 import React from 'react';
 
+import ASNextImage from '@/components/ASNextImage';
 import MarkdownViewer from '@/components/MarkdownViewer';
 
-import Logo from '@/assets/images/logo_long.svg';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
@@ -24,13 +24,27 @@ export default async function MagazineDetail({
   const article = await fetchArticle(params.id);
   return (
     <div>
-      <Logo className='m-8 group-hover:fill-primary w-52 overflow-hidden fill-black transition duration-100 z-40' />
-      <div className='container max-w-screen-md my-8'>
-        <h1 className='text-3xl'>{article.title}</h1>
-        <p>{article.category}</p>
-        <div className='bg-default-100 w-full space-y-2 rounded-xl px-3 py-3'>
-          <MarkdownViewer>{article.content}</MarkdownViewer>
+      <div className='h-96 max-h-screen overflow-hidden relative'>
+        <ASNextImage
+          src={article.mediaUrls[0]}
+          alt='thumbnail'
+          className='object-cover w-screen'
+          width={1000}
+          height={400}
+        />
+        <div className='absolute left-0 top-0 w-full h-full bg-black/30 flex justify-center items-center'>
+          <div className='max-w-screen-md mx-auto py-12 w-full px-2'>
+            <h2 className='px-4 text-4xl text-white break-keep pt-4'>
+              {article.title}
+            </h2>
+            <h3 className='px-4 text-xl text-white break-keep'>
+              {article.author.authorName}
+            </h3>
+          </div>
         </div>
+      </div>
+      <div className='container max-w-screen-md my-8 bg-default-100 w-full space-y-2 rounded-xl px-2 py-3'>
+        <MarkdownViewer>{article.content}</MarkdownViewer>
       </div>
     </div>
   );
