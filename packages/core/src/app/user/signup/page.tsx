@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 import Title from '@/components/Title';
 
-import SignupForm from '@/app/user/(fancy)/signup/SignupForm';
+import SignupForm from '@/app/user/signup/SignupForm';
 import { useUser } from '@/states';
 
 const SignupPage = () => {

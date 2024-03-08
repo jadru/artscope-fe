@@ -8,8 +8,8 @@ import { toast } from 'react-toastify';
 
 import ASNextImage from '@/components/ASNextImage';
 
-import ArtistForm from '@/app/user/(center)/apply/ArtistForm';
-import CuratorForm from '@/app/user/(center)/apply/CuratorForm';
+import ArtistForm from '@/app/user/apply/ArtistForm';
+import CuratorForm from '@/app/user/apply/CuratorForm';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 

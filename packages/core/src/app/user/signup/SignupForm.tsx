@@ -11,9 +11,7 @@ import { toast } from 'react-toastify';
 
 import ErrorMessageInput from '@/components/ErrorMessageInput';
 
-import signupSchema, {
-  SignupInputs,
-} from '@/app/user/(fancy)/signup/signupSchema';
+import signupSchema, { SignupInputs } from '@/app/user/signup/signupSchema';
 import jxios from '@/utils/jxios';
 
 const SignupForm = () => {

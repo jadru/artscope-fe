@@ -16,7 +16,7 @@ export const onLogin = async (
   router: AppRouterInstance,
   // eslint-disable-next-line no-unused-vars
   setUser: (user: profileApiResponseType | undefined) => void,
-  redirect?: string | null
+  redirect: string
 ) => {
   jxios.defaults.headers.common[
     'Authorization'
@@ -30,7 +30,7 @@ export const onGetProfile = async (
   router: AppRouterInstance,
   // eslint-disable-next-line no-unused-vars
   setUser: (user: profileApiResponseType | undefined) => void,
-  redirect?: string | null
+  redirect: string
 ) => {
   if (await getRefreshToken()) {
     const res = await jxios.get('/api/members/profile', {

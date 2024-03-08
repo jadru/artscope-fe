@@ -1,14 +1,14 @@
 'use client';
 
-import { Button } from '@nextui-org/react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { AiOutlineGoogle } from 'react-icons/ai';
 
 import Title from '@/components/Title';
+import { Button } from '@/components/ui/button';
 
-import LoginForm from '@/app/user/(fancy)/login/LoginForm';
+import LoginForm from '@/app/user/login/LoginForm';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import { useUser } from '@/states';
 
@@ -32,13 +32,12 @@ const Login = () => {
       <p></p>
       <Button
         color='warning'
-        variant='solid'
-        fullWidth
+        className='w-full'
         size='lg'
-        startContent={<AiOutlineGoogle className='h-6 w-6 text-lg' />}
         onClick={() =>
           router.push(NEXT_PUBLIC_API_URL + '/oauth2/authorization/google')
         }>
+        <AiOutlineGoogle className='h-6 w-6 text-lg mr-1' />
         구글로 로그인 또는 회원가입
       </Button>
       <p className='text-center'>또는</p>

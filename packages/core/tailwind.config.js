@@ -66,10 +66,15 @@ module.exports = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        fadeOut: {
+          '0%': { backgroundColor: '#00000000' },
+          '100%': { backgroundColor: '#FFFFFF' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'fade-in': 'fadeOut 200ms ease-in-out',
       },
     },
   },

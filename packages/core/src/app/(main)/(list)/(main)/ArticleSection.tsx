@@ -28,7 +28,8 @@ export default function ArticleSection({
       <div className='w-full md:w-1/2 relative self-stretch'>
         <ArticleFullWidthItem article={articleList[0]} />
       </div>
-      <div className={`w-full md:w-1/2 self-stretch ${bgColor[index]}`}>
+      <div
+        className={`w-full md:w-1/2 self-stretch p-1 lg:py-8 lg:p-3 ${bgColor[index]}`}>
         <ResponsiveMasonry
           columnsCountBreakPoints={{
             350: 1,
