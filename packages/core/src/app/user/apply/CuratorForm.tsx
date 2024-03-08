@@ -9,7 +9,7 @@ import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
 // eslint-disable-next-line no-unused-vars
-import { ArtistForm, CuratorForm } from '@/types/member';
+import { ArtistFormType, CuratorFormType } from '@/types/member';
 
 const curatorSchema = yup.object().shape({
   introduction: yup.string().max(1000).required('기획자 소개를 입력해주세요.'),
@@ -26,7 +26,7 @@ const curatorSchema = yup.object().shape({
 export default function ArtistForm({
   isEdit = undefined,
 }: {
-  isEdit?: CuratorForm | undefined;
+  isEdit?: CuratorFormType | undefined;
 }) {
   const { push } = useRouter();
   const { user } = useUser();
@@ -34,11 +34,11 @@ export default function ArtistForm({
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<CuratorForm>({
+  } = useForm<CuratorFormType>({
     resolver: yupResolver(curatorSchema),
   });
 
-  const onCuratorInfoSubmit = (data: ArtistForm) => {
+  const onCuratorInfoSubmit = (data: ArtistFormType) => {
     if (data.websiteUrl === '') {
       data.websiteUrl = undefined;
     }

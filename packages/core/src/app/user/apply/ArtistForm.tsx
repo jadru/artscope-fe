@@ -8,8 +8,7 @@ import * as yup from 'yup';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
-// eslint-disable-next-line no-unused-vars
-import { ArtistForm } from '@/types/member';
+import { ArtistFormType } from '@/types/member';
 
 const artistSchema = yup.object().shape({
   introduction: yup
@@ -27,7 +26,7 @@ const artistSchema = yup.object().shape({
 export default function ArtistForm({
   isEdit = undefined,
 }: {
-  isEdit?: ArtistForm | undefined;
+  isEdit?: ArtistFormType | undefined;
 }) {
   const { push } = useRouter();
   const { user } = useUser();
@@ -35,12 +34,12 @@ export default function ArtistForm({
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<ArtistForm>({
+  } = useForm<ArtistFormType>({
     resolver: yupResolver(artistSchema),
     mode: 'onBlur',
   });
 
-  const onArtistInfoSubmit = (data: ArtistForm) => {
+  const onArtistInfoSubmit = (data: ArtistFormType) => {
     if (data.websiteUrl === '') {
       data.websiteUrl = undefined;
     }
