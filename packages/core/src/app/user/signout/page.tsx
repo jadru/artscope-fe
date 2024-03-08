@@ -19,9 +19,9 @@ const SignoutPage = () => {
     removeAccessToken();
     removeRefreshToken();
     clearUser();
-    push('/');
     toast.success('로그아웃 되었습니다.');
     refresh();
+    push('/');
   }, [clearUser, refresh, push]);
   return <></>;
 };

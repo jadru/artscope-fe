@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 import Title from '@/components/Title';
 
-import ApplyForm from '@/app/user/(center)/apply/ApplyForm';
+import ApplyForm from '@/app/user/apply/ApplyForm';
 import { useUser } from '@/states';
 
 export default function UserApply() {

@@ -17,7 +17,7 @@ export default function ArticleFullWidthItem({
           src={article.mediaUrls[0]}
           width={1000}
           height={1000}
-          className='left-0 top-0 w-full h-full object-cover group-hover:scale-105 transform group-hover:-rotate-2 transition duration-300'
+          className='left-0 top-0 w-full h-full object-cover'
         />
         <div className='absolute left-3 right-3 px-4 pb-6 pt-2 bottom-3 backdrop-blur w-2/3 bg-gradient-to-tr from-black/80 to-black/0 rounded-md'>
           <h2 className='px-4 text-3xl text-white break-keep pt-4'>

@@ -3,7 +3,14 @@ import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.share
 export const onSuccess = (
   roleStatus: string,
   router: AppRouterInstance,
-  redirect?: string | null
+  redirect: string
 ) => {
-  if (redirect) router.push(redirect);
+  redirect && redirect !== ''
+    ? router.push(
+        redirect.replace(
+          new RegExp(`^${process.env.NEXT_PUBLIC_ROOT_URL}`),
+          ''
+        ) || '/'
+      )
+    : router.push('/');
 };

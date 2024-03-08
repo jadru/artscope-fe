@@ -78,21 +78,6 @@ const EditPost = () => {
         levels: [1, 2, 3],
       }),
     ],
-    editorProps: {
-      handlePaste: (props, event, slice) => {
-        const items = Array.from(event.clipboardData?.items || []);
-        if (items) {
-          for (let i = 0; i < items.length; i++) {
-            if (items[i].type.indexOf('image') !== -1) {
-              const file = items[i].getAsFile();
-              if (file) {
-                fileUpload(file);
-              }
-            }
-          }
-        }
-      },
-    },
     content: '<p></p>',
     autofocus: true,
   });

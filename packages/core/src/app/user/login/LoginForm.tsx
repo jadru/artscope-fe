@@ -1,12 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Input } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 
-import { loginInputs, loginSchema } from '@/app/user/(fancy)/login/loginSchema';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+import { loginInputs, loginSchema } from '@/app/user/login/loginSchema';
 import { onLogin } from '@/auth/onLogin';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
@@ -23,7 +24,6 @@ export default function LoginForm({ redirect }: { redirect: string | null }) {
   });
   const { setUser } = useUser();
   const [pwInputVisible, setPwInputVisible] = useState(false);
-  const togglePwInputVisible = () => setPwInputVisible(!pwInputVisible);
   const router = useRouter();
 
   const onSubmit: SubmitHandler<loginInputs> = async (loginData) =>
@@ -31,7 +31,7 @@ export default function LoginForm({ redirect }: { redirect: string | null }) {
     (await jxios.post('/api/login', loginData).then(async (res) => {
       const tokenData: loginResponseType = res.data;
       if (res.status === 200 && tokenData.accessToken) {
-        await onLogin(tokenData, router, setUser, redirect);
+        await onLogin(tokenData, router, setUser, redirect || '');
       } else {
         toast.error(res.data);
       }
@@ -41,36 +41,18 @@ export default function LoginForm({ redirect }: { redirect: string | null }) {
     <form onSubmit={handleSubmit(onSubmit)} className='space-y-2'>
       <Input
         type='text'
-        label='아이디'
-        variant='flat'
-        placeholder='아이디를 입력해주세요'
-        errorMessage={errors.username?.message}
-        isInvalid={!!errors.username}
+        placeholder='아이디'
+        formNoValidate={!!errors.username}
         {...register('username')}
       />
       <Input
-        label='비밀번호'
-        variant='flat'
-        placeholder='비밀번호를 입력해주세요'
-        endContent={
-          <button
-            className='focus:outline-none'
-            type='button'
-            onClick={togglePwInputVisible}>
-            {pwInputVisible ? (
-              <AiFillEyeInvisible className='text-default-400 pointer-events-none text-2xl' />
-            ) : (
-              <AiFillEye className='text-default-400 pointer-events-none text-2xl' />
-            )}
-          </button>
-        }
+        placeholder='비밀번호'
         type={pwInputVisible ? 'text' : 'password'}
-        errorMessage={errors.password?.message}
-        isInvalid={!!errors.password}
+        formNoValidate={!!errors.password}
         {...register('password')}
       />
 
-      <Button type='submit' variant='solid' color='primary' fullWidth>
+      <Button type='submit' color='primary' className='w-full'>
         로그인
       </Button>
     </form>
