@@ -87,7 +87,7 @@ export default function ArticleList() {
                   <PaginationItem>
                     <PaginationLink
                       onClick={() => setPage(data?.pageInfo.page - 1)}>
-                      {data?.pageInfo.page - 1}
+                      {data?.pageInfo.page}
                     </PaginationLink>
                   </PaginationItem>
                 </>

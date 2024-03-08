@@ -2,20 +2,35 @@ import Link from 'next/link';
 
 import { articleItemType } from '@/types/article';
 
-export default function ArticleItem({ article }: { article: articleItemType }) {
+export default function ArticleItem({
+  article,
+  light = false,
+}: {
+  article: articleItemType;
+  light?: boolean;
+}) {
   return (
-    <Link className='relative p-6 group' href={'/article/' + article.id}>
-      <div className='aspect-w-12 aspect-h-16 box-border overflow-hidden'>
+    <Link className='relative p-3 lg:p-5 group' href={'/article/' + article.id}>
+      <div
+        className={`aspect-w-5 aspect-h-3 lg:aspect-w-12 lg:aspect-h-16 box-border overflow-hidden ${
+          light ? 'text-white' : 'text-black'
+        }`}>
         <img
           alt={article.title}
           src={article.mediaUrls[0]}
           className='w-full h-full object-cover bg-black transition duration-300 group-hover:scale-105 transform group-hover:-rotate-2'
         />
       </div>
-      <h2 className='px-4 text-3xl text-black line-clamp-2 pt-4 font-bold break-keep'>
+      <h2
+        className={`px-4 text-2xl line-clamp-2 pt-4 font-bold break-keep ${
+          light ? 'text-white' : 'text-black'
+        }`}>
         {article.title}
       </h2>
-      <h3 className='px-4 text-xl text-black break-keep'>
+      <h3
+        className={`px-4 text-xl break-keep ${
+          light ? 'text-white' : 'text-black'
+        }`}>
         {article.author.authorName}
       </h3>
     </Link>

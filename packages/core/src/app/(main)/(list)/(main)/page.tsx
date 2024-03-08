@@ -86,6 +86,7 @@ export default function Feeds() {
             articleList={articles}
             key={articles[0].id}
             position={index % 2 === 0 ? 'right' : 'left'}
+            index={index}
           />
         ))}
       <Link href='/articles'>
