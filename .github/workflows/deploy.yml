@@ -13,8 +13,7 @@ env:
   AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
   AWS_CODE_DEPLOY_NAME: artscope-codedeploy
 
-permissions:
-  contents: write
+permissions: write-all
 
 jobs:
   build-deploy:
@@ -35,10 +34,7 @@ jobs:
             aws-code-deploy-group-prod: artscope-codedeploy-admin
             aws-code-deploy-group-dev: artscope-codedeploy-admin-dev
 
-    permissions:
-      contents: read
-      packages: write
-      id-token: write
+    permissions: write-all
 
     steps:
       - name: Checkout repository
