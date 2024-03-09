@@ -1,6 +1,6 @@
 import GoogleTagManager from '@magicul/next-google-tag-manager';
 import { Metadata, Viewport } from 'next';
-import { IBM_Plex_Sans_KR } from 'next/font/google';
+import { IBM_Plex_Sans_KR, Source_Code_Pro } from 'next/font/google';
 import Script from 'next/script';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -20,8 +20,14 @@ import {
 const ibm_flex_Sans_KR = IBM_Plex_Sans_KR({
   weight: ['200', '400', '700'],
   variable: '--ibm-plex-sans-kr',
-  subsets: ['latin'],
+  preload: false,
   display: 'swap',
+});
+
+const source_Code_PRO = Source_Code_Pro({
+  weight: ['900'],
+  variable: '--source-code-pro',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
@@ -112,7 +118,11 @@ export default function RootLayout({
   return (
     <html lang='ko' className='light'>
       <body
-        className={clsxm(ibm_flex_Sans_KR.className, 'p-0 m-0 min-h-screen')}>
+        className={clsxm(
+          source_Code_PRO.className,
+          ibm_flex_Sans_KR.className,
+          'p-0 m-0 min-h-screen font-primary'
+        )}>
         <ToastContainer limit={2} hideProgressBar />
         <link rel='manifest' href='/manifest.json' />
         {GOOGLE_TAG_MANAGER_ID && (

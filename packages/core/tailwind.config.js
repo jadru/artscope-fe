@@ -76,6 +76,10 @@ module.exports = {
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in': 'fadeOut 200ms ease-in-out',
       },
+      fontFamily: {
+        primary: ['var(--ibm-plex-sans-kr)'],
+        logo: ['var(--source-code-pro)'],
+      },
     },
   },
   corePlugins: {
