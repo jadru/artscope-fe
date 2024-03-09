@@ -97,14 +97,18 @@ const EditPost = () => {
         setIsUpload(false);
         return;
       }
-      await jxios.post('/api/magazines', {
-        title,
-        content,
-        categoryId: 1,
-        mediaUrls: [NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + insertImage[0]],
-      });
-      toast.success('아티클이 작성 되었습니다.');
-      push('/article/' + params.id);
+      const data = await jxios
+        .post('/api/magazines', {
+          title,
+          content,
+          categoryId: 1,
+          mediaUrls: [NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + insertImage[0]],
+        })
+        .then((res) => res.data);
+      if (data) {
+        toast.success('아티클이 작성 되었습니다.');
+        push('/article/' + data.id);
+      }
     } catch (err) {
       toast.error((err as string) || '아티클 업로드에 실패했습니다.');
     } finally {
