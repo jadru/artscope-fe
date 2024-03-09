@@ -1,11 +1,11 @@
 'use client';
 
+import { debounce } from 'lodash';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { BiMenu, BiX } from 'react-icons/bi';
 
-import Logo from '@/assets/images/logo_long.svg';
 import { useUser } from '@/states';
 
 export default function Navbar({ light = true }: { light?: boolean }) {
@@ -32,29 +32,28 @@ export default function Navbar({ light = true }: { light?: boolean }) {
       prevScrollY.current = scrollY;
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', debounce(handleScroll, 10));
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', debounce(handleScroll, 50));
     };
   }, []);
 
   return (
     <>
       <div
-        className={`px-6 box-border py-8 items-center justify-between flex fixed top-0 w-full transition duration-500 ease-in-out ${
-          logoVisible
-            ? 'opacity-100 translate-y-0 cursor-pointer'
-            : '-translate-y-full opacity-0'
+        className={`px-6 box-border py-6 lg:py-8 items-center justify-between flex fixed top-0 w-full transition duration-500 ease-in-out ${
+          logoVisible ? 'opacity-100 cursor-pointer' : 'opacity-0'
         }`}>
-        <Logo
-          className={`hover:fill-blue-500 w-40 lg:w-52 overflow-hidden ${
-            light ? 'fill-white' : 'fill-black'
+        <span
+          className={`font-logo hover:text-blue-500 text-4xl lg:text-5xl -tracking-[.05em] overflow-hidden ${
+            light ? 'text-white' : 'text-black'
           } transition duration-200`}
           onClick={() => {
             logoVisible && router.push('/');
-          }}
-        />
+          }}>
+          ARTSCOPE
+        </span>
         <button
           className={`hover:text-blue-500 overflow-hidden transition duration-200 ${
             light ? 'text-white' : 'text-black'
@@ -86,6 +85,11 @@ export default function Navbar({ light = true }: { light?: boolean }) {
                 href='/user/signout'
                 className='text-4xl hover:text-blue-600 transition duration-100'>
                 LOGOUT
+              </Link>
+              <Link href={`/profile/${user.username}`}>
+                <div className='text-4xl hover:text-blue-600 transition duration-100'>
+                  PROFILE
+                </div>
               </Link>
             </>
           ) : (

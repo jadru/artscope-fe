@@ -3,38 +3,40 @@
 import Link from 'next/link';
 
 import ASNextImage from '@/components/ASNextImage';
-import StandardLabel, { standardLabel } from '@/components/StandardLabel';
+import StandardLabel from '@/components/StandardLabel';
 
 export default function ProfileComponent({
   name,
   username,
   picture,
-  introduction,
+  clickable = true,
 }: {
   username: string;
   name: string;
   picture?: string;
-  introduction?: string;
+  clickable?: boolean;
 }) {
   return (
-    <Link className='cursor-pointer p-0' href={`/profile/${username}`}>
-      <div className='flex flex-row items-start justify-start gap-2 p-3 transition hover:underline'>
+    <Link
+      className={clickable ? 'cursor-pointer' : 'cursor-default'}
+      href={`${clickable ? '/profile/' + username : '#'}`}>
+      <div className='flex flex-row bg-[rgb(33,58,250)] items-center text-white w-full justify-between gap-2 p-6 transition'>
+        <div
+          className={`ml-0.5 flex flex-col transition ${
+            clickable ? 'hover:underline' : ''
+          }`}>
+          <p className='inline text-2xl font-bold'>
+            <StandardLabel label={name} />
+          </p>
+          <p className='text-default-500 line-clamp-1 text-lg'>@{username}</p>
+        </div>
         <ASNextImage
           src={picture ?? 'prod/images/default.jpg'}
           alt='프로필 사진'
           width={40}
           height={40}
-          className='h-10 w-10 rounded-full border object-cover'
+          className='h-10 w-10 rounded-full object-cover'
         />
-        <div className='ml-0.5 flex flex-col transition hover:underline'>
-          <p className='inline text-[0.9rem] font-bold'>
-            <StandardLabel label={name} />
-          </p>
-          <p className='text-default-500 line-clamp-1 text-[0.9rem]'>
-            @{username}
-            {introduction ? ' • ' + standardLabel(introduction) : ''}
-          </p>
-        </div>
       </div>
     </Link>
   );
