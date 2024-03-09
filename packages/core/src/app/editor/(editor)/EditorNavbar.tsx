@@ -6,14 +6,14 @@ import React from 'react';
 
 import { Button } from '@/components/ui/button';
 
-import Logo from '@/assets/images/logo_long.svg';
-
 export default function EditorNavbar() {
   const pathname = usePathname();
   return (
     <nav className='flex-none gap-3 text-md font-medium flex flex-row items-center md:gap-5 md:text-sm lg:gap-6'>
       <Link href='/'>
-        <Logo className='m-2 group-hover:fill-primary w-24 overflow-hidden fill-black transition duration-100 z-40' />
+        <span className='-tracking-[.05em] font-logo font-black text-2xl'>
+          ARTSCOPE
+        </span>
       </Link>
       <Link
         className={`${
@@ -31,15 +31,15 @@ export default function EditorNavbar() {
         href='/editor/article'>
         아티클
       </Link>
-      <Link
-        className={`${
-          pathname !== '/editor/statistics'
-            ? 'text-gray-500'
-            : 'text-gray-900 font-bold'
-        } hover:text-gray-900`}
-        href='#'>
-        통계
-      </Link>
+      {/* <Link */}
+      {/*   className={`${ */}
+      {/*     pathname !== '/editor/statistics' */}
+      {/*       ? 'text-gray-500' */}
+      {/*       : 'text-gray-900 font-bold' */}
+      {/*   } hover:text-gray-900`} */}
+      {/*   href='#'> */}
+      {/*   통계 */}
+      {/* </Link> */}
       <Link
         className={`${
           pathname !== '/editor/settings'

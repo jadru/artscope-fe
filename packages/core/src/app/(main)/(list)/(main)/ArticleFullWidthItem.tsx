@@ -12,7 +12,7 @@ export default function ArticleFullWidthItem({
 }) {
   return (
     <Link href={'/article/' + article.id}>
-      <div className='sticky top-0 h-screen group box-border overflow-hidden'>
+      <div className='sticky top-0 h-screen max-h-svh group box-border overflow-hidden'>
         <ASNextImage
           alt={article.title}
           src={article.mediaUrls[0]}
