@@ -93,8 +93,8 @@ export default function Feeds() {
           />
         ))}
       <Link href='/articles'>
-        <div className='flex items-center justify-center w-full h-32 text-black hover:underline underline-offset-[-4px] decoration-[13px] decoration-amber-300'>
-          <p className='text-5xl'>{isLoading ? 'Loading...' : '더보기'}</p>
+        <div className='flex items-center justify-center w-full h-32 text-black hover:underline underline-offset-4 decoration-[10px] decoration-amber-300'>
+          <p className='text-5xl'>READ MORE</p>
         </div>
       </Link>
     </>

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import ASNextImage from '@/components/ASNextImage';
+import StandardLabel, { standardLabel } from '@/components/StandardLabel';
 
 import { articleItemType } from '@/types/article';
 
@@ -27,21 +28,24 @@ export default function ArticleItem({
             className='w-full h-full object-cover bg-black transition duration-300 group-hover:scale-105 transform'
           />
         ) : (
-          <div className='w-full h-full bg-black transition duration-300 group-hover:scale-105 transform group-hover:-rotate-2' />
+          <div className='w-full h-full bg-black transition duration-300' />
         )}
       </div>
-      <h2
-        className={`px-4 text-2xl line-clamp-2 pt-4 font-bold break-keep ${
-          light ? 'text-white' : 'text-black'
-        }`}>
-        {article.title}
-      </h2>
-      <h3
-        className={`px-4 text-xl break-keep ${
-          light ? 'text-white' : 'text-black'
-        }`}>
-        {article.author.authorName}
-      </h3>
+      <div className='pt-4 px-4'>
+        <h2
+          className={`text-2xl line-clamp-2 group-hover:underline underline-offset-3 font-bold break-keep ${
+            light ? 'text-white' : 'text-black'
+          }`}>
+          {standardLabel(article.title)}
+        </h2>
+        <Link
+          href={'/profile/' + article.author.authorUsername}
+          className={`hover:bg-default-100 w-full pt-1 flex appearance-none items-center justify-end transition ${
+            light ? 'text-white' : 'text-black'
+          }`}>
+          <StandardLabel label={article.author.authorName} />
+        </Link>
+      </div>
     </Link>
   );
 }

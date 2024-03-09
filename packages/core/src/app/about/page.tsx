@@ -7,18 +7,12 @@ import { BiBrush, BiCalendar, BiGroup } from 'react-icons/bi';
 import { GiTalk } from 'react-icons/gi';
 
 import Footer from '@/components/Footer';
-
-import Logo from '@/assets/images/logo_long.svg';
+import Navbar from '@/components/Navbar';
 
 export default function Page() {
   return (
     <div className='flex flex-col min-h-[100vh]'>
-      <header className='px-4 lg:px-6 h-14 flex items-center container mx-auto max-w-screen-xl'>
-        <Link className='flex items-center justify-center' href='#'>
-          <Logo className='h-12 w-32 overflow-hidden fill-black px-2 pb-0 pt-2 transition duration-100' />
-          <span className='sr-only'>Artscope</span>
-        </Link>
-      </header>
+      <Navbar light={false} />
       <main className='flex-1'>
         <section className='w-full py-12 md:py-24 lg:py-32 container mx-auto max-w-screen-xl'>
           <div className='container px-4 md:px-6'>
