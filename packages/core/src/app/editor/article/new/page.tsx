@@ -174,7 +174,7 @@ const EditPost = () => {
 
   return (
     <>
-      <div className='bg-default-50 fixed top-0 z-50 flex h-16 w-full bg-white/60 backdrop-blur max-w-[766px] items-center justify-between gap-5 border-b px-5'>
+      <div className='bg-default-50 fixed top-0 overflow-x-scroll z-50 flex h-16 w-full bg-white/60 backdrop-blur max-w-[766px] items-center justify-between gap-5 border-b px-5'>
         <button onClick={handleBackButton}>
           <BiArrowBack className='h-6 w-6 hover:text-blue-600' />
         </button>

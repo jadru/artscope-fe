@@ -21,7 +21,6 @@ const ibm_flex_Sans_KR = IBM_Plex_Sans_KR({
   weight: ['200', '400', '700'],
   variable: '--ibm-plex-sans-kr',
   preload: false,
-  display: 'swap',
 });
 
 const source_Code_PRO = Source_Code_Pro({

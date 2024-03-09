@@ -1,7 +1,5 @@
-'use client';
-
-import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import { cookies } from 'next/headers';
 import { BiHeart } from 'react-icons/bi';
 
 import { Button } from '@/components/ui/button';
@@ -14,35 +12,33 @@ import {
 } from '@/components/ui/card';
 import { Pagination } from '@/components/ui/pagination';
 
-import { useUser } from '@/states';
+import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
 import { articleListType } from '@/types/article';
 
-const fetchPersonalArticles = async (username?: string) =>
+const fetchPersonalArticles = async (username: string) =>
   jxios
-    .get('/api/magazines', {
-      params: {
-        username,
-      },
-    })
+    .get(NEXT_PUBLIC_API_URL + '/api/magazines/members/' + username)
     .then((res) => res.data as articleListType);
 
-export default function Component() {
-  const { user, isLogin } = useUser();
-  const { data, isLoading, refetch, isSuccess, isError } = useQuery({
-    queryKey: ['personal_articles'],
-    queryFn: () => fetchPersonalArticles(user?.username),
-  });
-
-  useEffect(() => {
-    refetch();
-  }, [refetch, user]);
+export default async function Component() {
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get('access-token');
+  if (!accessToken) {
+    return;
+  }
+  const decoded_token = jwtDecode(accessToken.value);
+  const username = decoded_token.sub;
+  if (!username) {
+    return;
+  }
+  const data = await fetchPersonalArticles(username);
 
   return (
     <>
       <div className='grid gap-4 md:grid-cols-3 lg:grid-cols-4'>
-        {isSuccess &&
+        {data &&
           data.magazines.map((article) => (
             <Card key={article.id} className='flex flex-col w-full'>
               <CardHeader className='flex flex-row items-center justify-between pb-2 space-y-0 w-full'>

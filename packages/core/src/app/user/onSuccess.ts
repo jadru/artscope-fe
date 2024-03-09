@@ -7,10 +7,7 @@ export const onSuccess = (
 ) => {
   redirect && redirect !== ''
     ? router.push(
-        redirect.replace(
-          new RegExp(`^${process.env.NEXT_PUBLIC_ROOT_URL}`),
-          ''
-        ) || '/'
+        redirect.replace(new RegExp(`^${process.env.NEXT_PUBLIC_ROOT_URL}`), '')
       )
-    : router.push('/');
+    : undefined;
 };
