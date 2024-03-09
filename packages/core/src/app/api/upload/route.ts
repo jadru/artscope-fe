@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     });
     const { url, fields } = await createPresignedPost(client, {
       Bucket: process.env.AWS_BUCKET_NAME!,
-      Key: process.env.S3_PATH + uuidv4(),
+      Key: process.env.S3_PATH + uuidv4() + `.${contentType.split('/')[1]}`,
       Conditions: [
         ['content-length-range', 0, 20971520], // up to 20 MB
         ['starts-with', '$Content-Type', contentType],

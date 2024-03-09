@@ -37,14 +37,14 @@ export default function Component() {
 
   useEffect(() => {
     refetch();
-  }, [user]);
+  }, [refetch, user]);
 
   return (
     <>
       <div className='grid gap-4 md:grid-cols-3 lg:grid-cols-4'>
         {isSuccess &&
           data.magazines.map((article) => (
-            <Card>
+            <Card key={article.id} className='flex flex-col w-full'>
               <CardHeader className='flex flex-row items-center justify-between pb-2 space-y-0 w-full'>
                 <div className='flex flex-col overflow-hidden'>
                   <CardTitle className='text-base font-semibold w-full'>
