@@ -4,9 +4,9 @@ WORKDIR /app
 FROM base AS deps
 
 COPY .yarnrc.yml package.json yarn.lock ./
+COPY .yarn/releases .yarn/releases
 COPY packages/core/package.json ./packages/core/
 
-RUN yarn set version berry
 RUN yarn workspaces focus @artscope/core
 
 FROM base AS builder
@@ -16,7 +16,7 @@ COPY .env ./packages/core/.env
 
 RUN yarn set version berry
 
-RUN yarn workspace @artscope/core build
+RUN yarn core build
 
 RUN rm -rf ./packages/core/.next/cache
 

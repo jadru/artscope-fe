@@ -9,8 +9,7 @@ export default function useUserHook() {
   const router = useRouter();
   useEffect(() => {
     if (isLogin !== undefined) return;
-    const fetch = async () => await onGetProfile(router, setUser);
-    fetch();
+    onGetProfile(router, setUser, '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setUser]);
 }

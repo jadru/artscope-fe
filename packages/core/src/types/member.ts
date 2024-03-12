@@ -1,15 +1,15 @@
-export interface ArtistForm {
+export type ArtistFormType = {
   introduction: string;
   history: string;
   snsUrl: string;
   websiteUrl?: string;
-}
+};
 
-export interface CuratorForm {
+export type CuratorFormType = {
   introduction: string;
   history: string;
   snsUrl: string;
   companyName?: string;
   companyRole?: string;
   websiteUrl?: string;
-}
+};
