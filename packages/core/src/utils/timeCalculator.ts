@@ -29,7 +29,7 @@ const shortTimeCalculatorKO = (date: Date) => {
   const now = Date.now();
   const diff = (now - d.getTime()) / 1000;
   if (diff < 60) {
-    return '방금 전';
+    return '방금 전 ';
   }
   if (diff < 60 * 60 * 24 * 14) {
     return formatDistanceToNow(d, { addSuffix: true, locale: ko });
