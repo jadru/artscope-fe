@@ -12,6 +12,7 @@ const config = {
     webpackBuildWorker: true,
     optimizePackageImports: ['react-markdown'],
     externalDir: true,
+    missingSuspenseWithCSRBailout: false,
   },
   transpilePackages: ['react-markdown'],
   async rewrites() {
