@@ -53,6 +53,7 @@ module.exports = {
         },
         'main-1': '#eccb68',
         'main-2': '#f9f9f9',
+        'main-3': '#2eeeff',
       },
       borderRadius: {
         lg: 'var(--radius)',
