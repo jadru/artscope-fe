@@ -68,7 +68,7 @@ export default function ArticleList() {
       )}
       {isSuccess && (
         <>
-          <div className='container w-max-screen-md grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 pt-20'>
+          <div className='container w-max-screen-md grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 pt-20 px-1'>
             {data?.magazines.map((article) => (
               <ArticleItem key={article.id} article={article} />
             ))}

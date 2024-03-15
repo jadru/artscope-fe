@@ -118,9 +118,9 @@ export default function RootLayout({
     <html lang='ko' className='light'>
       <body
         className={clsxm(
-          source_Code_PRO.className,
           ibm_flex_Sans_KR.className,
-          'p-0 m-0 min-h-screen font-primary'
+          source_Code_PRO.className,
+          'p-0 m-0 min-h-screen'
         )}>
         <ToastContainer limit={2} hideProgressBar />
         <link rel='manifest' href='/manifest.json' />

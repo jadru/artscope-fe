@@ -78,6 +78,7 @@ module.exports = {
       },
       fontFamily: {
         primary: ['var(--ibm-plex-sans-kr)'],
+        sans: ['var(--ibm-plex-sans-kr)'],
         logo: ['var(--source-code-pro)'],
       },
     },
