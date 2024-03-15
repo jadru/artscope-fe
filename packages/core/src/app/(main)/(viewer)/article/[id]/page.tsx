@@ -28,13 +28,18 @@ export default async function MagazineDetail({
   return (
     <div>
       <div className='h-96 max-h-screen overflow-hidden relative'>
-        <ASNextImage
-          src={article.mediaUrls[0]}
-          alt='thumbnail'
-          className='object-cover w-screen'
-          width={1000}
-          height={400}
-        />
+        {article.mediaUrls[0] &&
+        article.mediaUrls[0] !== 'https://cdn.artscope.kr/undefined' ? (
+          <ASNextImage
+            src={article.mediaUrls[0]}
+            alt='thumbnail'
+            className='object-cover w-screen'
+            width={1000}
+            height={400}
+          />
+        ) : (
+          <div className='w-full h-full bg-blue-500 transition duration-300' />
+        )}
         <div className='absolute left-0 top-0 w-full h-full bg-black/30 flex justify-center items-center'>
           <div className='max-w-screen-md mx-auto py-12 w-full px-2'>
             <h2 className='px-4 text-4xl text-white break-keep pt-4'>
