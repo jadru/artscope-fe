@@ -20,7 +20,7 @@ export default function ProfileComponent({
     <Link
       className={clickable ? 'cursor-pointer' : 'cursor-default'}
       href={`${clickable ? '/profile/' + username : '#'}`}>
-      <div className='flex flex-row bg-[rgb(33,58,250)] items-center text-white w-full justify-between gap-2 p-6 transition'>
+      <div className='flex flex-row bg-[#ACB884] items-center text-white w-full justify-between gap-2 p-6 transition'>
         <div
           className={`ml-0.5 flex flex-col transition ${
             clickable ? 'hover:underline' : ''

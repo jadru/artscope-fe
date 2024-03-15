@@ -30,14 +30,16 @@ export default async function ProfileDetail({
         picture={profile.picture}
       />
       {profile.introduction && (
-        <div className='bg-[rgb(202,87,58)] p-6 text-xl text-white'>
+        <div className='bg-[#DFA36D] p-6 text-xl text-white'>
           {standardLabel(profile.introduction)}
         </div>
       )}
       {historyArray && (
-        <div className='bg-black p-6 text-xl text-white'>
+        <div className='py-4 text-xl text-[#1A1A1A]'>
           {historyArray.map((history, index) => (
-            <p key={index}>{standardLabel(history)}</p>
+            <p key={index} className='border-b-4 border-[#1A1A1A] mb-3'>
+              {standardLabel(history)}
+            </p>
           ))}
         </div>
       )}
