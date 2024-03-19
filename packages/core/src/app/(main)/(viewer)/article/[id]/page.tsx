@@ -42,9 +42,9 @@ export default async function MagazineDetail({
         )}
         <div className='absolute left-0 top-0 w-full h-full bg-black/30 flex justify-center items-center'>
           <div className='max-w-screen-md mx-auto py-12 w-full px-2'>
-            <h2 className='px-4 text-4xl text-white break-keep pt-4'>
+            <h1 className='px-4 text-4xl text-white break-keep pt-4'>
               {standardLabel(article.title)}
-            </h2>
+            </h1>
             <h3 className='px-4 text-xl text-white break-keep'>
               {standardLabel(article.author.authorName)}
             </h3>

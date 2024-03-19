@@ -31,6 +31,15 @@ export default function MarkdownViewer({
         p: ({ node, ...props }) => (
           <p className='pt-1.5 font-normal' {...props} />
         ),
+        h1: ({ node, ...props }) => (
+          <h2 className='text-3xl font-bold pt-2' {...props} />
+        ),
+        h2: ({ node, ...props }) => (
+          <h3 className='text-2xl font-bold pt-2' {...props} />
+        ),
+        h3: ({ node, ...props }) => (
+          <h4 className='text-xl font-bold pt-2' {...props} />
+        ),
       }}
       remarkPlugins={[
         ignoreMarkdown
