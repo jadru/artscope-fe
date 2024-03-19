@@ -1,10 +1,11 @@
 'use client';
 
-import { Button } from '@nextui-org/react';
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { AiOutlineMail } from 'react-icons/ai';
 
 import Title from '@/components/Title';
+import { Button } from '@/components/ui/button';
 
 export default function EmailVerification() {
   const searchParams = useSearchParams();
@@ -23,9 +24,9 @@ export default function EmailVerification() {
         />
       </h2>
       <br />
-      <Button onClick={() => push('/')} color='primary'>
-        홈으로 가기
-      </Button>
+      <Link href='/'>
+        <Button>홈으로 가기</Button>
+      </Link>
     </>
   );
 }

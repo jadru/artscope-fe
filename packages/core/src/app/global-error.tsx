@@ -1,11 +1,11 @@
 'use client';
 
-import { Button } from '@nextui-org/react';
 import Link from 'next/link';
 import * as React from 'react';
 import { RiAlarmWarningFill } from 'react-icons/ri';
 
 import NavBar from '@/components/Navbar';
+import { Button } from '@/components/ui/button';
 
 // eslint-disable-next-line no-empty-pattern
 export default function Error({}: { error: Error; reset: () => void }) {

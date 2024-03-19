@@ -1,6 +1,5 @@
 'use client';
 
-import { Button, Input } from '@nextui-org/react';
 import { useDebounce } from '@toss/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -103,51 +102,51 @@ export default function SettingsPage() {
   return (
     data && (
       <>
-        <div className='flex justify-stretch gap-1'>
-          <Input disabled value={data.email} label='이메일' variant='flat' />
-        </div>
-        <hr />
-        <div className='flex justify-stretch gap-1 p-3 rounded-2xl border-2 border-black items-stretch'>
-          <Input
-            label='아이디'
-            variant='underlined'
-            value={usernameEdit}
-            color={
-              usernameVerify === undefined
-                ? 'primary'
-                : usernameVerify
-                ? 'success'
-                : 'danger'
-            }
-            errorMessage={
-              usernameVerify === false && '아이디를 사용할 수 없습니다.'
-            }
-            onValueChange={setUsernameEdit}
-          />
-          <Button
-            className='h-full'
-            color={usernameVerify ? 'primary' : 'default'}
-            disabled={!usernameVerify}
-            onClick={changeUsername}>
-            아이디 변경
-          </Button>
-        </div>
-        <div className='flex justify-stretch gap-1 p-3 rounded-2xl border-2 border-black items-stretch'>
-          <Input
-            label='활동명'
-            value={nameEdit}
-            color={data.name === nameEdit ? 'primary' : 'success'}
-            onValueChange={setNameEdit}
-            variant='underlined'
-          />
-          <Button
-            color={data.name === nameEdit ? 'default' : 'primary'}
-            disabled={data.name === nameEdit}
-            className='h-full'
-            onClick={changeName}>
-            활동명 변경
-          </Button>
-        </div>
+        {/* <div className='flex justify-stretch gap-1'> */}
+        {/*   <Input disabled value={data.email} label='이메일' variant='flat' /> */}
+        {/* </div> */}
+        {/* <hr /> */}
+        {/* <div className='flex justify-stretch gap-1 p-3 rounded-2xl border-2 border-black items-stretch'> */}
+        {/*   <Input */}
+        {/*     label='아이디' */}
+        {/*     variant='underlined' */}
+        {/*     value={usernameEdit} */}
+        {/*     color={ */}
+        {/*       usernameVerify === undefined */}
+        {/*         ? 'primary' */}
+        {/*         : usernameVerify */}
+        {/*         ? 'success' */}
+        {/*         : 'danger' */}
+        {/*     } */}
+        {/*     errorMessage={ */}
+        {/*       usernameVerify === false && '아이디를 사용할 수 없습니다.' */}
+        {/*     } */}
+        {/*     onValueChange={setUsernameEdit} */}
+        {/*   /> */}
+        {/*   <Button */}
+        {/*     className='h-full' */}
+        {/*     color={usernameVerify ? 'primary' : 'default'} */}
+        {/*     disabled={!usernameVerify} */}
+        {/*     onClick={changeUsername}> */}
+        {/*     아이디 변경 */}
+        {/*   </Button> */}
+        {/* </div> */}
+        {/* <div className='flex justify-stretch gap-1 p-3 rounded-2xl border-2 border-black items-stretch'> */}
+        {/*   <Input */}
+        {/*     label='활동명' */}
+        {/*     value={nameEdit} */}
+        {/*     color={data.name === nameEdit ? 'primary' : 'success'} */}
+        {/*     onValueChange={setNameEdit} */}
+        {/*     variant='underlined' */}
+        {/*   /> */}
+        {/*   <Button */}
+        {/*     color={data.name === nameEdit ? 'default' : 'primary'} */}
+        {/*     disabled={data.name === nameEdit} */}
+        {/*     className='h-full' */}
+        {/*     onClick={changeName}> */}
+        {/*     활동명 변경 */}
+        {/*   </Button> */}
+        {/* </div> */}
       </>
     )
   );

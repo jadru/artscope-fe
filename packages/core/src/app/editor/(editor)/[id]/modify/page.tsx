@@ -19,7 +19,7 @@ import { EditorContent, useEditor } from '@tiptap/react';
 import { useDebounce } from '@toss/react';
 import { forEach } from 'lodash';
 import { useParams, useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BiArrowBack,
   BiBold,
@@ -47,6 +47,7 @@ const EditPost = () => {
   const [title, setTitle] = useState('');
   const placeholder = '예술을 공유하세요.';
   const params = useParams();
+  const id = params.id;
 
   const editor = useEditor({
     extensions: [
@@ -82,6 +83,19 @@ const EditPost = () => {
     autofocus: true,
   });
 
+  useEffect(() => {
+    if (!id && !editor) return;
+    jxios.get('/api/magazines/' + id).then((res) => {
+      const data = res.data;
+      setTitle(data.title);
+      setInsertImage(
+        data.mediaUrls.map((url: string) => url.split('/').pop() as string)
+      );
+      editor?.commands.setContent(data.content);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor, id]);
+
   const handleSubmitPostButton = useDebounce(async () => {
     try {
       setIsUpload(true);
@@ -98,19 +112,18 @@ const EditPost = () => {
         return;
       }
       const data = await jxios
-        .post('/api/magazines', {
+        .put('/api/magazines/' + id, {
           title,
           content,
-          categoryId: 1,
           mediaUrls: [NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + insertImage[0]],
         })
         .then((res) => res.data);
       if (data) {
-        toast.success('아티클이 작성 되었습니다.');
+        toast.success('아티클이 수정 되었습니다.');
         push('/article/' + data.id);
       }
     } catch (err) {
-      toast.error((err as string) || '아티클 업로드에 실패했습니다.');
+      toast.error((err as string) || '아티클 수정에 실패했습니다.');
     } finally {
       setIsUpload(false);
     }
@@ -339,7 +352,7 @@ const EditPost = () => {
           color='primary'
           className={`
             h-12 ${isUpload ? 'opacity-20' : ''}`}>
-          새 아티클 작성
+          아티클 수정
         </Button>
       </div>
     </>

@@ -1,6 +1,5 @@
 'use client';
 import * as Cronitor from '@cronitorio/cronitor-rum';
-import { NextUIProvider } from '@nextui-org/react';
 import {
   QueryCache,
   QueryClient,
@@ -31,7 +30,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
   return (
     <QueryClientProvider client={queryClient}>
-      <NextUIProvider>{children}</NextUIProvider>
+      {children}
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

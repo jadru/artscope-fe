@@ -20,15 +20,6 @@ export default function EditorNavbar() {
           pathname !== '/editor' ? 'text-gray-500' : 'text-gray-900 font-bold'
         } hover:text-gray-900`}
         href='/editor'>
-        메인
-      </Link>
-      <Link
-        className={`${
-          pathname !== '/editor/article'
-            ? 'text-gray-500'
-            : 'text-gray-900 font-bold'
-        } hover:text-gray-900`}
-        href='/editor/article'>
         아티클
       </Link>
       {/* <Link */}
@@ -49,7 +40,7 @@ export default function EditorNavbar() {
         href='/editor/settings'>
         설정
       </Link>
-      <Link href='/editor/article/new'>
+      <Link href='/editor/new'>
         <Button variant='outline'>새 아티클</Button>
       </Link>
     </nav>

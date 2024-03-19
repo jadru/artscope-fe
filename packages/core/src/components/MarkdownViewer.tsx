@@ -28,7 +28,9 @@ export default function MarkdownViewer({
         img: ({ node, ...props }) => (
           <img className='w-full' {...props} alt='' />
         ),
-        p: ({ node, ...props }) => <p className='pt-1.5' {...props} />,
+        p: ({ node, ...props }) => (
+          <p className='pt-1.5 font-normal' {...props} />
+        ),
       }}
       remarkPlugins={[
         ignoreMarkdown

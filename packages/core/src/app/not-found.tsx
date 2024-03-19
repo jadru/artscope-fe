@@ -1,12 +1,12 @@
 'use client';
 
-import { Button } from '@nextui-org/react';
 import Link from 'next/link';
 import * as React from 'react';
 import { RiAlarmWarningFill } from 'react-icons/ri';
 
 import Footer from '@/components/Footer';
 import NavBar from '@/components/Navbar';
+import { Button } from '@/components/ui/button';
 
 export default function NotFoundPage() {
   return (
