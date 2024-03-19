@@ -27,12 +27,6 @@ jobs:
             dockerfile: docker/core.Dockerfile
             aws-code-deploy-group-prod: artscope-codedeploy-frontend
             aws-code-deploy-group-dev: artscope-codedeploy-frontend-dev
-          - package: admin
-            pattern: packages/core/**
-            image: jadru/artscope-admin
-            dockerfile: docker/admin.Dockerfile
-            aws-code-deploy-group-prod: artscope-codedeploy-admin
-            aws-code-deploy-group-dev: artscope-codedeploy-admin-dev
 
     permissions: write-all
 
