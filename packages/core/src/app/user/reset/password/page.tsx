@@ -1,7 +1,6 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Input } from '@nextui-org/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -9,6 +8,17 @@ import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
 import Title from '@/components/Title';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 import jxios from '@/utils/jxios';
 
@@ -27,11 +37,7 @@ export default function ResetPassword() {
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
   const { push } = useRouter();
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting, errors },
-  } = useForm<{
+  const form = useForm<{
     password: string;
     passwordConfirm: string;
   }>({
@@ -53,7 +59,7 @@ export default function ResetPassword() {
     password: string;
     passwordConfirm: string;
   }> = async (data) => {
-    if (isSubmitting) return;
+    if (form.formState.isSubmitting) return;
     jxios
       .post('/api/members/reset-password', data.password, {
         params: {
@@ -77,45 +83,54 @@ export default function ResetPassword() {
   };
 
   return (
-    <div onSubmit={handleSubmit(onSubmit)}>
+    <div onSubmit={form.handleSubmit(onSubmit)}>
       <Title
         title='비밀번호 찾기'
         description='가입하신 이메일로 비밀번호 재설정 링크를 보내드립니다.'
       />
 
-      <form>
-        <Input
-          label='비밀번호'
-          placeholder='비밀번호를 입력해주세요'
-          type='password'
-          fullWidth
-          errorMessage={errors.password?.message}
-          isInvalid={!!errors.password}
-          variant='flat'
-          className='mb-2'
-          {...register('password')}
+      <Form {...form}>
+        <FormField
+          control={form.control}
+          name='password'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type='password' placeholder='비밀번호 입력' {...field} />
+              </FormControl>
+              <FormDescription>새로운 비밀번호를 입력해주세요.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        <Input
-          label='비밀번호 확인'
-          placeholder='비밀번호를 다시 입력해주세요'
-          type='password'
-          fullWidth
-          errorMessage={errors.passwordConfirm?.message}
-          isInvalid={!!errors.passwordConfirm}
-          variant='flat'
-          className='mb-2'
-          {...register('passwordConfirm')}
+        <FormField
+          control={form.control}
+          name='passwordConfirm'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Confirm Password</FormLabel>
+              <FormControl>
+                <Input
+                  type='password'
+                  placeholder='확인 비밀번호 입력'
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>
+                새로운 비밀번호를 다시 입력해주세요.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
         />
         <Button
           color='primary'
-          variant='flat'
-          fullWidth
           type='submit'
-          disabled={isSubmitting}
-          isLoading={isSubmitting}>
+          disabled={form.formState.isSubmitting}>
           비밀번호 재설정
         </Button>
-      </form>
+      </Form>
     </div>
   );
 }

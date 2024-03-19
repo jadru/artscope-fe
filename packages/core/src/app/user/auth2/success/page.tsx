@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@nextui-org/react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import * as React from 'react';
@@ -9,6 +8,7 @@ import { AiOutlineCoffee } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 
 import Title from '@/components/Title';
+import { Button } from '@/components/ui/button';
 
 import { onLogin } from '@/auth/onLogin';
 import { useUser } from '@/states';

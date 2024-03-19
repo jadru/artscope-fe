@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { BiSolidEdit } from 'react-icons/bi';
@@ -8,8 +7,6 @@ import { toast } from 'react-toastify';
 
 import ASNextImage from '@/components/ASNextImage';
 
-import ArtistForm from '@/app/user/apply/ArtistForm';
-import CuratorForm from '@/app/user/apply/CuratorForm';
 import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
@@ -87,31 +84,32 @@ export default function SettingsPage() {
           onChange={handleProfileImageUpload}
         />
       </div>
-      {user?.roleStatus === 'NONE' ? (
-        <Button color='primary' onClick={() => push('/user/apply')} fullWidth>
-          아티스트 / 기획자 추가 정보 기입
-        </Button>
-      ) : user?.roleStatus.startsWith('CURATOR') ? (
-        <CuratorForm
-          isEdit={{
-            introduction: data.introduction,
-            history: data.history,
-            snsUrl: data.snsUrl,
-            websiteUrl: data.websiteUrl,
-            companyName: data.companyName,
-            companyRole: data.companyRole,
-          }}
-        />
-      ) : (
-        <ArtistForm
-          isEdit={{
-            introduction: data.introduction,
-            history: data.history,
-            snsUrl: data.snsUrl,
-            websiteUrl: data.websiteUrl,
-          }}
-        />
-      )}
+      {/* {user?.roleStatus === 'NONE' ? ( */}
+      {/*   <Button color='primary' onClick={() => push('/user/apply')}> */}
+      {/*     아티스트 / 기획자 추가 정보 기입 */}
+      {/*   </Button> */}
+      {/* ) */}
+      {/*   : user?.roleStatus.startsWith('CURATOR') ? ( */}
+      {/*   <CuratorForm */}
+      {/*     isEdit={{ */}
+      {/*       introduction: data.introduction, */}
+      {/*       history: data.history, */}
+      {/*       snsUrl: data.snsUrl, */}
+      {/*       websiteUrl: data.websiteUrl, */}
+      {/*       companyName: data.companyName, */}
+      {/*       companyRole: data.companyRole, */}
+      {/*     }} */}
+      {/*   /> */}
+      {/* ) : ( */}
+      {/*   <ArtistForm */}
+      {/*     isEdit={{ */}
+      {/*       introduction: data.introduction, */}
+      {/*       history: data.history, */}
+      {/*       snsUrl: data.snsUrl, */}
+      {/*       websiteUrl: data.websiteUrl, */}
+      {/*     }} */}
+      {/*   /> */}
+      {/* )} */}
     </>
   ) : (
     '로딩 중...'

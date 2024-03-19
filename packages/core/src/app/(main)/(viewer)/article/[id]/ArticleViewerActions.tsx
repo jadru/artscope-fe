@@ -22,7 +22,7 @@ export default function ArticleViewerActions({
     jxios.delete('/api/magazines/' + id).then((response) => {
       if (response.status === 200) {
         toast.success('아티클이 삭제되었습니다.');
-        router.push('/editor/article');
+        router.push('/editor');
       }
     });
   };
@@ -30,7 +30,7 @@ export default function ArticleViewerActions({
     <>
       {(user && user.username === authorUsername) || isAdmin ? (
         <div className='bg-gray-300 flex gap-4 items-center justify-end p-6'>
-          <Link href={'/editor/article/' + id + '/modify'}>
+          <Link href={'/editor/' + id + '/modify'}>
             <MdOutlineEdit size={28} />
           </Link>
           <button onClick={handleDelete}>

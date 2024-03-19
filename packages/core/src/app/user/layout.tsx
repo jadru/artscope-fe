@@ -17,7 +17,7 @@ export default function DashboardLayout({
   return (
     <>
       <Navbar light={false} />
-      <div className='container mx-auto flex min-h-[calc(100vh-10rem)] max-w-md flex-col items-stretch gap-2 p-4 justify-center pb-3'>
+      <div className='container my-12 mx-auto flex min-h-[calc(100vh-10rem)] max-w-md flex-col items-stretch gap-2 p-4 justify-center pb-3'>
         {children}
       </div>
       <Footer />

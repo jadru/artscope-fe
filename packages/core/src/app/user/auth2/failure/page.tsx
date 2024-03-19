@@ -1,9 +1,10 @@
 'use client';
 
-import { Link } from '@nextui-org/react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 import Title from '@/components/Title';
+import { Button } from '@/components/ui/button';
 
 const RedirectOAuth2 = () => {
   const searchParams = useSearchParams();
@@ -17,7 +18,7 @@ const RedirectOAuth2 = () => {
         }
       />
       <Link href='/' color='primary' className='w-full text-center'>
-        메인으로 가기
+        <Button>메인으로 가기</Button>
       </Link>
     </>
   );

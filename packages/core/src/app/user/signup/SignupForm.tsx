@@ -1,7 +1,6 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Checkbox, Input } from '@nextui-org/react';
 import { useDebounce } from '@toss/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -9,21 +8,24 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import ErrorMessageInput from '@/components/ErrorMessageInput';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 import signupSchema, { SignupInputs } from '@/app/user/signup/signupSchema';
 import jxios from '@/utils/jxios';
 
 const SignupForm = () => {
-  const {
-    register,
-    handleSubmit,
-    clearErrors,
-    setError,
-    getValues,
-    setValue,
-    formState: { errors, isSubmitting },
-  } = useForm<SignupInputs>({
+  const form = useForm<SignupInputs>({
     resolver: yupResolver<SignupInputs>(signupSchema),
     mode: 'onBlur',
   });
@@ -37,27 +39,27 @@ const SignupForm = () => {
     React.useState<boolean>(false);
 
   const onSubmit: SubmitHandler<SignupInputs> = async (data) => {
-    if (isSubmitting) return;
+    if (form.formState.isSubmitting) return;
     if (!emailRegexCheck) {
-      setError('email', {
+      form.setError('email', {
         type: 'manual',
         message: '이메일 형식을 확인해주세요.',
       });
     }
     if (!emailDuplicateCheck) {
-      setError('email', {
+      form.setError('email', {
         type: 'manual',
         message: '이미 사용중인 이메일입니다.',
       });
     }
     if (!usernameRegexCheck) {
-      setError('username', {
+      form.setError('username', {
         type: 'manual',
         message: '아이디는 영문, 숫자 4~12자리로 입력해주세요.',
       });
     }
     if (!usernameDuplicateCheck) {
-      setError('username', {
+      form.setError('username', {
         type: 'manual',
         message: '이미 사용중인 아이디입니다.',
       });
@@ -69,10 +71,10 @@ const SignupForm = () => {
       !usernameDuplicateCheck
     )
       return;
-    if (!isSubmitting) {
+    if (!form.formState.isSubmitting) {
       delete data.passwordCheck;
       delete data.agreeRegulation;
-      clearErrors();
+      form.clearErrors();
       await jxios.post('/api/members', data).then(async () => {
         await jxios
           .post('/api/mail/authenticate', undefined, {
@@ -90,18 +92,18 @@ const SignupForm = () => {
     setEmailDuplicateCheck(false);
     setEmailRegexCheck(false);
     const regex = new RegExp('[a-z0-9]+@[a-z]+\\.[a-z]{2,3}');
-    if (regex.test(getValues('email'))) {
+    if (regex.test(form.getValues('email'))) {
       setEmailRegexCheck(true);
       jxios
-        .get('/api/members/email/' + getValues('email'))
+        .get('/api/members/email/' + form.getValues('email'))
         .then((response) => {
           if (response.status === 200) {
             setEmailDuplicateCheck(true);
-            clearErrors('email');
+            form.clearErrors('email');
           }
         })
         .catch(() => {
-          setError('email', {
+          form.setError('email', {
             type: 'manual',
             message: '이미 사용중인 이메일입니다.',
           });
@@ -109,7 +111,7 @@ const SignupForm = () => {
         });
     } else {
       setEmailRegexCheck(false);
-      setError('email', {
+      form.setError('email', {
         type: 'manual',
         message: '이메일 형식이 아닙니다.',
       });
@@ -120,18 +122,18 @@ const SignupForm = () => {
     setUsernameDuplicateCheck(false);
     setUsernameRegexCheck(false);
     const regex = new RegExp('^[a-zA-Z0-9]{4,12}$');
-    if (regex.test(getValues('username'))) {
+    if (regex.test(form.getValues('username'))) {
       setUsernameRegexCheck(true);
       jxios
-        .get('/api/members/username/' + getValues('username'))
+        .get('/api/members/username/' + form.getValues('username'))
         .then((response) => {
           if (response.status === 200) {
             setUsernameDuplicateCheck(true);
-            clearErrors('username');
+            form.clearErrors('username');
           }
         })
         .catch(() => {
-          setError('username', {
+          form.setError('username', {
             type: 'manual',
             message: '이미 사용중인 아이디입니다.',
           });
@@ -139,7 +141,7 @@ const SignupForm = () => {
         });
     } else {
       setUsernameRegexCheck(false);
-      setError('username', {
+      form.setError('username', {
         type: 'manual',
         message: '아이디는 영문, 숫자 4~12자리로 입력해주세요.',
       });
@@ -147,124 +149,156 @@ const SignupForm = () => {
   };
 
   return (
-    <form className='space-y-2 py-4' onSubmit={handleSubmit(onSubmit)}>
-      <Input
-        type='email'
-        label='이메일'
-        variant='flat'
-        placeholder='asdf@asdf.com'
-        errorMessage={errors.email?.message}
-        onValueChange={(value) => {
-          setValue('email', value);
-          checkEmailDuplication();
-        }}
-        isInvalid={!!errors.email}
-        {...register('email')}
+    <Form {...form}>
+      <FormField
+        control={form.control}
+        name='email'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Password</FormLabel>
+            <FormControl>
+              <Input
+                type='email'
+                placeholder='이메일 입력'
+                {...field}
+                onChange={checkEmailDuplication}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
       />
-      <Input
-        type='text'
-        label='활동명'
-        variant='flat'
-        placeholder='길동홍'
-        errorMessage={errors.name?.message}
-        isInvalid={!!errors.name}
-        {...register('name')}
+      <FormField
+        control={form.control}
+        name='name'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Password</FormLabel>
+            <FormControl>
+              <Input type='text' placeholder='활동명 입력' {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
       />
-      <Input
-        type='text'
-        label='아이디'
-        variant='flat'
-        placeholder='gil-dong-hong'
-        onValueChange={(value) => {
-          setValue('username', value);
-          checkUsernameDuplication();
-        }}
-        errorMessage={errors.username?.message}
-        isInvalid={!!errors.username}
-        {...register('username')}
+      <FormField
+        control={form.control}
+        name='username'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Password</FormLabel>
+            <FormControl>
+              <Input
+                type='text'
+                placeholder='아이디 입력'
+                {...field}
+                onChange={checkUsernameDuplication}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
       />
-      <Input
-        type='password'
-        label='비밀번호'
-        variant='flat'
-        placeholder='****'
-        errorMessage={errors.password?.message}
-        isInvalid={!!errors.password}
-        {...register('password')}
+      <FormField
+        control={form.control}
+        name='password'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Password</FormLabel>
+            <FormControl>
+              <Input type='password' placeholder='비밀번호 입력' {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
       />
-      <Input
-        type='password'
-        label='비밀번호 확인'
-        variant='flat'
-        placeholder='****'
-        errorMessage={errors.passwordCheck?.message}
-        isInvalid={!!errors.passwordCheck}
-        {...register('passwordCheck')}
+      <FormField
+        control={form.control}
+        name='passwordCheck'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Password</FormLabel>
+            <FormControl>
+              <Input type='password' placeholder='비밀번호 확인' {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
       />
-      <div className='pt-4'>
-        <div className='w-full max-w-md items-center justify-center'>
-          <Checkbox
-            required
-            defaultSelected
-            {...register('agreeRegulation')}
-            onValueChange={(isSelected) =>
-              setValue('agreeRegulation', isSelected)
-            }
-          />
-          <label className='ml-1 cursor-pointer'>
-            <span className='text-gray-500'>
-              <Link
-                className='text-secondary font-bold'
-                href='https://plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/consent/1.html'
-                target='_blank'>
-                이용 약관
-              </Link>
-              , 개인정보{' '}
-              <Link
-                className='text-secondary font-bold'
-                href='https://plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/consent/1.html'
-                target='_blank'>
-                수집과 이용
-              </Link>
-              {', '}
-              <Link
-                className='text-secondary font-bold'
-                href='https://www.plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/privacy-policy'
-                target='_blank'>
-                처리방침
-              </Link>
-              에 동의합니다.
-            </span>
-          </label>
-          <ErrorMessageInput>
-            {errors.agreeRegulation ? errors.agreeRegulation.message : ''}
-          </ErrorMessageInput>
-        </div>
-        <div className='w-full max-w-md items-center justify-center'>
-          <Checkbox
-            defaultSelected
-            {...register('agreeMarketing')}
-            onValueChange={(isSelected) =>
-              setValue('agreeMarketing', isSelected)
-            }
-          />
-          <label className='ml-1 cursor-pointer'>
-            <span className='text-gray-500'>
-              뉴스레터 등 유용한 정보 알림 메일을 받겠습니다.
-            </span>
-          </label>
-        </div>
+
+      <div className='flex flex-col items-stretch space-y-2'>
+        <FormField
+          control={form.control}
+          name='agreeRegulation'
+          render={({ field }) => (
+            <FormItem className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow'>
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className='space-y-1 leading-none'>
+                <FormLabel>이용약관 및 개인정보 처리방침 동의</FormLabel>
+                <FormDescription>
+                  <span className='text-gray-500'>
+                    <Link
+                      className='font-bold'
+                      href='https://plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/consent/1.html'
+                      target='_blank'>
+                      이용 약관
+                    </Link>
+                    , 개인정보{' '}
+                    <Link
+                      className='font-bold'
+                      href='https://plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/consent/1.html'
+                      target='_blank'>
+                      수집과 이용
+                    </Link>
+                    {', '}
+                    <Link
+                      className='font-bold'
+                      href='https://www.plip.kr/pcc/1bdbcbd7-0bde-4101-8ce2-cc4e1fc53eef/privacy-policy'
+                      target='_blank'>
+                      처리방침
+                    </Link>
+                    에 동의합니다.
+                  </span>
+                </FormDescription>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='agreeMarketing'
+          render={({ field }) => (
+            <FormItem className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow'>
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className='space-y-1 leading-none'>
+                <FormLabel>홍보성 메일 수신에 관한 동의</FormLabel>
+                <FormDescription>
+                  뉴스레터 등 유용한 정보 알림 메일을 받겠습니다.
+                </FormDescription>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       </div>
       <Button
         type='submit'
-        variant='shadow'
         color='primary'
-        fullWidth
-        disabled={isSubmitting}
-        isLoading={isSubmitting}>
+        disabled={form.formState.isSubmitting}>
         회원가입
       </Button>
-    </form>
+    </Form>
   );
 };
 

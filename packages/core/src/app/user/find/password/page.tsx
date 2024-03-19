@@ -1,12 +1,22 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Input } from '@nextui-org/react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
 import Title from '@/components/Title';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 import jxios from '@/utils/jxios';
 
@@ -15,11 +25,7 @@ const emailSchema = yup.object().shape({
 });
 
 export default function FindPassword() {
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting, errors },
-  } = useForm<{
+  const form = useForm<{
     email: string;
   }>({
     resolver: yupResolver<{ email: string }>(emailSchema),
@@ -27,7 +33,7 @@ export default function FindPassword() {
   });
 
   const onSubmit: SubmitHandler<{ email: string }> = async (data) => {
-    if (isSubmitting) return;
+    if (form.formState.isSubmitting) return;
     await jxios
       .post('/api/mail/reset-password', undefined, { params: data })
       .then((res) => {
@@ -41,33 +47,35 @@ export default function FindPassword() {
   };
 
   return (
-    <div onSubmit={handleSubmit(onSubmit)}>
+    <div onSubmit={form.handleSubmit(onSubmit)}>
       <Title
         title='비밀번호 찾기'
         description='가입하신 이메일로 비밀번호 재설정 링크를 보내드립니다.'
       />
-      <form>
-        <Input
-          label='이메일'
-          placeholder='aaa@aaa.com'
-          type='email'
-          fullWidth
-          errorMessage={errors.email?.message}
-          isInvalid={!!errors.email}
-          variant='flat'
-          className='mb-2'
-          {...register('email')}
+      <Form {...form}>
+        <FormField
+          control={form.control}
+          name='email'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input type='email' placeholder='aaa@aaa.com' {...field} />
+              </FormControl>
+              <FormDescription>
+                Email을 입력해주세요. 비밀번호 재설정 링크를 보내드립니다.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
         />
         <Button
           color='primary'
-          variant='solid'
-          fullWidth
           type='submit'
-          disabled={isSubmitting}
-          isLoading={isSubmitting}>
+          disabled={form.formState.isSubmitting}>
           비밀번호 재설정 링크 보내기
         </Button>
-      </form>
+      </Form>
     </div>
   );
 }

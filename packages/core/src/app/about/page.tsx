@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@nextui-org/react';
 import Link from 'next/link';
 import React from 'react';
 import { BiBrush, BiCalendar, BiGroup } from 'react-icons/bi';
@@ -8,6 +7,7 @@ import { GiTalk } from 'react-icons/gi';
 
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import { Button } from '@/components/ui/button';
 
 export default function Page() {
   return (
@@ -25,9 +25,7 @@ export default function Page() {
                 함께 프로젝트를 진행할 수 있는 공간을 제공합니다.
               </p>
               <Link href='/user/login' className='appearance-none'>
-                <Button color='primary' variant='flat'>
-                  커뮤니티에 참여하기
-                </Button>
+                <Button color='primary'>커뮤니티에 참여하기</Button>
               </Link>
             </div>
           </div>
