@@ -30,9 +30,11 @@ export default function MarkdownViewer({
         img: ({ node, src, ...props }) => (
           <ASNextImage
             className='w-full mb-1'
+            // @ts-ignore
             width={600}
+            // @ts-ignore
             height={600}
-            src={src}
+            src={src as string}
             {...props}
             alt=''
           />
