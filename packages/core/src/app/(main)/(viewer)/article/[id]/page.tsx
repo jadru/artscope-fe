@@ -63,6 +63,7 @@ export default async function MagazineDetail({
         </div>
         <div className='w-full px-2.5'>
           <ProfileComponent
+            borderTop
             name={article.author.authorName}
             username={article.author.authorUsername}
             picture={article.author.authorProfileImage}

@@ -21,32 +21,40 @@ export default async function ProfileDetail({
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const profile = await fetchProfile(params.id);
-  const historyArray = profile.history?.split('\n');
+  const historyArray = profile.history?.split('\n\n');
   return (
-    <>
-      <div className='container max-w-screen-md px-2.5 flex flex-col items-stretch gap-2 py-3'>
+    <div className='py-3'>
+      <div className='container max-w-screen-md px-2.5 flex flex-col items-stretch gap-2 text-[#1A1A1A]'>
         <ProfileComponent
           clickable={false}
           username={profile.username}
           name={profile.name}
           picture={profile.picture}
+          borderBottom
         />
         {profile.introduction && (
-          <div className='bg-[#DFA36D] p-6 text-xl text-white'>
+          <div className='border-[#DFA36D] p-6 text-xl border-b-4'>
             {standardLabel(profile.introduction)}
           </div>
         )}
         {historyArray && (
-          <div className='py-4 text-xl text-[#1A1A1A]'>
+          <div className='text-xl py-4'>
             {historyArray.map((history, index) => (
-              <p key={index} className='border-b-2 border-[#1A1A1A] mb-3'>
-                {standardLabel(history)}
-              </p>
+              <>
+                {history.split('\n').map((line, index) => (
+                  <p key={index} className='px-6 py-1'>
+                    {standardLabel(line)}
+                  </p>
+                ))}
+                <div
+                  key={index + 'border'}
+                  className='h-1 w-full bg-[#DFA36D] my-1'></div>
+              </>
             ))}
           </div>
         )}
-        <MembersArticleList username={profile.username} />
       </div>
-    </>
+      <MembersArticleList username={profile.username} />
+    </div>
   );
 }

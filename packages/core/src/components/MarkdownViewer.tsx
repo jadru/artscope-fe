@@ -26,7 +26,7 @@ export default function MarkdownViewer({
       className={'markdown-viewer break-all space-y-2 ' + className}
       components={{
         img: ({ node, ...props }) => (
-          <img className='w-full' {...props} alt='' />
+          <img className='w-full mb-1' {...props} alt='' />
         ),
         p: ({ node, ...props }) => (
           <p className='pt-1.5 font-normal' {...props} />
