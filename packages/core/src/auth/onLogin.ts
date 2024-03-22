@@ -17,9 +17,8 @@ export const onLogin = async (
   // eslint-disable-next-line no-unused-vars
   setUser: (user: profileApiResponseType | undefined) => void
 ) => {
-  jxios.defaults.headers.common[
-    'Authorization'
-  ] = `Bearer ${tokenData.accessToken}`;
+  jxios.defaults.headers.common['Authorization'] =
+    `Bearer ${tokenData.accessToken}`;
   setAccessToken(tokenData.accessToken, tokenData.expiresIn);
   setRefreshToken(tokenData.refreshToken, tokenData.refreshExpiresIn);
   await onGetProfile(router, setUser);
