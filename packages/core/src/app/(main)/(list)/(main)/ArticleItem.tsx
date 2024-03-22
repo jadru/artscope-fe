@@ -40,7 +40,7 @@ export default function ArticleItem({
         </h2>
         <Link
           href={'/profile/' + article.author.authorUsername}
-          className={`hover:bg-default-100 w-full pt-1 flex appearance-none items-center justify-end transition ${
+          className={`hover:bg-default-100 w-full pt-1 flex appearance-none font-normal items-center justify-end transition ${
             light ? 'text-white' : 'text-black'
           }`}>
           <StandardLabel label={article.author.authorName} />
