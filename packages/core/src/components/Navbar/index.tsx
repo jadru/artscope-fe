@@ -46,8 +46,8 @@ export default function Navbar({ light = true }: { light?: boolean }) {
           logoVisible ? 'opacity-100 cursor-pointer' : 'opacity-0'
         }`}>
         <span
-          className={`font-logo hover:text-blue-500 text-4xl lg:text-5xl -tracking-[.05em] overflow-hidden ${
-            light ? 'text-white' : 'text-black'
+          className={`font-logo hover:text-[#b9cdd1] text-4xl lg:text-5xl -tracking-[.05em] overflow-hidden ${
+            light ? 'text-gray-300/70' : 'text-gray-700/70'
           } transition duration-200`}
           onClick={() => {
             logoVisible && router.push('/');
@@ -55,39 +55,39 @@ export default function Navbar({ light = true }: { light?: boolean }) {
           ARTSCOPE
         </span>
         <button
-          className={`hover:text-blue-500 overflow-hidden transition duration-200 ${
-            light ? 'text-white' : 'text-black'
+          className={`overflow-hidden transition duration-200 hover:text-[#b9cdd1] ${
+            light ? 'text-gray-300/70' : 'text-gray-700/70'
           }`}
           onClick={() => setMenuVisible(true)}>
           <BiMenu size={48} />
         </button>
       </div>
       {menuVisible && (
-        <div className='fixed right-0 top-0 h-screen w-full lg:w-1/2 bg-white text-black p-8 flex flex-col animate-fade-in'>
+        <div className='fixed right-0 top-0 h-screen w-full lg:w-1/2 bg-[#F2EBD7] text-black p-8 flex flex-col animate-fade-in'>
           <button
-            className='hover:text-blue-500 overflow-hidden transition duration-200 text-black absolute top-8 right-6'
+            className='hover:text-[#b9cdd1] overflow-hidden transition duration-200 text-black absolute top-8 right-6'
             onClick={() => setMenuVisible(false)}>
             <BiX size={48} />
           </button>
           <Link
             href='/editor'
-            className='text-4xl hover:text-blue-600 transition duration-100'>
+            className='text-4xl hover:text-[#b9cdd1] transition duration-100'>
             EDITOR
           </Link>
           <Link
             href='/about'
-            className='text-4xl hover:text-blue-600 transition duration-100'>
+            className='text-4xl hover:text-[#b9cdd1] transition duration-100'>
             ABOUT
           </Link>
           {user ? (
             <>
               <Link
                 href='/user/signout'
-                className='text-4xl hover:text-blue-600 transition duration-100'>
+                className='text-4xl hover:text-[#b9cdd1] transition duration-100'>
                 LOGOUT
               </Link>
               <Link href={`/profile/${user.username}`}>
-                <div className='text-4xl hover:text-blue-600 transition duration-100'>
+                <div className='text-4xl hover:text-[#b9cdd1] transition duration-100'>
                   PROFILE
                 </div>
               </Link>
@@ -96,7 +96,7 @@ export default function Navbar({ light = true }: { light?: boolean }) {
             <>
               <Link
                 href='/user/login'
-                className='text-4xl hover:text-blue-600 transition duration-100'>
+                className='text-4xl hover:text-[#b9cdd1] transition duration-100'>
                 LOGIN
               </Link>
             </>

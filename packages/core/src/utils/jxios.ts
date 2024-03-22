@@ -30,9 +30,8 @@ export const getRefreshToken = async () => {
     })
     .then((res) => {
       const tokenData: loginResponseType = res.data;
-      Jxios.defaults.headers.common[
-        'Authorization'
-      ] = `Bearer ${tokenData.accessToken}`;
+      Jxios.defaults.headers.common['Authorization'] =
+        `Bearer ${tokenData.accessToken}`;
       setAccessToken(tokenData.accessToken, tokenData.expiresIn);
       setRefreshToken(tokenData.refreshToken, tokenData.refreshExpiresIn);
     })

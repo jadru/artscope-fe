@@ -1,3 +1,4 @@
+import { Metadata, ResolvingMetadata } from 'next';
 import React from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
@@ -8,6 +9,7 @@ import { standardLabel } from '@/components/StandardLabel';
 import ArticleViewerActions from '@/app/(main)/(viewer)/article/[id]/ArticleViewerActions';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
+import { removeMarkdown } from '@/utils/stringConverter';
 
 import { articleItemType } from '@/types/article';
 
@@ -17,14 +19,45 @@ const fetchArticle = async (id: string) => {
     .then((res) => res.data as articleItemType);
 };
 
-export default async function MagazineDetail({
-  params,
-  searchParams,
-}: {
+type Props = {
   params: { id: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
-  const article = await fetchArticle(params.id);
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const id = params.id;
+
+  if (!id) throw new Error('id is required');
+
+  const article = await fetchArticle(id);
+
+  // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    title: `${standardLabel(article.title)} - ${standardLabel(
+      article.author.authorName
+    )}`,
+    description: standardLabel(removeMarkdown(article.content).slice(0, 40)),
+    openGraph: {
+      images: [article.mediaUrls[0], ...previousImages],
+      title: `${standardLabel(article.title)} - ${standardLabel(
+        article.author.authorName
+      )}`,
+      description: standardLabel(removeMarkdown(article.content).slice(0, 40)),
+      siteName: 'Artscope',
+    },
+  };
+}
+
+export default async function MagazineDetail({ params }: Props) {
+  const id = params.id;
+  if (!id) throw new Error('id is required');
+  const article = await fetchArticle(id);
+
   return (
     <div>
       <div className='h-96 max-h-screen overflow-hidden relative'>
@@ -63,6 +96,7 @@ export default async function MagazineDetail({
         </div>
         <div className='w-full px-2.5'>
           <ProfileComponent
+            borderTop
             name={article.author.authorName}
             username={article.author.authorUsername}
             picture={article.author.authorProfileImage}

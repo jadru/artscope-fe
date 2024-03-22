@@ -80,7 +80,6 @@ module.exports = {
         'fade-in': 'fadeOut 200ms ease-in-out',
       },
       fontFamily: {
-        primary: ['var(--ibm-plex-sans-kr)'],
         sans: ['var(--ibm-plex-sans-kr)'],
         logo: ['var(--source-code-pro)'],
       },
