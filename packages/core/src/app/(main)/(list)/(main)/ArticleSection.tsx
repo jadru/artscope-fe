@@ -24,7 +24,7 @@ export default function ArticleSection({
       </div>
       <div
         className={`w-full md:w-1/2 self-stretch p-1 lg:py-8 lg:p-3 ${
-          index % 2 === 1 ? 'bg-main-3' : ''
+          index % 2 === 1 ? 'bg-[#B9CDD1]' : ''
         }`}>
         <ResponsiveMasonry
           columnsCountBreakPoints={{
