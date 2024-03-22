@@ -34,14 +34,14 @@ export default function ArticleItem({
       <div className='pt-4 px-4'>
         <h2
           className={`text-2xl line-clamp-2 group-hover:underline underline-offset-3 font-bold break-keep ${
-            light ? 'text-white' : 'text-black'
+            light ? 'text-white' : 'text-[1A1A1A]'
           }`}>
           {standardLabel(article.title)}
         </h2>
         <Link
           href={'/profile/' + article.author.authorUsername}
-          className={`hover:bg-default-100 w-full pt-1 flex appearance-none items-center justify-end transition ${
-            light ? 'text-white' : 'text-black'
+          className={`hover:bg-default-100 w-full pt-1 flex appearance-none font-normal items-center justify-end transition ${
+            light ? 'text-white' : 'text-[1A1A1A]'
           }`}>
           <StandardLabel label={article.author.authorName} />
         </Link>
