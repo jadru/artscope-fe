@@ -10,17 +10,25 @@ export default function ProfileComponent({
   username,
   picture,
   clickable = true,
+  borderTop = false,
+  borderBottom = false,
 }: {
   username: string;
   name: string;
   picture?: string;
   clickable?: boolean;
+  borderTop?: boolean;
+  borderBottom?: boolean;
 }) {
   return (
     <Link
       className={clickable ? 'cursor-pointer' : 'cursor-default'}
       href={`${clickable ? '/profile/' + username : '#'}`}>
-      <div className='flex flex-row bg-[#ACB884] items-center text-white w-full justify-between gap-2 p-6 transition'>
+      <div
+        className={`
+          flex flex-row items-center w-full justify-between gap-2 p-6 transition  ${
+            borderTop ? 'border-t-4 border-[#ACB884]' : ''
+          } ${borderBottom ? 'border-b-4 border-[#DFA36D]' : ''}`}>
         <div
           className={`ml-0.5 flex flex-col transition ${
             clickable ? 'hover:underline' : ''
