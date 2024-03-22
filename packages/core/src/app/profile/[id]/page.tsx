@@ -1,3 +1,5 @@
+import { Metadata, ResolvingMetadata } from 'next';
+
 import ProfileComponent from '@/components/Profile';
 import { standardLabel } from '@/components/StandardLabel';
 
@@ -13,13 +15,36 @@ const fetchProfile = async (id: string) => {
     .then((res) => res.data as profileApiType);
 };
 
-export default async function ProfileDetail({
-  params,
-  searchParams,
-}: {
+type Props = {
   params: { id: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const id = params.id;
+
+  if (!id) throw new Error('id is required');
+
+  const profile = await fetchProfile(id);
+
+  const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    title: `${standardLabel(profile.name)} 작가 - Artscope`,
+    description: standardLabel(profile.introduction).slice(0, 40),
+    openGraph: {
+      images: [profile.picture, ...previousImages],
+      title: `${standardLabel(profile.name)} 작가 - Artscope`,
+      description: standardLabel(profile.introduction).slice(0, 40),
+      siteName: 'Artscope',
+    },
+  };
+}
+
+export default async function ProfileDetail({ params }: Props) {
   const profile = await fetchProfile(params.id);
   const historyArray = profile.history?.split('\n\n');
   return (
