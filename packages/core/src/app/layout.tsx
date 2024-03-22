@@ -1,6 +1,7 @@
 import GoogleTagManager from '@magicul/next-google-tag-manager';
 import { Metadata, Viewport } from 'next';
-import { IBM_Plex_Sans_KR, Source_Code_Pro } from 'next/font/google';
+import { Source_Code_Pro } from 'next/font/google';
+import localFont from 'next/font/local';
 import Script from 'next/script';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -16,7 +17,6 @@ import {
   GOOGLE_TAG_MANAGER_ID,
   NEXT_PUBLIC_ROOT_URL,
 } from '@/constant/env';
-import localFont from 'next/font/local';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
