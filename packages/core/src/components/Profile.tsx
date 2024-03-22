@@ -26,8 +26,10 @@ export default function ProfileComponent({
       href={`${clickable ? '/profile/' + username : '#'}`}>
       <div
         className={`
-          flex flex-row items-center w-full justify-between gap-2 p-6 transition  ${
-            borderTop ? 'border-t-4 border-[#ACB884]' : ''
+          flex flex-row items-center w-full justify-between transition-colors gap-2 p-6  ${
+            borderTop
+              ? 'border-t-4 border-[#ACB884] hover:border-[#DFA36D]'
+              : ''
           } ${borderBottom ? 'border-b-4 border-[#DFA36D]' : ''}`}>
         <div
           className={`ml-0.5 flex flex-col transition ${
