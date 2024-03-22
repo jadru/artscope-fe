@@ -24,19 +24,20 @@ export default async function ProfileDetail({
   const historyArray = profile.history?.split('\n\n');
   return (
     <div className='py-3'>
-      <div className='container max-w-screen-md px-2.5 flex flex-col items-stretch gap-2 text-[#1A1A1A]'>
+      <div className='container max-w-screen-md px-2.5 flex flex-col items-stretch gap-1 text-[#1A1A1A]'>
         <ProfileComponent
           clickable={false}
           username={profile.username}
           name={profile.name}
           picture={profile.picture}
-          borderBottom
         />
+        <hr className='bg-[#DFA36D] h-1.5 rounded-sm' />
         {profile.introduction && (
-          <div className='border-[#DFA36D] p-6 text-xl border-b-4'>
+          <div className='p-6 text-xl'>
             {standardLabel(profile.introduction)}
           </div>
         )}
+        <hr className='bg-[#DFA36D] h-1.5 rounded-sm' />
         {historyArray && (
           <div className='text-xl py-4'>
             {historyArray.map((history, index) => (
@@ -46,9 +47,7 @@ export default async function ProfileDetail({
                     {standardLabel(line)}
                   </p>
                 ))}
-                <div
-                  key={index + 'border'}
-                  className='h-1 w-full bg-[#DFA36D] my-1'></div>
+                <hr className='bg-[#DFA36D] h-1.5 rounded-sm my-3' />
               </>
             ))}
           </div>

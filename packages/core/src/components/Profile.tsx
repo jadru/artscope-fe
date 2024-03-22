@@ -26,7 +26,7 @@ export default function ProfileComponent({
       href={`${clickable ? '/profile/' + username : '#'}`}>
       <div
         className={`
-          flex flex-row items-center w-full justify-between transition-colors gap-2 p-6  ${
+          flex flex-row items-center w-full justify-between transition-colors gap-2 p-6 text-[#1A1A1A] ${
             borderTop
               ? 'border-t-4 border-[#ACB884] hover:border-[#DFA36D]'
               : ''
@@ -43,9 +43,9 @@ export default function ProfileComponent({
         <ASNextImage
           src={picture ?? 'prod/images/default.jpg'}
           alt='프로필 사진'
-          width={40}
-          height={40}
-          className='h-10 w-10 rounded-full object-cover'
+          width={64}
+          height={64}
+          className='h-16 w-16 rounded-full object-cover'
         />
       </div>
     </Link>

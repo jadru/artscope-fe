@@ -92,10 +92,10 @@ export default function Feeds() {
             index={index}
           />
         ))}
-      <Link href='/articles'>
-        <div className='flex items-center justify-center w-full h-32 text-black hover:underline underline-offset-4 decoration-[10px] decoration-amber-300'>
-          <p className='text-5xl'>READ MORE</p>
-        </div>
+      <Link
+        href='/articles'
+        className='text-center block text-5xl py-8 w-full font-bold text-[#1A1A1A] hover:underline underline-offset-4 decoration-[10px] decoration-[#FFD07B]'>
+        READ MORE
       </Link>
     </>
   );

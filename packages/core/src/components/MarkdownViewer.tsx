@@ -10,6 +10,8 @@ import strip from 'strip-markdown';
 
 import '@/styles/markdown.scss';
 
+import ASNextImage from '@/components/ASNextImage';
+
 export default function MarkdownViewer({
   children,
   className,
@@ -25,8 +27,15 @@ export default function MarkdownViewer({
     <ReactMarkdown
       className={'markdown-viewer break-all space-y-2 ' + className}
       components={{
-        img: ({ node, ...props }) => (
-          <img className='w-full mb-1' {...props} alt='' />
+        img: ({ node, src, ...props }) => (
+          <ASNextImage
+            className='w-full mb-1'
+            width={600}
+            height={600}
+            src={src}
+            {...props}
+            alt=''
+          />
         ),
         p: ({ node, ...props }) => (
           <p className='pt-1.5 font-normal' {...props} />
