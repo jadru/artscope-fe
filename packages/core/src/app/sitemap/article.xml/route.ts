@@ -23,7 +23,7 @@ export async function GET(_request: Request) {
 
   return getServerSideSitemap(
     data.magazines.map((magazines) => ({
-      loc: `${NEXT_PUBLIC_ROOT_URL}/post/${magazines.id}`,
+      loc: `${NEXT_PUBLIC_ROOT_URL}/article/${magazines.id}`,
       changefreq: 'daily',
       priority: 0.9,
       lastmod: format(
