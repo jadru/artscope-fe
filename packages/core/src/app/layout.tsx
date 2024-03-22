@@ -16,11 +16,12 @@ import {
   GOOGLE_TAG_MANAGER_ID,
   NEXT_PUBLIC_ROOT_URL,
 } from '@/constant/env';
+import localFont from 'next/font/local';
 
-const ibm_flex_Sans_KR = IBM_Plex_Sans_KR({
-  weight: ['200', '400', '700'],
-  variable: '--ibm-plex-sans-kr',
-  preload: false,
+const pretendard = localFont({
+  src: './fonts/PretendardVariable.woff2',
+  display: 'swap',
+  weight: '45 920',
 });
 
 const source_Code_PRO = Source_Code_Pro({
@@ -118,7 +119,7 @@ export default function RootLayout({
     <html lang='ko' className='light'>
       <body
         className={clsxm(
-          ibm_flex_Sans_KR.className,
+          pretendard.className,
           source_Code_PRO.className,
           'p-0 m-0 min-h-screen'
         )}>
