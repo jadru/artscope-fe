@@ -30,7 +30,7 @@ export default function ArticleFullWidthItem({
             <h2 className='text-4xl font-bold text-white break-keep pt-4'>
               {standardLabel(article.title)}
             </h2>
-            <h3 className='text-xl text-white break-keep'>
+            <h3 className='text-xl text-white font-normal break-keep'>
               {standardLabel(article.author.authorName)}
             </h3>
           </div>

@@ -24,7 +24,7 @@ export default function ArticleSection({
       </div>
       <div
         className={`w-full md:w-1/2 self-stretch p-1 lg:py-8 lg:p-3 ${
-          index % 2 === 1 ? 'bg-main-3' : 'bg-main-1'
+          index % 2 === 1 ? 'bg-main-3' : ''
         }`}>
         <ResponsiveMasonry
           columnsCountBreakPoints={{
@@ -33,7 +33,11 @@ export default function ArticleSection({
           }}>
           <Masonry>
             {articleList.slice(1).map((page) => (
-              <ArticleItem key={page.id} article={page} light />
+              <ArticleItem
+                key={page.id}
+                article={page}
+                light={index % 2 === 1}
+              />
             ))}
           </Masonry>
         </ResponsiveMasonry>
