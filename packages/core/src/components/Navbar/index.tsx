@@ -50,7 +50,10 @@ export default function Navbar({ light = true }: { light?: boolean }) {
             light ? 'text-gray-300/70' : 'text-gray-700/70'
           } transition duration-200`}
           onClick={() => {
-            logoVisible && router.push('/');
+            if (logoVisible) {
+              router.push('/');
+              setMenuVisible(false);
+            }
           }}>
           ARTSCOPE
         </span>
@@ -70,11 +73,13 @@ export default function Navbar({ light = true }: { light?: boolean }) {
             <BiX size={48} />
           </button>
           <Link
+            onClick={() => setMenuVisible(false)}
             href='/editor'
             className='text-4xl hover:text-[#b9cdd1] transition duration-100'>
             EDITOR
           </Link>
           <Link
+            onClick={() => setMenuVisible(false)}
             href='/about'
             className='text-4xl hover:text-[#b9cdd1] transition duration-100'>
             ABOUT
@@ -82,11 +87,14 @@ export default function Navbar({ light = true }: { light?: boolean }) {
           {user ? (
             <>
               <Link
+                onClick={() => setMenuVisible(false)}
                 href='/user/signout'
                 className='text-4xl hover:text-[#b9cdd1] transition duration-100'>
                 LOGOUT
               </Link>
-              <Link href={`/profile/${user.username}`}>
+              <Link
+                href={`/profile/${user.username}`}
+                onClick={() => setMenuVisible(false)}>
                 <div className='text-4xl hover:text-[#b9cdd1] transition duration-100'>
                   PROFILE
                 </div>
@@ -95,6 +103,7 @@ export default function Navbar({ light = true }: { light?: boolean }) {
           ) : (
             <>
               <Link
+                onClick={() => setMenuVisible(false)}
                 href='/user/login'
                 className='text-4xl hover:text-[#b9cdd1] transition duration-100'>
                 LOGIN
