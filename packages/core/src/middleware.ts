@@ -1,6 +1,8 @@
 import { jwtDecode } from 'jwt-decode';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
+
 import { roleType } from '@/types/auth';
 
 const verifyUserRole = async (role: roleType, accessToken?: string) => {
@@ -24,7 +26,9 @@ export async function middleware(request: NextRequest) {
   const accessToken = cookies.get('access-token');
 
   const redirectUrl = new URL(
-    `/user/login?redirect=${encodeURIComponent(request.url)}`,
+    `/user/login?redirect=${encodeURIComponent(
+      request.url.replace('http://localhost:3000', NEXT_PUBLIC_ROOT_URL || '')
+    )}`,
     request.nextUrl.origin
   );
 
