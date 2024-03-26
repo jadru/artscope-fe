@@ -29,7 +29,7 @@ export async function middleware(request: NextRequest) {
     `/user/login?redirect=${encodeURIComponent(
       request.url
         .toString()
-        .replace('http://localhost:3000', NEXT_PUBLIC_ROOT_URL || '')
+        .replace(/(http|https):\/\/localhost:3000/g, NEXT_PUBLIC_ROOT_URL || '')
     )}`,
     request.nextUrl.origin
   );
