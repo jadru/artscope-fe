@@ -71,7 +71,7 @@ export default async function MagazineDetail({ params }: Props) {
             height={400}
           />
         ) : (
-          <div className='w-full h-full bg-blue-500 transition duration-300' />
+          <div className='w-full h-full bg-[#ACB884] transition duration-300' />
         )}
         <div className='absolute left-0 top-0 w-full h-full bg-black/30 flex justify-center items-center'>
           <div className='max-w-screen-md mx-auto py-12 w-full px-2'>
