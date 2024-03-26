@@ -27,7 +27,9 @@ export async function middleware(request: NextRequest) {
 
   const redirectUrl = new URL(
     `/user/login?redirect=${encodeURIComponent(
-      request.url.replace('http://localhost:3000', NEXT_PUBLIC_ROOT_URL || '')
+      request.url
+        .toString()
+        .replace('http://localhost:3000', NEXT_PUBLIC_ROOT_URL || '')
     )}`,
     request.nextUrl.origin
   );
