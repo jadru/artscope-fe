@@ -56,23 +56,23 @@ export default async function ProfileDetail({ params }: Props) {
           name={profile.name}
           picture={profile.picture}
         />
-        <hr className='bg-[#DFA36D] h-1.5 rounded-sm' />
+        <hr className='bg-[#ACB884] h-1.5 rounded-sm' />
         {profile.introduction && (
           <div className='p-6 text-xl'>
             {standardLabel(profile.introduction)}
           </div>
         )}
-        <hr className='bg-[#DFA36D] h-1.5 rounded-sm' />
+        {historyArray && <hr className='bg-[#ACB884] h-1.5 rounded-sm' />}
         {historyArray && (
           <div className='text-xl py-4'>
-            {historyArray.map((history, index) => (
+            {historyArray.map((history) => (
               <>
                 {history.split('\n').map((line, index) => (
                   <p key={index} className='px-6 py-1'>
                     {standardLabel(line)}
                   </p>
                 ))}
-                <hr className='bg-[#DFA36D] h-1.5 rounded-sm my-3' />
+                <hr className='bg-[#ACB884] h-1.5 rounded-sm my-3' />
               </>
             ))}
           </div>

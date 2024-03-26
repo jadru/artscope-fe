@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 
 export default function Page() {
   return (
-    <div className='flex flex-col min-h-[100vh]'>
+    <div className='flex flex-col min-h-[100vh] pt-14'>
       <Navbar light={false} />
       <main className='flex-1'>
         <section className='w-full py-12 md:py-24 lg:py-32 container mx-auto max-w-screen-xl'>

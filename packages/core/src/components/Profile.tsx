@@ -24,13 +24,13 @@ export default function ProfileComponent({
     <Link
       className={clickable ? 'cursor-pointer' : 'cursor-default'}
       href={`${clickable ? '/profile/' + username : '#'}`}>
+      {borderTop && <hr className='bg-[#ACB884] h-1.5 rounded-sm' />}
       <div
         className={`
-          flex flex-row items-center w-full justify-between transition-colors gap-2 p-6 text-[#1A1A1A] ${
-            borderTop
-              ? 'border-t-4 border-[#ACB884] hover:border-[#DFA36D]'
-              : ''
-          } ${borderBottom ? 'border-b-4 border-[#DFA36D]' : ''}`}>
+          flex flex-row items-center w-full justify-between transition-colors gap-2 p-6 text-[#1A1A1A]
+        } ${
+          clickable ? 'hover:bg-gray-100 transition-colors rounded-sm' : ''
+        }`}>
         <div
           className={`ml-0.5 flex flex-col transition ${
             clickable ? 'hover:underline' : ''
@@ -48,6 +48,7 @@ export default function ProfileComponent({
           className='h-16 w-16 rounded-full object-cover'
         />
       </div>
+      {borderBottom && <hr className='bg-[#ACB884] h-1.5 rounded-sm' />}
     </Link>
   );
 }
