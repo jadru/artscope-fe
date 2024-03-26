@@ -8,7 +8,6 @@ const config = {
     dirs: ['src'],
   },
   experimental: {
-    scrollRestoration: true,
     webpackBuildWorker: true,
     optimizePackageImports: ['react-markdown'],
     externalDir: true,
