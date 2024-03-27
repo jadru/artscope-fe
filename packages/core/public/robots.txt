@@ -2,7 +2,7 @@
 User-agent: *
 Allow: /
 Disallow: /404
-Disallow: /new/**
+Disallow: /editor/**
 Disallow: /user/**
 Disallow: /_next/**
 Disallow: /new/**
@@ -12,9 +12,5 @@ Host: https://dev.artscope.kr
 
 # Sitemaps
 Sitemap: https://dev.artscope.kr/sitemap.xml
-Sitemap: https://dev.artscope.kr/sitemap/artwork.xml
-Sitemap: https://dev.artscope.kr/sitemap/post.xml
-Sitemap: https://dev.artscope.kr/sitemap/event.xml
-Sitemap: https://dev.artscope.kr/sitemap/agora.xml
+Sitemap: https://dev.artscope.kr/sitemap/article.xml
 Sitemap: https://dev.artscope.kr/sitemap/user.xml
-Sitemap: https://dev.artscope.kr/sitemap/space.xml
