@@ -32,7 +32,7 @@ export default function LoginForm({ redirect }: { redirect: string | null }) {
       const tokenData: loginResponseType = res.data;
       if (res.status === 200 && tokenData.accessToken) {
         if (redirect) {
-          router.push(redirect);
+          router.replace(decodeURIComponent(redirect));
           return;
         }
         await onLogin(tokenData, router, setUser);
