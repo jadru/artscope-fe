@@ -14,25 +14,21 @@ module.exports = {
   priority: 1,
   robotsTxtOptions: {
     additionalSitemaps: [
-      `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/artwork.xml`,
-      `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/post.xml`,
-      `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/event.xml`,
-      `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/agora.xml`,
+      `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/article.xml`,
       `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/user.xml`,
-      `${process.env.NEXT_PUBLIC_ROOT_URL}/sitemap/space.xml`,
     ],
     policies: [
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/404', '/new/**', '/user/**', '/_next/**', '/new/**'],
+        disallow: ['/404', '/editor/**', '/user/**', '/_next/**', '/new/**'],
       },
     ],
   },
   exclude: [
     'https://dev.artscope.kr/**',
     '/404',
-    '/new/**',
+    '/editor/**',
     '/user/**',
     '/_next/**',
     '/new/**',
