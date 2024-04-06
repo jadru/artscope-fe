@@ -8,7 +8,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
@@ -16,12 +15,12 @@ import { Textarea } from '@/components/ui/textarea';
 import commentSchema, {
   CommentInputs,
 } from '@/app/(main)/(viewer)/article/[id]/commentSchema';
+import jxios from '@/utils/jxios';
 
 type Props = {
   onSubmit: (data: CommentInputs) => void;
   authorName?: string;
   authorProfileUrl?: string;
-  disabled?: boolean;
   id: number;
 };
 
@@ -32,40 +31,45 @@ export default function CommentForm(props: Props) {
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(props.onSubmit)}
-        className='w-2/3 space-y-6'>
+        onSubmit={form.handleSubmit((data) => {
+          jxios.post(`/api/magazines/${data.id}/comments`, {
+            comment: data.comment,
+          });
+        })}
+        className='flex w-full gap-2 items-center'>
         <FormField
           control={form.control}
           name='comment'
           render={({ field }) => (
-            <FormItem className='flex w-full'>
-              <FormLabel>
+            <FormItem className='flex w-full gap-2 p-2 h-full'>
+              <div className='flex flex-col items-center gap-1'>
                 <ASNextImage
                   src={props.authorProfileUrl ?? 'prod/images/default.jpg'}
                   alt='프로필 사진'
                   width={64}
                   height={64}
-                  className='h-16 w-16 rounded-full object-cover mr-2'
+                  className='h-10 w-10 rounded-full border object-cover mr-2'
                 />
                 {props.authorName}
-              </FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder='댓글을 남겨보세요...'
-                  className='resize-none'
-                  disabled={props.disabled}
-                  {...field}
-                />
-              </FormControl>
-              {/* <FormDescription> */}
-              {/*   You can <span>@mention</span> other users and organizations. */}
-              {/* </FormDescription> */}
-              <FormMessage />
+              </div>
+              <div className='w-full self-stretch'>
+                <FormControl>
+                  <Textarea
+                    placeholder='댓글을 남겨보세요...'
+                    className='resize-none  h-12'
+                    {...field}
+                  />
+                </FormControl>
+                {/* <FormDescription> */}
+                {/*   You can <span>@mention</span> other users and organizations. */}
+                {/* </FormDescription> */}
+                <FormMessage />
+              </div>
             </FormItem>
           )}
         />
-        <input type='hidden' name='id' value={props.id} />
-        <Button type='submit' disabled={props.disabled}>
+        <input type='number' className='hidden' name='id' value={props.id} />
+        <Button type='submit' className='justify-stretch h-10'>
           작성
         </Button>
       </form>

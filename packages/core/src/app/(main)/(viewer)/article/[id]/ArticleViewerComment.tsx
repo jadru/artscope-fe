@@ -8,8 +8,9 @@ import jxios from '@/utils/jxios';
 
 export default function ArticleViewerComment(props: { id: number }) {
   const { user, isLogin } = useUser();
-  const onSubmit = (data: CommentInputs) =>
-    jxios.post(`/api/magazines/${data.id}/comments`, data);
+
+  const onSubmit = async (data: CommentInputs) =>
+    await jxios.post(`/api/magazines/${data.id}/comments`, data);
 
   return (
     <div className='flex flex-col gap-4 items-start justify-end p-6'>
@@ -19,7 +20,6 @@ export default function ArticleViewerComment(props: { id: number }) {
         id={props.id}
         authorName={user?.name}
         authorProfileUrl={user?.picture}
-        disabled={!isLogin}
       />
       <ParentComment />
     </div>
