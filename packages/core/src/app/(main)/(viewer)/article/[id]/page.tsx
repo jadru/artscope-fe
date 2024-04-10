@@ -106,7 +106,10 @@ export default async function MagazineDetail({ params }: Props) {
           />
         </div>
         <div className='w-full px-2.5'>
-          <ArticleViewerComment id={article.id} />
+          <ArticleViewerComment
+            id={article.id}
+            comments={article.magazineComments}
+          />
         </div>
       </div>
     </div>

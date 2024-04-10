@@ -104,6 +104,7 @@ __metadata:
     class-variance-authority: "npm:^0.7.0"
     clsx: "npm:^2.1.0"
     date-fns: "npm:^3.3.1"
+    date-fns-tz: "npm:^3.0.0"
     env-cmd: "npm:^10.1.0"
     eslint: "npm:^8.56.0"
     eslint-config-next: "npm:^14.1.0"
@@ -7714,6 +7715,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns-tz@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "date-fns-tz@npm:3.0.0"
+  dependencies:
+    lodash.clonedeep: "npm:^4.5.0"
+  peerDependencies:
+    date-fns: ^3.0.0
+  checksum: 10c0/11389df22d1084d6fdcfadc7357b991707233eabe51250237dbded51089200e88d953379ef8e1dfc611ff7a2e879a84d59a94252b4cf04ec4c75a6215267b4f1
+  languageName: node
+  linkType: hard
+
 "date-fns@npm:^2.25.0":
   version: 2.30.0
   resolution: "date-fns@npm:2.30.0"
@@ -11077,6 +11089,13 @@ __metadata:
   dependencies:
     p-locate: "npm:^5.0.0"
   checksum: 10c0/d3972ab70dfe58ce620e64265f90162d247e87159b6126b01314dd67be43d50e96a50b517bce2d9452a79409c7614054c277b5232377de50416564a77ac7aad3
+  languageName: node
+  linkType: hard
+
+"lodash.clonedeep@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "lodash.clonedeep@npm:4.5.0"
+  checksum: 10c0/2caf0e4808f319d761d2939ee0642fa6867a4bbf2cfce43276698828380756b99d4c4fa226d881655e6ac298dd453fe12a5ec8ba49861777759494c534936985
   languageName: node
   linkType: hard
 
