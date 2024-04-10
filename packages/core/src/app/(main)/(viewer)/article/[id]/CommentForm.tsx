@@ -31,7 +31,9 @@ export default function CommentForm(props: Props) {
       <form
         onSubmit={form.handleSubmit((data) => {
           props.onSubmit(data);
-          form.reset();
+          form.reset({
+            comment: '',
+          });
         })}
         className='flex flex-col items-left w-full gap-2'>
         <p className='px-0.5'>{props.authorName}</p>
@@ -46,7 +48,6 @@ export default function CommentForm(props: Props) {
                     <Textarea
                       placeholder='댓글을 남겨보세요...'
                       className='resize-none h-12'
-                      defaultValue=''
                       {...field}
                     />
                   </FormControl>

@@ -44,6 +44,6 @@ export type profileApiResponseType = {
   companyRole?: string;
   username: string;
   websiteUrl?: string;
-  allowEmailReceive?: Date;
-  allowEmailDateTime: boolean;
+  allowEmailReceive?: boolean;
+  allowEmailDateTime: Date;
 };
