@@ -66,7 +66,7 @@ export default function Navbar({ light = true }: { light?: boolean }) {
         </button>
       </div>
       {menuVisible && (
-        <div className='fixed right-0 top-0 h-screen w-full lg:w-1/2 bg-[#F2EBD7] text-black p-8 flex flex-col animate-fade-in'>
+        <div className='fixed right-0 top-0 h-screen w-full lg:w-1/2 bg-[#F2EBD7] text-black p-8 flex flex-col z-50'>
           <button
             className='hover:text-[#b9cdd1] overflow-hidden transition duration-200 text-black absolute top-8 right-6'
             onClick={() => setMenuVisible(false)}>
