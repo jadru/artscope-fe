@@ -26,6 +26,7 @@ export default function ArticleViewerComment(props: Props) {
     jxios.post(`/api/magazines/${props.id}/comments`, data).then((res) => {
       if (res.status === 201) {
         router.refresh();
+        setNewReply(0);
       }
     });
 
@@ -38,6 +39,7 @@ export default function ArticleViewerComment(props: Props) {
       .then((res) => {
         if (res.status === 201) {
           router.refresh();
+          setNewReply(0);
         }
       });
 
@@ -45,11 +47,11 @@ export default function ArticleViewerComment(props: Props) {
     <div className='flex flex-col gap-4 items-start justify-end p-6'>
       <p className='text-2xl'>댓글</p>
       <div className='gap-2.5 flex flex-col w-full'>
-        {isLogin ? (
+        {user ? (
           <CommentForm
             onSubmit={onNewCommentSubmit}
-            authorName={user?.name}
-            authorProfileUrl={user?.picture}
+            authorName={user.name}
+            authorProfileUrl={user.picture}
           />
         ) : (
           <Link
