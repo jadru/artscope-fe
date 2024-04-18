@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import EditorNavbar from '@/app/editor/(dashboard)/EditorNavbar';

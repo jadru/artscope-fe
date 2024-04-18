@@ -92,9 +92,13 @@ export default async function MagazineDetail({ params }: Props) {
         <div className='w-full px-2.5'>
           <ProfileComponent
             borderTop
-            name={article.author.authorName}
+            name={
+              article.author.authorName +
+              (article.teamName ? ' by ' + article.teamName : '')
+            }
             username={article.author.authorUsername}
             picture={article.author.authorProfileImage}
+            teamId={article.teamId}
           />
         </div>
         <div className='w-full px-2.5'>

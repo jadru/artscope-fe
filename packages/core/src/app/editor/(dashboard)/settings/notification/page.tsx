@@ -13,6 +13,7 @@ export default function ArtistSettings() {
           <NotiEmailSetting
             username={user.username}
             emailReceive={user.allowEmailReceive}
+            emailReceiveUpdatedAt={user.allowEmailReceiveDateTime}
           />
         </>
       )}

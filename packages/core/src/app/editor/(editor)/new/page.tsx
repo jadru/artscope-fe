@@ -36,15 +36,26 @@ import { Markdown } from 'tiptap-markdown';
 import '@/styles/editor.scss';
 
 import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
+import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
 const EditPost = () => {
+  const { user } = useUser();
   const { push } = useRouter();
   const [insertImage, setInsertImage] = useState<string[]>([]);
   const [isUpload, setIsUpload] = useState(false);
   const [title, setTitle] = useState('');
+  const [team, setTeam] = useState('0');
   const placeholder = '예술을 공유하세요.';
 
   const editor = useEditor({
@@ -100,8 +111,9 @@ const EditPost = () => {
         .post('/api/magazines', {
           title,
           content,
-          categoryId: 1,
+          categorySlug: 'post',
           mediaUrls: [NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + insertImage[0]],
+          urn: team !== '0' ? 'urn:team:' + team : undefined,
         })
         .then((res) => res.data);
       if (data) {
@@ -331,14 +343,29 @@ const EditPost = () => {
         {editor && <EditorContent editor={editor} className='min-h-[80px]' />}
       </div>
       <div className='h-16'></div>
-      <div className='bg-default-50 fixed bottom-0 z-50 flex h-16 w-full bg-white/60 backdrop-blur max-w-[766px] items-center justify-end border-t px-3'>
+      <div className='bg-default-50 fixed bottom-0 z-50 flex h-16 w-full gap-2 bg-white/60 backdrop-blur max-w-[766px] items-center justify-end border-t px-3'>
+        <Select onValueChange={(value) => setTeam(value)}>
+          <SelectTrigger className='w-[180px]'>
+            <SelectValue placeholder='팀 아티클로 작성' />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value='0'>{user?.name}</SelectItem>
+              {user?.teams.map((team) => (
+                <SelectItem key={team.id} value={String(team.id)}>
+                  {team.name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
         <Button
           onClick={handleSubmitPostButton}
           disabled={isUpload}
           color='primary'
           className={`
             h-12 ${isUpload ? 'opacity-20' : ''}`}>
-          새 아티클 작성
+          작성
         </Button>
       </div>
     </>
