@@ -32,7 +32,7 @@ export const onGetProfile = async (
   refresh?: string | undefined
 ) => {
   if ((await getRefreshToken()) || refresh) {
-    const res = await jxios.get('/api/members/profile', {
+    const res = await jxios.get('/api/auth/me', {
       headers: {
         'Content-Type': 'application/json',
       },
