@@ -43,7 +43,9 @@ export default function ArticleItem({
           className={`hover:bg-default-100 w-full pt-1 flex appearance-none font-normal items-center justify-end transition ${
             light ? 'text-white' : 'text-[1A1A1A]'
           }`}>
-          <StandardLabel label={article.author.authorName} />
+          <StandardLabel
+            label={article.teamName ?? article.author.authorName}
+          />
         </Link>
       </div>
     </Link>

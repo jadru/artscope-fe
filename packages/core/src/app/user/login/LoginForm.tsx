@@ -35,7 +35,7 @@ export default function LoginForm({ redirect }: { redirect: string | null }) {
         if (redirect) {
           router.replace(decodeURIComponent(redirect));
         } else {
-          router.refresh();
+          router.push('/');
         }
       } else {
         toast.error(res.data);

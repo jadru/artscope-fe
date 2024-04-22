@@ -38,15 +38,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </Link>
         <p className='text-primary text-sm mt-1.5'>TEAM</p>
         <Link
-          href='/editor/settings/team/new'
-          className={
-            pathname === '/editor/settings/team/new'
-              ? 'font-semibold text-primary'
-              : ''
-          }>
-          팀 생성
-        </Link>
-        <Link
           href='/editor/settings/team'
           className={
             pathname === '/editor/settings/team'
@@ -55,15 +46,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           }>
           팀 관리
         </Link>
-        <Link
-          href='/editor/settings/team/member'
-          className={
-            pathname === '/editor/settings/team/member'
-              ? 'font-semibold text-primary'
-              : ''
-          }>
-          팀원 관리
-        </Link>
+        {/* <Link */}
+        {/*   href='/editor/settings/team/member' */}
+        {/*   className={ */}
+        {/*     pathname === '/editor/settings/team/member' */}
+        {/*       ? 'font-semibold text-primary' */}
+        {/*       : '' */}
+        {/*   }> */}
+        {/*   팀원 관리 */}
+        {/* </Link> */}
       </nav>
       <div className='w-3/4 space-y-4'>{children}</div>
     </div>
