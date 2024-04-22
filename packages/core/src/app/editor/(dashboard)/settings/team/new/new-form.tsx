@@ -82,7 +82,7 @@ export default function NewTeamForm() {
               jxios.post('/api/teams/', data).then((res) => {
                 if (res.status === 201) {
                   toast.success('새로운 팀이 추가되었습니다.');
-                  router.refresh();
+                  router.push('/editor/settings/team');
                 } else {
                   toast.error('새로운 팀을 추가하는데 실패했습니다.');
                 }
