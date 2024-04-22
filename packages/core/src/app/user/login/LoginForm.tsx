@@ -34,8 +34,10 @@ export default function LoginForm({ redirect }: { redirect: string | null }) {
         await onLogin(tokenData, router, setUser);
         if (redirect) {
           router.replace(decodeURIComponent(redirect));
+          router.refresh();
         } else {
-          router.push('/');
+          router.replace('/');
+          router.refresh();
         }
       } else {
         toast.error(res.data);
