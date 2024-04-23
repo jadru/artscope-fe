@@ -17,13 +17,13 @@ export default function ArticleSection({
   return (
     <div
       className={`px-0 md:px-0 w-screen flex flex-col ${
-        position === 'right' ? 'md:flex-row' : 'md:flex-row-reverse'
+        position === 'right' ? 'lg:flex-row' : 'lg:flex-row-reverse'
       }`}>
-      <div className='w-full md:w-1/2 relative self-stretch'>
+      <div className='w-full lg:w-1/2 relative self-stretch'>
         <ArticleFullWidthItem article={articleList[0]} />
       </div>
       <div
-        className={`w-full md:w-1/2 self-stretch p-1 lg:py-8 lg:p-3 ${
+        className={`w-full lg:w-1/2 self-stretch p-1 lg:py-8 lg:p-3 ${
           index % 2 === 1 ? 'bg-[#B9CDD1]' : ''
         }`}>
         <ResponsiveMasonry

@@ -12,6 +12,7 @@ export default function ProfileComponent({
   clickable = true,
   borderTop = false,
   borderBottom = false,
+  teamId,
 }: {
   username: string;
   name: string;
@@ -19,11 +20,14 @@ export default function ProfileComponent({
   clickable?: boolean;
   borderTop?: boolean;
   borderBottom?: boolean;
+  teamId?: number | null;
 }) {
   return (
     <Link
       className={clickable ? 'cursor-pointer' : 'cursor-default'}
-      href={`${clickable ? '/profile/' + username : '#'}`}>
+      href={`${
+        clickable ? (!teamId ? '/profile/' + username : '/team/' + teamId) : '#'
+      }`}>
       {borderTop && <hr className='bg-[#ACB884] h-1.5 rounded-sm' />}
       <div
         className={`
@@ -38,7 +42,9 @@ export default function ProfileComponent({
           <p className='inline text-2xl font-bold'>
             <StandardLabel label={name} />
           </p>
-          <p className='text-default-500 line-clamp-1 text-lg'>@{username}</p>
+          <p className='text-default-500 line-clamp-1 text-lg'>
+            {!teamId ? '@' + username : ''}
+          </p>
         </div>
         <ASNextImage
           src={picture ?? 'prod/images/default.jpg'}

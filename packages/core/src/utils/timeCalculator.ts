@@ -2,9 +2,9 @@ import { format, formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
 const timeCalculatorKO = (date: Date) => {
-  const d = new Date(date);
+  const d = date.getTime() + KOR_TIMEZONE;
   const now = Date.now();
-  const diff = (now - d.getTime()) / 1000;
+  const diff = (now - d) / 1000;
   if (diff < 60) {
     return '방금 전';
   }
@@ -47,9 +47,12 @@ const editAndPostShortCalculatorKO = (
   return `${shortTimeCalculatorKO(editedTime)} 수정`;
 };
 
+const KOR_TIMEZONE = 9 * 60 * 60 * 1000;
+
 export {
   editAndPostShortCalculatorKO,
   editAndPostTimeCalculatorKO,
+  KOR_TIMEZONE,
   shortTimeCalculatorKO,
   timeCalculatorKO,
 };

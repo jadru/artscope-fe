@@ -1,3 +1,4 @@
+import { CommentType } from '@/types/comment';
 import { pageInfoType } from '@/types/default';
 
 export type articleListType = {
@@ -14,13 +15,15 @@ export type articleItemType = {
   views: number;
   likes: number;
   comments: number;
-  author: authorType;
+  author: AuthorType;
+  teamName: string | null;
+  teamId: number | null;
   createdTime: string;
   updatedTime: string;
-  magazineComments: magazinCommentType[];
+  magazineComments: CommentType[];
 };
 
-export type authorType = {
+export type AuthorType = {
   authorUsername: string;
   authorName: string;
   authorProfileImage: string;
@@ -32,14 +35,6 @@ export type articleCategoryType = {
   id: number;
   name: string;
   description?: string;
-  createdTime: string;
-  updatedTime: string;
-};
-
-export type magazinCommentType = {
-  id: number;
-  contents: string;
-  likes: number;
   createdTime: string;
   updatedTime: string;
 };

@@ -7,6 +7,7 @@ import ProfileComponent from '@/components/Profile';
 import { standardLabel } from '@/components/StandardLabel';
 
 import ArticleViewerActions from '@/app/(main)/(viewer)/article/[id]/ArticleViewerActions';
+import ArticleViewerComment from '@/app/(main)/(viewer)/article/[id]/ArticleViewerComment';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 import { removeMarkdown } from '@/utils/stringConverter';
@@ -25,7 +26,7 @@ type Props = {
 };
 
 export async function generateMetadata(
-  { params, searchParams }: Props,
+  { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const id = params.id;
@@ -89,17 +90,29 @@ export default async function MagazineDetail({ params }: Props) {
           <MarkdownViewer>{article.content}</MarkdownViewer>
         </div>
         <div className='w-full px-2.5'>
-          <ArticleViewerActions
-            id={String(article.id)}
-            authorUsername={article.author.authorUsername}
+          <ProfileComponent
+            borderTop
+            name={
+              article.author.authorName +
+              (article.teamName ? ' by ' + article.teamName : '')
+            }
+            username={article.author.authorUsername}
+            picture={article.author.authorProfileImage}
+            teamId={article.teamId}
           />
         </div>
         <div className='w-full px-2.5'>
-          <ProfileComponent
-            borderTop
-            name={article.author.authorName}
-            username={article.author.authorUsername}
-            picture={article.author.authorProfileImage}
+          <ArticleViewerActions
+            id={String(article.id)}
+            authorUsername={article.author.authorUsername}
+            isLiked={false}
+            likes={article.likes}
+          />
+        </div>
+        <div className='w-full px-2.5'>
+          <ArticleViewerComment
+            id={article.id}
+            comments={article.magazineComments}
           />
         </div>
       </div>
