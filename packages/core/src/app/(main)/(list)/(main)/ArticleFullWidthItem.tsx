@@ -31,7 +31,7 @@ export default function ArticleFullWidthItem({
               {standardLabel(article.title)}
             </h2>
             <h3 className='text-xl text-white font-normal break-keep'>
-              {standardLabel(article.author.authorName)}
+              {standardLabel(article.teamName ?? article.author.authorName)}
             </h3>
           </div>
         </div>

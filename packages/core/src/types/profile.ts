@@ -22,8 +22,8 @@ export type profileApiType = {
   companyName: string | undefined;
   companyRole: string | undefined;
   authrities: string;
-  allowEmailReceive?: Date;
-  allowEmailDateTime: boolean;
+  allowEmailReceive?: boolean;
+  allowEmailReceiveDateTime: string;
   createdTime: Date;
   updatedTime: Date | undefined;
 };
@@ -44,6 +44,12 @@ export type profileApiResponseType = {
   companyRole?: string;
   username: string;
   websiteUrl?: string;
-  allowEmailReceive?: Date;
-  allowEmailDateTime: boolean;
+  allowEmailReceive?: boolean;
+  allowEmailReceiveDateTime: string;
+  teams: {
+    id: number;
+    name: string;
+    profileImage: string;
+    role: string;
+  }[];
 };

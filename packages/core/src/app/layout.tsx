@@ -110,7 +110,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='ko' className='light'>
+    <html lang='ko' className='light font-normal'>
       <body
         className={clsxm(
           pretendard.className,

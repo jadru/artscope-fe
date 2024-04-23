@@ -31,11 +31,14 @@ export default function LoginForm({ redirect }: { redirect: string | null }) {
     (await jxios.post('/api/login', loginData).then(async (res) => {
       const tokenData: loginResponseType = res.data;
       if (res.status === 200 && tokenData.accessToken) {
+        await onLogin(tokenData, router, setUser);
         if (redirect) {
           router.replace(decodeURIComponent(redirect));
-          return;
+          router.refresh();
+        } else {
+          router.replace('/');
+          router.refresh();
         }
-        await onLogin(tokenData, router, setUser);
       } else {
         toast.error(res.data);
       }
