@@ -3533,7 +3533,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/eslint-plugin-next@npm:14.2.3":
+"@next/eslint-plugin-next@npm:14.2.3, @next/eslint-plugin-next@npm:^14.2.3":
   version: 14.2.3
   resolution: "@next/eslint-plugin-next@npm:14.2.3"
   dependencies:
@@ -6874,6 +6874,7 @@ __metadata:
     "@commitlint/cli": "npm:^16.3.0"
     "@commitlint/config-conventional": "npm:^16.2.4"
     "@cspell/eslint-plugin": "npm:^8.8.1"
+    "@next/eslint-plugin-next": "npm:^14.2.3"
     "@types/node": "npm:^18.18.2"
     "@typescript-eslint/eslint-plugin": "npm:^7.8.0"
     cookies-next: "npm:^4.1.1"

@@ -1,6 +1,4 @@
-import { setCookie, getCookie, deleteCookie } from 'cookies-next';
-
-import { NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 
 export const setAccessToken = (accessToken: string, expiresIn: number) =>
   setCookie('access-token', accessToken, {
