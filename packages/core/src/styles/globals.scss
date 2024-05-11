@@ -75,15 +75,19 @@
   }
 }
 
-html, body {
-  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+html,
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+    'Pretendard Variable', Pretendard, Roboto, 'Noto Sans KR', 'Segoe UI',
+    'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    sans-serif !important;
   h1 {
     font-size: 2.25rem;
   }
   h2 {
-      font-size: 1.875rem;
+    font-size: 1.875rem;
   }
   h3 {
-      font-size: 1.5rem;
+    font-size: 1.5rem;
   }
 }
