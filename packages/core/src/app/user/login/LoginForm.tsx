@@ -13,6 +13,7 @@ import { useUser } from '@/states';
 import jxios from '@/utils/jxios';
 
 import { loginResponseType } from '@/types/auth';
+import { getRefreshToken } from '@/auth/cookieTokenManager';
 
 export default function LoginForm({ redirect }: { redirect: string | null }) {
   const {
