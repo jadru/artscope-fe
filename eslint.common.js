@@ -11,14 +11,7 @@ module.exports = {
     'unused-imports',
     'prettier',
   ],
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:prettier/recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended',
-    'prettier',
-  ],
+  extends: ['eslint:recommended', 'next', 'prettier'],
   ignorePatterns: ['dist', '.eslintrc.js'],
   rules: {
     'prettier/prettier': [

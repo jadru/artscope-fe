@@ -1,23 +1,14 @@
 'use client';
 
-import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
+import { format } from 'date-fns';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 import ASNextImage from '@/components/ASNextImage';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-
-import { useUser } from '@/states';
-import { useQueries, useQuery } from '@tanstack/react-query';
-import jxios from '@/utils/jxios';
-import { NEXT_PUBLIC_API_URL } from '@/constant/env';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import {
   Dialog,
   DialogContent,
@@ -26,13 +17,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { toast } from 'react-toastify';
-import { useState } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { format } from 'date-fns';
+
 import ChangePositionDialog from '@/app/editor/(dashboard)/settings/team/[id]/change-position-dialog';
+import jxios from '@/utils/jxios';
 
 type TeamMemberResponseType = {
   teamUsers: {
@@ -135,7 +132,7 @@ export default function MemberList(props: { id: string }) {
               <div
                 key={member.username}
                 className='w-full h-18 flex justify-between items-center rounded-xl p-4'>
-                <div className={'flex gap-3 items-center'}>
+                <div className='flex gap-3 items-center'>
                   <ASNextImage
                     src={member.profileImage ?? 'prod/images/default.jpg'}
                     alt={member.username}
@@ -144,14 +141,14 @@ export default function MemberList(props: { id: string }) {
                     height={48}
                   />
                   <p>{member.username}</p>
-                  <Badge variant={'default'}>{member.position}</Badge>
+                  <Badge variant='default'>{member.position}</Badge>
                   {member.role === 'OWNER' && (
-                    <Badge variant={'outline'}>팀 소유자</Badge>
+                    <Badge variant='outline'>팀 소유자</Badge>
                   )}
                 </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger>
-                    <Button variant={'outline'}>관리</Button>
+                    <Button variant='outline'>관리</Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuLabel>{member.username}</DropdownMenuLabel>

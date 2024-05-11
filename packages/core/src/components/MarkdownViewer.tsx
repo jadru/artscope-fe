@@ -46,24 +46,28 @@ export default function MarkdownViewer({
           ) : (
             ''
           ),
+        // eslint-disable-next-line unused-imports/no-unused-vars
         p: ({ node, ...props }) =>
           !ignoreSize ? (
             <p className='pt-1.5 font-normal' {...props} />
           ) : (
             <p className='font-normal' {...props} />
           ),
+        // eslint-disable-next-line unused-imports/no-unused-vars
         h1: ({ node, ...props }) =>
           !ignoreSize ? (
             <h2 className='text-3xl font-bold pt-2' {...props} />
           ) : (
             <p className='font-normal' {...props} />
           ),
+        // eslint-disable-next-line unused-imports/no-unused-vars
         h2: ({ node, ...props }) =>
           !ignoreSize ? (
             <h3 className='text-2xl font-bold pt-2' {...props} />
           ) : (
             <p className='font-normal' {...props} />
           ),
+        // eslint-disable-next-line unused-imports/no-unused-vars
         h3: ({ node, ...props }) =>
           !ignoreSize ? (
             <h4 className='text-xl font-bold pt-2' {...props} />

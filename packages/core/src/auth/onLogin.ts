@@ -2,7 +2,6 @@ import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.share
 
 import { onSuccess } from '@/app/user/onSuccess';
 import {
-  getAccessToken,
   getRefreshToken,
   setAccessToken,
   setRefreshToken,

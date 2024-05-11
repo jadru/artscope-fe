@@ -7,6 +7,7 @@ module.exports = {
   rules: {
     ...commonConfig.rules,
     'react/no-unescaped-entities': 'off',
+    'unused-imports/no-unused-vars': 'off',
     'react/display-name': 'off',
     'react/jsx-curly-brace-presence': [
       'warn',

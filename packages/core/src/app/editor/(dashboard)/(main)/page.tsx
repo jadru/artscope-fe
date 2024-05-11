@@ -2,6 +2,8 @@ import { jwtDecode } from 'jwt-decode';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 
+import MarkdownViewer from '@/components/MarkdownViewer';
+import { standardLabel } from '@/components/StandardLabel';
 import {
   Card,
   CardContent,
@@ -16,8 +18,6 @@ import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
 import { articleListType } from '@/types/article';
-import StandardLabel, { standardLabel } from '@/components/StandardLabel';
-import MarkdownViewer from '@/components/MarkdownViewer';
 
 const fetchPersonalArticles = async (username: string) =>
   jxios
