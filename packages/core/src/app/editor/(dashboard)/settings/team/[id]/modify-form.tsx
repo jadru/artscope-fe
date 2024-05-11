@@ -29,7 +29,6 @@ interface NewTeamInputs {
   profileImage: string;
   backgroundImage: string;
   description: string;
-  position: string;
 }
 
 const newTeamSchema = yup.object().shape({
@@ -38,13 +37,12 @@ const newTeamSchema = yup.object().shape({
   profileImage: yup.string().required('프로필 이미지를 추가해주세요.'),
   backgroundImage: yup.string().required('배경 이미지를 추가해주세요.'),
   description: yup.string().required('팀 설명을 입력해주세요.'),
-  position: yup.string().required('팀에서 맡고있는 직책을 입력해주세요.'),
 });
 
 export default function ModifyTeamForm({
   team,
 }: {
-  team?: NewTeamInputs & {
+  team: NewTeamInputs & {
     id: number;
   };
 }) {
@@ -53,7 +51,6 @@ export default function ModifyTeamForm({
     resolver: yupResolver<NewTeamInputs>(newTeamSchema),
     defaultValues: {
       ...team,
-      position: user?.teams.find((t) => t.id === team?.id)?.role,
     },
   });
   const router = useRouter();
@@ -87,19 +84,27 @@ export default function ModifyTeamForm({
 
   return (
     <div>
-      <FormCard title='새로운 팀 추가'>
+      <FormCard title='팀 정보 변경'>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit((data) =>
-              jxios.post('/api/teams/', data).then((res) => {
-                if (res.status === 201) {
-                  toast.success('새로운 팀이 추가되었습니다.');
-                  router.refresh();
-                } else {
-                  toast.error('새로운 팀을 추가하는데 실패했습니다.');
-                }
-              })
-            )}
+            onSubmit={form.handleSubmit((data) => {
+              jxios
+                .put('/api/teams/' + team.id, {
+                  name: data.name,
+                  address: data.address,
+                  profileImage: data.profileImage,
+                  backgroundImage: data.backgroundImage,
+                  description: data.description,
+                })
+                .then((res) => {
+                  if (res.status === 200) {
+                    toast.success('팀 정보가 변경되었습니다.');
+                    router.refresh();
+                  } else {
+                    toast.error('팀 정보 변경에 실패했습니다.');
+                  }
+                });
+            })}
             className='flex w-full flex-col gap-1'>
             <FormField
               control={form.control}
@@ -187,26 +192,6 @@ export default function ModifyTeamForm({
                       <Textarea
                         className='h-32'
                         placeholder='팀 설명을 입력해주세요.'
-                        defaultValue=''
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='position'
-              render={({ field }) => (
-                <FormItem>
-                  <div className='w-full'>
-                    <FormLabel>직책</FormLabel>
-                    <FormControl>
-                      <Input
-                        type='text'
-                        placeholder='팀에서 맡고있는 직책을 입력해주세요.'
                         defaultValue=''
                         {...field}
                       />

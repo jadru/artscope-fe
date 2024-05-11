@@ -21,9 +21,15 @@ export const setRefreshToken = (
     ),
   });
 
-export const getAccessToken = () => getCookie('access-token');
+export const getAccessToken = () =>
+  getCookie('access-token', {
+    path: '/',
+  });
 
-export const getRefreshToken = () => getCookie('refresh-token');
+export const getRefreshToken = () =>
+  getCookie('refresh-token', {
+    path: '/',
+  });
 
 export const removeAccessToken = () =>
   deleteCookie('access-token', {
