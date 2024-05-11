@@ -1,9 +1,9 @@
+import MemberList from '@/app/editor/(dashboard)/settings/team/[id]/member-list';
 import ModifyTeamForm from '@/app/editor/(dashboard)/settings/team/[id]/modify-form';
 import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
 import { TeamDetailType } from '@/types/team';
-import MemberList from '@/app/editor/(dashboard)/settings/team/[id]/member-list';
 
 const fetchTeam = async (id: string) =>
   await jxios

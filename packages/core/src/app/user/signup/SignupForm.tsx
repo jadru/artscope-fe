@@ -38,7 +38,7 @@ const SignupForm = () => {
   const [usernameDuplicateCheck, setUsernameDuplicateCheck] =
     React.useState<boolean>(false);
 
-  const onSubmit: SubmitHandler<SignupInputs> = async (data) => {
+  const _onSubmit: SubmitHandler<SignupInputs> = async (data) => {
     if (form.formState.isSubmitting) return;
     if (!emailRegexCheck) {
       form.setError('email', {

@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { BiSolidEdit } from 'react-icons/bi';
 import { toast } from 'react-toastify';
@@ -21,7 +20,6 @@ export default function SettingsPage() {
   const { user, isLogin } = useUser();
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [data, setData] = useState<profileApiResponseType>();
-  const { push } = useRouter();
 
   useEffect(() => {
     if (!isLogin) return;
