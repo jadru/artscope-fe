@@ -2,6 +2,7 @@ import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.share
 
 import { onSuccess } from '@/app/user/onSuccess';
 import {
+  getAccessToken,
   getRefreshToken,
   setAccessToken,
   setRefreshToken,
@@ -17,9 +18,8 @@ export const onLogin = async (
   // eslint-disable-next-line no-unused-vars
   setUser: (user: profileApiResponseType | undefined) => void
 ) => {
-  jxios.defaults.headers.common[
-    'Authorization'
-  ] = `Bearer ${tokenData.accessToken}`;
+  jxios.defaults.headers.common['Authorization'] =
+    `Bearer ${tokenData.accessToken}`;
   setAccessToken(tokenData.accessToken, tokenData.expiresIn);
   setRefreshToken(tokenData.refreshToken, tokenData.refreshExpiresIn);
   await onGetProfile(router, setUser, tokenData.refreshToken);
@@ -31,7 +31,7 @@ export const onGetProfile = async (
   setUser: (user: profileApiResponseType | undefined) => void,
   refresh?: string | undefined
 ) => {
-  if ((await getRefreshToken()) || refresh) {
+  if (getRefreshToken() || refresh) {
     const res = await jxios.get('/api/auth/me', {
       headers: {
         'Content-Type': 'application/json',

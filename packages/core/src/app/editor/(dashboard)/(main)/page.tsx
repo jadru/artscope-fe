@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -15,6 +16,8 @@ import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
 import { articleListType } from '@/types/article';
+import StandardLabel, { standardLabel } from '@/components/StandardLabel';
+import MarkdownViewer from '@/components/MarkdownViewer';
 
 const fetchPersonalArticles = async (username: string) =>
   jxios
@@ -45,17 +48,19 @@ export default async function Component() {
               className='flex flex-col w-full'>
               <Card key={article.id} className='flex flex-col w-full h-full'>
                 <CardHeader className='flex flex-row items-center justify-between pb-2 space-y-0 w-full'>
-                  <div className='flex flex-col overflow-hidden'>
-                    <CardTitle className='text-base font-semibold w-full'>
-                      {article.title}
-                    </CardTitle>
-                    <CardDescription className='text-sm w-full line-clamp-4'>
-                      {article.content}
-                    </CardDescription>
-                  </div>
+                  <CardTitle className='text-base font-semibold w-full'>
+                    {standardLabel(article.title)}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className='grid gap-2 text-sm'>
+                  <CardDescription className='text-sm w-full line-clamp-4'>
+                    <MarkdownViewer ignoreImages ignoreSize>
+                      {article.content}
+                    </MarkdownViewer>
+                  </CardDescription>
+                </CardContent>
+                <CardFooter>
+                  <div className='grid gap-1 text-sm'>
                     <p>
                       <strong>Author:</strong>
                       {article.author.authorUsername}
@@ -65,7 +70,7 @@ export default async function Component() {
                       {article.createdTime}
                     </p>
                   </div>
-                </CardContent>
+                </CardFooter>
               </Card>
             </Link>
           ))}

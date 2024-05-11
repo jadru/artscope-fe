@@ -17,40 +17,59 @@ export default function MarkdownViewer({
   className,
   ignoreMarkdown = false,
   ignoreHTML = false,
+  ignoreImages = false,
+  ignoreSize = false,
 }: {
   children: string;
   className?: string;
   ignoreMarkdown?: boolean;
   ignoreHTML?: boolean;
+  ignoreImages?: boolean;
+  ignoreSize?: boolean;
 }) {
   return (
     <ReactMarkdown
       className={'markdown-viewer break-all space-y-2 ' + className}
       components={{
-        img: ({ node, src, ...props }) => (
-          <ASNextImage
-            className='w-full mb-1'
-            // @ts-ignore
-            width={600}
-            // @ts-ignore
-            height={600}
-            src={src as string}
-            {...props}
-            alt=''
-          />
-        ),
-        p: ({ node, ...props }) => (
-          <p className='pt-1.5 font-normal' {...props} />
-        ),
-        h1: ({ node, ...props }) => (
-          <h2 className='text-3xl font-bold pt-2' {...props} />
-        ),
-        h2: ({ node, ...props }) => (
-          <h3 className='text-2xl font-bold pt-2' {...props} />
-        ),
-        h3: ({ node, ...props }) => (
-          <h4 className='text-xl font-bold pt-2' {...props} />
-        ),
+        img: ({ node, src, ...props }) =>
+          !ignoreImages ? (
+            <ASNextImage
+              className='w-full mb-1'
+              // @ts-ignore
+              width={600}
+              // @ts-ignore
+              height={600}
+              src={src as string}
+              {...props}
+              alt=''
+            />
+          ) : (
+            ''
+          ),
+        p: ({ node, ...props }) =>
+          !ignoreSize ? (
+            <p className='pt-1.5 font-normal' {...props} />
+          ) : (
+            <p className='font-normal' {...props} />
+          ),
+        h1: ({ node, ...props }) =>
+          !ignoreSize ? (
+            <h2 className='text-3xl font-bold pt-2' {...props} />
+          ) : (
+            <p className='font-normal' {...props} />
+          ),
+        h2: ({ node, ...props }) =>
+          !ignoreSize ? (
+            <h3 className='text-2xl font-bold pt-2' {...props} />
+          ) : (
+            <p className='font-normal' {...props} />
+          ),
+        h3: ({ node, ...props }) =>
+          !ignoreSize ? (
+            <h4 className='text-xl font-bold pt-2' {...props} />
+          ) : (
+            <p className='font-normal' {...props} />
+          ),
       }}
       remarkPlugins={[
         ignoreMarkdown
