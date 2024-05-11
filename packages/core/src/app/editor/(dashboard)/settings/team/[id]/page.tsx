@@ -3,6 +3,7 @@ import { NEXT_PUBLIC_API_URL } from '@/constant/env';
 import jxios from '@/utils/jxios';
 
 import { TeamDetailType } from '@/types/team';
+import MemberList from '@/app/editor/(dashboard)/settings/team/[id]/member-list';
 
 const fetchTeam = async (id: string) =>
   await jxios
@@ -15,5 +16,10 @@ type Props = {
 
 export default async function TeamNewPage({ params }: Props) {
   const team = await fetchTeam(params.id);
-  return <ModifyTeamForm team={{ ...team, position: '' }} />;
+  return (
+    <>
+      <ModifyTeamForm team={{ ...team }} />
+      <MemberList id={params.id} />
+    </>
+  );
 }

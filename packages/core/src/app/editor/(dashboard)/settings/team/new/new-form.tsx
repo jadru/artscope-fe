@@ -129,41 +129,59 @@ export default function NewTeamForm() {
                 </FormItem>
               )}
             />
-            <FormItem>
-              <FormLabel>프로필 이미지</FormLabel>
-              <Input
-                type='file'
-                placeholder='프로필 이미지를 추가해주세요.'
-                defaultValue=''
-                accept={'image/*'}
-                onChange={async (e) => {
-                  if (e.target.files && e.target.files.length > 0) {
-                    const file = e.target.files[0];
-                    const url = await newImageUpload(file);
-                    if (url) {
-                      form.setValue('profileImage', url);
-                    }
-                  }
-                }}
-              />
-            </FormItem>
-            <FormItem>
-              <FormLabel>배경 이미지</FormLabel>
-              <Input
-                type='file'
-                placeholder='배경 이미지를 추가해주세요.'
-                defaultValue=''
-                onChange={async (e) => {
-                  if (e.target.files && e.target.files.length > 0) {
-                    const file = e.target.files[0];
-                    const url = await newImageUpload(file);
-                    if (url) {
-                      form.setValue('backgroundImage', url);
-                    }
-                  }
-                }}
-              />
-            </FormItem>
+            <FormField
+              control={form.control}
+              name='profileImage'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>프로필 이미지</FormLabel>
+                  <Input
+                    type='file'
+                    placeholder='프로필 이미지를 추가해주세요.'
+                    defaultValue=''
+                    accept={'image/*'}
+                    onChange={async (e) => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        const file = e.target.files[0];
+                        const url = await newImageUpload(file);
+                        if (url) {
+                          form.setValue('profileImage', url);
+                        }
+                      }
+                    }}
+                    onBlur={field.onBlur}
+                    ref={field.ref}
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='backgroundImage'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>배경 이미지</FormLabel>
+                  <Input
+                    type='file'
+                    placeholder='배경 이미지를 추가해주세요.'
+                    defaultValue=''
+                    onChange={async (e) => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        const file = e.target.files[0];
+                        const url = await newImageUpload(file);
+                        if (url) {
+                          form.setValue('backgroundImage', url);
+                        }
+                      }
+                    }}
+                    onBlur={field.onBlur}
+                    ref={field.ref}
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name='description'
