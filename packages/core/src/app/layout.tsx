@@ -117,7 +117,13 @@ export default function RootLayout({
           source_Code_PRO.className,
           'p-0 m-0 min-h-screen'
         )}>
-        <ToastContainer limit={2} hideProgressBar />
+        <ToastContainer
+          limit={2}
+          hideProgressBar
+          stacked
+          theme={'colored'}
+          position={'bottom-right'}
+        />
         <link rel='manifest' href='/manifest.json' />
         {GOOGLE_TAG_MANAGER_ID && (
           <GoogleTagManager id={GOOGLE_TAG_MANAGER_ID} />
