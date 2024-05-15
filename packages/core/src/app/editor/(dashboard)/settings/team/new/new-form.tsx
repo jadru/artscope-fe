@@ -83,6 +83,7 @@ export default function NewTeamForm() {
                 if (res.status === 201) {
                   toast.success('새로운 팀이 추가되었습니다.');
                   router.push('/editor/settings/team');
+                  router.refresh();
                 } else {
                   toast.error('새로운 팀을 추가하는데 실패했습니다.');
                 }

@@ -5,6 +5,7 @@ export type TeamDetailType = {
   profileImage: string;
   backgroundImage: string;
   name: string;
+  ownerUsername: string;
   createdTime: string;
   updatedTime: string | null;
 };

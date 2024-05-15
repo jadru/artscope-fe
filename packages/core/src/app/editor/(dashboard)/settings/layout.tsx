@@ -21,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Link
           href='/editor/settings/artist'
           className={
-            pathname === '/editor/settings/artist'
+            pathname.startsWith('/editor/settings/artist')
               ? 'font-semibold text-primary'
               : ''
           }>
@@ -30,7 +30,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Link
           href='/editor/settings/notification'
           className={
-            pathname === '/editor/settings/notification'
+            pathname.startsWith('/editor/settings/notification')
               ? 'font-semibold text-primary'
               : ''
           }>
@@ -40,21 +40,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Link
           href='/editor/settings/team'
           className={
-            pathname === '/editor/settings/team'
+            pathname.startsWith('/editor/settings/team')
               ? 'font-semibold text-primary'
               : ''
           }>
           팀 관리
         </Link>
-        {/* <Link */}
-        {/*   href='/editor/settings/team/member' */}
-        {/*   className={ */}
-        {/*     pathname === '/editor/settings/team/member' */}
-        {/*       ? 'font-semibold text-primary' */}
-        {/*       : '' */}
-        {/*   }> */}
-        {/*   팀원 관리 */}
-        {/* </Link> */}
       </nav>
       <div className='w-3/4 space-y-4'>{children}</div>
     </div>
