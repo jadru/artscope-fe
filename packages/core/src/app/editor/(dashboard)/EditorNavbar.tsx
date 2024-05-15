@@ -33,9 +33,9 @@ export default function EditorNavbar() {
       {/* </Link> */}
       <Link
         className={`${
-          pathname !== '/editor/settings'
-            ? 'text-gray-500'
-            : 'text-gray-900 font-bold'
+          pathname.startsWith('/editor/settings')
+            ? 'text-gray-900 font-bold'
+            : 'text-gray-500'
         } hover:text-gray-900`}
         href='/editor/settings'>
         설정

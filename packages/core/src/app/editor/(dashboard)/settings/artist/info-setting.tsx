@@ -48,7 +48,7 @@ export default function InfoSetting(props: {
 
   return (
     <div>
-      <FormCard title='작가 정보 변경'>
+      <FormCard title='개인 작가 정보 변경'>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit((data) =>
