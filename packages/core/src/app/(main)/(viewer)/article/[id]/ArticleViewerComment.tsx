@@ -43,6 +43,13 @@ export default function ArticleViewerComment(props: Props) {
         }
       });
 
+  const handleDeleteComment = (id: number) =>
+    confirm('정말 삭제하시겠습니까?') &&
+    jxios.delete(`/api/magazines/${props.id}/comments/${id}`).then((res) => {
+      if (res.status === 200) {
+        router.refresh();
+      }
+    });
   return (
     <div className='flex flex-col gap-4 items-start justify-end p-6'>
       <p className='text-2xl'>댓글</p>
@@ -67,6 +74,7 @@ export default function ArticleViewerComment(props: Props) {
           authorName={user?.name}
           authorProfileUrl={user?.picture}
           onSubmit={onNewReplySubmit}
+          onDelete={handleDeleteComment}
           isLogin={isLogin}
         />
       </div>

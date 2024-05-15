@@ -18,6 +18,7 @@ export type articleItemType = {
   author: AuthorType;
   teamName: string | null;
   teamId: number | null;
+  isLiked: boolean;
   createdTime: string;
   updatedTime: string;
   magazineComments: CommentType[];

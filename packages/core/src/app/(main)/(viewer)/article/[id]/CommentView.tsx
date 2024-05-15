@@ -15,6 +15,7 @@ type Props = {
   authorName?: string;
   authorProfileUrl?: string;
   onSubmit: (data: CommentInputs) => void;
+  onDelete?: (id: number) => void;
   isLogin?: boolean;
 };
 
@@ -40,15 +41,28 @@ export default function CommentView(props: Props) {
           </p>
           <div className='flex justify-between'>
             {props.isLogin && (
-              <p
-                className='text-gray-600 text-sm hover:underline cursor-pointer font-bold'
-                onClick={() =>
-                  props.replyComment !== comment.id
-                    ? props.setReplyComment(comment.id)
-                    : props.setReplyComment(0)
-                }>
-                {props.replyComment !== comment.id ? '댓글' : '취소'}
-              </p>
+              <div className={'flex gap-1 items-center'}>
+                <p
+                  className='text-gray-600 text-sm hover:text-blue-600 hover:underline cursor-pointer font-bold'
+                  onClick={() =>
+                    props.replyComment !== comment.id
+                      ? props.setReplyComment(comment.id)
+                      : props.setReplyComment(0)
+                  }>
+                  {props.replyComment !== comment.id ? '댓글' : '취소'}
+                </p>
+                <p className='text-gray-600 text-sm font-bold'>
+                  {comment.childComments.length > 0 &&
+                    `(${comment.childComments.length}개의 답글)`}
+                </p>
+                <p
+                  className={
+                    'text-gray-600 text-sm font-bold hover:text-red-500 cursor-pointer hover:underline'
+                  }
+                  onClick={() => props.onDelete && props.onDelete(comment.id)}>
+                  삭제
+                </p>
+              </div>
             )}
             <p className='text-gray-600 text-sm'>
               {timeCalculatorKO(
@@ -72,6 +86,7 @@ export default function CommentView(props: Props) {
             replyComment={props.replyComment}
             setReplyComment={props.setReplyComment}
             onSubmit={props.onSubmit}
+            onDelete={props.onDelete}
             isLogin={props.isLogin}
           />
         </div>

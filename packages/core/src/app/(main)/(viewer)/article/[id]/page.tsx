@@ -105,7 +105,7 @@ export default async function MagazineDetail({ params }: Props) {
           <ArticleViewerActions
             id={String(article.id)}
             authorUsername={article.author.authorUsername}
-            isLiked={false}
+            isLiked={article.isLiked}
             likes={article.likes}
           />
         </div>

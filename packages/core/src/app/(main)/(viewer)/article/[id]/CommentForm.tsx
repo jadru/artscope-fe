@@ -51,9 +51,6 @@ export default function CommentForm(props: Props) {
                       {...field}
                     />
                   </FormControl>
-                  {/* <FormDescription> */}
-                  {/*   You can <span>@mention</span> other users and organizations. */}
-                  {/* </FormDescription> */}
                   <FormMessage />
                 </div>
               </FormItem>
