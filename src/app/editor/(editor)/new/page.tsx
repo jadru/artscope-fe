@@ -33,7 +33,7 @@ import {
 import { toast } from 'react-toastify';
 import { Markdown } from 'tiptap-markdown';
 
-import '@/styles/editor.scss';
+import '@/styles/editor.css';
 
 import { Button } from '@/components/ui/button';
 import {
