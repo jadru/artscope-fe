@@ -1,0 +1,20 @@
+.markdown-viewer {
+  ul {
+    padding: 0 1.3rem;
+    list-style-type: disc;
+  }
+  ol {
+    padding: 0 1.3rem;
+    list-style-type: decimal;
+  }
+  a {
+    color: dodgerblue;
+    &:hover {
+      color: royalblue;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    text-decoration: underline;
+    transition: 0.3s ease;
+  }
+}
