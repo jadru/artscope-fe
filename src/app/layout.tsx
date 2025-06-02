@@ -6,10 +6,7 @@ import Script from 'next/script';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import '../styles/globals.scss';
-import 'react-toastify/dist/ReactToastify.css';
-
-import clsxm from '@/lib/clsxm';
+import '../styles/globals.css';
 
 import { Providers } from '@/app/providers';
 import {
