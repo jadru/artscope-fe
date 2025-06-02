@@ -1,0 +1,4 @@
+{
+  "/[...not_found]/page": "app/[...not_found]/page.js",
+  "/(main)/(list)/(main)/page": "app/(main)/(list)/(main)/page.js"
+}
