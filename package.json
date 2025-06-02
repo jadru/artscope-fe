@@ -4,10 +4,8 @@
   "scripts": {
     "start:dev": "yarn env-cmd -f .env next dev",
     "start:prod": "next dev",
-    "build": "yarn postbuild && next build",
-    "analyze": "yarn ANALYZE=true env-cmd - f../../.env next build",
-    "postbuild": "next-sitemap --config next-sitemap.config.js",
-    "typecheck": "tsc --noEmit --incremental false"
+    "build": "next build",
+    "analyze": "yarn ANALYZE=true env-cmd - f../../.env next build"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.821.0",
@@ -91,7 +89,6 @@
     "@commitlint/cli": "^16.3.0",
     "@commitlint/config-conventional": "^16.2.4",
     "@cspell/eslint-plugin": "^8.8.1",
-    "@next/bundle-analyzer": "^15.3.3",
     "@next/eslint-plugin-next": "^15.3.3",
     "@svgr/webpack": "^8.1.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",

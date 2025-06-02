@@ -8,7 +8,7 @@ import remarkImages from 'remark-images';
 import remarkUnwrapImages from 'remark-unwrap-images';
 import strip from 'strip-markdown';
 
-import '@/styles/markdown.scss';
+import '@/styles/markdown.css';
 
 import ASNextImage from '@/components/ASNextImage';
 
