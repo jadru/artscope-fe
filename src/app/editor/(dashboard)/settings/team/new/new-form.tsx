@@ -42,7 +42,7 @@ const newTeamSchema = yup.object().shape({
 
 export default function NewTeamForm() {
   const form = useForm<NewTeamInputs>({
-    resolver: yupResolver<NewTeamInputs>(newTeamSchema),
+    resolver: yupResolver(newTeamSchema),
   });
   const router = useRouter();
 

@@ -1,5 +1,5 @@
 import { Metadata, ResolvingMetadata } from 'next';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import ASNextImage from '@/components/ASNextImage';
 import MarkdownViewer from '@/components/MarkdownViewer';
@@ -20,16 +20,11 @@ const fetchArticle = async (id: string) => {
     .then((res) => res.data as articleItemType);
 };
 
-type Props = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-
 export async function generateMetadata(
-  { params }: Props,
+  { params }: { params: Promise<{ id: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const id = params.id;
+  const { id } = await params;
 
   if (!id) throw new Error('id is required');
 
@@ -54,8 +49,12 @@ export async function generateMetadata(
   };
 }
 
-export default async function MagazineDetail({ params }: Props) {
-  const id = params.id;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
   if (!id) throw new Error('id is required');
   const article = await fetchArticle(id);
 

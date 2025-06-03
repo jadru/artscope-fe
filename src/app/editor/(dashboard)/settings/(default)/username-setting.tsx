@@ -22,9 +22,7 @@ export default function UserNameSetting(props: { username: string }) {
     username: string;
   }>({
     mode: 'onBlur',
-    resolver: yupResolver<{
-      username: string;
-    }>(
+    resolver: yupResolver(
       yup.object().shape({
         username: yup
           .string()

@@ -26,7 +26,7 @@ import jxios from '@/utils/jxios';
 
 const SignupForm = () => {
   const form = useForm<SignupInputs>({
-    resolver: yupResolver<SignupInputs>(signupSchema),
+    resolver: yupResolver(signupSchema),
     mode: 'onBlur',
   });
   const { push } = useRouter();

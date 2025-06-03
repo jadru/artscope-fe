@@ -15,16 +15,11 @@ const fetchProfile = async (id: string) => {
     .then((res) => res.data as profileApiType);
 };
 
-type Props = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-
 export async function generateMetadata(
-  { params, searchParams }: Props,
+  { params }: { params: Promise<{ id: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const id = params.id;
+  const { id } = await params;
 
   if (!id) throw new Error('id is required');
 
@@ -44,8 +39,13 @@ export async function generateMetadata(
   };
 }
 
-export default async function ProfileDetail({ params }: Props) {
-  const profile = await fetchProfile(params.id);
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const profile = await fetchProfile(id);
   const historyArray = profile.history?.split('\n\n');
   return (
     <div className='py-3'>

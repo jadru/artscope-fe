@@ -31,18 +31,24 @@ interface InfoInputs {
 
 const infoSchema = yup.object().shape({
   name: yup.string().required('작가명을 입력해주세요.'),
-  snsUrl: yup.string().url('URL 형식이 아닙니다.'),
-  websiteUrl: yup.string().url('URL 형식이 아닙니다.'),
-  introduction: yup.string().max(1000, '1000자 이내로 작성해주세요.'),
-  history: yup.string().max(1000, '1000자 이내로 작성해주세요.'),
-});
+  snsUrl: yup.string().url('URL 형식이 아닙니다.').optional(),
+  websiteUrl: yup.string().url('URL 형식이 아닙니다.').optional(),
+  introduction: yup
+    .string()
+    .max(1000, '1000자 이내로 작성해주세요.')
+    .optional(),
+  history: yup
+    .string()
+    .max(1000, '1000자 이내로 작성해주세요.')
+    .optional(),
+}) as yup.ObjectSchema<InfoInputs>;
 
 export default function InfoSetting(props: {
   profile: InfoInputs;
   username: string;
 }) {
   const form = useForm<InfoInputs>({
-    resolver: yupResolver<InfoInputs>(infoSchema),
+    resolver: yupResolver(infoSchema),
   });
   const router = useRouter();
 

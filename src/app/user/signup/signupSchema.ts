@@ -20,7 +20,7 @@ const signupSchema = yup.object().shape({
     .oneOf([true], '약관에 동의해주세요.')
     .required('약관에 동의해주세요.'),
   agreeMarketing: yup.boolean(),
-});
+}) as yup.ObjectSchema<SignupInputs>;
 
 export interface SignupInputs {
   username: string;

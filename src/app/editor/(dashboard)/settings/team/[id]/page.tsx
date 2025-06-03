@@ -10,16 +10,17 @@ const fetchTeam = async (id: string) =>
     .get(`${NEXT_PUBLIC_API_URL}/api/teams/${id}`)
     .then((res) => res.data as TeamDetailType);
 
-type Props = {
-  params: { id: string };
-};
-
-export default async function TeamNewPage({ params }: Props) {
-  const team = await fetchTeam(params.id);
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const team = await fetchTeam(id);
   return (
     <>
       <ModifyTeamForm team={{ ...team }} />
-      <MemberList id={params.id} />
+      <MemberList id={id} />
     </>
   );
 }

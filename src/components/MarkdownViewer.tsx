@@ -5,7 +5,6 @@ import rehypeExternalLinks from 'rehype-external-links';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
 import remarkImages from 'remark-images';
-import remarkUnwrapImages from 'remark-unwrap-images';
 import strip from 'strip-markdown';
 
 import '@/styles/markdown.css';
@@ -29,7 +28,7 @@ export default function MarkdownViewer({
 }) {
   return (
     <ReactMarkdown
-      className={'markdown-viewer break-all space-y-2 ' + className}
+      // className={'markdown-viewer break-all space-y-2 ' + className}
       components={{
         img: ({ node, src, ...props }) =>
           !ignoreImages ? (
@@ -77,8 +76,8 @@ export default function MarkdownViewer({
       }}
       remarkPlugins={[
         ignoreMarkdown
-          ? [remarkGfm, strip, remarkImages, remarkUnwrapImages]
-          : [remarkGfm, remarkImages, remarkUnwrapImages],
+          ? [remarkGfm, strip, remarkImages]
+          : [remarkGfm, remarkImages],
       ]}
       rehypePlugins={
         ignoreHTML

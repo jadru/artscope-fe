@@ -5,12 +5,6 @@ const config: NextConfig = {
   eslint: {
     dirs: ['src'],
   },
-  experimental: {
-    webpackBuildWorker: true,
-    optimizePackageImports: ['react-markdown'],
-    externalDir: true,
-  },
-  transpilePackages: ['react-markdown'],
   async rewrites() {
     return [
       {
@@ -24,7 +18,7 @@ const config: NextConfig = {
     ];
   },
 
-  reactStrictMode: false,
+  reactStrictMode: true,
 
   images: {
     domains: [process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL ?? ''],
@@ -33,9 +27,6 @@ const config: NextConfig = {
   },
 
   compress: true,
-
-  output: 'standalone',
-
 }
 
 export default config;

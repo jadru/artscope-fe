@@ -28,7 +28,7 @@ export default function FindPassword() {
   const form = useForm<{
     email: string;
   }>({
-    resolver: yupResolver<{ email: string }>(emailSchema),
+    resolver: yupResolver(emailSchema),
     mode: 'onBlur',
   });
 

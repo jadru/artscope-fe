@@ -41,10 +41,7 @@ export default function ResetPassword() {
     password: string;
     passwordConfirm: string;
   }>({
-    resolver: yupResolver<{
-      password: string;
-      passwordConfirm: string;
-    }>(passwordSchema),
+    resolver: yupResolver(passwordSchema),
     mode: 'onBlur',
   });
 

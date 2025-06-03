@@ -93,7 +93,7 @@ const EditPost = () => {
       );
       editor?.commands.setContent(data.content);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [editor, id]);
 
   const handleSubmitPostButton = useDebounce(async () => {
