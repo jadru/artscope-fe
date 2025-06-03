@@ -24,8 +24,8 @@ const fetchPersonalArticles = async (username: string) =>
     .get(NEXT_PUBLIC_API_URL + '/api/magazines/members/' + username)
     .then((res) => res.data as articleListType);
 
-export default async function Component() {
-  const cookieStore = cookies();
+export default async function Page() {
+  const cookieStore = await cookies();
   const accessToken = cookieStore.get('access-token');
   if (!accessToken) {
     return;

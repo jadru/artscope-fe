@@ -6,7 +6,7 @@ import { NEXT_PUBLIC_API_URL, NEXT_PUBLIC_ROOT_URL } from '@/constant/env';
 import { articleListType } from '@/types/article';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 3600 * 24;
+export const revalidate = 86400; // 24시간을 초 단위로 표현
 
 export async function GET(_request: Request) {
   // Method to source urls from cms

@@ -25,9 +25,7 @@ export default function EmailSetting(props: {
     email: string;
   }>({
     mode: 'onBlur',
-    resolver: yupResolver<{
-      email: string;
-    }>(
+    resolver: yupResolver(
       yup.object().shape({
         email: yup
           .string()

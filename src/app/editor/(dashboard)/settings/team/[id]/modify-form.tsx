@@ -48,7 +48,7 @@ export default function ModifyTeamForm({
 }) {
   const { user } = useUser();
   const form = useForm<NewTeamInputs>({
-    resolver: yupResolver<NewTeamInputs>(newTeamSchema),
+    resolver: yupResolver(newTeamSchema),
     defaultValues: {
       ...team,
     },

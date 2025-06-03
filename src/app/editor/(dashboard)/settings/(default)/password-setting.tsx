@@ -23,10 +23,7 @@ export default function PasswordSetting(props: { username: string }) {
     newPasswordConfirm: string;
   }>({
     mode: 'onBlur',
-    resolver: yupResolver<{
-      newPassword: string;
-      newPasswordConfirm: string;
-    }>(
+    resolver: yupResolver(
       yup.object().shape({
         newPassword: yup
           .string()

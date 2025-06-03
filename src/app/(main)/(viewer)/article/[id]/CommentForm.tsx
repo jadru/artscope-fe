@@ -23,7 +23,7 @@ type Props = {
 
 export default function CommentForm(props: Props) {
   const form = useForm<CommentInputs>({
-    resolver: yupResolver<CommentInputs>(commentSchema),
+    resolver: yupResolver(commentSchema),
   });
 
   return (
