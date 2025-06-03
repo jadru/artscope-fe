@@ -31,7 +31,7 @@ const Login = () => {
       />
       <p></p>
       <Button
-        color='warning'
+        variant='default'
         className='w-full'
         size='lg'
         onClick={() =>
