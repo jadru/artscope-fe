@@ -4964,15 +4964,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/aspect-ratio@npm:^0.4.2":
-  version: 0.4.2
-  resolution: "@tailwindcss/aspect-ratio@npm:0.4.2"
-  peerDependencies:
-    tailwindcss: ">=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1"
-  checksum: 10c0/c821a8061f80200b20db26f9cf2a711ffb17814adf847a72d4d4632804d1cabf6671df8e99e06cedfb2ba97b968d7843cd435d1201519c86acdde702efca418b
-  languageName: node
-  linkType: hard
-
 "@tailwindcss/node@npm:4.1.8":
   version: 4.1.8
   resolution: "@tailwindcss/node@npm:4.1.8"
@@ -6811,7 +6802,6 @@ __metadata:
     "@radix-ui/react-select": "npm:^2.2.5"
     "@radix-ui/react-slot": "npm:^1.2.3"
     "@svgr/webpack": "npm:^8.1.0"
-    "@tailwindcss/aspect-ratio": "npm:^0.4.2"
     "@tailwindcss/postcss": "npm:^4.1.8"
     "@tanstack/eslint-plugin-query": "npm:^5.78.0"
     "@tanstack/react-query": "npm:^5.79.0"
