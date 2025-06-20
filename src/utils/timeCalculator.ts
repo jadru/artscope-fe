@@ -1,17 +1,8 @@
-import { format, formatDistanceToNow } from 'date-fns';
-import { ko } from 'date-fns/locale';
+import { format, formatDistanceToNow } from "date-fns";
+import { ko } from "date-fns/locale";
 
 const timeCalculatorKO = (date: Date) => {
-  const d = date.getTime() + KOR_TIMEZONE;
-  const now = Date.now();
-  const diff = (now - d) / 1000;
-  if (diff < 60) {
-    return '방금 전';
-  }
-  if (diff < 60 * 60 * 24 * 14) {
-    return formatDistanceToNow(d, { addSuffix: true, locale: ko });
-  }
-  return format(d, 'PPP EEE p', { locale: ko }); // 날짜 포맷
+  return formatDistanceToNow(date, { addSuffix: true, locale: ko });
 };
 
 const editAndPostTimeCalculatorKO = (
@@ -29,12 +20,12 @@ const shortTimeCalculatorKO = (date: Date) => {
   const now = Date.now();
   const diff = (now - d.getTime()) / 1000;
   if (diff < 60) {
-    return '방금 전 ';
+    return "방금 전 ";
   }
   if (diff < 60 * 60 * 24 * 14) {
     return formatDistanceToNow(d, { addSuffix: true, locale: ko });
   }
-  return format(d, 'PP', { locale: ko }); // 날짜 포맷
+  return format(d, "PP", { locale: ko }); // 날짜 포맷
 };
 
 const editAndPostShortCalculatorKO = (
