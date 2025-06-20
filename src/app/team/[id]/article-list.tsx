@@ -13,7 +13,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-import ArticleItem from "@/app/(main)/(list)/ArticleItem";
+import ArticleCard from "@/app/(main)/(list)/article-card";
 import { useUser } from "@/states";
 import jxios from "@/utils/jxios";
 
@@ -68,9 +68,9 @@ export default function MembersArticleList({ username }: { username: string }) {
       )}
       {isSuccess && (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-1 md:gap-2">
             {data?.magazines.map((article) => (
-              <ArticleItem key={article.id} article={article} />
+              <ArticleCard key={article.id} article={article} />
             ))}
           </div>
           <Pagination>
