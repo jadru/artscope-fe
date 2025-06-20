@@ -1,5 +1,5 @@
-import { CommentType } from '@/types/comment';
-import { pageInfoType } from '@/types/default';
+import { CommentType } from "@/types/comment";
+import { pageInfoType } from "@/types/default";
 
 export type articleListType = {
   magazines: articleItemType[];
@@ -11,7 +11,9 @@ export type articleItemType = {
   title: string;
   content: string;
   mediaUrls: string[];
-  category: string;
+  categoryName: string;
+  categoryId: number;
+  categorySlug: string;
   views: number;
   likes: number;
   comments: number;

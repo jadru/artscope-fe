@@ -3,6 +3,7 @@ import { articleListType } from "@/types/article";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ArticleCard({
   article,
@@ -10,6 +11,7 @@ export default function ArticleCard({
   article: articleListType["magazines"][number];
 }) {
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   return (
     <Link
       href={`/article/${article.id}`}
@@ -25,17 +27,21 @@ export default function ArticleCard({
           e.currentTarget.src = "/images/default-image.png";
           setIsError(true);
         }}
+        onLoad={() => setIsLoading(false)}
         className="object-cover absolute inset-0 size-full"
       />
+      {isLoading && <Skeleton className="absolute inset-0 size-full" />}
       {isError && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/50 p-3">
-          <h3 className="text-3xl font-bold text-left break-keep text-gray-500">
+          <h3 className="text-3xl font-bold text-left break-keep text-gray-500 uppercase">
             {standardLabel(article.title)}
           </h3>
         </div>
       )}
       <div className="opacity-0 hover:opacity-100 transition-opacity duration-300 absolute inset-0 flex p-2 flex-col items-center justify-center bg-black/50 break-keep">
-        <p className="text-sm text-center text-gray-300">{article.category}</p>
+        <p className="text-sm text-center text-gray-300">
+          {article.categoryName}
+        </p>
         <h3 className="text-sm font-bold text-center text-white">
           {standardLabel(article.title)}
         </h3>
