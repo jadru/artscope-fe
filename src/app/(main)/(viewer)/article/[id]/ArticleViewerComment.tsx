@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-import CommentForm from '@/app/(main)/(viewer)/article/[id]/CommentForm';
-import { CommentInputs } from '@/app/(main)/(viewer)/article/[id]/commentSchema';
-import CommentView from '@/app/(main)/(viewer)/article/[id]/CommentView';
-import { useUser } from '@/states';
-import jxios from '@/utils/jxios';
+import CommentForm from "@/app/(main)/(viewer)/article/[id]/CommentForm";
+import { CommentInputs } from "@/app/(main)/(viewer)/article/[id]/commentSchema";
+import CommentView from "@/app/(main)/(viewer)/article/[id]/CommentView";
+import { useUser } from "@/states";
+import jxios from "@/utils/jxios";
 
-import { CommentType } from '@/types/comment';
+import { CommentType } from "@/types/comment";
 
 type Props = {
   id: number;
@@ -44,9 +44,9 @@ export default function ArticleViewerComment(props: Props) {
       });
 
   return (
-    <div className='flex flex-col gap-4 items-start justify-end p-6'>
-      <p className='text-2xl'>댓글</p>
-      <div className='gap-2.5 flex flex-col w-full'>
+    <div className="flex flex-col gap-4 items-start justify-end p-6">
+      <p className="text-2xl">댓글</p>
+      <div className="gap-4 flex flex-col w-full">
         {user ? (
           <CommentForm
             onSubmit={onNewCommentSubmit}
@@ -55,9 +55,11 @@ export default function ArticleViewerComment(props: Props) {
           />
         ) : (
           <Link
-            href='/user/login'
-            className='hover:underline underline-offset-4'>
-            로그인 후 댓글을 작성할 수 있습니다.
+            href="/user/login"
+            className="group text-sm text-gray-500 hover:underline underline-offset-4"
+          >
+            <b className="group-hover:text-blue-500">로그인</b> 후 댓글을 작성할
+            수 있습니다.
           </Link>
         )}
         <CommentView
