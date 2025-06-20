@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 
-import ASNextImage from '@/components/ASNextImage';
-import StandardLabel from '@/components/StandardLabel';
+import ASNextImage from "@/components/ASNextImage";
+import StandardLabel from "@/components/StandardLabel";
 
 export default function ProfileComponent({
   name,
@@ -24,37 +24,32 @@ export default function ProfileComponent({
 }) {
   return (
     <Link
-      className={clickable ? 'cursor-pointer' : 'cursor-default'}
+      className={clickable ? "cursor-pointer" : "cursor-default"}
       href={`${
-        clickable ? (!teamId ? '/profile/' + username : '/team/' + teamId) : '#'
-      }`}>
-      {borderTop && <hr className='bg-[#ACB884] h-1.5 rounded-sm' />}
+        clickable ? (!teamId ? "/profile/" + username : "/team/" + teamId) : "#"
+      }`}
+    >
       <div
         className={`
-          flex flex-row items-center w-full justify-between transition-colors gap-2 p-6 text-[#1A1A1A]
-        } ${
-          clickable ? 'hover:bg-gray-100 transition-colors rounded-sm' : ''
-        }`}>
-        <div
-          className={`ml-0.5 flex flex-col transition ${
-            clickable ? 'hover:underline' : ''
-          }`}>
-          <p className='inline text-2xl font-bold'>
+          flex flex-row items-center w-full justify-between transition-colors gap-2 p-6 text-[#1A1A1A] group
+        } ${clickable ? "hover:bg-gray-200 bg-gray-100 transition-colors rounded-sm" : ""}`}
+      >
+        <div className={`ml-0.5 flex flex-col transition`}>
+          <p className="inline text-2xl group-hover:font-bold">
             <StandardLabel label={name} />
           </p>
-          <p className='text-default-500 line-clamp-1 text-lg'>
-            {!teamId ? '@' + username : ''}
+          <p className="text-default-500 line-clamp-1 text-lg">
+            {!teamId ? "@" + username : ""}
           </p>
         </div>
         <ASNextImage
-          src={picture ?? 'prod/images/default.jpg'}
-          alt='프로필 사진'
+          src={picture ?? "prod/images/default.jpg"}
+          alt="프로필 사진"
           width={64}
           height={64}
-          className='h-16 w-16 rounded-full object-cover'
+          className="h-16 w-16 rounded-full object-cover"
         />
       </div>
-      {borderBottom && <hr className='bg-[#ACB884] h-1.5 rounded-sm' />}
     </Link>
   );
 }
