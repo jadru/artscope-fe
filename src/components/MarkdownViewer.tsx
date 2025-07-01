@@ -48,15 +48,18 @@ export default function MarkdownViewer({
         // eslint-disable-next-line unused-imports/no-unused-vars
         p: ({ node, ...props }) =>
           !ignoreSize ? (
-            <p className="leading-7 [&:not(:first-child)]:mt-6" {...props} />
+            <p
+              className="leading-7 [&:not(:first-child)]:mt-6 break-keep"
+              {...props}
+            />
           ) : (
-            <p className="font-normal" {...props} />
+            <p className="font-normal break-keep" {...props} />
           ),
         // eslint-disable-next-line unused-imports/no-unused-vars
         h1: ({ node, ...props }) =>
           !ignoreSize ? (
             <h2
-              className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance"
+              className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance break-keep"
               {...props}
             />
           ) : (
@@ -66,7 +69,7 @@ export default function MarkdownViewer({
         h2: ({ node, ...props }) =>
           !ignoreSize ? (
             <h3
-              className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0"
+              className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 break-keep"
               {...props}
             />
           ) : (
@@ -76,7 +79,7 @@ export default function MarkdownViewer({
         h3: ({ node, ...props }) =>
           !ignoreSize ? (
             <h4
-              className="scroll-m-20 text-2xl font-semibold tracking-tight"
+              className="scroll-m-20 text-2xl font-semibold tracking-tight break-keep"
               {...props}
             />
           ) : (
@@ -84,7 +87,10 @@ export default function MarkdownViewer({
           ),
         // eslint-disable-next-line unused-imports/no-unused-vars
         ul: ({ node, ...props }) => (
-          <ul className="my-6 ml-6 list-disc [&>li]:mt-2" {...props} />
+          <ul
+            className="my-6 ml-6 list-disc [&>li]:mt-2 break-keep"
+            {...props}
+          />
         ),
       }}
       remarkPlugins={[

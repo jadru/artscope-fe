@@ -31,16 +31,14 @@ export default function ProfileComponent({
     >
       <div
         className={`
-          flex flex-row items-center w-full justify-between transition-colors gap-2 px-8 py-10 text-[#1A1A1A] group
-        } ${clickable ? "hover:bg-gray-200 bg-gray-100 transition-colors rounded-sm" : ""}`}
+          flex flex-row items-center w-full rounded-lg justify-between bg-gray-100 transition-colors gap-2 px-6 py-10 text-[#1A1A1A] group
+        } ${clickable ? "hover:bg-gray-200 transition-colors rounded-sm" : ""}`}
       >
         <div className={`ml-0.5 flex flex-col transition`}>
-          <p
-            className={`inline text-2xl ${clickable ? "group-hover:font-bold" : ""}`}
-          >
+          <p className={`inline text-xl`}>
             <StandardLabel label={name} />
           </p>
-          <p className="text-default-500 line-clamp-1 text-lg">
+          <p className="text-default-500 line-clamp-1 text-base">
             {!teamId ? "@" + username : ""}
           </p>
         </div>
