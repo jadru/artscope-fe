@@ -28,7 +28,7 @@ export default function Navbar() {
           <Link href={`/profile/${user?.username}`}>
             <Button variant="outline">내 프로필</Button>
           </Link>
-          <Link href="/editor/dashboard">
+          <Link href="/editor">
             <Button>대시보드</Button>
           </Link>
         </div>

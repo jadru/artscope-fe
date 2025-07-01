@@ -57,16 +57,16 @@ export default async function Page({
           picture={profile.picture}
         />
         {profile.introduction && (
-          <div className="p-6 text-xl bg-gray-100 rounded-lg">
+          <div className="p-6 text-base bg-gray-100 rounded-lg font-bold text-gray-500">
             {standardLabel(profile.introduction)}
           </div>
         )}
         {historyArray && (
-          <div className="text-xl py-4 bg-gray-100 rounded-lg">
+          <div className="text-base py-4 bg-gray-100 rounded-lg">
             {historyArray.map((history) => (
               <>
                 {history.split("\n").map((line, index) => (
-                  <p key={index} className="px-6 py-1">
+                  <p key={index} className="px-6 leading-6">
                     {standardLabel(line)}
                   </p>
                 ))}
