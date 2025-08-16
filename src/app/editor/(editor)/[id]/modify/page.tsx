@@ -19,7 +19,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import { useDebounce } from "@toss/react";
 import { forEach } from "lodash";
 import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   BiArrowBack,
   BiBold,
@@ -48,7 +48,7 @@ const EditPost = () => {
   const placeholder = "예술을 공유하세요.";
   const { id } = useParams();
 
-  const editor = useEditor({
+  const editorHook = useEditor({
     extensions: [
       Document,
       Text,
@@ -83,6 +83,8 @@ const EditPost = () => {
     immediatelyRender: false,
   });
 
+  const editor = useMemo(() => editorHook, [editorHook]);
+
   useEffect(() => {
     if (!id && !editor) return;
     jxios.get("/api/server/magazines/" + id).then((res) => {
@@ -99,7 +101,7 @@ const EditPost = () => {
     try {
       setIsUpload(true);
 
-      const content = editor?.storage.markdown.getMarkdown() || "";
+      const content = (editor?.storage as any)?.markdown?.getMarkdown() || "";
       if (content === "") {
         toast.error("내용을 입력해주세요.");
         setIsUpload(false);
@@ -129,7 +131,7 @@ const EditPost = () => {
   }, 500);
 
   const handleBackButton = () => {
-    if (editor?.storage.markdown.getMarkdown() !== "") {
+    if ((editor?.storage as any)?.markdown?.getMarkdown() !== "") {
       if (confirm("수정 중인 내용이 있습니다. 정말로 나가시겠습니까?")) {
         push("/");
       }

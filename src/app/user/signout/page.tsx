@@ -8,7 +8,7 @@ import {
   removeAccessToken,
   removeRefreshToken,
 } from "@/auth/cookieTokenManager";
-import { invalidateProfile, useProfile } from "@/auth/use-profile";
+import { useProfile } from "@/auth/use-profile";
 import jxios from "@/utils/jxios";
 
 const SignoutPage = () => {
@@ -18,7 +18,6 @@ const SignoutPage = () => {
     jxios.post("/api/server/logout");
     removeAccessToken();
     removeRefreshToken();
-    invalidateProfile();
     toast.success("로그아웃 되었습니다.");
     refresh();
     push("/");

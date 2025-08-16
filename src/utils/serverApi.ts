@@ -66,17 +66,19 @@ class ServerApiClient {
 
   // GET 요청
   async get<T>(endpoint: string, params?: Record<string, any>): Promise<T> {
-    const url = new URL(`${this.baseUrl}${endpoint}`, this.baseUrl);
+    let url = endpoint;
 
     if (params) {
+      const searchParams = new URLSearchParams();
       Object.entries(params).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
-          url.searchParams.append(key, String(value));
+          searchParams.append(key, String(value));
         }
       });
+      url += `?${searchParams.toString()}`;
     }
 
-    return this.request<T>(url.pathname + url.search);
+    return this.request<T>(url);
   }
 
   // POST 요청
@@ -116,8 +118,8 @@ export const serverApi = new ServerApiClient();
 
 // 특정 엔드포인트별 서버 API 클라이언트들
 export const serverArticlesApi = {
-  getAll: (params?: any) => serverApi.get("/api/server/articles", params),
-  getById: (id: string) => serverApi.get(`/api/server/articles/${id}`),
+  getAll: (params?: any) => serverApi.get("/api/server/magazines", params),
+  getById: (id: string) => serverApi.get(`/api/server/magazines/${id}`),
   getMagazineById: (id: string) => serverApi.get(`/api/server/magazines/${id}`),
 };
 
