@@ -5,6 +5,7 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import React from "react";
 import { ToastContainer } from "react-toastify";
+import { Analytics } from "@vercel/analytics/next";
 
 import "../styles/globals.css";
 
@@ -123,6 +124,7 @@ export default function RootLayout({
         {GOOGLE_TAG_MANAGER_ID && (
           <GoogleTagManager id={GOOGLE_TAG_MANAGER_ID} />
         )}
+        <Analytics />
         {GOOGLE_ANALYTICS_ID && (
           <>
             <Script
