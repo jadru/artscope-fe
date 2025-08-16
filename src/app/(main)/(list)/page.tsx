@@ -111,9 +111,6 @@ export default function Feeds() {
           <h3 className="my-12 text-center">에러가 발생했습니다.</h3>
         </div>
       )}
-      {data && data.pages[0].magazines.length === 0 && (
-        <h3 className="my-12 text-center">아직 작성된 글이 없습니다.</h3>
-      )}
       <div className="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-6 gap-2">
         {isSuccess &&
           data.pages.map((page, i) => (
