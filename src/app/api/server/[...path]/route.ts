@@ -140,11 +140,29 @@ async function handleProxyRequest(
     // 실제 API 서버로 요청 전송
     const targetUrl = `${NEXT_PUBLIC_API_URL}${pathname}${url.search}`;
 
-    const proxyResponse = await fetch(targetUrl, {
+    // 배포 환경에서 SSL 인증서 검증 우회
+    const fetchOptions: RequestInit = {
       method,
       headers: proxyHeaders,
       body,
-    });
+    };
+
+    // SSL 검증 우회가 필요한 경우 (환경 변수로 제어)
+    if (process.env.NEXT_PUBLIC_SKIP_SSL_VERIFICATION === "true") {
+      // Node.js 환경에서만 사용 가능한 옵션
+      if (typeof process !== "undefined" && typeof require !== "undefined") {
+        try {
+          const https = require("https");
+          (fetchOptions as any).agent = new https.Agent({
+            rejectUnauthorized: false,
+          });
+        } catch (error) {
+          console.warn("HTTPS agent 설정 실패:", error);
+        }
+      }
+    }
+
+    const proxyResponse = await fetch(targetUrl, fetchOptions);
 
     // 응답 헤더 구성
     const responseHeaders = new Headers();
@@ -176,10 +194,31 @@ async function handleProxyRequest(
     });
   } catch (error) {
     console.error("프록시 요청 처리 중 오류:", error);
+
+    // SSL 인증서 오류인 경우 특별한 메시지 제공
+    if (error instanceof Error && error.message.includes("certificate")) {
+      return NextResponse.json(
+        {
+          error: "SSL Certificate Error",
+          message:
+            "SSL 인증서 오류가 발생했습니다. 서버 관리자에게 문의하세요.",
+          details:
+            process.env.NODE_ENV === "development" ? error.message : undefined,
+        },
+        { status: 502 }
+      );
+    }
+
     return NextResponse.json(
       {
         error: "Internal Server Error",
         message: "서버 내부 오류가 발생했습니다.",
+        details:
+          process.env.NODE_ENV === "development"
+            ? error instanceof Error
+              ? error.message
+              : String(error)
+            : undefined,
       },
       { status: 500 }
     );
