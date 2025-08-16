@@ -26,18 +26,13 @@ export default function Navbar({ isEditor }: { isEditor?: boolean }) {
       <Link
         href={disabled ? "#" : href}
         className={cn(
-          "relative px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg",
-          "hover:bg-gray-100 hover:text-gray-900",
-          "before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-r before:from-gray-100/50 before:to-gray-200/50 before:opacity-0 before:transition-opacity before:duration-200",
-          "hover:before:opacity-100",
-          isActive ? "text-gray-900 bg-gray-100 shadow-sm" : "text-gray-600",
+          "px-3 py-2 text-sm font-medium transition-colors duration-200 rounded-md",
+          "hover:text-gray-900 hover:bg-gray-50",
+          isActive ? "text-gray-900 bg-gray-50" : "text-gray-600",
           disabled && "pointer-events-none opacity-40 cursor-not-allowed"
         )}
       >
         {children}
-        {isActive && (
-          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-blue-600 rounded-full" />
-        )}
       </Link>
     );
   };
@@ -46,9 +41,9 @@ export default function Navbar({ isEditor }: { isEditor?: boolean }) {
     <header className="sticky top-0 z-50">
       <nav className="relative">
         {/* 배경 */}
-        <div className="absolute inset-0 bg-background/95 backdrop-blur-xl border-b border-gray-200" />
+        <div className="absolute inset-0 bg-white/80 backdrop-blur-sm border-b border-gray-100" />
 
-        <div className="relative flex h-16 w-full items-center justify-between px-4 md:px-8">
+        <div className="relative flex h-14 w-full items-center justify-between px-4 md:px-6">
           {/* 로고 섹션 */}
           <Link
             href="/"
@@ -75,48 +70,56 @@ export default function Navbar({ isEditor }: { isEditor?: boolean }) {
           )}
 
           {/* 사용자 액션 섹션 */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2">
             {!user ? (
               !isLoading ? (
                 <>
                   <Link href="/user/login">
                     <Button
-                      variant="outline"
-                      className="text-gray-700 hover:text-gray-900 hover:bg-gray-50 border-gray-300 hover:border-gray-400 transition-all duration-200"
+                      variant="ghost"
+                      size="sm"
+                      className="text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                     >
                       로그인
                     </Button>
                   </Link>
                   <Link href="/user/signup">
-                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+                    <Button
+                      size="sm"
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                    >
                       회원가입
                     </Button>
                   </Link>
                 </>
               ) : (
-                <div className="flex space-x-3">
-                  <Skeleton className="w-20 h-9 rounded-lg" />
-                  <Skeleton className="w-24 h-9 rounded-lg" />
+                <div className="flex space-x-2">
+                  <Skeleton className="w-16 h-8 rounded-md" />
+                  <Skeleton className="w-20 h-8 rounded-md" />
                 </div>
               )
             ) : (
               <>
                 <Link href={`/profile/${user?.username}`}>
                   <Button
-                    variant="outline"
-                    className="text-gray-700 hover:text-gray-900 hover:bg-gray-50 border-gray-300 hover:border-gray-400 transition-all duration-200"
+                    variant="ghost"
+                    size="sm"
+                    className="text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                   >
                     <div className="flex items-center space-x-2">
-                      <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
+                      <div className="w-5 h-5 bg-gray-400 rounded-full flex items-center justify-center text-xs font-medium text-white">
                         {user?.username?.charAt(0).toUpperCase()}
                       </div>
-                      <span>내 프로필</span>
+                      <span className="hidden sm:inline">내 프로필</span>
                     </div>
                   </Button>
                 </Link>
                 {!isEditor && (
                   <Link href="/editor">
-                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+                    <Button
+                      size="sm"
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                    >
                       대시보드
                     </Button>
                   </Link>

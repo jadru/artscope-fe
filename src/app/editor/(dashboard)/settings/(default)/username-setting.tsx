@@ -47,60 +47,57 @@ export default function UserNameSetting(props: { username: string }) {
   const router = useRouter();
 
   return (
-    <div>
-      <FormCard title="아이디 변경">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit((data) =>
-              jxios
-                .put("/members/" + props.username, {
-                  username: props.username,
-                  newUsername: data.username,
-                })
-                .then((res) => {
-                  if (res.status === 200) {
-                    toast.success("아이디가 변경되었습니다.");
-                    router.refresh();
-                  } else {
-                    toast.error("아이디 변경에 문제가 있습니다.");
-                  }
-                })
+    <FormCard title="아이디 변경">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit((data) =>
+            jxios
+              .put("/members/" + props.username, {
+                username: props.username,
+                newUsername: data.username,
+              })
+              .then((res) => {
+                if (res.status === 200) {
+                  toast.success("아이디가 변경되었습니다.");
+                  router.refresh();
+                } else {
+                  toast.error("아이디 변경에 문제가 있습니다.");
+                }
+              })
+          )}
+          className="space-y-4"
+        >
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    placeholder="새로운 ID를 입력해주세요"
+                    defaultValue={props.username}
+                    className="h-11 border-gray-200 focus:border-blue-300 focus:ring-blue-200"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="text-sm" />
+                {!form.formState.errors.username && form.formState.isValid && (
+                  <p className="text-sm text-green-600 font-medium">
+                    ✓ 사용 가능한 ID입니다
+                  </p>
+                )}
+              </FormItem>
             )}
+          />
+          <Button
+            type="submit"
+            className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium"
+            disabled={form.formState.isSubmitting || !form.formState.isValid}
           >
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="w-full">
-                    <FormControl>
-                      <Input
-                        placeholder="ID를 입력해주세요."
-                        defaultValue={props.username}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                    {!form.formState.errors.username &&
-                      form.formState.isValid && (
-                        <p className="text-green-600 text-sm">
-                          사용 가능한 ID입니다.
-                        </p>
-                      )}
-                  </div>
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              className="h-9 mt-2"
-              disabled={form.formState.isSubmitting || !form.formState.isValid}
-            >
-              저장
-            </Button>
-          </form>
-        </Form>
-      </FormCard>
-    </div>
+            {form.formState.isSubmitting ? "변경 중..." : "아이디 변경"}
+          </Button>
+        </form>
+      </Form>
+    </FormCard>
   );
 }
