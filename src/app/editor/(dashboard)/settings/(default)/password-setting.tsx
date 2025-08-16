@@ -1,43 +1,43 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
-import * as yup from 'yup';
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import * as yup from "yup";
 
-import FormCard from '@/components/FormCard';
-import { Button } from '@/components/ui/button';
+import FormCard from "@/components/FormCard";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
-import jxios from '@/utils/jxios';
+import jxios from "@/utils/jxios";
 
 export default function PasswordSetting(props: { username: string }) {
   const form = useForm<{
     newPassword: string;
     newPasswordConfirm: string;
   }>({
-    mode: 'onBlur',
+    mode: "onBlur",
     resolver: yupResolver(
       yup.object().shape({
         newPassword: yup
           .string()
-          .required('새 비밀번호를 입력해주세요.')
-          .min(8, '8자 이상 입력해주세요.')
-          .max(20, '20자 이내로 입력해주세요.')
+          .required("새 비밀번호를 입력해주세요.")
+          .min(8, "8자 이상 입력해주세요.")
+          .max(20, "20자 이내로 입력해주세요.")
           .matches(
             /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+]).{8,20}$/,
-            '영문, 숫자, 특수문자를 포함해주세요.'
+            "영문, 숫자, 특수문자를 포함해주세요."
           ),
         newPasswordConfirm: yup
           .string()
-          .required('비밀번호를 다시 입력해주세요.')
-          .oneOf([yup.ref('newPassword')], '비밀번호가 일치하지 않습니다.'),
+          .required("비밀번호를 다시 입력해주세요.")
+          .oneOf([yup.ref("newPassword")], "비밀번호가 일치하지 않습니다."),
       })
     ),
   });
@@ -45,39 +45,40 @@ export default function PasswordSetting(props: { username: string }) {
 
   return (
     <div>
-      <FormCard title='비밀번호 변경'>
+      <FormCard title="비밀번호 변경">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit((data) =>
               jxios
-                .put('/api/members/' + props.username, {
+                .put("/members/" + props.username, {
                   password: data.newPassword,
                 })
                 .then((res) => {
                   if (res.status === 200) {
-                    toast.success('비밀번호가 변경되었습니다.');
+                    toast.success("비밀번호가 변경되었습니다.");
                     router.refresh();
                     form.reset({
-                      newPassword: '',
-                      newPasswordConfirm: '',
+                      newPassword: "",
+                      newPasswordConfirm: "",
                     });
                   } else {
-                    toast.error('비밀번호 변경에 문제가 있습니다.');
+                    toast.error("비밀번호 변경에 문제가 있습니다.");
                   }
                 })
             )}
-            className='space-y-1'>
+            className="space-y-1"
+          >
             <FormField
               control={form.control}
-              name='newPassword'
+              name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <div className='w-full'>
+                  <div className="w-full">
                     <FormControl>
                       <Input
-                        type='password'
-                        placeholder='새로운 비밀번호를 입력해주세요.'
-                        defaultValue=''
+                        type="password"
+                        placeholder="새로운 비밀번호를 입력해주세요."
+                        defaultValue=""
                         {...field}
                       />
                     </FormControl>
@@ -88,14 +89,14 @@ export default function PasswordSetting(props: { username: string }) {
             />
             <FormField
               control={form.control}
-              name='newPasswordConfirm'
+              name="newPasswordConfirm"
               render={({ field }) => (
                 <FormItem>
-                  <div className='w-full'>
+                  <div className="w-full">
                     <FormControl>
                       <Input
-                        type='password'
-                        placeholder='새로운 비밀번호를 다시 입력해주세요.'
+                        type="password"
+                        placeholder="새로운 비밀번호를 다시 입력해주세요."
                         {...field}
                       />
                     </FormControl>
@@ -105,9 +106,10 @@ export default function PasswordSetting(props: { username: string }) {
               )}
             />
             <Button
-              type='submit'
-              className='h-9 mt-2'
-              disabled={form.formState.isSubmitting || !form.formState.isValid}>
+              type="submit"
+              className="h-9 mt-2"
+              disabled={form.formState.isSubmitting || !form.formState.isValid}
+            >
               변경
             </Button>
           </form>

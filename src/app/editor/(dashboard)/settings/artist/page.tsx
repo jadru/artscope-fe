@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import InfoSetting from '@/app/editor/(dashboard)/settings/artist/info-setting';
-import { useUser } from '@/states';
+import InfoSetting from "@/app/editor/(dashboard)/settings/artist/info-setting";
+import { useProfile } from "@/auth/use-profile";
 
 export default function ArtistSettings() {
-  const { user } = useUser();
+  const { data: user } = useProfile();
 
   return (
     <>

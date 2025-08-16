@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 
-import ASNextImage from '@/components/ASNextImage';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import ASNextImage from "@/components/ASNextImage";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
-import { useUser } from '@/states';
+import { useProfile } from "@/auth/use-profile";
 
 export default function TeamList() {
-  const { user } = useUser();
+  const { data: user } = useProfile();
   return (
     <Card>
       <CardHeader>
-        <div className='w-full flex justify-between'>
+        <div className="w-full flex justify-between">
           <p>팀 관리</p>
-          <Link href='/editor/settings/team/new'>
+          <Link href="/editor/settings/team/new">
             <Button>팀 생성</Button>
           </Link>
         </div>
@@ -26,11 +26,12 @@ export default function TeamList() {
             <Link
               href={`/editor/settings/team/${team.id}`}
               key={team.id}
-              className='w-full h-24 flex justify-between items-center rounded-xl p-4 hover:bg-gray-100 transition-colors duration-200'>
+              className="w-full h-24 flex justify-between items-center rounded-xl p-4 hover:bg-gray-100 transition-colors duration-200"
+            >
               <ASNextImage
-                src={team.profileImage ?? 'prod/images/default.jpg'}
+                src={team.profileImage ?? "prod/images/default.jpg"}
                 alt={team.name}
-                className='rounded-full object-cover w-12 h-12'
+                className="rounded-full object-cover w-12 h-12"
                 width={48}
                 height={48}
               />

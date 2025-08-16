@@ -1,25 +1,25 @@
-'use client';
+"use client";
 
-import { Bold } from '@tiptap/extension-bold';
-import { BulletList } from '@tiptap/extension-bullet-list';
-import { Document } from '@tiptap/extension-document';
-import Dropcursor from '@tiptap/extension-dropcursor';
-import Heading from '@tiptap/extension-heading';
-import { History } from '@tiptap/extension-history';
-import Image from '@tiptap/extension-image';
-import { Italic } from '@tiptap/extension-italic';
-import { ListItem } from '@tiptap/extension-list-item';
-import { OrderedList } from '@tiptap/extension-ordered-list';
-import { Paragraph } from '@tiptap/extension-paragraph';
-import { Placeholder } from '@tiptap/extension-placeholder';
-import { Strike } from '@tiptap/extension-strike';
-import { Text } from '@tiptap/extension-text';
-import { Underline } from '@tiptap/extension-underline';
-import { EditorContent, useEditor } from '@tiptap/react';
-import { useDebounce } from '@toss/react';
-import { forEach } from 'lodash';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { Bold } from "@tiptap/extension-bold";
+import { BulletList } from "@tiptap/extension-bullet-list";
+import { Document } from "@tiptap/extension-document";
+import Dropcursor from "@tiptap/extension-dropcursor";
+import Heading from "@tiptap/extension-heading";
+import { History } from "@tiptap/extension-history";
+import Image from "@tiptap/extension-image";
+import { Italic } from "@tiptap/extension-italic";
+import { ListItem } from "@tiptap/extension-list-item";
+import { OrderedList } from "@tiptap/extension-ordered-list";
+import { Paragraph } from "@tiptap/extension-paragraph";
+import { Placeholder } from "@tiptap/extension-placeholder";
+import { Strike } from "@tiptap/extension-strike";
+import { Text } from "@tiptap/extension-text";
+import { Underline } from "@tiptap/extension-underline";
+import { EditorContent, useEditor } from "@tiptap/react";
+import { useDebounce } from "@toss/react";
+import { forEach } from "lodash";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import {
   BiArrowBack,
   BiBold,
@@ -29,13 +29,13 @@ import {
   BiListUl,
   BiStrikethrough,
   BiUnderline,
-} from 'react-icons/bi';
-import { toast } from 'react-toastify';
-import { Markdown } from 'tiptap-markdown';
+} from "react-icons/bi";
+import { toast } from "react-toastify";
+import { Markdown } from "tiptap-markdown";
 
-import '@/styles/editor.css';
+import "@/styles/editor.css";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -43,20 +43,21 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 
-import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
-import { useUser } from '@/states';
-import jxios from '@/utils/jxios';
+import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from "@/constant/env";
+import { useProfile } from "@/auth/use-profile";
+
+import jxios from "@/utils/jxios";
 
 const EditPost = () => {
-  const { user } = useUser();
+  const { data: user } = useProfile();
   const { push } = useRouter();
   const [insertImage, setInsertImage] = useState<string[]>([]);
   const [isUpload, setIsUpload] = useState(false);
-  const [title, setTitle] = useState('');
-  const [team, setTeam] = useState('0');
-  const placeholder = '예술을 공유하세요.';
+  const [title, setTitle] = useState("");
+  const [team, setTeam] = useState("0");
+  const placeholder = "예술을 공유하세요.";
 
   const editor = useEditor({
     extensions: [
@@ -88,7 +89,7 @@ const EditPost = () => {
         levels: [1, 2, 3],
       }),
     ],
-    content: '<p></p>',
+    content: "<p></p>",
     autofocus: true,
   });
 
@@ -96,44 +97,44 @@ const EditPost = () => {
     try {
       setIsUpload(true);
 
-      const content = editor?.storage.markdown.getMarkdown() || '';
-      if (content === '') {
-        toast.error('내용을 입력해주세요.');
+      const content = editor?.storage.markdown.getMarkdown() || "";
+      if (content === "") {
+        toast.error("내용을 입력해주세요.");
         setIsUpload(false);
         return;
       }
-      if (title === '') {
-        toast.error('제목을 입력해주세요.');
+      if (title === "") {
+        toast.error("제목을 입력해주세요.");
         setIsUpload(false);
         return;
       }
       const data = await jxios
-        .post('/api/magazines', {
+        .post("/magazines", {
           title,
           content,
-          categorySlug: 'post',
-          mediaUrls: [NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + insertImage[0]],
-          urn: team !== '0' ? 'urn:team:' + team : undefined,
+          categorySlug: "post",
+          mediaUrls: [NEXT_PUBLIC_MEDIA_STORAGE_URL + "/" + insertImage[0]],
+          urn: team !== "0" ? "urn:team:" + team : undefined,
         })
         .then((res) => res.data);
       if (data) {
-        toast.success('아티클이 작성 되었습니다.');
-        push('/article/' + data.id);
+        toast.success("아티클이 작성 되었습니다.");
+        push("/article/" + data.id);
       }
     } catch (err) {
-      toast.error((err as string) || '아티클 업로드에 실패했습니다.');
+      toast.error((err as string) || "아티클 업로드에 실패했습니다.");
     } finally {
       setIsUpload(false);
     }
   }, 500);
 
   const handleBackButton = () => {
-    if (editor?.storage.markdown.getMarkdown() !== '') {
-      if (confirm('수정 중인 내용이 있습니다. 정말로 나가시겠습니까?')) {
-        push('/');
+    if (editor?.storage.markdown.getMarkdown() !== "") {
+      if (confirm("수정 중인 내용이 있습니다. 정말로 나가시겠습니까?")) {
+        push("/");
       }
     } else {
-      push('/');
+      push("/");
     }
   };
 
@@ -141,7 +142,7 @@ const EditPost = () => {
     if (files) {
       forEach(files, async (file) => {
         if (file.size > 20971520) {
-          toast.error('20MB 이하의 파일만 업로드 가능합니다.');
+          toast.error("20MB 이하의 파일만 업로드 가능합니다.");
           return;
         }
         await fileUpload(file);
@@ -150,13 +151,13 @@ const EditPost = () => {
   };
 
   const fileUpload = async (file: File) => {
-    const response = await fetch('/api/upload', {
-      method: 'POST',
+    const response = await fetch("/upload", {
+      method: "POST",
       body: JSON.stringify({
         contentType: file.type,
       }),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
     if (response.ok) {
@@ -165,9 +166,9 @@ const EditPost = () => {
       Object.entries(data.fields).forEach(([key, value]) => {
         formData.append(key, value as string);
       });
-      formData.append('file', file);
+      formData.append("file", file);
       const responseUpload = await fetch(data.url, {
-        method: 'POST',
+        method: "POST",
         body: formData,
       });
       if (responseUpload.ok) {
@@ -175,7 +176,7 @@ const EditPost = () => {
           ?.chain()
           .focus()
           .setImage({
-            src: NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + data.fields.key,
+            src: NEXT_PUBLIC_MEDIA_STORAGE_URL + "/" + data.fields.key,
           })
           .run();
         setInsertImage((prev) => [...prev, data.fields.key]);
@@ -185,11 +186,11 @@ const EditPost = () => {
 
   return (
     <>
-      <div className='bg-default-50 fixed top-0 overflow-x-scroll z-50 flex h-16 w-full bg-white/60 backdrop-blur max-w-[766px] items-center justify-between gap-5 border-b px-5'>
+      <div className="bg-default-50 fixed top-0 overflow-x-scroll z-50 flex h-16 w-full bg-white/60 backdrop-blur max-w-[766px] items-center justify-between gap-5 border-b px-5">
         <button onClick={handleBackButton}>
-          <BiArrowBack className='h-6 w-6 hover:text-blue-600' />
+          <BiArrowBack className="h-6 w-6 hover:text-blue-600" />
         </button>
-        <div className='flex items-center justify-center gap-5'>
+        <div className="flex items-center justify-center gap-5">
           <button
             onClick={() => {
               if (editor) {
@@ -197,8 +198,9 @@ const EditPost = () => {
               }
             }}
             className={`hover:text-primary ${
-              editor?.isActive('bold') ? 'text-black' : 'text-gray-400'
-            }`}>
+              editor?.isActive("bold") ? "text-black" : "text-gray-400"
+            }`}
+          >
             <BiBold size={25} />
           </button>
           <button
@@ -208,8 +210,9 @@ const EditPost = () => {
               }
             }}
             className={`hover:text-primary ${
-              editor?.isActive('italic') ? 'text-black' : 'text-gray-400'
-            }`}>
+              editor?.isActive("italic") ? "text-black" : "text-gray-400"
+            }`}
+          >
             <BiItalic size={25} />
           </button>
           <button
@@ -219,8 +222,9 @@ const EditPost = () => {
               }
             }}
             className={`hover:text-primary ${
-              editor?.isActive('strike') ? 'text-black' : 'text-gray-400'
-            }`}>
+              editor?.isActive("strike") ? "text-black" : "text-gray-400"
+            }`}
+          >
             <BiStrikethrough size={25} />
           </button>
           <button
@@ -230,11 +234,12 @@ const EditPost = () => {
               }
             }}
             className={`hover:text-primary ${
-              editor?.isActive('underline') ? 'text-black' : 'text-gray-400'
-            }`}>
+              editor?.isActive("underline") ? "text-black" : "text-gray-400"
+            }`}
+          >
             <BiUnderline size={25} />
           </button>
-          <hr className='h-6 border-l border-gray-400' />
+          <hr className="h-6 border-l border-gray-400" />
           <button
             onClick={() => {
               if (editor) {
@@ -242,10 +247,11 @@ const EditPost = () => {
               }
             }}
             className={`hover:text-primary font-bold ${
-              editor && editor.isActive('heading', { level: 3 })
-                ? 'text-black'
-                : 'text-gray-400'
-            }`}>
+              editor && editor.isActive("heading", { level: 3 })
+                ? "text-black"
+                : "text-gray-400"
+            }`}
+          >
             H1
           </button>
           <button
@@ -255,10 +261,11 @@ const EditPost = () => {
               }
             }}
             className={`hover:text-primary font-bold ${
-              editor && editor.isActive('heading', { level: 3 })
-                ? 'text-black'
-                : 'text-gray-400'
-            }`}>
+              editor && editor.isActive("heading", { level: 3 })
+                ? "text-black"
+                : "text-gray-400"
+            }`}
+          >
             H2
           </button>
           <button
@@ -268,13 +275,14 @@ const EditPost = () => {
               }
             }}
             className={`hover:text-primary font-bold ${
-              editor && editor.isActive('heading', { level: 3 })
-                ? 'text-black'
-                : 'text-gray-400'
-            }`}>
+              editor && editor.isActive("heading", { level: 3 })
+                ? "text-black"
+                : "text-gray-400"
+            }`}
+          >
             H3
           </button>
-          <hr className='h-6 border-l border-gray-400' />
+          <hr className="h-6 border-l border-gray-400" />
           <button
             onClick={() => {
               if (editor) {
@@ -282,8 +290,9 @@ const EditPost = () => {
               }
             }}
             className={`hover:text-primary ${
-              editor?.isActive('bulletList') ? 'text-black' : 'text-gray-400'
-            }`}>
+              editor?.isActive("bulletList") ? "text-black" : "text-gray-400"
+            }`}
+          >
             <BiListUl size={25} />
           </button>
           <button
@@ -293,25 +302,26 @@ const EditPost = () => {
               }
             }}
             className={`hover:text-primary ${
-              editor?.isActive('orderedList') ? 'text-black' : 'text-gray-400'
-            }`}>
+              editor?.isActive("orderedList") ? "text-black" : "text-gray-400"
+            }`}
+          >
             <BiListOl size={25} />
           </button>
-          <hr className='h-6 border-l border-gray-400' />
-          <label htmlFor='image-upload'>
+          <hr className="h-6 border-l border-gray-400" />
+          <label htmlFor="image-upload">
             <BiImage
               size={25}
               className={`hover:text-primary cursor-pointer ${
-                insertImage.length > 0 ? 'text-black' : 'text-gray-400'
+                insertImage.length > 0 ? "text-black" : "text-gray-400"
               }`}
             />
           </label>
           <input
-            id='image-upload'
-            type='file'
-            accept='image/*'
+            id="image-upload"
+            type="file"
+            accept="image/*"
             multiple
-            className='hidden'
+            className="hidden"
             onChange={(e) => {
               handleFileUpload(e.target.files);
             }}
@@ -319,38 +329,39 @@ const EditPost = () => {
         </div>
         <div></div>
       </div>
-      <div className='h-16'></div>
+      <div className="h-16"></div>
       <input
-        id='title'
-        className='w-full h-16 px-3 text-3xl focus:outline-none -mb-2'
-        placeholder='제목을 입력하세요.'
+        id="title"
+        className="w-full h-16 px-3 text-3xl focus:outline-none -mb-2"
+        placeholder="제목을 입력하세요."
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === 'Tab') {
+          if (e.key === "Enter" || e.key === "Tab") {
             e.preventDefault();
             editor?.chain().focus().run();
           }
         }}
       />
       <div
-        className='w-full overflow-y-scroll p-3 min-h-[calc(100vh-64px-64px-64px)] cursor-text !focus:outline-none'
+        className="w-full overflow-y-scroll p-3 min-h-[calc(100vh-64px-64px-64px)] cursor-text !focus:outline-none"
         onClick={(e) => {
           if (e.target === e.currentTarget) {
             editor?.chain().focus().run();
           }
-        }}>
-        {editor && <EditorContent editor={editor} className='min-h-[80px]' />}
+        }}
+      >
+        {editor && <EditorContent editor={editor} className="min-h-[80px]" />}
       </div>
-      <div className='h-16'></div>
-      <div className='bg-default-50 fixed bottom-0 z-50 flex h-16 w-full gap-2 bg-white/60 backdrop-blur max-w-[766px] items-center justify-end border-t px-3'>
+      <div className="h-16"></div>
+      <div className="bg-default-50 fixed bottom-0 z-50 flex h-16 w-full gap-2 bg-white/60 backdrop-blur max-w-[766px] items-center justify-end border-t px-3">
         <Select onValueChange={(value) => setTeam(value)}>
-          <SelectTrigger className='w-[180px]'>
-            <SelectValue placeholder='팀 아티클로 작성' />
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="팀 아티클로 작성" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value='0'>{user?.name}</SelectItem>
+              <SelectItem value="0">{user?.name}</SelectItem>
               {user?.teams.map((team) => (
                 <SelectItem key={team.id} value={String(team.id)}>
                   {team.name}
@@ -362,9 +373,10 @@ const EditPost = () => {
         <Button
           onClick={handleSubmitPostButton}
           disabled={isUpload}
-          color='primary'
+          color="primary"
           className={`
-            h-12 ${isUpload ? 'opacity-20' : ''}`}>
+            h-12 ${isUpload ? "opacity-20" : ""}`}
+        >
           작성
         </Button>
       </div>

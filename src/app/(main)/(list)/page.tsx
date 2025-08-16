@@ -1,11 +1,13 @@
 "use client";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useSuspenseInfiniteQuery,
+} from "@tanstack/react-query";
 import { notFound } from "next/navigation";
 import React, { useEffect, useRef } from "react";
 
 import { useObserver } from "@/hooks/useObserver";
-import useToken from "@/hooks/useToken";
 
 import {
   jsonLdNav,
@@ -13,7 +15,6 @@ import {
   jsonLdSearch,
   jsonLdThumb,
 } from "@/app/(main)/(list)/searchSchema";
-import { useUser } from "@/states";
 import jxios from "@/utils/jxios";
 
 import { articleListType } from "@/types/article";
@@ -24,7 +25,7 @@ const LIMIT = 30;
 
 const fetchFeeds = async ({ pageParam = 0 }) =>
   await jxios
-    .get("/api/magazines", {
+    .get("/api/server/magazines", {
       params: {
         page: pageParam,
         size: LIMIT,
@@ -33,18 +34,14 @@ const fetchFeeds = async ({ pageParam = 0 }) =>
     .then((res) => res.data as articleListType);
 
 export default function Feeds() {
-  useToken();
-  const { user } = useUser();
   const {
     data,
-    isLoading,
     isSuccess,
     isError,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    refetch,
-  } = useInfiniteQuery({
+  } = useSuspenseInfiniteQuery({
     queryKey: ["main"],
     queryFn: fetchFeeds,
     initialPageParam: 0,
@@ -55,10 +52,6 @@ export default function Feeds() {
       return allPages.length;
     },
   });
-
-  useEffect(() => {
-    refetch();
-  }, [refetch, user]);
 
   useEffect(() => {
     if (isError) {
@@ -80,7 +73,7 @@ export default function Feeds() {
   });
 
   return (
-    <div className="px-2 md:px-6 lg:px-8 pb-16">
+    <div className="p-2 md:p-4 pb-16">
       <section>
         <script
           type="application/ld+json"
@@ -99,11 +92,6 @@ export default function Feeds() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdSearch) }}
         />
       </section>
-      {isLoading && (
-        <div className="w-full">
-          <p>Loading...</p>
-        </div>
-      )}
       {isError && (
         <div className="w-full">
           <h3 className="my-12 text-center">에러가 발생했습니다.</h3>
@@ -112,7 +100,7 @@ export default function Feeds() {
       {data && data.pages[0].magazines.length === 0 && (
         <h3 className="my-12 text-center">아직 작성된 글이 없습니다.</h3>
       )}
-      <div className="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-6 gap-1 md:gap-2">
+      <div className="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-6 gap-2">
         {isSuccess &&
           data.pages.map((page, i) => (
             <React.Fragment key={i}>

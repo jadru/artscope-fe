@@ -1,28 +1,28 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { toast } from 'react-toastify';
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 import {
   removeAccessToken,
   removeRefreshToken,
-} from '@/auth/cookieTokenManager';
-import { useUser } from '@/states';
-import jxios from '@/utils/jxios';
+} from "@/auth/cookieTokenManager";
+import { invalidateProfile, useProfile } from "@/auth/use-profile";
+import jxios from "@/utils/jxios";
 
 const SignoutPage = () => {
   const { push, refresh } = useRouter();
-  const { clearUser } = useUser();
+  const { data: user } = useProfile();
   useEffect(() => {
-    jxios.post('/api/logout');
+    jxios.post("/api/server/logout");
     removeAccessToken();
     removeRefreshToken();
-    clearUser();
-    toast.success('로그아웃 되었습니다.');
+    invalidateProfile();
+    toast.success("로그아웃 되었습니다.");
     refresh();
-    push('/');
-  }, [clearUser, refresh, push]);
+    push("/");
+  }, [user, refresh, push]);
   return <></>;
 };
 
