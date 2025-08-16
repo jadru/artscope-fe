@@ -3,8 +3,10 @@ import cookie from "react-cookies";
 import { toast } from "react-toastify";
 
 import { standardLabel } from "@/components/StandardLabel";
+import { NEXT_PUBLIC_ROOT_URL } from "@/constant/env";
 
 const Jxios = axios.create({
+  baseURL: NEXT_PUBLIC_ROOT_URL,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

@@ -23,15 +23,29 @@ import { Loader2 } from "lucide-react";
 
 const LIMIT = 30;
 
-const fetchFeeds = async ({ pageParam = 0 }) =>
-  await jxios
-    .get("/api/server/magazines", {
+const fetchFeeds = async ({ pageParam = 0 }) => {
+  try {
+    const res = await jxios.get("/api/server/magazines", {
       params: {
         page: pageParam,
         size: LIMIT,
       },
-    })
-    .then((res) => res.data as articleListType);
+    });
+    return res.data as articleListType;
+  } catch (error) {
+    console.error("Failed to fetch feeds:", error);
+    // 빌드 시에는 빈 데이터를 반환
+    return {
+      magazines: [],
+      pageInfo: {
+        page: pageParam,
+        size: LIMIT,
+        totalPages: 0,
+        totalElements: 0,
+      },
+    } as articleListType;
+  }
+};
 
 export default function Feeds() {
   const {

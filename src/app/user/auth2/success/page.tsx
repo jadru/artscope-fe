@@ -17,7 +17,6 @@ import { loginResponseType } from "@/types/auth";
 
 const RedirectOAuth2 = () => {
   const router = useRouter();
-  // TODO: 로그인 처리
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
@@ -30,11 +29,7 @@ const RedirectOAuth2 = () => {
           },
         })
         .then(async (ressponseRefreshToken) => {
-          await onLogin(
-            ressponseRefreshToken.data as loginResponseType,
-            router,
-            setUser
-          );
+          // TODO: 로그인 처리 (refresh 부분을 api route로 이동할 필요가 있음)
         })
         .catch(() => {
           toast.error("로그인에 실패했습니다.");
@@ -43,7 +38,7 @@ const RedirectOAuth2 = () => {
     } else {
       router.push("/");
     }
-  }, [setUser, router, token, searchParams]);
+  }, [router, token, searchParams]);
 
   return (
     <>
