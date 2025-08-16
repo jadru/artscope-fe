@@ -44,77 +44,73 @@ export default function PasswordSetting(props: { username: string }) {
   const router = useRouter();
 
   return (
-    <div>
-      <FormCard title="비밀번호 변경">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit((data) =>
-              jxios
-                .put("/members/" + props.username, {
-                  password: data.newPassword,
-                })
-                .then((res) => {
-                  if (res.status === 200) {
-                    toast.success("비밀번호가 변경되었습니다.");
-                    router.refresh();
-                    form.reset({
-                      newPassword: "",
-                      newPasswordConfirm: "",
-                    });
-                  } else {
-                    toast.error("비밀번호 변경에 문제가 있습니다.");
-                  }
-                })
+    <FormCard title="비밀번호 변경">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit((data) =>
+            jxios
+              .put("/members/" + props.username, {
+                password: data.newPassword,
+              })
+              .then((res) => {
+                if (res.status === 200) {
+                  toast.success("비밀번호가 변경되었습니다.");
+                  router.refresh();
+                  form.reset({
+                    newPassword: "",
+                    newPasswordConfirm: "",
+                  });
+                } else {
+                  toast.error("비밀번호 변경에 문제가 있습니다.");
+                }
+              })
+          )}
+          className="space-y-4"
+        >
+          <FormField
+            control={form.control}
+            name="newPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="새로운 비밀번호를 입력해주세요"
+                    defaultValue=""
+                    className="h-11 border-gray-200 focus:border-blue-300 focus:ring-blue-200"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="text-sm" />
+              </FormItem>
             )}
-            className="space-y-1"
+          />
+          <FormField
+            control={form.control}
+            name="newPasswordConfirm"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="새로운 비밀번호를 다시 입력해주세요"
+                    className="h-11 border-gray-200 focus:border-blue-300 focus:ring-blue-200"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="text-sm" />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium"
+            disabled={form.formState.isSubmitting || !form.formState.isValid}
           >
-            <FormField
-              control={form.control}
-              name="newPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="w-full">
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="새로운 비밀번호를 입력해주세요."
-                        defaultValue=""
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="newPasswordConfirm"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="w-full">
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="새로운 비밀번호를 다시 입력해주세요."
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              className="h-9 mt-2"
-              disabled={form.formState.isSubmitting || !form.formState.isValid}
-            >
-              변경
-            </Button>
-          </form>
-        </Form>
-      </FormCard>
-    </div>
+            {form.formState.isSubmitting ? "변경 중..." : "비밀번호 변경"}
+          </Button>
+        </form>
+      </Form>
+    </FormCard>
   );
 }

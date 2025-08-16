@@ -1,25 +1,17 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-} from '@/components/ui/card';
-
-type Props = {
+interface FormCardProps {
   title: string;
-  description?: string;
   children: ReactNode;
-};
-export default function FormCard(props: Props) {
+}
+
+export default function FormCard({ title, children }: FormCardProps) {
   return (
-    <Card>
-      <CardHeader>{props.title}</CardHeader>
-      {props.description && (
-        <CardDescription>{props.description}</CardDescription>
-      )}
-      <CardContent>{props.children}</CardContent>
-    </Card>
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="px-6 py-5 border-b border-gray-50">
+        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+      </div>
+      <div className="p-6">{children}</div>
+    </div>
   );
 }

@@ -18,6 +18,7 @@ export default function NotiEmailSetting(props: {
 }) {
   const [checked, setChecked] = useState(props.emailReceive);
   const router = useRouter();
+
   const onCheckboxChange = (checked: CheckedState) =>
     jxios
       .put(
@@ -40,33 +41,38 @@ export default function NotiEmailSetting(props: {
           router.refresh();
         }
       });
+
   return (
     <FormCard title="알림 설정">
-      <div className="items-top flex space-x-2">
-        <Checkbox
-          id="terms1"
-          onCheckedChange={onCheckboxChange}
-          checked={checked}
-        />
-        <div className="grid gap-1.5 leading-none">
-          <label
-            htmlFor="terms1"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            홍보성 이메일 알림 동의
-          </label>
-          <p className="text-sm text-muted-foreground">
-            예술 관련 공지 및 이벤트 안내, 뉴스레터 등 홍보성 이메일 알림에
-            동의합니다.
-          </p>
-          <p className="text-sm text-muted-foreground">
-            {props.emailReceiveUpdatedAt
-              ? `${format(
+      <div className="space-y-4">
+        <div className="flex items-start space-x-3">
+          <Checkbox
+            id="email-notification"
+            onCheckedChange={onCheckboxChange}
+            checked={checked}
+            className="mt-1"
+          />
+          <div className="space-y-2">
+            <label
+              htmlFor="email-notification"
+              className="text-sm font-medium text-gray-900 cursor-pointer"
+            >
+              홍보성 이메일 알림 동의
+            </label>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              예술 관련 공지 및 이벤트 안내, 뉴스레터 등 홍보성 이메일 알림에
+              동의합니다.
+            </p>
+            {props.emailReceiveUpdatedAt && (
+              <p className="text-xs text-gray-500">
+                {format(
                   new Date(props.emailReceiveUpdatedAt),
-                  "yyyy-MM-dd HH:mm:ss"
-                )}에 동의하셨습니다.`
-              : ""}
-          </p>
+                  "yyyy년 MM월 dd일 HH시 mm분"
+                )}
+                에 동의하셨습니다.
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </FormCard>

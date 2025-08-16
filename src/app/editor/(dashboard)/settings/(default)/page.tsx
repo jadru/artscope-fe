@@ -8,13 +8,15 @@ export default function EditorSettingDefault() {
   const { data: user } = useProfile();
 
   return (
-    <>
+    <div className="space-y-6">
       {user && (
         <>
-          <UserNameSetting username={user.username} />
-          <PasswordSetting username={user.username} />
+          <div className="grid gap-6 md:grid-cols-2">
+            <UserNameSetting username={user.username} />
+            <PasswordSetting username={user.username} />
+          </div>
         </>
       )}
-    </>
+    </div>
   );
 }

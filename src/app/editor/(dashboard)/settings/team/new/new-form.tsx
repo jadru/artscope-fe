@@ -74,161 +74,179 @@ export default function NewTeamForm() {
   };
 
   return (
-    <div>
-      <FormCard title="새로운 팀 추가">
+    <div className="space-y-6">
+      {/* 헤더 섹션 */}
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900">새로운 팀 생성</h2>
+        <p className="text-gray-600 mt-1">
+          새로운 팀을 생성하고 멤버들을 초대하세요
+        </p>
+      </div>
+
+      <FormCard title="팀 정보 입력">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit((data) =>
               jxios.post("/api/server/teams/", data).then((res) => {
                 if (res.status === 201) {
-                  toast.success("새로운 팀이 추가되었습니다.");
+                  toast.success("새로운 팀이 생성되었습니다.");
                   router.push("/editor/settings/team");
                 } else {
-                  toast.error("새로운 팀을 추가하는데 실패했습니다.");
+                  toast.error("팀 생성에 실패했습니다.");
                 }
               })
             )}
-            className="flex w-full flex-col gap-1"
+            className="space-y-6"
           >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="w-full">
-                    <FormLabel>팀 이름</FormLabel>
+            <div className="grid gap-6 md:grid-cols-2">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-gray-700">
+                      팀 이름
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="text"
-                        placeholder="팀 이름을 입력해주세요."
-                        defaultValue=""
+                        placeholder="팀 이름을 입력해주세요"
+                        className="h-11 border-gray-200 focus:border-blue-300 focus:ring-blue-200"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
+                    <FormMessage className="text-sm" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="position"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-gray-700">
+                      내 직책
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="팀에서 맡고있는 직책을 입력해주세요"
+                        className="h-11 border-gray-200 focus:border-blue-300 focus:ring-blue-200"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-sm" />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <FormField
               control={form.control}
               name="address"
               render={({ field }) => (
                 <FormItem>
-                  <div className="w-full">
-                    <FormLabel>주소</FormLabel>
+                  <FormLabel className="text-sm font-medium text-gray-700">
+                    팀 주소
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="팀의 주소를 입력해주세요"
+                      className="h-11 border-gray-200 focus:border-blue-300 focus:ring-blue-200"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-sm" />
+                </FormItem>
+              )}
+            />
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <FormField
+                control={form.control}
+                name="profileImage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-gray-700">
+                      프로필 이미지
+                    </FormLabel>
                     <FormControl>
                       <Input
-                        type="text"
-                        placeholder="팀의 주소를 입력해주세요."
-                        defaultValue=""
-                        {...field}
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          if (e.target.files && e.target.files.length > 0) {
+                            const file = e.target.files[0];
+                            const url = await newImageUpload(file);
+                            if (url) {
+                              form.setValue("profileImage", url);
+                            }
+                          }
+                        }}
+                        className="h-11 border-gray-200 focus:border-blue-300 focus:ring-blue-200 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                       />
                     </FormControl>
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="profileImage"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>프로필 이미지</FormLabel>
-                  <Input
-                    type="file"
-                    placeholder="프로필 이미지를 추가해주세요."
-                    defaultValue=""
-                    accept={"image/*"}
-                    onChange={async (e) => {
-                      if (e.target.files && e.target.files.length > 0) {
-                        const file = e.target.files[0];
-                        const url = await newImageUpload(file);
-                        if (url) {
-                          form.setValue("profileImage", url);
-                        }
-                      }
-                    }}
-                    onBlur={field.onBlur}
-                    ref={field.ref}
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="backgroundImage"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>배경 이미지</FormLabel>
-                  <Input
-                    type="file"
-                    placeholder="배경 이미지를 추가해주세요."
-                    defaultValue=""
-                    onChange={async (e) => {
-                      if (e.target.files && e.target.files.length > 0) {
-                        const file = e.target.files[0];
-                        const url = await newImageUpload(file);
-                        if (url) {
-                          form.setValue("backgroundImage", url);
-                        }
-                      }
-                    }}
-                    onBlur={field.onBlur}
-                    ref={field.ref}
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    <FormMessage className="text-sm" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="backgroundImage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-gray-700">
+                      배경 이미지
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          if (e.target.files && e.target.files.length > 0) {
+                            const file = e.target.files[0];
+                            const url = await newImageUpload(file);
+                            if (url) {
+                              form.setValue("backgroundImage", url);
+                            }
+                          }
+                        }}
+                        className="h-11 border-gray-200 focus:border-blue-300 focus:ring-blue-200 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-sm" />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <FormField
               control={form.control}
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <div className="w-full">
-                    <FormLabel>팀 설명</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        className="h-32"
-                        placeholder="팀 설명을 입력해주세요."
-                        defaultValue=""
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </div>
+                  <FormLabel className="text-sm font-medium text-gray-700">
+                    팀 설명
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="팀에 대한 설명을 입력해주세요"
+                      className="min-h-[120px] border-gray-200 focus:border-blue-300 focus:ring-blue-200 resize-none"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-sm" />
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="position"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="w-full">
-                    <FormLabel>직책</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="팀에서 맡고있는 직책을 입력해주세요."
-                        defaultValue=""
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
+
             <Button
               type="submit"
-              className="h-9 mt-2 self-start"
+              className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium"
               disabled={form.formState.isSubmitting}
             >
-              저장
+              {form.formState.isSubmitting ? "팀 생성 중..." : "팀 생성하기"}
             </Button>
           </form>
         </Form>
