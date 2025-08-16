@@ -91,14 +91,15 @@ const EditPost = () => {
     ],
     content: "<p></p>",
     autofocus: true,
+    immediatelyRender: false,
   });
 
   const handleSubmitPostButton = useDebounce(async () => {
     try {
       setIsUpload(true);
 
-      const content = editor?.storage.markdown.getMarkdown() || "";
-      if (content === "") {
+      const content = editor?.getHTML() || "";
+      if (content === "<p></p>" || content === "") {
         toast.error("내용을 입력해주세요.");
         setIsUpload(false);
         return;
@@ -129,7 +130,8 @@ const EditPost = () => {
   }, 500);
 
   const handleBackButton = () => {
-    if (editor?.storage.markdown.getMarkdown() !== "") {
+    const content = editor?.getHTML() || "";
+    if (content !== "<p></p>" && content !== "") {
       if (confirm("수정 중인 내용이 있습니다. 정말로 나가시겠습니까?")) {
         push("/");
       }
@@ -185,202 +187,248 @@ const EditPost = () => {
   };
 
   return (
-    <>
-      <div className="bg-default-50 fixed top-0 overflow-x-scroll z-50 flex h-16 w-full bg-white/60 backdrop-blur max-w-[766px] items-center justify-between gap-5 border-b px-5">
-        <button onClick={handleBackButton}>
-          <BiArrowBack className="h-6 w-6 hover:text-blue-600" />
-        </button>
-        <div className="flex items-center justify-center gap-5">
-          <button
-            onClick={() => {
-              if (editor) {
-                editor.chain().focus().toggleBold().run();
-              }
-            }}
-            className={`hover:text-primary ${
-              editor?.isActive("bold") ? "text-black" : "text-gray-400"
-            }`}
-          >
-            <BiBold size={25} />
-          </button>
-          <button
-            onClick={() => {
-              if (editor) {
-                editor.chain().focus().toggleItalic().run();
-              }
-            }}
-            className={`hover:text-primary ${
-              editor?.isActive("italic") ? "text-black" : "text-gray-400"
-            }`}
-          >
-            <BiItalic size={25} />
-          </button>
-          <button
-            onClick={() => {
-              if (editor) {
-                editor.chain().focus().toggleStrike().run();
-              }
-            }}
-            className={`hover:text-primary ${
-              editor?.isActive("strike") ? "text-black" : "text-gray-400"
-            }`}
-          >
-            <BiStrikethrough size={25} />
-          </button>
-          <button
-            onClick={() => {
-              if (editor) {
-                editor.chain().focus().toggleUnderline().run();
-              }
-            }}
-            className={`hover:text-primary ${
-              editor?.isActive("underline") ? "text-black" : "text-gray-400"
-            }`}
-          >
-            <BiUnderline size={25} />
-          </button>
-          <hr className="h-6 border-l border-gray-400" />
-          <button
-            onClick={() => {
-              if (editor) {
-                editor.chain().focus().setHeading({ level: 1 }).run();
-              }
-            }}
-            className={`hover:text-primary font-bold ${
-              editor && editor.isActive("heading", { level: 3 })
-                ? "text-black"
-                : "text-gray-400"
-            }`}
-          >
-            H1
-          </button>
-          <button
-            onClick={() => {
-              if (editor) {
-                editor.chain().focus().setHeading({ level: 2 }).run();
-              }
-            }}
-            className={`hover:text-primary font-bold ${
-              editor && editor.isActive("heading", { level: 3 })
-                ? "text-black"
-                : "text-gray-400"
-            }`}
-          >
-            H2
-          </button>
-          <button
-            onClick={() => {
-              if (editor) {
-                editor.chain().focus().setHeading({ level: 3 }).run();
-              }
-            }}
-            className={`hover:text-primary font-bold ${
-              editor && editor.isActive("heading", { level: 3 })
-                ? "text-black"
-                : "text-gray-400"
-            }`}
-          >
-            H3
-          </button>
-          <hr className="h-6 border-l border-gray-400" />
-          <button
-            onClick={() => {
-              if (editor) {
-                editor.chain().focus().toggleBulletList().run();
-              }
-            }}
-            className={`hover:text-primary ${
-              editor?.isActive("bulletList") ? "text-black" : "text-gray-400"
-            }`}
-          >
-            <BiListUl size={25} />
-          </button>
-          <button
-            onClick={() => {
-              if (editor) {
-                editor.chain().focus().toggleOrderedList().run();
-              }
-            }}
-            className={`hover:text-primary ${
-              editor?.isActive("orderedList") ? "text-black" : "text-gray-400"
-            }`}
-          >
-            <BiListOl size={25} />
-          </button>
-          <hr className="h-6 border-l border-gray-400" />
-          <label htmlFor="image-upload">
-            <BiImage
-              size={25}
-              className={`hover:text-primary cursor-pointer ${
-                insertImage.length > 0 ? "text-black" : "text-gray-400"
-              }`}
-            />
-          </label>
-          <input
-            id="image-upload"
-            type="file"
-            accept="image/*"
-            multiple
-            className="hidden"
-            onChange={(e) => {
-              handleFileUpload(e.target.files);
-            }}
-          />
+    <div className="min-h-screen bg-white">
+      {/* 상단 툴바 */}
+      <div className="sticky top-0 z-50 bg-white border-b border-gray-200">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="flex items-center justify-between h-16">
+            {/* 뒤로가기 버튼 */}
+            <button
+              onClick={handleBackButton}
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-lg hover:bg-gray-100"
+            >
+              <BiArrowBack className="h-5 w-5" />
+              <span className="text-sm font-medium hidden sm:inline">
+                나가기
+              </span>
+            </button>
+
+            {/* 툴바 섹션 */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => editor?.chain().focus().toggleBold().run()}
+                className={`p-2 rounded-md transition-colors ${
+                  editor?.isActive("bold")
+                    ? "bg-gray-100 text-gray-900"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`}
+                title="굵게"
+              >
+                <BiBold className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => editor?.chain().focus().toggleItalic().run()}
+                className={`p-2 rounded-md transition-colors ${
+                  editor?.isActive("italic")
+                    ? "bg-gray-100 text-gray-900"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`}
+                title="기울임"
+              >
+                <BiItalic className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => editor?.chain().focus().toggleUnderline().run()}
+                className={`p-2 rounded-md transition-colors ${
+                  editor?.isActive("underline")
+                    ? "bg-gray-100 text-gray-900"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`}
+                title="밑줄"
+              >
+                <BiUnderline className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => editor?.chain().focus().toggleStrike().run()}
+                className={`p-2 rounded-md transition-colors ${
+                  editor?.isActive("strike")
+                    ? "bg-gray-100 text-gray-900"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`}
+                title="취소선"
+              >
+                <BiStrikethrough className="h-4 w-4" />
+              </button>
+
+              <div className="w-px h-6 bg-gray-300 mx-2" />
+
+              <button
+                onClick={() =>
+                  editor?.chain().focus().setHeading({ level: 1 }).run()
+                }
+                className={`px-3 py-1 rounded-md text-sm font-bold transition-colors ${
+                  editor?.isActive("heading", { level: 1 })
+                    ? "bg-gray-100 text-gray-900"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`}
+                title="제목 1"
+              >
+                H1
+              </button>
+              <button
+                onClick={() =>
+                  editor?.chain().focus().setHeading({ level: 2 }).run()
+                }
+                className={`px-3 py-1 rounded-md text-sm font-bold transition-colors ${
+                  editor?.isActive("heading", { level: 2 })
+                    ? "bg-gray-100 text-gray-900"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`}
+                title="제목 2"
+              >
+                H2
+              </button>
+              <button
+                onClick={() =>
+                  editor?.chain().focus().setHeading({ level: 3 }).run()
+                }
+                className={`px-3 py-1 rounded-md text-sm font-bold transition-colors ${
+                  editor?.isActive("heading", { level: 3 })
+                    ? "bg-gray-100 text-gray-900"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`}
+                title="제목 3"
+              >
+                H3
+              </button>
+
+              <div className="w-px h-6 bg-gray-300 mx-2" />
+
+              <button
+                onClick={() => editor?.chain().focus().toggleBulletList().run()}
+                className={`p-2 rounded-md transition-colors ${
+                  editor?.isActive("bulletList")
+                    ? "bg-gray-100 text-gray-900"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`}
+                title="글머리 기호 목록"
+              >
+                <BiListUl className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() =>
+                  editor?.chain().focus().toggleOrderedList().run()
+                }
+                className={`p-2 rounded-md transition-colors ${
+                  editor?.isActive("orderedList")
+                    ? "bg-gray-100 text-gray-900"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`}
+                title="번호 매기기 목록"
+              >
+                <BiListOl className="h-4 w-4" />
+              </button>
+
+              <div className="w-px h-6 bg-gray-300 mx-2" />
+
+              <label
+                htmlFor="image-upload"
+                className={`p-2 rounded-md transition-colors cursor-pointer ${
+                  insertImage.length > 0
+                    ? "bg-gray-100 text-gray-900"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`}
+                title="이미지 추가"
+              >
+                <BiImage className="h-4 w-4" />
+              </label>
+              <input
+                id="image-upload"
+                type="file"
+                accept="image/*"
+                multiple
+                className="hidden"
+                onChange={(e) => handleFileUpload(e.target.files)}
+              />
+            </div>
+
+            {/* 작성 버튼 */}
+            <Button
+              onClick={handleSubmitPostButton}
+              disabled={isUpload}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors disabled:opacity-50"
+            >
+              {isUpload ? "작성 중..." : "작성하기"}
+            </Button>
+          </div>
         </div>
-        <div></div>
       </div>
-      <div className="h-16"></div>
-      <input
-        id="title"
-        className="w-full h-16 px-3 text-3xl focus:outline-none -mb-2"
-        placeholder="제목을 입력하세요."
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === "Tab") {
-            e.preventDefault();
-            editor?.chain().focus().run();
-          }
-        }}
-      />
-      <div
-        className="w-full overflow-y-scroll p-3 min-h-[calc(100vh-64px-64px-64px)] cursor-text !focus:outline-none"
-        onClick={(e) => {
-          if (e.target === e.currentTarget) {
-            editor?.chain().focus().run();
-          }
-        }}
-      >
-        {editor && <EditorContent editor={editor} className="min-h-[80px]" />}
-      </div>
-      <div className="h-16"></div>
-      <div className="bg-default-50 fixed bottom-0 z-50 flex h-16 w-full gap-2 bg-white/60 backdrop-blur max-w-[766px] items-center justify-end border-t px-3">
-        <Select onValueChange={(value) => setTeam(value)}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="팀 아티클로 작성" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="0">{user?.name}</SelectItem>
-              {user?.teams.map((team) => (
-                <SelectItem key={team.id} value={String(team.id)}>
-                  {team.name}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Button
-          onClick={handleSubmitPostButton}
-          disabled={isUpload}
-          color="primary"
-          className={`
-            h-12 ${isUpload ? "opacity-20" : ""}`}
+
+      {/* 메인 편집 영역 */}
+      <div className="max-w-4xl mx-auto px-6 py-8">
+        {/* 제목 입력 */}
+        <input
+          id="title"
+          className="w-full text-3xl sm:text-4xl font-bold text-gray-900 placeholder-gray-400 focus:outline-none mb-8"
+          placeholder="제목을 입력하세요"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === "Tab") {
+              e.preventDefault();
+              editor?.chain().focus().run();
+            }
+          }}
+        />
+
+        {/* 에디터 영역 */}
+        <div
+          className="min-h-[50vh] cursor-text focus:outline-none"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              editor?.chain().focus().run();
+            }
+          }}
         >
-          작성
-        </Button>
+          {editor && (
+            <EditorContent
+              editor={editor}
+              className="prose prose-lg max-w-none focus:outline-none"
+            />
+          )}
+        </div>
+
+        {/* 하단 설정 */}
+        <div className="mt-8 pt-8 border-t border-gray-200">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-gray-600 font-medium">작성자:</span>
+              <Select onValueChange={(value) => setTeam(value)} value={team}>
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder="작성자를 선택하세요" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="0" className="flex items-center gap-2">
+                      <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                        {user?.name?.charAt(0).toUpperCase()}
+                      </div>
+                      {user?.name}
+                    </SelectItem>
+                    {user?.teams.map((team) => (
+                      <SelectItem
+                        key={team.id}
+                        value={String(team.id)}
+                        className="flex items-center gap-2"
+                      >
+                        <div className="w-4 h-4 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                          {team.name.charAt(0).toUpperCase()}
+                        </div>
+                        {team.name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="text-sm text-gray-500">
+              {title.length > 0 && `제목: ${title.length}자`}
+            </div>
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
