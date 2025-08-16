@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
-import * as yup from 'yup';
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import * as yup from "yup";
 
-import FormCard from '@/components/FormCard';
-import { Button } from '@/components/ui/button';
+import FormCard from "@/components/FormCard";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -15,12 +15,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
-import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from '@/constant/env';
-import jxios from '@/utils/jxios';
+import { NEXT_PUBLIC_MEDIA_STORAGE_URL } from "@/constant/env";
+import jxios from "@/utils/jxios";
 
 interface NewTeamInputs {
   name: string;
@@ -32,12 +32,12 @@ interface NewTeamInputs {
 }
 
 const newTeamSchema = yup.object().shape({
-  name: yup.string().required('팀 이름을 입력해주세요.'),
-  address: yup.string().required('주소를 입력해주세요.'),
-  profileImage: yup.string().required('프로필 이미지를 추가해주세요.'),
-  backgroundImage: yup.string().required('배경 이미지를 추가해주세요.'),
-  description: yup.string().required('팀 설명을 입력해주세요.'),
-  position: yup.string().required('팀에서 맡고있는 직책을 입력해주세요.'),
+  name: yup.string().required("팀 이름을 입력해주세요."),
+  address: yup.string().required("주소를 입력해주세요."),
+  profileImage: yup.string().required("프로필 이미지를 추가해주세요."),
+  backgroundImage: yup.string().required("배경 이미지를 추가해주세요."),
+  description: yup.string().required("팀 설명을 입력해주세요."),
+  position: yup.string().required("팀에서 맡고있는 직책을 입력해주세요."),
 });
 
 export default function NewTeamForm() {
@@ -47,13 +47,13 @@ export default function NewTeamForm() {
   const router = useRouter();
 
   const newImageUpload = async (file: File) => {
-    const response = await fetch('/api/upload', {
-      method: 'POST',
+    const response = await fetch("/upload", {
+      method: "POST",
       body: JSON.stringify({
         contentType: file.type,
       }),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
     if (response.ok) {
@@ -62,45 +62,46 @@ export default function NewTeamForm() {
       Object.entries(data.fields).forEach(([key, value]) => {
         formData.append(key, value as string);
       });
-      formData.append('file', file);
+      formData.append("file", file);
       const responseUpload = await fetch(data.url, {
-        method: 'POST',
+        method: "POST",
         body: formData,
       });
       if (responseUpload.ok) {
-        return NEXT_PUBLIC_MEDIA_STORAGE_URL + '/' + data.fields.key;
+        return NEXT_PUBLIC_MEDIA_STORAGE_URL + "/" + data.fields.key;
       }
     }
   };
 
   return (
     <div>
-      <FormCard title='새로운 팀 추가'>
+      <FormCard title="새로운 팀 추가">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit((data) =>
-              jxios.post('/api/teams/', data).then((res) => {
+              jxios.post("/api/server/teams/", data).then((res) => {
                 if (res.status === 201) {
-                  toast.success('새로운 팀이 추가되었습니다.');
-                  router.push('/editor/settings/team');
+                  toast.success("새로운 팀이 추가되었습니다.");
+                  router.push("/editor/settings/team");
                 } else {
-                  toast.error('새로운 팀을 추가하는데 실패했습니다.');
+                  toast.error("새로운 팀을 추가하는데 실패했습니다.");
                 }
               })
             )}
-            className='flex w-full flex-col gap-1'>
+            className="flex w-full flex-col gap-1"
+          >
             <FormField
               control={form.control}
-              name='name'
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <div className='w-full'>
+                  <div className="w-full">
                     <FormLabel>팀 이름</FormLabel>
                     <FormControl>
                       <Input
-                        type='text'
-                        placeholder='팀 이름을 입력해주세요.'
-                        defaultValue=''
+                        type="text"
+                        placeholder="팀 이름을 입력해주세요."
+                        defaultValue=""
                         {...field}
                       />
                     </FormControl>
@@ -111,16 +112,16 @@ export default function NewTeamForm() {
             />
             <FormField
               control={form.control}
-              name='address'
+              name="address"
               render={({ field }) => (
                 <FormItem>
-                  <div className='w-full'>
+                  <div className="w-full">
                     <FormLabel>주소</FormLabel>
                     <FormControl>
                       <Input
-                        type='text'
-                        placeholder='팀의 주소를 입력해주세요.'
-                        defaultValue=''
+                        type="text"
+                        placeholder="팀의 주소를 입력해주세요."
+                        defaultValue=""
                         {...field}
                       />
                     </FormControl>
@@ -131,21 +132,21 @@ export default function NewTeamForm() {
             />
             <FormField
               control={form.control}
-              name='profileImage'
+              name="profileImage"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>프로필 이미지</FormLabel>
                   <Input
-                    type='file'
-                    placeholder='프로필 이미지를 추가해주세요.'
-                    defaultValue=''
-                    accept={'image/*'}
+                    type="file"
+                    placeholder="프로필 이미지를 추가해주세요."
+                    defaultValue=""
+                    accept={"image/*"}
                     onChange={async (e) => {
                       if (e.target.files && e.target.files.length > 0) {
                         const file = e.target.files[0];
                         const url = await newImageUpload(file);
                         if (url) {
-                          form.setValue('profileImage', url);
+                          form.setValue("profileImage", url);
                         }
                       }
                     }}
@@ -158,20 +159,20 @@ export default function NewTeamForm() {
             />
             <FormField
               control={form.control}
-              name='backgroundImage'
+              name="backgroundImage"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>배경 이미지</FormLabel>
                   <Input
-                    type='file'
-                    placeholder='배경 이미지를 추가해주세요.'
-                    defaultValue=''
+                    type="file"
+                    placeholder="배경 이미지를 추가해주세요."
+                    defaultValue=""
                     onChange={async (e) => {
                       if (e.target.files && e.target.files.length > 0) {
                         const file = e.target.files[0];
                         const url = await newImageUpload(file);
                         if (url) {
-                          form.setValue('backgroundImage', url);
+                          form.setValue("backgroundImage", url);
                         }
                       }
                     }}
@@ -184,16 +185,16 @@ export default function NewTeamForm() {
             />
             <FormField
               control={form.control}
-              name='description'
+              name="description"
               render={({ field }) => (
                 <FormItem>
-                  <div className='w-full'>
+                  <div className="w-full">
                     <FormLabel>팀 설명</FormLabel>
                     <FormControl>
                       <Textarea
-                        className='h-32'
-                        placeholder='팀 설명을 입력해주세요.'
-                        defaultValue=''
+                        className="h-32"
+                        placeholder="팀 설명을 입력해주세요."
+                        defaultValue=""
                         {...field}
                       />
                     </FormControl>
@@ -204,16 +205,16 @@ export default function NewTeamForm() {
             />
             <FormField
               control={form.control}
-              name='position'
+              name="position"
               render={({ field }) => (
                 <FormItem>
-                  <div className='w-full'>
+                  <div className="w-full">
                     <FormLabel>직책</FormLabel>
                     <FormControl>
                       <Input
-                        type='text'
-                        placeholder='팀에서 맡고있는 직책을 입력해주세요.'
-                        defaultValue=''
+                        type="text"
+                        placeholder="팀에서 맡고있는 직책을 입력해주세요."
+                        defaultValue=""
                         {...field}
                       />
                     </FormControl>
@@ -223,9 +224,10 @@ export default function NewTeamForm() {
               )}
             />
             <Button
-              type='submit'
-              className='h-9 mt-2 self-start'
-              disabled={form.formState.isSubmitting}>
+              type="submit"
+              className="h-9 mt-2 self-start"
+              disabled={form.formState.isSubmitting}
+            >
               저장
             </Button>
           </form>

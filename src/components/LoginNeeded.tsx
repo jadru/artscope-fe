@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 
-import { useUser } from '@/states';
+import { useProfile } from "@/auth/use-profile";
 
 export default function LoginNeeded({ href }: { href: string }) {
-  const { isLogin } = useUser();
-  return !isLogin ? (
+  const { data: user } = useProfile();
+  return !user ? (
     <Link href={href}>
-      <Button color='primary' className='opacity-50 hover:opacity-100'>
+      <Button color="primary" className="opacity-50 hover:opacity-100">
         로그인이 필요합니다.
       </Button>
     </Link>

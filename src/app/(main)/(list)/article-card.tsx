@@ -16,7 +16,7 @@ export default function ArticleCard({
     <Link
       href={`/article/${article.id}`}
       key={article.id}
-      className="relative flex flex-col px-2 pt-2 bg-gray-100 md:bg-transparent md:px-0 md:pt-0 items-stretch justify-center md:aspect-square size-full rounded-lg overflow-hidden border-2 border-gray-100"
+      className="relative flex group flex-col bg-gray-100 md:bg-transparent p-0 items-stretch justify-center md:aspect-4/5 size-full rounded-lg overflow-hidden"
     >
       <Image
         src={article.mediaUrls[0]}
@@ -28,7 +28,7 @@ export default function ArticleCard({
           setIsError(true);
         }}
         onLoad={() => setIsLoading(false)}
-        className="object-cover rounded-xl md:rounded-none drop-shadow-xl md:absolute inset-0 size-full aspect-square w-full h-full"
+        className="object-cover scale-105 rounded-xl md:rounded-none drop-shadow-xl md:absolute inset-0 size-full aspect-4/5 w-full h-full"
       />
       {isLoading && <Skeleton className="absolute inset-0 size-full" />}
       {isError && (
@@ -39,17 +39,21 @@ export default function ArticleCard({
         </div>
       )}
       <div
-        className={`${
-          isError ? "opacity-100" : "md:opacity-0"
-        } text-gray-500 md:text-gray-300 md:hover:opacity-100 *:w-full transition-opacity duration-300 md:absolute inset-0 flex pt-2.5 p-3 md:pr-2 md:p-2 flex-col items-center justify-center md:bg-black/50 px-4`}
+        className={`md:text-gray-300 absolute inset-0 flex flex-col items-center justify-end`}
       >
-        <p className="text-sm text-center">{article.categoryName}</p>
-        <h3 className="text-sm font-bold text-center text-gray-700 md:text-white truncate">
-          {standardLabel(article.title)}
-        </h3>
-        <p className="text-sm text-center">
-          by {standardLabel(article.author.authorName)}
-        </p>
+        <div className="self-end bg-linear-to-tr from-black/50 *:w-full transition-opacity md:opacity-0 md:group-hover:opacity-100 to-transparent w-full h-auto pt-2.5 p-3 md:pr-2 px-4 flex flex-col justify-end">
+          <h3 className="text-base text-left text-white truncate">
+            {standardLabel(article.title)}
+          </h3>
+          <p className="text-sm text-left flex gap-1">
+            <span className="text-gray-300 uppercase font-light">
+              {article.categoryName}
+            </span>
+            <span className="text-gray-100">
+              by {standardLabel(article.author.authorName)}
+            </span>
+          </p>
+        </div>
       </div>
     </Link>
   );

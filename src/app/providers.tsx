@@ -1,23 +1,20 @@
-'use client';
-import * as Cronitor from '@cronitorio/cronitor-rum';
+"use client";
+import * as Cronitor from "@cronitorio/cronitor-rum";
 import {
   QueryCache,
   QueryClient,
   QueryClientProvider,
-} from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+} from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-import useUserHook from '@/hooks/useUser';
-
-import { CRONITOR_ANALYTICS_KEY } from '@/constant/env';
+import { CRONITOR_ANALYTICS_KEY } from "@/constant/env";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  useUserHook();
   useEffect(() => {
-    Cronitor.load(CRONITOR_ANALYTICS_KEY ?? '', {
-      debug: process.env.NODE_ENV === 'development',
+    Cronitor.load(CRONITOR_ANALYTICS_KEY ?? "", {
+      debug: process.env.NODE_ENV === "development",
     });
   }, []);
   const [queryClient] = useState(

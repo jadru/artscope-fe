@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import NotiEmailSetting from '@/app/editor/(dashboard)/settings/notification/noti-setting';
-import { useUser } from '@/states';
+import NotiEmailSetting from "@/app/editor/(dashboard)/settings/notification/noti-setting";
+import { useProfile } from "@/auth/use-profile";
 
 export default function ArtistSettings() {
-  const { user } = useUser();
+  const { data: user } = useProfile();
 
   return (
     <>

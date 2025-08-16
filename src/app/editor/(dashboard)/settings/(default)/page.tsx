@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import PasswordSetting from '@/app/editor/(dashboard)/settings/(default)/password-setting';
-import UserNameSetting from '@/app/editor/(dashboard)/settings/(default)/username-setting';
-import { useUser } from '@/states';
+import PasswordSetting from "@/app/editor/(dashboard)/settings/(default)/password-setting";
+import UserNameSetting from "@/app/editor/(dashboard)/settings/(default)/username-setting";
+import { useProfile } from "@/auth/use-profile";
 
 export default function EditorSettingDefault() {
-  const { user } = useUser();
+  const { data: user } = useProfile();
 
   return (
     <>

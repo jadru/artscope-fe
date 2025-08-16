@@ -1,30 +1,30 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { BiSolidEdit } from 'react-icons/bi';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import { BiSolidEdit } from "react-icons/bi";
+import { toast } from "react-toastify";
 
-import ASNextImage from '@/components/ASNextImage';
+import ASNextImage from "@/components/ASNextImage";
 
-import { useUser } from '@/states';
-import jxios from '@/utils/jxios';
+import jxios from "@/utils/jxios";
 
-import { profileApiResponseType } from '@/types/profile';
+import { profileApiResponseType } from "@/types/profile";
+import { useProfile } from "@/auth/use-profile";
 
 const fetchProfile = async (): Promise<profileApiResponseType> =>
   await jxios
-    .get('/api/members/profile')
+    .get("/api/server/members/profile")
     .then((res) => res.data as profileApiResponseType);
 
 export default function SettingsPage() {
-  const { user, isLogin } = useUser();
+  const { data: user } = useProfile();
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [data, setData] = useState<profileApiResponseType>();
 
   useEffect(() => {
-    if (!isLogin) return;
+    if (!user) return;
     fetchProfile().then((res) => setData(res));
-  }, [isLogin, user?.picture]);
+  }, [user?.picture]);
 
   const handleProfileImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
@@ -32,53 +32,54 @@ export default function SettingsPage() {
     if (!e.target.files) return;
     const file = e.target.files[0];
     const formData = new FormData();
-    formData.append('profile', file);
+    formData.append("profile", file);
     const res = await jxios.put(
-      '/api/members/' + data?.username + '/picture',
+      "/api/server/members/" + data?.username + "/picture",
       formData,
       {
         headers: {
-          'Content-Type': 'multipart/form-data',
-          accept: '*/*',
+          "Content-Type": "multipart/form-data",
+          accept: "*/*",
         },
       }
     );
     if (res.status === 200) {
       const profile = res.data as profileApiResponseType;
       setData(profile);
-      toast.success('프로필 사진이 변경되었습니다.');
+      toast.success("프로필 사진이 변경되었습니다.");
     }
   };
 
   return data ? (
     <>
-      <div className='flex flex-col items-center justify-between'>
+      <div className="flex flex-col items-center justify-between">
         <button
           onClick={() => inputRef?.current?.click()}
-          className='group relative my-2'>
+          className="group relative my-2"
+        >
           {data.picture ? (
             <ASNextImage
               src={data.picture}
-              alt='프로필 사진'
+              alt="프로필 사진"
               width={150}
               height={150}
-              className='h-48 w-48 rounded-full object-cover'
+              className="h-48 w-48 rounded-full object-cover"
             />
           ) : (
-            <div className='bg-default-200 h-48 w-48 rounded-full object-cover'></div>
+            <div className="bg-default-200 h-48 w-48 rounded-full object-cover"></div>
           )}
-          <div className='absolute top-0 flex h-48 w-48 items-center justify-center rounded-full bg-black text-white opacity-0 transition group-hover:opacity-50'>
+          <div className="absolute top-0 flex h-48 w-48 items-center justify-center rounded-full bg-black text-white opacity-0 transition group-hover:opacity-50">
             프로필 사진 변경
           </div>
-          <div className='absolute bottom-2 right-2 text-2xl text-white bg-blue-500 rounded-3xl p-2'>
+          <div className="absolute bottom-2 right-2 text-2xl text-white bg-blue-500 rounded-3xl p-2">
             <BiSolidEdit size={21} />
           </div>
         </button>
         <input
-          type='file'
-          className='hidden'
+          type="file"
+          className="hidden"
           ref={inputRef}
-          accept='image/jpg, image/png, image/jpeg, image/gif'
+          accept="image/jpg, image/png, image/jpeg, image/gif"
           onChange={handleProfileImageUpload}
         />
       </div>
@@ -110,6 +111,6 @@ export default function SettingsPage() {
       {/* )} */}
     </>
   ) : (
-    '로딩 중...'
+    "로딩 중..."
   );
 }

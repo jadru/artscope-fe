@@ -1,19 +1,14 @@
-import type { NextConfig } from 'next';
-
+import type { NextConfig } from "next";
 
 const config: NextConfig = {
   eslint: {
-    dirs: ['src'],
+    dirs: ["src"],
   },
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
-        destination: process.env.NEXT_PUBLIC_API_URL + '/api/:path*',
-      },
-      {
-        source: '/kakaomap/:path*',
-        destination: 'https://dapi.kakao.com/v2' + '/:path*',
+        source: "/kakaomap/:path*",
+        destination: "https://dapi.kakao.com/v2" + "/:path*",
       },
     ];
   },
@@ -21,12 +16,12 @@ const config: NextConfig = {
   reactStrictMode: true,
 
   images: {
-    domains: [process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL ?? ''],
-    loader: 'custom',
-    loaderFile: './src/utils/imageLoader.ts',
+    domains: [process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL ?? ""],
+    loader: "custom",
+    loaderFile: "./src/utils/imageLoader.ts",
   },
 
   compress: true,
-}
+};
 
 export default config;

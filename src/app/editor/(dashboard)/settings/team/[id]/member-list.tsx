@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useQuery } from '@tanstack/react-query';
-import { format } from 'date-fns';
-import { useState } from 'react';
-import { toast } from 'react-toastify';
+import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
-import ASNextImage from '@/components/ASNextImage';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import ASNextImage from "@/components/ASNextImage";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -16,7 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,12 +24,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-import ChangePositionDialog from '@/app/editor/(dashboard)/settings/team/[id]/change-position-dialog';
-import jxios from '@/utils/jxios';
+import ChangePositionDialog from "@/app/editor/(dashboard)/settings/team/[id]/change-position-dialog";
+import jxios from "@/utils/jxios";
 
 type TeamMemberResponseType = {
   teamUsers: {
@@ -44,27 +44,28 @@ type TeamMemberResponseType = {
 };
 
 export default function MemberList(props: { id: string }) {
-  const [addMember, setAddMember] = useState<string>('');
-  const [addPosition, setAddPosition] = useState<string>('');
+  const [addMember, setAddMember] = useState<string>("");
+  const [addPosition, setAddPosition] = useState<string>("");
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const query = useQuery({
-    queryKey: ['team', props.id],
+    queryKey: ["team", props.id],
     queryFn: async () =>
       await jxios
-        .get(`/api/teams/${props.id}/people`)
+        .get(`/api/server/teams/${props.id}/people`)
         .then((res) => res.data as TeamMemberResponseType),
   });
   return (
     <Card>
       <CardHeader>
-        <div className='w-full flex justify-between'>
+        <div className="w-full flex justify-between">
           <p>멤버 관리</p>
           <Dialog open={modalOpen} onOpenChange={setModalOpen}>
             <DialogTrigger>
               <Button
                 onClick={() => {
                   setModalOpen(true);
-                }}>
+                }}
+              >
                 멤버 추가
               </Button>
             </DialogTrigger>
@@ -72,24 +73,24 @@ export default function MemberList(props: { id: string }) {
               <DialogHeader>
                 <DialogTitle>멤버를 추가하려면 아이디를 입력하세요</DialogTitle>
                 <DialogDescription>
-                  <div className='py-3 space-y-2'>
-                    <Label htmlFor='username' className='text-right'>
+                  <div className="py-3 space-y-2">
+                    <Label htmlFor="username" className="text-right">
                       새로운 멤버의 아이디
                     </Label>
                     <Input
-                      id='username'
-                      placeholder='username'
-                      className='col-span-3'
+                      id="username"
+                      placeholder="username"
+                      className="col-span-3"
                       value={addMember}
                       onChange={(e) => setAddMember(e.target.value)}
                     />
-                    <Label htmlFor='position' className='text-right'>
+                    <Label htmlFor="position" className="text-right">
                       직책
                     </Label>
                     <Input
-                      id='position'
-                      placeholder='position'
-                      className='col-span-3'
+                      id="position"
+                      placeholder="position"
+                      className="col-span-3"
                       value={addPosition}
                       onChange={(e) => setAddPosition(e.target.value)}
                     />
@@ -98,7 +99,7 @@ export default function MemberList(props: { id: string }) {
                       onClick={() => {
                         jxios
                           .post(
-                            '/api/team-users/' + addMember,
+                            "/team-users/" + addMember,
                             {
                               position: addPosition,
                             },
@@ -109,13 +110,14 @@ export default function MemberList(props: { id: string }) {
                             }
                           )
                           .then(() => {
-                            toast.success('멤버가 추가되었습니다.');
+                            toast.success("멤버가 추가되었습니다.");
                             query.refetch();
-                            setAddMember('');
-                            setAddPosition('');
+                            setAddMember("");
+                            setAddPosition("");
                             setModalOpen(false);
                           });
-                      }}>
+                      }}
+                    >
                       추가
                     </Button>
                   </div>
@@ -131,39 +133,40 @@ export default function MemberList(props: { id: string }) {
             query?.data.teamUsers.map((member) => (
               <div
                 key={member.username}
-                className='w-full h-18 flex justify-between items-center rounded-xl p-4'>
-                <div className='flex gap-3 items-center'>
+                className="w-full h-18 flex justify-between items-center rounded-xl p-4"
+              >
+                <div className="flex gap-3 items-center">
                   <ASNextImage
-                    src={member.profileImage ?? 'prod/images/default.jpg'}
+                    src={member.profileImage ?? "prod/images/default.jpg"}
                     alt={member.username}
-                    className='rounded-full object-cover w-12 h-12 border'
+                    className="rounded-full object-cover w-12 h-12 border"
                     width={48}
                     height={48}
                   />
                   <p>{member.username}</p>
-                  <Badge variant='default'>{member.position}</Badge>
-                  {member.role === 'OWNER' && (
-                    <Badge variant='outline'>팀 소유자</Badge>
+                  <Badge variant="default">{member.position}</Badge>
+                  {member.role === "OWNER" && (
+                    <Badge variant="outline">팀 소유자</Badge>
                   )}
                 </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger>
-                    <Button variant='outline'>관리</Button>
+                    <Button variant="outline">관리</Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuLabel>{member.username}</DropdownMenuLabel>
                     <DropdownMenuItem>
                       {format(
                         new Date(member.createdTime),
-                        'yyyy년 MM월 dd일 HH시 mm분'
-                      )}{' '}
+                        "yyyy년 MM월 dd일 HH시 mm분"
+                      )}{" "}
                       가입
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                       {format(
                         new Date(member.updatedTime),
-                        'yyyy년 MM월 dd일 HH시 mm분'
-                      )}{' '}
+                        "yyyy년 MM월 dd일 HH시 mm분"
+                      )}{" "}
                       수정
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />

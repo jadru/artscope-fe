@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import ASNextImage from '@/components/ASNextImage';
+import ASNextImage from "@/components/ASNextImage";
 
-import { useUser } from '@/states';
+import { useProfile } from "@/auth/use-profile";
 
 export default function UserInfo() {
-  const { user } = useUser();
+  const { data: user } = useProfile();
   return user ? (
-    <div className='flex flex-col items-center justify-center'>
+    <div className="flex flex-col items-center justify-center">
       <ASNextImage
-        src={user.picture ?? 'prod/images/default.jpg'}
-        alt='프로필 사진'
+        src={user.picture ?? "prod/images/default.jpg"}
+        alt="프로필 사진"
         width={48}
         height={48}
-        className='border-default-400 h-12 w-12 rounded-full border object-cover'
+        className="border-default-400 h-12 w-12 rounded-full border object-cover"
       />
     </div>
   ) : (

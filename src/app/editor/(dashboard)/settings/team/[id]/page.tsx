@@ -1,13 +1,13 @@
-import MemberList from '@/app/editor/(dashboard)/settings/team/[id]/member-list';
-import ModifyTeamForm from '@/app/editor/(dashboard)/settings/team/[id]/modify-form';
-import { NEXT_PUBLIC_API_URL } from '@/constant/env';
-import jxios from '@/utils/jxios';
+import MemberList from "@/app/editor/(dashboard)/settings/team/[id]/member-list";
+import ModifyTeamForm from "@/app/editor/(dashboard)/settings/team/[id]/modify-form";
+import { NEXT_PUBLIC_API_URL } from "@/constant/env";
+import jxios from "@/utils/jxios";
 
-import { TeamDetailType } from '@/types/team';
+import { TeamDetailType } from "@/types/team";
 
 const fetchTeam = async (id: string) =>
   await jxios
-    .get(`${NEXT_PUBLIC_API_URL}/api/teams/${id}`)
+    .get(`/api/server/teams/${id}`)
     .then((res) => res.data as TeamDetailType);
 
 export default async function Page({

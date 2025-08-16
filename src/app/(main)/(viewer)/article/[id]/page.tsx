@@ -8,16 +8,13 @@ import { standardLabel } from "@/components/StandardLabel";
 
 import ArticleViewerActions from "@/app/(main)/(viewer)/article/[id]/ArticleViewerActions";
 import ArticleViewerComment from "@/app/(main)/(viewer)/article/[id]/ArticleViewerComment";
-import { NEXT_PUBLIC_API_URL } from "@/constant/env";
-import jxios from "@/utils/jxios";
+import { serverArticlesApi } from "@/utils/serverApi";
 import { removeMarkdown } from "@/utils/stringConverter";
 
 import { articleItemType } from "@/types/article";
 
 const fetchArticle = async (id: string) => {
-  return await jxios
-    .get(`${NEXT_PUBLIC_API_URL}/api/magazines/${id}`)
-    .then((res) => res.data as articleItemType);
+  return (await serverArticlesApi.getMagazineById(id)) as articleItemType;
 };
 
 export async function generateMetadata(
