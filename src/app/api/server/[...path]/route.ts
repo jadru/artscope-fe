@@ -109,6 +109,23 @@ async function handleProxyRequest(
         setRefreshToken(tokenData.refreshToken, tokenData.refreshExpiresIn);
       }
     }
+
+    // access token이 여전히 없으면 인증되지 않은 것으로 처리
+    if (!accessToken) {
+      return new NextResponse(
+        JSON.stringify({
+          error: "Unauthorized",
+          message: "인증이 필요합니다.",
+        }),
+        {
+          status: 401,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
     // 프록시 요청 헤더 구성
     const proxyHeaders = new Headers();
 

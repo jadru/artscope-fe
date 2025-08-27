@@ -68,52 +68,86 @@ export default function MembersArticleList({ username }: { username: string }) {
       )}
       {isSuccess && (
         <>
-          <div className="grid grid-cols-2 gap-1 md:gap-2">
+          {/* 작품 그리드 */}
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-8">
             {data?.magazines.map((article) => (
-              <ArticleCard key={article.id} article={article} />
+              <div key={article.id}>
+                <ArticleCard article={article} />
+              </div>
             ))}
           </div>
-          <Pagination className="mt-4">
-            <PaginationContent>
-              {data?.pageInfo.page > 0 && (
-                <>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      onClick={() => setPage(data?.pageInfo.page - 1)}
-                    />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink
-                      onClick={() => setPage(data?.pageInfo.page - 1)}
+
+          {/* 페이지네이션 */}
+          {data && data.pageInfo.totalPages > 1 && (
+            <div className="flex items-center justify-center mt-16 pt-8 border-t border-gray-200">
+              <div className="flex items-center gap-1">
+                {data.pageInfo.page > 0 && (
+                  <button
+                    onClick={() => setPage(data.pageInfo.page - 1)}
+                    className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-colors duration-200"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
-                      {data?.pageInfo.page}
-                    </PaginationLink>
-                  </PaginationItem>
-                </>
-              )}
-              <PaginationItem>
-                <PaginationLink href="#" isActive>
-                  {data?.pageInfo.page + 1}
-                </PaginationLink>
-              </PaginationItem>
-              {data?.pageInfo.page < data?.pageInfo.totalPages - 1 && (
-                <>
-                  <PaginationItem>
-                    <PaginationLink
-                      onClick={() => setPage(data?.pageInfo.page + 1)}
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 페이지 번호들 */}
+                {Array.from(
+                  { length: Math.min(5, data.pageInfo.totalPages) },
+                  (_, i) => {
+                    const pageNum = Math.max(0, data.pageInfo.page - 2) + i;
+                    if (pageNum >= data.pageInfo.totalPages) return null;
+
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => setPage(pageNum)}
+                        className={`w-8 h-8 rounded font-medium text-sm transition-colors duration-200 ${
+                          pageNum === data.pageInfo.page
+                            ? "bg-gray-900 text-white"
+                            : "text-gray-600 hover:text-gray-900"
+                        }`}
+                      >
+                        {pageNum + 1}
+                      </button>
+                    );
+                  }
+                )}
+
+                {data.pageInfo.page < data.pageInfo.totalPages - 1 && (
+                  <button
+                    onClick={() => setPage(data.pageInfo.page + 1)}
+                    className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-colors duration-200"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
-                      {data?.pageInfo.page + 2}
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationNext
-                      onClick={() => setPage(data?.pageInfo.page + 1)}
-                    />
-                  </PaginationItem>
-                </>
-              )}
-            </PaginationContent>
-          </Pagination>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>

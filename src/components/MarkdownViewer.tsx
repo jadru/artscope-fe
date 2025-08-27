@@ -29,7 +29,7 @@ export default function MarkdownViewer({
   return (
     <div
       className={
-        "prose prose-lg max-w-none prose-headings:font-serif prose-headings:tracking-tight prose-p:text-lg prose-p:leading-relaxed prose-img:rounded-xl prose-img:shadow-md prose-blockquote:italic prose-blockquote:border-l-4 prose-blockquote:border-gray-300 prose-blockquote:pl-4 prose-hr:my-12 prose-a:text-blue-600 hover:prose-a:underline dark:prose-invert " +
+        "prose prose-lg max-w-none prose-headings:font-medium prose-headings:text-gray-900 prose-p:text-base prose-p:leading-[1.75] prose-img:rounded-lg prose-blockquote:border-l-2 prose-blockquote:border-gray-200 prose-blockquote:pl-6 prose-hr:my-16 prose-a:text-gray-700 hover:prose-a:text-gray-900 dark:prose-headings:text-gray-100 dark:prose-p:text-gray-300 dark:prose-blockquote:border-gray-700 dark:prose-blockquote:text-gray-300 dark:prose-a:text-gray-400 dark:hover:prose-a:text-gray-200 " +
         className
       }
     >
@@ -37,9 +37,9 @@ export default function MarkdownViewer({
         components={{
           img: ({ node, src, ...props }) =>
             !ignoreImages ? (
-              <figure className="my-8">
+              <figure className="my-12">
                 <ASNextImage
-                  className="mx-auto rounded-xl shadow-md"
+                  className="mx-auto rounded-lg shadow-sm"
                   // @ts-ignore
                   width={900}
                   // @ts-ignore
@@ -49,7 +49,7 @@ export default function MarkdownViewer({
                   alt=""
                 />
                 {props.alt && (
-                  <figcaption className="mt-2 text-center text-sm text-gray-500 italic">
+                  <figcaption className="mt-3 text-center text-sm text-gray-600 dark:text-gray-400">
                     {props.alt}
                   </figcaption>
                 )}
@@ -60,16 +60,16 @@ export default function MarkdownViewer({
           p: ({ node, ...props }) =>
             !ignoreSize ? (
               <p
-                className="leading-relaxed text-lg text-gray-800 dark:text-gray-200 my-6"
+                className="leading-[1.75] text-base text-gray-800 dark:text-gray-200 my-8"
                 {...props}
               />
             ) : (
-              <p className="font-normal" {...props} />
+              <p className="font-normal leading-[1.75]" {...props} />
             ),
           h1: ({ node, ...props }) =>
             !ignoreSize ? (
               <h1
-                className="text-5xl font-extrabold tracking-tight text-center my-8 font-serif"
+                className="text-4xl font-semibold text-center my-12 text-gray-900 dark:text-gray-100"
                 {...props}
               />
             ) : (
@@ -78,7 +78,7 @@ export default function MarkdownViewer({
           h2: ({ node, ...props }) =>
             !ignoreSize ? (
               <h2
-                className="text-3xl font-bold mt-12 mb-6 border-b pb-2 font-serif"
+                className="text-2xl font-medium mt-16 mb-8 text-gray-900 dark:text-gray-100"
                 {...props}
               />
             ) : (
@@ -87,7 +87,7 @@ export default function MarkdownViewer({
           h3: ({ node, ...props }) =>
             !ignoreSize ? (
               <h3
-                className="text-2xl font-semibold mt-8 mb-4 font-serif"
+                className="text-xl font-medium mt-12 mb-6 text-gray-900 dark:text-gray-100"
                 {...props}
               />
             ) : (
@@ -95,13 +95,13 @@ export default function MarkdownViewer({
             ),
           ul: ({ node, ...props }) => (
             <ul
-              className="my-6 ml-6 list-disc marker:text-gray-500 [&>li]:mt-2"
+              className="my-8 ml-6 list-disc marker:text-gray-400 [&>li]:mt-3 [&>li]:leading-[1.75]"
               {...props}
             />
           ),
           blockquote: ({ node, ...props }) => (
             <blockquote
-              className="border-l-4 border-gray-300 pl-4 italic text-gray-700 dark:text-gray-300 my-8"
+              className="border-l-2 border-gray-200 pl-8 text-gray-700 dark:text-gray-300 dark:border-gray-700 my-12"
               {...props}
             />
           ),

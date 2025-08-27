@@ -33,6 +33,8 @@ export const useProfile = (router?: AppRouterInstance) => {
     retry: 1,
     staleTime: 5 * 60 * 1000, // 5분
     gcTime: 10 * 60 * 1000, // 10분
+    // 로그인 상태가 아니라면 쿼리를 실행하지 않음 (에러 처리를 통해 자동으로 처리)
+    enabled: !!getRefreshToken,
   });
 
   // 성공 시 라우터 처리
@@ -45,6 +47,7 @@ export const useProfile = (router?: AppRouterInstance) => {
   // 에러 발생 시 프로필을 undefined로 설정
   useEffect(() => {
     if (query.error) {
+      // 401 에러 (인증 실패)인 경우에도 프로필을 undefined로 설정
       queryClient.setQueryData(["profile"], undefined);
     }
   }, [query.error, queryClient]);
