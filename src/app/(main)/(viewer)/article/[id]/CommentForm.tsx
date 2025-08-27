@@ -35,20 +35,20 @@ export default function CommentForm(props: Props) {
             comment: "",
           });
         })}
-        className="space-y-4"
+        className="space-y-6"
       >
         {props.authorName && (
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 text-sm font-light">
               {props.authorName.charAt(0).toUpperCase()}
             </div>
-            <span className="text-sm font-medium text-gray-700">
+            <span className="text-sm font-light text-gray-700">
               {props.authorName}
             </span>
           </div>
         )}
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           <FormField
             control={form.control}
             name="comment"
@@ -57,11 +57,11 @@ export default function CommentForm(props: Props) {
                 <FormControl>
                   <Textarea
                     placeholder="댓글을 남겨보세요..."
-                    className="resize-none min-h-[80px] border-gray-200 focus:border-blue-300 focus:ring-blue-200 transition-colors rounded-lg"
+                    className="resize-none min-h-[80px] border-gray-300 focus:border-gray-400 transition-colors"
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-sm" />
+                <FormMessage className="text-sm font-light" />
               </FormItem>
             )}
           />
@@ -69,7 +69,7 @@ export default function CommentForm(props: Props) {
           <div className="flex justify-end">
             <Button
               type="submit"
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-sm hover:shadow-md"
+              className="px-6 py-2 bg-gray-900 hover:bg-gray-800 text-white font-light transition-colors"
               disabled={form.formState.isSubmitting}
             >
               {form.formState.isSubmitting ? (

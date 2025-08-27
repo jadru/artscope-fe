@@ -46,21 +46,15 @@ export default function ArticleViewerComment(props: Props) {
       });
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
-        <div className="px-6 py-5 border-b border-gray-50">
-          <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-            <div className="w-1 h-6 bg-blue-500 rounded-full"></div>
-            댓글
-            <span className="text-sm font-normal text-gray-500 ml-2">
-              {props.comments.length}개
-            </span>
-          </h3>
-        </div>
+    <div>
+      <div className="mb-8">
+        <h3 className="text-xl font-light text-gray-900 mb-8">
+          댓글 {props.comments.length > 0 && `(${props.comments.length})`}
+        </h3>
 
-        <div className="p-6 space-y-6">
+        <div className="space-y-8">
           {user ? (
-            <div className="bg-gray-50 rounded-lg p-4">
+            <div>
               <CommentForm
                 onSubmit={onNewCommentSubmit}
                 authorName={user.name}
@@ -68,33 +62,17 @@ export default function ArticleViewerComment(props: Props) {
               />
             </div>
           ) : (
-            <div className="bg-blue-50 border border-blue-100 rounded-lg p-4">
+            <div className="py-4">
               <Link
                 href="/user/login"
-                className="flex items-center gap-2 text-blue-700 hover:text-blue-800 transition-colors"
+                className="text-sm font-light text-gray-600 hover:text-gray-900 transition-colors"
               >
-                <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-3 h-3 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <span className="text-sm font-medium">
-                  <span className="font-semibold">로그인</span> 후 댓글을 작성할
-                  수 있습니다
-                </span>
+                로그인 후 댓글을 작성할 수 있습니다
               </Link>
             </div>
           )}
 
-          <div className="space-y-4">
+          <div className="space-y-6">
             <CommentView
               comments={props.comments}
               replyComment={newReply}

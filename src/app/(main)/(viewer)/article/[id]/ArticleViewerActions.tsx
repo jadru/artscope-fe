@@ -61,9 +61,9 @@ export default function ArticleViewerActions(props: {
       });
   }, 200);
   return (
-    <div className="flex gap-4 items-center justify-start">
+    <div className="flex gap-6 items-center">
       <button
-        className={cn("flex gap-2 group px-3 py-2")}
+        className="flex items-center gap-2 group"
         onClick={() =>
           user
             ? isLiked
@@ -73,26 +73,33 @@ export default function ArticleViewerActions(props: {
         }
       >
         <FaHeart
-          size={24}
+          size={20}
           className={cn(
-            "mr-1 transition-colors duration-300 group-hover:fill-red-200",
-            isLiked && "fill-red-500 group-hover:fill-red-800"
+            "transition-colors duration-200",
+            isLiked
+              ? "fill-red-500 text-red-500"
+              : "text-gray-400 group-hover:text-red-400"
           )}
         />
-        {likes} {isLiked ? "좋아요를 눌렀어요" : "좋아요로 작품을 추천해주세요"}
+        <span className="text-sm font-light text-gray-700">{likes}</span>
       </button>
+
       {(user && user.username === props.authorUsername) || user?.isAdmin ? (
-        <>
-          <Link href={"/editor/" + props.id + "/modify"}>
-            <MdOutlineEdit size={24} />
+        <div className="flex gap-4 items-center">
+          <Link
+            href={"/editor/" + props.id + "/modify"}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <MdOutlineEdit size={20} />
           </Link>
-          <button onClick={handleDelete}>
-            <MdOutlineDelete size={24} />
+          <button
+            onClick={handleDelete}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <MdOutlineDelete size={20} />
           </button>
-        </>
-      ) : (
-        <></>
-      )}
+        </div>
+      ) : null}
     </div>
   );
 }

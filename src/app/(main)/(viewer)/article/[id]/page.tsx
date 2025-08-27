@@ -56,20 +56,25 @@ export default async function Page({
   const article = await fetchArticle(id);
 
   return (
-    <div>
-      <div className="max-w-screen-lg mx-auto py-10 w-full px-2">
-        <h1 className="px-4 text-4xl font-bold text-gray-900 break-keep pt-4">
-          {standardLabel(article.title)}
-        </h1>
-        <h3 className="px-4 text-xl text-gray-500 break-keep mt-2">
-          by {standardLabel(article.author.authorName)}
-        </h3>
-      </div>
-      <div className="max-w-screen-lg px-0 flex flex-col gap-2 items-stretch mx-auto">
-        <div className="bg-default-100 w-full space-y-2 rounded-xl min-h-64 p-4">
+    <div className="min-h-screen bg-white">
+      <div className="max-w-4xl mx-auto px-6 py-16">
+        {/* 작품 헤더 */}
+        <div className="mb-16">
+          <h1 className="text-4xl font-light text-gray-900 leading-tight mb-4">
+            {standardLabel(article.title)}
+          </h1>
+          <p className="text-lg font-light text-gray-600">
+            by {standardLabel(article.author.authorName)}
+          </p>
+        </div>
+
+        {/* 작품 콘텐츠 */}
+        <div className="mb-16">
           <MarkdownViewer>{article.content}</MarkdownViewer>
         </div>
-        <div className="w-full px-4">
+
+        {/* 액션 버튼들 */}
+        <div className="border-t border-gray-200 pt-8 mb-16">
           <ArticleViewerActions
             id={String(article.id)}
             authorUsername={article.author.authorUsername}
@@ -77,7 +82,9 @@ export default async function Page({
             likes={article.likes}
           />
         </div>
-        <div className="w-full p-4">
+
+        {/* 작가 정보 */}
+        <div className="border-t border-gray-200 pt-8 mb-16">
           <ProfileComponent
             name={
               article.author.authorName +
@@ -88,7 +95,9 @@ export default async function Page({
             teamId={article.teamId}
           />
         </div>
-        <div className="w-full px-2.5">
+
+        {/* 댓글 */}
+        <div className="border-t border-gray-200 pt-8">
           <ArticleViewerComment
             id={article.id}
             comments={article.magazineComments}
