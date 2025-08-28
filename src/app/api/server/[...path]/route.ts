@@ -99,8 +99,8 @@ async function handleProxyRequest(
       accessToken = headerToken;
     }
 
-    // 토큰이 없으면 갱신 시도
-    if (!accessToken && !(await cookies()).get("refresh-token")?.value) {
+    // access token이 없고 refresh token이 있으면 갱신 시도
+    if (!accessToken && (await cookies()).get("refresh-token")?.value) {
       const tokenData = await refreshAccessToken();
       if (tokenData && tokenData.accessToken) {
         accessToken = tokenData.accessToken;
@@ -179,7 +179,29 @@ async function handleProxyRequest(
       }
     }
 
-    const proxyResponse = await fetch(targetUrl, fetchOptions);
+    let proxyResponse = await fetch(targetUrl, fetchOptions);
+
+    // 만료 등으로 401이면 한 번만 토큰 갱신 후 재시도
+    if (
+      proxyResponse.status === 401 &&
+      (await cookies()).get("refresh-token")?.value
+    ) {
+      const tokenData = await refreshAccessToken();
+      if (tokenData && tokenData.accessToken) {
+        await setAccessToken(tokenData.accessToken, tokenData.expiresIn);
+        await setRefreshToken(
+          tokenData.refreshToken,
+          tokenData.refreshExpiresIn
+        );
+
+        const retryHeaders = new Headers(proxyHeaders);
+        retryHeaders.set("Authorization", `Bearer ${tokenData.accessToken}`);
+        proxyResponse = await fetch(targetUrl, {
+          ...fetchOptions,
+          headers: retryHeaders,
+        });
+      }
+    }
 
     // 응답 헤더 구성
     const responseHeaders = new Headers();
