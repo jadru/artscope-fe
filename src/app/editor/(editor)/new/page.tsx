@@ -187,15 +187,15 @@ const EditPost = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* 상단 툴바 */}
-      <div className="sticky top-0 z-50 bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="flex items-center justify-between h-16">
+      <div className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="mx-auto max-w-4xl px-4">
+          <div className="flex h-14 items-center justify-between">
             {/* 뒤로가기 버튼 */}
             <button
               onClick={handleBackButton}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-lg hover:bg-gray-100"
+              className="inline-flex items-center gap-2 rounded-md px-2 py-1 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
               <BiArrowBack className="h-5 w-5" />
               <span className="text-sm font-medium hidden sm:inline">
@@ -204,63 +204,48 @@ const EditPost = () => {
             </button>
 
             {/* 툴바 섹션 */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <button
                 onClick={() => editor?.chain().focus().toggleBold().run()}
-                className={`p-2 rounded-md transition-colors ${
-                  editor?.isActive("bold")
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
+                data-active={editor?.isActive("bold")}
+                className={`inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground data-[active=true]:bg-accent data-[active=true]:text-foreground`}
                 title="굵게"
               >
                 <BiBold className="h-4 w-4" />
               </button>
               <button
                 onClick={() => editor?.chain().focus().toggleItalic().run()}
-                className={`p-2 rounded-md transition-colors ${
-                  editor?.isActive("italic")
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
+                data-active={editor?.isActive("italic")}
+                className={`inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground data-[active=true]:bg-accent data-[active=true]:text-foreground`}
                 title="기울임"
               >
                 <BiItalic className="h-4 w-4" />
               </button>
               <button
                 onClick={() => editor?.chain().focus().toggleUnderline().run()}
-                className={`p-2 rounded-md transition-colors ${
-                  editor?.isActive("underline")
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
+                data-active={editor?.isActive("underline")}
+                className={`inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground data-[active=true]:bg-accent data-[active=true]:text-foreground`}
                 title="밑줄"
               >
                 <BiUnderline className="h-4 w-4" />
               </button>
               <button
                 onClick={() => editor?.chain().focus().toggleStrike().run()}
-                className={`p-2 rounded-md transition-colors ${
-                  editor?.isActive("strike")
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
+                data-active={editor?.isActive("strike")}
+                className={`inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground data-[active=true]:bg-accent data-[active=true]:text-foreground`}
                 title="취소선"
               >
                 <BiStrikethrough className="h-4 w-4" />
               </button>
 
-              <div className="w-px h-6 bg-gray-300 mx-2" />
+              <div className="mx-1.5 h-5 w-px bg-border" />
 
               <button
                 onClick={() =>
                   editor?.chain().focus().setHeading({ level: 1 }).run()
                 }
-                className={`px-3 py-1 rounded-md text-sm font-bold transition-colors ${
-                  editor?.isActive("heading", { level: 1 })
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
+                data-active={editor?.isActive("heading", { level: 1 })}
+                className={`inline-flex h-9 items-center rounded-md px-2 text-xs font-semibold text-muted-foreground transition-colors hover:bg-accent hover:text-foreground data-[active=true]:bg-accent data-[active=true]:text-foreground`}
                 title="제목 1"
               >
                 H1
@@ -269,11 +254,8 @@ const EditPost = () => {
                 onClick={() =>
                   editor?.chain().focus().setHeading({ level: 2 }).run()
                 }
-                className={`px-3 py-1 rounded-md text-sm font-bold transition-colors ${
-                  editor?.isActive("heading", { level: 2 })
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
+                data-active={editor?.isActive("heading", { level: 2 })}
+                className={`inline-flex h-9 items-center rounded-md px-2 text-xs font-semibold text-muted-foreground transition-colors hover:bg-accent hover:text-foreground data-[active=true]:bg-accent data-[active=true]:text-foreground`}
                 title="제목 2"
               >
                 H2
@@ -282,25 +264,19 @@ const EditPost = () => {
                 onClick={() =>
                   editor?.chain().focus().setHeading({ level: 3 }).run()
                 }
-                className={`px-3 py-1 rounded-md text-sm font-bold transition-colors ${
-                  editor?.isActive("heading", { level: 3 })
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
+                data-active={editor?.isActive("heading", { level: 3 })}
+                className={`inline-flex h-9 items-center rounded-md px-2 text-xs font-semibold text-muted-foreground transition-colors hover:bg-accent hover:text-foreground data-[active=true]:bg-accent data-[active=true]:text-foreground`}
                 title="제목 3"
               >
                 H3
               </button>
 
-              <div className="w-px h-6 bg-gray-300 mx-2" />
+              <div className="mx-1.5 h-5 w-px bg-border" />
 
               <button
                 onClick={() => editor?.chain().focus().toggleBulletList().run()}
-                className={`p-2 rounded-md transition-colors ${
-                  editor?.isActive("bulletList")
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
+                data-active={editor?.isActive("bulletList")}
+                className={`inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground data-[active=true]:bg-accent data-[active=true]:text-foreground`}
                 title="글머리 기호 목록"
               >
                 <BiListUl className="h-4 w-4" />
@@ -309,25 +285,19 @@ const EditPost = () => {
                 onClick={() =>
                   editor?.chain().focus().toggleOrderedList().run()
                 }
-                className={`p-2 rounded-md transition-colors ${
-                  editor?.isActive("orderedList")
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
+                data-active={editor?.isActive("orderedList")}
+                className={`inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground data-[active=true]:bg-accent data-[active=true]:text-foreground`}
                 title="번호 매기기 목록"
               >
                 <BiListOl className="h-4 w-4" />
               </button>
 
-              <div className="w-px h-6 bg-gray-300 mx-2" />
+              <div className="mx-1.5 h-5 w-px bg-border" />
 
               <label
                 htmlFor="image-upload"
-                className={`p-2 rounded-md transition-colors cursor-pointer ${
-                  insertImage.length > 0
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
+                data-active={insertImage.length > 0}
+                className={`inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground data-[active=true]:bg-accent data-[active=true]:text-foreground`}
                 title="이미지 추가"
               >
                 <BiImage className="h-4 w-4" />
@@ -346,7 +316,7 @@ const EditPost = () => {
             <Button
               onClick={handleSubmitPostButton}
               disabled={isUpload}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors disabled:opacity-50"
+              className="px-4"
             >
               {isUpload ? "작성 중..." : "작성하기"}
             </Button>
@@ -355,11 +325,11 @@ const EditPost = () => {
       </div>
 
       {/* 메인 편집 영역 */}
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="mx-auto max-w-4xl px-4 py-8">
         {/* 제목 입력 */}
         <input
           id="title"
-          className="w-full text-3xl sm:text-4xl font-bold text-gray-900 placeholder-gray-400 focus:outline-none mb-8"
+          className="mb-6 w-full bg-transparent text-2xl font-semibold tracking-tight placeholder:text-muted-foreground focus-visible:outline-none sm:text-3xl md:text-4xl"
           placeholder="제목을 입력하세요"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -389,10 +359,12 @@ const EditPost = () => {
         </div>
 
         {/* 하단 설정 */}
-        <div className="mt-8 pt-8 border-t border-gray-200">
+        <div className="mt-8 border-t pt-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600 font-medium">작성자:</span>
+              <span className="text-sm font-medium text-muted-foreground">
+                작성자:
+              </span>
               <Select onValueChange={(value) => setTeam(value)} value={team}>
                 <SelectTrigger className="w-48">
                   <SelectValue placeholder="작성자를 선택하세요" />
@@ -400,7 +372,7 @@ const EditPost = () => {
                 <SelectContent>
                   <SelectGroup>
                     <SelectItem value="0" className="flex items-center gap-2">
-                      <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                      <div className="flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                         {user?.name?.charAt(0).toUpperCase()}
                       </div>
                       {user?.name}
@@ -411,7 +383,7 @@ const EditPost = () => {
                         value={String(team.id)}
                         className="flex items-center gap-2"
                       >
-                        <div className="w-4 h-4 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                        <div className="flex h-4 w-4 items-center justify-center rounded-full bg-secondary text-[10px] font-bold text-secondary-foreground">
                           {team.name.charAt(0).toUpperCase()}
                         </div>
                         {team.name}
@@ -422,7 +394,7 @@ const EditPost = () => {
               </Select>
             </div>
 
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-muted-foreground">
               {title.length > 0 && `제목: ${title.length}자`}
             </div>
           </div>

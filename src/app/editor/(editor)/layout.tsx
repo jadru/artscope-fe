@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className='container relative mx-auto px-0 min-h-svh h-svh max-h-screen max-w-screen-md overscroll-none bg-white md:border-x'>
+    <div className="relative mx-auto w-full min-h-screen bg-background text-foreground">
       {children}
     </div>
   );

@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -21,7 +21,6 @@ export default function LoginForm({ redirect }: { redirect: string | null }) {
     resolver: yupResolver(loginSchema),
   });
   const { refetch } = useProfile();
-  const [pwInputVisible, setPwInputVisible] = useState(false);
   const router = useRouter();
 
   const onSubmit: SubmitHandler<loginInputs> = async (loginData) =>
@@ -46,26 +45,25 @@ export default function LoginForm({ redirect }: { redirect: string | null }) {
     });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-      <Input
-        type="text"
-        placeholder="아이디"
-        formNoValidate={!!errors.username}
-        {...register("username")}
-      />
-      <Input
-        placeholder="비밀번호"
-        type={pwInputVisible ? "text" : "password"}
-        formNoValidate={!!errors.password}
-        {...register("password")}
-      />
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-3">
+      <div className="space-y-2">
+        <Input
+          type="text"
+          placeholder="아이디"
+          autoComplete="username"
+          formNoValidate={!!errors.username}
+          {...register("username")}
+        />
+        <Input
+          placeholder="비밀번호"
+          type="password"
+          autoComplete="current-password"
+          formNoValidate={!!errors.password}
+          {...register("password")}
+        />
+      </div>
 
-      <Button
-        type="submit"
-        color="primary"
-        className="w-full"
-        disabled={isSubmitting}
-      >
+      <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? "로그인 중..." : "로그인"}
       </Button>
     </form>

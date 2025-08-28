@@ -135,4 +135,27 @@ export const serverTeamsApi = {
   getMembers: (id: string) => serverApi.get(`/api/server/teams/${id}/members`),
 };
 
+// Location APIs (검색/조회/생성/수정)
+export const serverLocationsApi = {
+  // GET /api/location/search?keyword=&page=&size=
+  search: (params?: import("@/types/location").LocationSearchParamsType) =>
+    serverApi.get<import("@/types/location").LocationSearchResponseType>(
+      "/api/server/location/search",
+      params
+    ),
+  // GET /api/location/{id}
+  getById: (id: string) =>
+    serverApi.get<import("@/types/location").LocationType>(
+      `/api/server/location/${id}`
+    ),
+  // POST /api/location
+  create: (data: import("@/types/location").LocationCreateRequestType) =>
+    serverApi.post<string>("/api/server/location", data),
+  // PUT /api/location/{id}
+  update: (
+    id: string,
+    data: import("@/types/location").LocationUpdateRequestType
+  ) => serverApi.put<string>(`/api/server/location/${id}`, data),
+};
+
 export default serverApi;

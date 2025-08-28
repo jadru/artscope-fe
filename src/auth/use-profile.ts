@@ -1,9 +1,10 @@
+"use client";
+
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 import { onSuccess } from "@/app/user/onSuccess";
-import { getRefreshToken } from "@/auth/cookieTokenManager";
 import jxios from "@/utils/jxios";
 
 import { profileApiResponseType } from "@/types/profile";
@@ -26,6 +27,24 @@ const fetchProfile = async (): Promise<profileApiResponseType> => {
 // TanStack Query를 사용한 프로필 훅
 export const useProfile = (router?: AppRouterInstance) => {
   const queryClient = useQueryClient();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  // 서버 API로 인증 상태 확인 (경량)
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/auth/state", { credentials: "include" });
+        const json = (await res.json()) as { authenticated: boolean };
+        if (!cancelled) setIsAuthenticated(json.authenticated);
+      } catch {
+        if (!cancelled) setIsAuthenticated(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const query = useQuery({
     queryKey: ["profile"],
@@ -33,8 +52,8 @@ export const useProfile = (router?: AppRouterInstance) => {
     retry: 1,
     staleTime: 5 * 60 * 1000, // 5분
     gcTime: 10 * 60 * 1000, // 10분
-    // 로그인 상태가 아니라면 쿼리를 실행하지 않음 (에러 처리를 통해 자동으로 처리)
-    enabled: !!getRefreshToken,
+    // 인증 여부 확인 전(null)에는 대기, false면 미요청
+    enabled: isAuthenticated === true,
   });
 
   // 성공 시 라우터 처리
@@ -61,7 +80,7 @@ export const onGetProfile = async (
   setUser: (user: profileApiResponseType | undefined) => void,
   refresh?: string | undefined
 ) => {
-  if ((await getRefreshToken()) || refresh) {
+  if (refresh) {
     try {
       const data = await fetchProfile();
       setUser(data);

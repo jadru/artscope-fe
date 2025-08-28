@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { AiOutlineGoogle } from "react-icons/ai";
 
-import Title from "@/components/Title";
 import { Button } from "@/components/ui/button";
 
 import LoginForm from "@/app/user/login/LoginForm";
@@ -24,26 +23,34 @@ const Login = () => {
     }
   }, [router, user]);
   return (
-    <>
-      <Title
-        title="로그인"
-        description="한번의 로그인으로 포트폴리오를 만들고 다른 아티스트들과 소통하세요."
-      />
-      <p></p>
+    <div className="flex flex-col items-center gap-6 py-6">
+      <h1 className="w-full text-left text-2xl font-semibold tracking-tight">
+        로그인
+      </h1>
       <Button
-        variant="default"
+        variant="outline"
         className="w-full"
         size="lg"
         onClick={() =>
           router.push(NEXT_PUBLIC_API_URL + "/oauth2/authorization/google")
         }
       >
-        <AiOutlineGoogle className="h-6 w-6 text-lg mr-1" />
-        구글로 로그인 또는 회원가입
+        <AiOutlineGoogle className="mr-2 h-5 w-5" />
+        구글로 계속하기
       </Button>
-      <p className="text-center">또는</p>
+
+      <div className="relative w-full">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t"></span>
+        </div>
+        <div className="relative flex justify-center text-xs">
+          <span className="bg-background px-2 text-muted-foreground">또는</span>
+        </div>
+      </div>
+
       <LoginForm redirect={redirect} />
-      <div className="flex w-full justify-between">
+
+      <div className="mt-2 flex w-full justify-between text-sm text-muted-foreground">
         <Link href="/user/signup" className="hover:underline">
           회원가입
         </Link>
@@ -51,7 +58,7 @@ const Login = () => {
           아이디 / 비밀번호 찾기
         </Link>
       </div>
-    </>
+    </div>
   );
 };
 

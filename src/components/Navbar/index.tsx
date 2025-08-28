@@ -1,5 +1,6 @@
 "use client";
 
+import type React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useProfile } from "@/auth/use-profile";
@@ -50,15 +51,19 @@ export default function Navbar({ isEditor }: { isEditor?: boolean }) {
           </Link>
 
           {/* 네비게이션 링크들 */}
-          {user && isEditor && (
-            <div className="hidden md:flex items-center space-x-6">
-              <NavBarLinkItem href="/editor">아티클</NavBarLinkItem>
-              <NavBarLinkItem href="/editor/statistics" disabled>
-                통계
-              </NavBarLinkItem>
-              <NavBarLinkItem href="/editor/settings">설정</NavBarLinkItem>
-            </div>
-          )}
+          <div className="hidden md:flex items-center space-x-6">
+            <NavBarLinkItem href="/">피드</NavBarLinkItem>
+            <NavBarLinkItem href="/location">스페이스</NavBarLinkItem>
+            {user && isEditor && (
+              <>
+                <NavBarLinkItem href="/editor">아티클</NavBarLinkItem>
+                <NavBarLinkItem href="/editor/statistics" disabled>
+                  통계
+                </NavBarLinkItem>
+                <NavBarLinkItem href="/editor/settings">설정</NavBarLinkItem>
+              </>
+            )}
+          </div>
 
           {/* 사용자 액션 섹션 */}
           <div className="flex items-center space-x-4">
@@ -106,14 +111,25 @@ export default function Navbar({ isEditor }: { isEditor?: boolean }) {
                   </Button>
                 </Link>
                 {!isEditor && (
-                  <Link href="/editor">
-                    <Button
-                      size="sm"
-                      className="bg-gray-900 hover:bg-gray-800 text-white font-light"
-                    >
-                      대시보드
-                    </Button>
-                  </Link>
+                  <>
+                    <Link href="/editor/new">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="font-light"
+                      >
+                        새 글 작성
+                      </Button>
+                    </Link>
+                    <Link href="/editor">
+                      <Button
+                        size="sm"
+                        className="bg-gray-900 hover:bg-gray-800 text-white font-light"
+                      >
+                        대시보드
+                      </Button>
+                    </Link>
+                  </>
                 )}
               </>
             )}

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import {
   removeAccessToken,
   removeRefreshToken,
+  removeAuthStateFlag,
 } from "@/auth/cookieTokenManager";
 import { useProfile } from "@/auth/use-profile";
 import jxios from "@/utils/jxios";
@@ -18,6 +19,7 @@ const SignoutPage = () => {
     jxios.post("/api/server/logout");
     removeAccessToken();
     removeRefreshToken();
+    removeAuthStateFlag();
     toast.success("로그아웃 되었습니다.");
     refresh();
     push("/");
