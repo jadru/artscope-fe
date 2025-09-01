@@ -10,6 +10,8 @@ import jxios from "@/utils/jxios";
 import { profileApiType } from "@/types/profile";
 import serverApi from "@/utils/serverApi";
 import ASNextImage from "@/components/ASNextImage";
+import StatisticCard from "./statistic-card";
+import Link from "next/link";
 
 const fetchProfile = async (id: string) => {
   return await serverApi.get<profileApiType>(`/api/server/members/${id}`);
@@ -75,7 +77,6 @@ export default async function Page({
                   @{profile.username}
                 </p>
               </div>
-
               {profile.introduction && (
                 <div className="max-w-2xl">
                   <p className="text-gray-700 leading-relaxed font-light text-lg">
@@ -83,22 +84,7 @@ export default async function Page({
                   </p>
                 </div>
               )}
-
-              {/* 통계 */}
-              <div className="flex gap-12">
-                <div className="text-center">
-                  <div className="text-2xl font-light text-gray-900">24</div>
-                  <div className="text-sm text-gray-500">작품</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-light text-gray-900">1.2k</div>
-                  <div className="text-sm text-gray-500">팔로워</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-light text-gray-900">98</div>
-                  <div className="text-sm text-gray-500">좋아요</div>
-                </div>
-              </div>
+              <StatisticCard username={profile.username} />
             </div>
           </div>
         </div>
@@ -129,16 +115,30 @@ export default async function Page({
 
             {/* 연락처 */}
             <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-6">연락처</h3>
+              <h3 className="text-lg font-light text-gray-900 mb-6">연락처</h3>
               <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <span className="text-sm text-gray-600">@artistname</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-sm text-gray-600">
-                    @artistportfolio
-                  </span>
-                </div>
+                {profile.websiteUrl && (
+                  <div className="flex items-center gap-3">
+                    <Link
+                      href={profile.websiteUrl}
+                      className="text-sm text-gray-600 hover:text-blue-500"
+                      target="_blank"
+                    >
+                      {profile.websiteUrl.replace(/^https?:\/\/(www\.)?/, "")}
+                    </Link>
+                  </div>
+                )}
+                {profile.snsUrl && (
+                  <div className="flex items-center gap-3">
+                    <Link
+                      href={profile.snsUrl}
+                      className="text-sm text-gray-600 hover:text-blue-500"
+                      target="_blank"
+                    >
+                      {profile.snsUrl.replace(/^https?:\/\/(www\.)?/, "")}
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>

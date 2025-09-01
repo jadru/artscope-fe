@@ -37,7 +37,7 @@ export default function MembersArticleList({ username }: { username: string }) {
   const pageParams = searchParams.get("page") || 0;
   const [page, setPage] = useState(Number(pageParams));
   const { data, isLoading, refetch, isSuccess, isError } = useQuery({
-    queryKey: ["articleList"],
+    queryKey: ["articleList", username, page],
     queryFn: () => fetchFeeds(page, username),
   });
 

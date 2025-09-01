@@ -1,6 +1,11 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import {
   LocationCreateRequestType,
@@ -27,6 +32,33 @@ export const useSearchLocations = (params?: LocationSearchParamsType) => {
     queryKey: buildSearchKey(params),
     queryFn: () => locationApi.search(params),
     enabled: true,
+    staleTime: 60 * 1000,
+  });
+};
+
+export const useInfiniteSearchLocations = (params?: {
+  keyword?: string;
+  size?: number;
+}) => {
+  return useInfiniteQuery({
+    queryKey: [
+      "locations",
+      "search",
+      "infinite",
+      { keyword: params?.keyword ?? "", size: params?.size ?? 20 },
+    ],
+    queryFn: ({ pageParam }: { pageParam: number }) =>
+      locationApi.search({
+        keyword: params?.keyword,
+        page: pageParam,
+        size: params?.size ?? 20,
+      }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      const currentPage = lastPage.pageInfo.page;
+      const totalPages = lastPage.pageInfo.totalPages;
+      return currentPage + 1 < totalPages ? currentPage + 1 : undefined;
+    },
     staleTime: 60 * 1000,
   });
 };
