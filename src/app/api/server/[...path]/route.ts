@@ -110,21 +110,7 @@ async function handleProxyRequest(
       }
     }
 
-    // access token이 여전히 없으면 인증되지 않은 것으로 처리
-    if (!accessToken) {
-      return new NextResponse(
-        JSON.stringify({
-          error: "Unauthorized",
-          message: "인증이 필요합니다.",
-        }),
-        {
-          status: 401,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    }
+    // access token이 없어도 비인증 요청은 그대로 백엔드로 전달
 
     // 프록시 요청 헤더 구성
     const proxyHeaders = new Headers();
@@ -136,8 +122,10 @@ async function handleProxyRequest(
       }
     });
 
-    // Authorization 헤더 추가
-    proxyHeaders.set("Authorization", `Bearer ${accessToken}`);
+    // Authorization 헤더는 토큰이 있을 때만 추가
+    if (accessToken) {
+      proxyHeaders.set("Authorization", `Bearer ${accessToken}`);
+    }
 
     // Content-Type이 없는 경우 기본값 설정
     if (!proxyHeaders.has("Content-Type")) {
