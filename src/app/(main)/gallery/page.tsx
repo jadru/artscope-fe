@@ -1,12 +1,9 @@
 "use client";
 
-import {
-  useSuspenseInfiniteQuery,
-} from "@tanstack/react-query";
-import { notFound } from "next/navigation";
-import React, { useEffect, useRef } from "react";
+export const dynamic = "force-dynamic";
 
-import { useObserver } from "@/hooks/useObserver";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
 
 import {
   jsonLdNav,
@@ -16,73 +13,86 @@ import {
 } from "@/app/(main)/(list)/searchSchema";
 import jxios from "@/utils/jxios";
 
-import { articleListType } from "@/types/article";
-import ArticleCard from "@/app/(main)/(list)/article-card";
-import { Loader2 } from "lucide-react";
+import type { articleItemType, articleListType } from "@/types/article";
+import CurationHero from "@/components/Discovery/CurationHero";
+import nextDynamic from "next/dynamic";
+const FeedTabs = nextDynamic(() => import("@/components/Discovery/FeedTabs"), {
+  ssr: false,
+});
+const FollowSuggestions = nextDynamic(
+  () => import("@/components/Discovery/FollowSuggestions"),
+  { ssr: false }
+);
 
-const LIMIT = 30;
+const fetchCurations = async () => {
+  try {
+    const res = await jxios.get("/api/server/curations");
+    return res.data;
+  } catch {
+    return null;
+  }
+};
 
-const fetchFeeds = async ({ pageParam = 0 }) => {
+const fetchTrendingFirstPage = async () => {
   try {
     const res = await jxios.get("/api/server/magazines", {
-      params: {
-        page: pageParam,
-        size: LIMIT,
-      },
+      params: { page: 0, size: 30 },
     });
     return res.data as articleListType;
   } catch {
-    // 빌드 시에는 빈 데이터를 반환
     return {
       magazines: [],
-      pageInfo: {
-        page: pageParam,
-        size: LIMIT,
-        totalPages: 0,
-        totalElements: 0,
-      },
+      pageInfo: { page: 0, size: 30, totalPages: 0, totalElements: 0 },
     } as articleListType;
   }
 };
 
 export default function GalleryPage() {
-  const {
-    data,
-    isSuccess,
-    isError,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useSuspenseInfiniteQuery({
-    queryKey: ["gallery"],
-    queryFn: fetchFeeds,
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.magazines.length < LIMIT) {
-        return undefined;
-      }
-      return allPages.length;
-    },
+  const { data: curations } = useQuery({
+    queryKey: ["gallery", "curations"],
+    queryFn: fetchCurations,
+    staleTime: 15 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    retry: 1,
+    enabled: typeof window !== "undefined",
   });
-
-  useEffect(() => {
-    if (isError) {
-      notFound();
-    }
-  }, [isError]);
-
-  const bottomRef = useRef(null);
-
-  const onIntersect: IntersectionObserverCallback = ([entry]) => {
-    if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  };
-
-  useObserver({
-    target: bottomRef,
-    onIntersect,
+  const { data: trendingData } = useQuery({
+    queryKey: ["gallery", "trending", 0],
+    queryFn: fetchTrendingFirstPage,
+    staleTime: 2 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    retry: 1,
+    enabled: typeof window !== "undefined",
   });
+  const trending =
+    trendingData ??
+    ({
+      magazines: [],
+      pageInfo: { page: 0, size: 30, totalPages: 0, totalElements: 0 },
+    } as articleListType);
+
+  let heroItems: articleItemType[] = [];
+  if (curations) {
+    // 가능한 구조들에 방어적으로 대응
+    if (Array.isArray(curations)) heroItems = curations as articleItemType[];
+    else if (Array.isArray(curations?.magazines))
+      heroItems = curations.magazines as articleItemType[];
+    else if (Array.isArray(curations?.items))
+      heroItems = curations.items as articleItemType[];
+  }
+  if (heroItems.length === 0) heroItems = trending.magazines;
+
+  const jsonLdTrendingList = {
+    "@type": "ItemList",
+    itemListElement: trending.magazines.slice(0, 10).map((m, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `https://www.artscope.kr/article/${m.id}`,
+      name: m.title,
+    })),
+  } as const;
 
   return (
     <div className="p-2 md:p-4 pb-16">
@@ -103,30 +113,19 @@ export default function GalleryPage() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdSearch) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLdTrendingList),
+          }}
+        />
       </section>
-      {isError && (
-        <div className="w-full">
-          <h3 className="my-12 text-center">에러가 발생했습니다.</h3>
-        </div>
-      )}
-      <div className="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-6 gap-2">
-        {isSuccess &&
-          data.pages.map((page, i) => (
-            <React.Fragment key={i}>
-              {page.magazines.map((article) => (
-                <ArticleCard key={article.id} article={article} />
-              ))}
-            </React.Fragment>
-          ))}
-      </div>
-      <div ref={bottomRef} />
-      {isFetchingNextPage && (
-        <div className="w-full py-32 flex justify-center items-center">
-          <Loader2 className="animate-spin" />
-        </div>
-      )}
+
+      <CurationHero items={heroItems} />
+
+      <FeedTabs />
+
+      <FollowSuggestions />
     </div>
   );
 }
-
-

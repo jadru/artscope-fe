@@ -18,7 +18,7 @@ const Login = () => {
   const redirect = searchParams.get("redirect");
 
   useEffect(() => {
-    if (!!user) {
+    if (user) {
       router.push("/");
     }
   }, [router, user]);

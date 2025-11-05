@@ -1,0 +1,190 @@
+"use client";
+
+import {
+  useQueryClient,
+  useSuspenseInfiniteQuery,
+} from "@tanstack/react-query";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { useObserver } from "@/hooks/useObserver";
+import jxios from "@/utils/jxios";
+import type { articleListType } from "@/types/article";
+import ArticleCardWithActions from "@/components/Discovery/ArticleCardWithActions";
+import { Loader2 } from "lucide-react";
+import { useProfile } from "@/auth/use-profile";
+
+const LIMIT = 30;
+
+type TabKey = "explore" | "following" | "latest";
+
+const fetchTrending = async ({ pageParam = 0 }) => {
+  const res = await jxios.get("/api/server/magazines", {
+    params: { page: pageParam, size: LIMIT },
+  });
+  return res.data as articleListType;
+};
+
+const fetchFollowing = async ({ pageParam = 0 }) => {
+  const res = await jxios.get("/api/server/magazines/my/following/members", {
+    params: { page: pageParam, size: LIMIT },
+  });
+  return res.data as articleListType;
+};
+
+const fetchLatest = async ({ pageParam = 0 }) => {
+  const res = await jxios.get("/api/server/magazines", {
+    params: { page: pageParam, size: LIMIT },
+  });
+  return res.data as articleListType;
+};
+
+function TabFeed({ tab }: { tab: TabKey }) {
+  const queryClient = useQueryClient();
+  const queryFn = useMemo(() => {
+    switch (tab) {
+      case "explore":
+        return fetchTrending;
+      case "following":
+        return fetchFollowing;
+      case "latest":
+        return fetchLatest;
+      default:
+        return fetchTrending;
+    }
+  }, [tab]);
+
+  const initialExplore =
+    tab === "explore"
+      ? (queryClient.getQueryData(["gallery", "trending", 0]) as
+          | articleListType
+          | undefined)
+      : undefined;
+
+  const { data, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useSuspenseInfiniteQuery({
+      queryKey: ["gallery", tab],
+      queryFn,
+      initialPageParam: 0,
+      initialData: initialExplore
+        ? { pages: [initialExplore], pageParams: [0] }
+        : undefined,
+      staleTime: 2 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      getNextPageParam: (lastPage, allPages) => {
+        if (lastPage.magazines.length < LIMIT) return undefined;
+        return allPages.length;
+      },
+    });
+
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  const onIntersect = ([entry]: IntersectionObserverEntry[]) => {
+    if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  useObserver({ target: bottomRef, onIntersect });
+
+  if (isError) {
+    return (
+      <div className="w-full py-12 text-center text-gray-500">
+        콘텐츠를 불러오지 못했습니다.
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-6 gap-2">
+        {data.pages.map((page, i) => (
+          <React.Fragment key={i}>
+            {page.magazines.map((article) => (
+              <ArticleCardWithActions key={article.id} article={article} />
+            ))}
+          </React.Fragment>
+        ))}
+      </div>
+      <div ref={bottomRef} />
+      {isFetchingNextPage && (
+        <div className="w-full py-16 flex justify-center items-center">
+          <Loader2 className="animate-spin" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function FeedTabs() {
+  const [active, setActive] = useState<TabKey>("explore");
+  const router = useRouter();
+  const { data: user } = useProfile();
+  const isLoggedIn = !!user;
+
+  useEffect(() => {
+    if (active === "following" && !isLoggedIn) {
+      setActive("explore");
+    }
+  }, [active, isLoggedIn]);
+
+  return (
+    <section id="feed" className="w-full">
+      <div className="flex items-center gap-4 mb-4 md:mb-6">
+        <button
+          className={`text-sm md:text-base pb-1 border-b-2 transition-colors ${
+            active === "explore"
+              ? "border-black text-black"
+              : "border-transparent text-gray-500 hover:text-gray-700"
+          }`}
+          onClick={() => setActive("explore")}
+          aria-current={active === "explore"}
+        >
+          탐색
+        </button>
+        <button
+          className={`text-sm md:text-base pb-1 border-b-2 transition-colors ${
+            active === "following" && isLoggedIn
+              ? "border-black text-black"
+              : "border-transparent " +
+                (isLoggedIn
+                  ? "text-gray-500 hover:text-gray-700"
+                  : "text-gray-300 cursor-not-allowed")
+          }`}
+          onClick={() =>
+            isLoggedIn ? setActive("following") : router.push("/user/login")
+          }
+          aria-current={active === "following"}
+        >
+          팔로잉
+        </button>
+        <button
+          className={`text-sm md:text-base pb-1 border-b-2 transition-colors ${
+            active === "latest"
+              ? "border-black text-black"
+              : "border-transparent text-gray-500 hover:text-gray-700"
+          }`}
+          onClick={() => setActive("latest")}
+          aria-current={active === "latest"}
+        >
+          최신
+        </button>
+      </div>
+
+      <div>
+        {active === "explore" && <TabFeed tab="explore" />}
+        {active === "following" &&
+          (isLoggedIn ? (
+            <TabFeed tab="following" />
+          ) : (
+            <div className="w-full py-16 text-center text-gray-500">
+              팔로잉 피드는 로그인 후 이용할 수 있습니다.
+            </div>
+          ))}
+        {active === "latest" && <TabFeed tab="latest" />}
+      </div>
+    </section>
+  );
+}
