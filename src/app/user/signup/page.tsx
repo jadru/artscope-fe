@@ -13,7 +13,7 @@ const SignupPage = () => {
   const { data: user } = useProfile();
 
   useEffect(() => {
-    if (!!user) {
+    if (user) {
       router.push("/");
     }
   }, [router, user]);

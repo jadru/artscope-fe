@@ -30,21 +30,19 @@ export const useProfile = (router?: AppRouterInstance) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   // 서버 API로 인증 상태 확인 (경량)
+  const authState = useQuery<{ authenticated: boolean }, Error, boolean>({
+    queryKey: ["authState"],
+    queryFn: async () => {
+      const res = await fetch("/api/auth/state", { credentials: "include" });
+      const json = (await res.json()) as { authenticated: boolean };
+      return json;
+    },
+    select: (data) => data.authenticated,
+    staleTime: 2 * 60 * 1000,
+  });
   useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch("/api/auth/state", { credentials: "include" });
-        const json = (await res.json()) as { authenticated: boolean };
-        if (!cancelled) setIsAuthenticated(json.authenticated);
-      } catch {
-        if (!cancelled) setIsAuthenticated(false);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+    setIsAuthenticated(authState.data ?? false);
+  }, [authState.data]);
 
   const query = useQuery({
     queryKey: ["profile"],

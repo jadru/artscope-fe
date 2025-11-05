@@ -121,6 +121,27 @@ export const serverArticlesApi = {
   getAll: (params?: any) => serverApi.get("/api/server/magazines", params),
   getById: (id: string) => serverApi.get(`/api/server/magazines/${id}`),
   getMagazineById: (id: string) => serverApi.get(`/api/server/magazines/${id}`),
+  // 팔로잉 피드
+  getFollowingFeed: (params?: any) =>
+    serverApi.get("/api/server/magazines/my/following/members", params),
+  // 좋아요/언좋아요
+  like: (id: string | number) =>
+    serverApi.post(`/api/server/magazines/${id}/like`),
+  unlike: (id: string | number) =>
+    serverApi.post(`/api/server/magazines/${id}/unlike`),
+};
+
+export const serverCurationsApi = {
+  getAll: () => serverApi.get("/api/server/curations"),
+};
+
+export const serverFollowApi = {
+  toggle: (data: { username: string }) =>
+    serverApi.post("/api/server/follow", data),
+  getFollowing: (username: string) =>
+    serverApi.get(`/api/server/follow/${username}/following`),
+  getFollower: (username: string) =>
+    serverApi.get(`/api/server/follow/${username}/follower`),
 };
 
 export const serverUsersApi = {
