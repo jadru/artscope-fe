@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 export default function Navbar({ isEditor }: { isEditor?: boolean }) {
   const { data: user, isLoading } = useProfile();
   const pathname = usePathname();
+  const logoHref = user ? "/gallery" : "/";
 
   const NavBarLinkItem = ({
     href,
@@ -43,7 +44,7 @@ export default function Navbar({ isEditor }: { isEditor?: boolean }) {
         <div className="flex h-14 w-full items-center justify-between px-6">
           {/* 로고 섹션 */}
           <Link
-            href="/"
+            href={logoHref}
             prefetch={false}
             className="flex items-center space-x-2"
           >
@@ -52,7 +53,7 @@ export default function Navbar({ isEditor }: { isEditor?: boolean }) {
 
           {/* 네비게이션 링크들 */}
           <div className="hidden md:flex items-center space-x-6">
-            <NavBarLinkItem href="/">피드</NavBarLinkItem>
+            <NavBarLinkItem href="/gallery">피드</NavBarLinkItem>
             <NavBarLinkItem href="/location">스페이스</NavBarLinkItem>
             {user && isEditor && (
               <>
