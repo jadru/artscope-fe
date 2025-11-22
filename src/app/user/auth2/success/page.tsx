@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import * as React from "react";
 import { useEffect } from "react";
 import { AiOutlineCoffee } from "react-icons/ai";
 import { toast } from "react-toastify";
@@ -10,35 +9,46 @@ import { toast } from "react-toastify";
 import Title from "@/components/Title";
 import { Button } from "@/components/ui/button";
 
-import { useProfile } from "@/auth/use-profile";
-import jxios from "@/utils/jxios";
-
-import { loginResponseType } from "@/types/auth";
-
 const RedirectOAuth2 = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
   useEffect(() => {
-    if (token) {
-      jxios
-        .post("/refresh", token as string, {
+    if (!token) {
+      router.push("/");
+      return;
+    }
+
+    const controller = new AbortController();
+
+    const applyRefreshToken = async () => {
+      try {
+        const response = await fetch("/api/auth/refresh", {
+          method: "POST",
           headers: {
             "Content-Type": "text/plain",
           },
-        })
-        .then(async (ressponseRefreshToken) => {
-          // TODO: 로그인 처리 (refresh 부분을 api route로 이동할 필요가 있음)
-        })
-        .catch(() => {
-          toast.error("로그인에 실패했습니다.");
-          router.push("/");
+          body: token,
+          signal: controller.signal,
         });
-    } else {
-      router.push("/");
-    }
-  }, [router, token, searchParams]);
+
+        if (!response.ok) {
+          throw new Error("refresh failed");
+        }
+
+        router.refresh();
+        router.push("/");
+      } catch (error) {
+        toast.error("로그인에 실패했습니다.");
+        router.push("/");
+      }
+    };
+
+    applyRefreshToken();
+
+    return () => controller.abort();
+  }, [router, token]);
 
   return (
     <>
