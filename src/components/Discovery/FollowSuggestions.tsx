@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import jxios from "@/utils/jxios";
@@ -49,20 +50,49 @@ export default function FollowSuggestions() {
   if (suggestions.length === 0) return null;
 
   return (
-    <section className="mt-8 md:mt-12" aria-label="팔로우 제안">
-      <h3 className="text-sm font-medium text-gray-900 mb-3">
-        관심 있을 만한 작가
-      </h3>
-      <div className="flex gap-3 overflow-x-auto no-scrollbar py-1 pr-2">
+    <section
+      className="mt-12 rounded-[32px] border border-white/10 bg-white/5 p-5 md:p-7"
+      aria-label="팔로우 제안"
+    >
+      <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="text-xs uppercase tracking-[0.4em] text-white/60">
+            더 깊은 연결
+          </p>
+          <h3 className="text-xl font-semibold text-white">
+            관심 있을 만한 작가
+          </h3>
+          <p className="text-sm text-white/60">
+            꾸준히 트렌딩 피드에 등장한 작가들을 소개합니다.
+          </p>
+        </div>
+        <Link
+          href="/gallery"
+          className="self-start rounded-full border border-white/20 px-4 py-2 text-sm text-white/70 hover:bg-white/10"
+        >
+          전체 작가 보기
+        </Link>
+      </div>
+      <div className="mt-5 flex gap-4 overflow-x-auto pb-2 pr-2 no-scrollbar">
         {suggestions.map((s) => (
-          <SuggestionCard key={s.author.authorUsername} author={s.author} />
+          <SuggestionCard
+            key={s.author.authorUsername}
+            author={s.author}
+            count={s.count}
+          />
         ))}
       </div>
     </section>
   );
 }
 
-function SuggestionCard({ author }: { author: AuthorType }) {
+function SuggestionCard({
+  author,
+  count,
+}: {
+  author: AuthorType;
+  count: number;
+}) {
   const router = useRouter();
   const { data: user } = useProfile();
   const [following, setFollowing] = useState(false);
@@ -85,34 +115,37 @@ function SuggestionCard({ author }: { author: AuthorType }) {
   };
 
   return (
-    <div className="flex-shrink-0 w-48 rounded-xl border border-gray-200 p-3 bg-white">
+    <div className="flex w-56 flex-shrink-0 flex-col rounded-3xl border border-white/10 bg-gradient-to-b from-white/10 to-black/40 p-4 backdrop-blur">
       <div className="flex items-center gap-3">
-        <div className="relative h-10 w-10 overflow-hidden rounded-full bg-gray-100">
+        <div className="relative h-12 w-12 overflow-hidden rounded-full border border-white/20 bg-white/5">
           {author.authorProfileImage ? (
             <Image
               src={author.authorProfileImage}
               alt={author.authorName}
               fill
-              sizes="40px"
+              sizes="48px"
               className="object-cover"
             />
           ) : null}
         </div>
         <div className="min-w-0">
-          <div className="text-sm text-gray-900 truncate">
+          <div className="truncate text-sm font-semibold text-white">
             {author.authorName}
           </div>
-          <div className="text-xs text-gray-500 truncate">
+          <div className="truncate text-xs text-white/60">
             @{author.authorUsername}
           </div>
         </div>
       </div>
+      <p className="mt-3 text-xs text-white/70">
+        트렌딩 노출 {count}회
+      </p>
       <button
         onClick={toggle}
-        className={`mt-3 w-full text-xs rounded-full px-3 py-1 transition-colors ${
+        className={`mt-4 w-full rounded-full px-4 py-2 text-sm font-medium transition ${
           following
-            ? "bg-gray-900 text-white"
-            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            ? "bg-white text-black"
+            : "border border-white/30 text-white hover:bg-white/10"
         }`}
         aria-label={following ? "팔로잉" : "팔로우"}
       >
