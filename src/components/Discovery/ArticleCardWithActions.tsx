@@ -110,135 +110,141 @@ export default function ArticleCardWithActions({
     }
   };
 
+  const coverImage = article.mediaUrls?.[0];
+
   return (
-    <div className="group">
-      <div className="mb-2 flex items-center justify-between px-1.5 md:px-2">
+    <article className="group flex flex-col gap-3 rounded-[32px] border border-white/10 bg-white/5 p-3 shadow-[0_25px_60px_rgba(4,4,8,0.55)] backdrop-blur-xl">
+      <div className="flex items-center justify-between px-1.5">
         <Link
           href={`/profile/${article.author.authorUsername}`}
           aria-label={`${article.author.authorName} 프로필로 이동`}
-          className="flex items-center gap-2 min-w-0"
+          className="flex min-w-0 items-center gap-2"
         >
-          <div className="relative h-7 w-7 overflow-hidden rounded-full bg-gray-100 ring-1 ring-gray-200/70">
+          <div className="relative h-8 w-8 overflow-hidden rounded-full border border-white/20 bg-white/10">
             {article.author.authorProfileImage ? (
               <Image
                 src={article.author.authorProfileImage}
                 alt={article.author.authorName}
                 fill
-                sizes="28px"
+                sizes="32px"
                 className="object-cover"
               />
             ) : null}
           </div>
           <div className="truncate">
-            <span className="text-[13px] text-gray-900 font-medium truncate">
+            <span className="text-sm font-medium text-white">
               {article.author.authorName}
             </span>
+            <p className="text-xs text-white/60">
+              @{article.author.authorUsername}
+            </p>
           </div>
         </Link>
         <button
           aria-label={following ? "팔로잉" : "팔로우"}
           onClick={handleFollowToggle}
           className={cn(
-            "text-[11px] rounded-full px-2 py-1 transition-colors",
+            "text-[11px] rounded-full px-3 py-1 font-medium transition-colors",
             following
-              ? "bg-gray-900 text-white"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              ? "bg-white text-black"
+              : "border border-white/20 text-white/80 hover:bg-white/10"
           )}
         >
           {following ? "팔로잉" : "팔로우"}
         </button>
       </div>
-      <Link href={`/article/${article.id}`} className="block">
-        <div className="relative aspect-[4/5] bg-gray-50 overflow-hidden rounded-xl">
-          {!isError ? (
+
+      <Link
+        href={`/article/${article.id}`}
+        className="block rounded-[28px] border border-white/10 bg-black/40"
+      >
+        <div className="relative aspect-[4/5] overflow-hidden rounded-[28px]">
+          {!isError && coverImage ? (
             <Image
-              src={article.mediaUrls[0]}
+              src={coverImage}
               alt={article.title}
               width={300}
               height={375}
               onError={handleImageError}
               onLoad={handleImageLoad}
-              className="object-cover w-full h-full"
+              className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center">
+            <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-b from-white/10 to-black/60 text-center text-white/70">
               <div
-                className="text-center"
-                aria-label="이미지가 없어 작가 시그니처를 표시합니다"
-              >
-                <div className="h-10 w-10 rounded-full ring-1 ring-gray-300/60 bg-white/40 mx-auto mb-2 flex items-center justify-center">
-                  <div className="h-px w-4 bg-gray-300/80 -rotate-12" />
-                </div>
-                <div className="text-[11px] text-gray-500 italic">
-                  {article.author.authorName}
-                </div>
+                className="mb-2 h-11 w-11 rounded-full border border-white/30 bg-white/5"
+                aria-hidden="true"
+              />
+              <div className="text-xs uppercase tracking-[0.3em] text-white/60">
+                {article.author.authorName}
               </div>
             </div>
           )}
 
           {isLoading && !isError && (
-            <div className="absolute inset-0 bg-gray-100 animate-pulse" />
+            <div className="absolute inset-0 animate-pulse bg-white/5" />
           )}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+          <div className="absolute bottom-4 right-4 flex items-center gap-1 rounded-full bg-black/70 px-3 py-1 text-xs text-white">
+            <FaHeart
+              size={14}
+              className={cn(
+                "transition-colors",
+                isLiked ? "text-red-400 fill-red-400" : "text-white/70"
+              )}
+            />
+            {likes}
+          </div>
         </div>
       </Link>
 
-      {/* 액션바 */}
-      <div className="pt-2 flex items-center justify-between px-1 md:px-2">
-        <div className="flex items-center gap-3">
-          <button
-            aria-label={isLiked ? "좋아요 취소" : "좋아요"}
-            onClick={() => (isLiked ? handleUnLike() : handleLike())}
-            className="flex items-center gap-1 group"
-          >
-            <FaHeart
-              size={18}
-              className={cn(
-                "transition-colors duration-200",
-                isLiked
-                  ? "fill-red-500 text-red-500"
-                  : "text-gray-400 group-hover:text-red-400"
-              )}
-            />
-            <span className="text-xs text-gray-600">{likes}</span>
-          </button>
-        </div>
+      <div className="flex items-center justify-between px-1">
+        <button
+          aria-label={isLiked ? "좋아요 취소" : "좋아요"}
+          onClick={() => (isLiked ? handleUnLike() : handleLike())}
+          className="flex items-center gap-2 rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-white/80 transition hover:bg-white/10"
+        >
+          <FaHeart
+            size={16}
+            className={cn(
+              "transition-colors",
+              isLiked ? "text-red-400 fill-red-400" : "text-white/70"
+            )}
+          />
+          {isLiked ? "Liked" : "Like"}
+        </button>
 
         <button
           aria-label="공유"
           onClick={handleShare}
-          className="text-gray-500 hover:text-gray-700"
+          className="rounded-full border border-white/20 p-2 text-white/70 transition hover:bg-white/10"
           title="공유"
         >
           {shared ? (
-            <Check size={18} className="text-emerald-500" />
+            <Check size={18} className="text-emerald-400" />
           ) : (
             <Share2 size={18} />
           )}
         </button>
       </div>
 
-      {/* 좋아요 수 */}
-      <div className="px-1 md:px-2 mt-1 text-[13px] text-gray-900">
-        좋아요 <span className="font-medium">{likes}</span>개
+      <div className="px-1 text-[13px] text-white/70">
+        좋아요 <span className="font-semibold text-white">{likes}</span>개
       </div>
-
-      {/* 캡션: 작가명 + 제목 일부 */}
-      <div className="px-1 md:px-2 mt-1 text-[13px] leading-snug">
+      <div className="px-1 text-sm text-white">
         <Link
           href={`/profile/${article.author.authorUsername}`}
-          className="font-medium text-gray-900 mr-1"
+          className="mr-1 font-semibold text-white hover:text-white/80"
         >
           {article.author.authorName}
         </Link>
-        <span className="text-gray-700 line-clamp-2 align-middle">
+        <span className="text-white/80 line-clamp-2">
           {standardLabel(article.title)}
         </span>
       </div>
-
-      {/* 카테고리 메타 */}
-      <div className="px-1 md:px-2 mt-1 text-[11px] uppercase text-gray-400">
+      <div className="px-1 text-[11px] uppercase tracking-[0.2em] text-white/50">
         {article.categoryName}
       </div>
-    </div>
+    </article>
   );
 }

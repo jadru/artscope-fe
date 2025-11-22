@@ -116,7 +116,7 @@ export default function RootLayout({
         className={cn(
           pretendard.variable,
           source_Code_PRO.variable,
-          "p-0 m-0 min-h-screen font-sans"
+          "p-0 m-0 min-h-screen font-sans antialiased text-foreground"
         )}
       >
         <ToastContainer limit={2} hideProgressBar />
