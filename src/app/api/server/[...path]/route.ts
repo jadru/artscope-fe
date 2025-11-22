@@ -105,8 +105,8 @@ async function handleProxyRequest(
       if (tokenData && tokenData.accessToken) {
         accessToken = tokenData.accessToken;
         // 새로운 토큰들을 쿠키에 저장
-        setAccessToken(tokenData.accessToken, tokenData.expiresIn);
-        setRefreshToken(tokenData.refreshToken, tokenData.refreshExpiresIn);
+        await setAccessToken(tokenData.accessToken, tokenData.expiresIn);
+        await setRefreshToken(tokenData.refreshToken, tokenData.refreshExpiresIn);
       }
     }
 
