@@ -166,13 +166,13 @@ export default function FeedTabs() {
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-white/50">
-            Masonry Grid
+            Daily Highlights
           </p>
           <h3 className="text-2xl font-semibold text-white">
             Discovery Feed
           </h3>
           <p className="text-sm text-white/60">
-            작품 이미지가 페이지의 70%를 채우는 몰입형 그리드입니다.
+            하루에도 여러 번 업데이트되는 작품과 작가 이야기를 이곳에서 만나보세요.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2 rounded-full border border-white/15 bg-white/5 p-1">

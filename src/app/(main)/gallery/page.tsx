@@ -6,6 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { useRouter } from "next/navigation";
+import { Search } from "lucide-react";
 
 import {
   jsonLdNav,
@@ -203,7 +205,7 @@ export default function GalleryPage() {
                 국내 예술 · 사진 · 디지털 아트
               </h3>
               <p className="text-sm text-white/60">
-                비정형 그리드로 큐레이션한 몰입형 컬렉션.
+                에디터가 고른 세 가지 테마 컬렉션으로 다양한 장르를 즐겨보세요.
               </p>
             </div>
           </div>
@@ -247,9 +249,63 @@ export default function GalleryPage() {
         </section>
       )}
 
+      <DiscoverySearchBar />
+
       <FeedTabs />
 
       <FollowSuggestions />
     </div>
+  );
+}
+
+function DiscoverySearchBar() {
+  const router = useRouter();
+  const [keyword, setKeyword] = React.useState("");
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const value = keyword.trim();
+    if (!value) return;
+    router.push(`/list?keyword=${encodeURIComponent(value)}`);
+  };
+
+  return (
+    <section
+      aria-label="작품 검색"
+      className="rounded-[28px] border border-white/10 bg-white/5 p-5 shadow-[0_20px_50px_rgba(6,6,12,0.55)] sm:p-7"
+    >
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="text-xs uppercase tracking-[0.3em] text-white/60">
+            Search Artwork
+          </p>
+          <h3 className="text-xl font-semibold text-white">
+            찾고 싶은 작가나 키워드를 입력해 주세요
+          </h3>
+        </div>
+        <form
+          onSubmit={handleSubmit}
+          className="w-full rounded-full border border-white/20 bg-white/10 px-4 py-3 text-white shadow-lg shadow-purple-900/30 backdrop-blur md:w-[360px]"
+        >
+          <div className="flex items-center gap-3">
+            <Search size={18} className="text-white/60" />
+            <input
+              type="text"
+              value={keyword}
+              onChange={(event) => setKeyword(event.target.value)}
+              placeholder="예: 김 작가, 드로잉, 에세이"
+              className="flex-1 bg-transparent text-sm placeholder:text-white/50 focus:outline-none"
+              aria-label="검색어 입력"
+            />
+            <button
+              type="submit"
+              className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white hover:bg-white/30"
+            >
+              찾기
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
   );
 }

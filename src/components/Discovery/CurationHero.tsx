@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { standardLabel } from "@/components/StandardLabel";
@@ -17,8 +15,6 @@ type CurationHeroProps = {
 
 export default function CurationHero({ items }: CurationHeroProps) {
   const normalizedItems = items ?? [];
-  const router = useRouter();
-  const [search, setSearch] = useState("");
 
   const accentTags = useMemo(() => {
     const tags = new Set<string>();
@@ -36,13 +32,6 @@ export default function CurationHero({ items }: CurationHeroProps) {
 
   const curatedShots = normalizedItems.slice(1, 4);
 
-  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const value = search.trim();
-    if (!value) return;
-    router.push(`/list?keyword=${encodeURIComponent(value)}`);
-  };
-
   return (
     <section aria-label="오늘의 큐레이션" className="relative mb-10 md:mb-14">
       <div className="relative w-full overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-[#1b0f2d] via-[#06030d] to-[#060305]">
@@ -52,47 +41,22 @@ export default function CurationHero({ items }: CurationHeroProps) {
         </div>
         <div className="relative grid gap-10 lg:grid-cols-[1.1fr_minmax(0,1fr)]">
           <div className="flex flex-col gap-8 p-6 md:p-10">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-center">
-              <div className="flex-1">
-                <p className="text-xs uppercase tracking-[0.3em] text-white/60">
-                  Discovery Feed
-                </p>
-                <motion.h2
-                  className="mt-3 text-3xl md:text-4xl font-light text-white"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35 }}
-                >
-                  한국 예술을 위한 다크 모던 갤러리
-                </motion.h2>
-                <p className="mt-4 text-sm md:text-base text-white/70 max-w-xl">
-                  깊은 블랙과 보라빛 그라데이션으로 감싼 디스커버리 피드에서
-                  작품과 작가를 발견하세요. 고급스러운 여백과 시네마틱 조명이
-                  작품의 질감을 살립니다.
-                </p>
-              </div>
-
-              <form
-                onSubmit={handleSearch}
-                className="w-full lg:w-[320px] rounded-full border border-white/20 bg-white/10 px-4 py-3 text-white shadow-lg shadow-purple-900/30 backdrop-blur"
+            <div className="space-y-4">
+              <p className="text-xs uppercase tracking-[0.3em] text-white/60">
+                Discovery Feed
+              </p>
+              <motion.h2
+                className="text-3xl font-light text-white md:text-4xl"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35 }}
               >
-                <div className="flex items-center gap-3">
-                  <Search size={18} className="text-white/60" />
-                  <input
-                    type="text"
-                    value={search}
-                    onChange={(event) => setSearch(event.target.value)}
-                    placeholder="Search artists…"
-                    className="flex-1 bg-transparent text-sm placeholder:text-white/50 focus:outline-none"
-                  />
-                  <button
-                    type="submit"
-                    className="rounded-full bg-white/20 px-3 py-1 text-xs font-medium uppercase tracking-wide text-white hover:bg-white/30"
-                  >
-                    Go
-                  </button>
-                </div>
-              </form>
+                오늘 주목해야 할 작품과 작가
+              </motion.h2>
+              <p className="text-sm text-white/75 md:text-base">
+                요즘 사랑받는 장면, 인터뷰, 큐레이션을 한눈에 살펴보고 내 취향에
+                맞는 이야기를 찾아보세요.
+              </p>
             </div>
 
             <div className="flex flex-wrap gap-3 text-xs uppercase tracking-widest text-white/70">
@@ -106,14 +70,14 @@ export default function CurationHero({ items }: CurationHeroProps) {
               ))}
             </div>
 
-            <div className="flex flex-wrap gap-3 text-sm text-white/70">
+            <div className="flex flex-wrap gap-3 text-sm text-white/80">
               <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2">
                 <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                콘텐츠 우선 레이아웃
+                에디터 추천
               </div>
               <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2">
                 <span className="h-2 w-2 rounded-full bg-purple-400" />
-                Semi-masonry Grid
+                실시간 인기
               </div>
             </div>
 
