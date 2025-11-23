@@ -130,7 +130,7 @@ export default function GalleryPage() {
 
       <CurationHero items={heroItems} />
 
-      {trendingSpotlight.length > 0 && (
+      {/* {trendingSpotlight.length > 0 && (
         <section aria-label="트렌딩 아트웍" className="space-y-4">
           <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
             <div>
@@ -249,7 +249,7 @@ export default function GalleryPage() {
             ))}
           </div>
         </section>
-      )}
+      )} */}
 
       <DiscoverySearchBar />
 
@@ -293,14 +293,16 @@ function DiscoverySearchBar() {
             <Search size={18} className="text-gray-500 dark:text-white/70" />
             <input
               type="text"
+              disabled
               value={keyword}
               onChange={(event) => setKeyword(event.target.value)}
-              placeholder="예: 김 작가, 드로잉, 에세이"
+              placeholder="곧 지원 예정"
               className="flex-1 bg-transparent text-sm placeholder:text-gray-500 focus:outline-none dark:placeholder:text-white/50"
               aria-label="검색어 입력"
             />
             <button
               type="submit"
+              disabled
               className="rounded-full bg-gray-900 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white hover:bg-black dark:bg-white/20 dark:text-white dark:hover:bg-white/30"
             >
               찾기

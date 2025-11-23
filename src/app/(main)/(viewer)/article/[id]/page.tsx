@@ -56,14 +56,14 @@ export default async function Page({
   const article = await fetchArticle(id);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <div className="max-w-4xl mx-auto px-6 py-16">
         {/* 작품 헤더 */}
         <div className="mb-16">
-          <h1 className="text-4xl font-light text-gray-900 leading-tight mb-4">
+          <h1 className="text-4xl font-light text-gray-900 dark:text-white leading-tight mb-4">
             {standardLabel(article.title)}
           </h1>
-          <p className="text-lg font-light text-gray-600">
+          <p className="text-lg font-light text-gray-600 dark:text-gray-400">
             by {standardLabel(article.author.authorName)}
           </p>
         </div>

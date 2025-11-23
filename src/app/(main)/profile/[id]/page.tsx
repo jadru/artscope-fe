@@ -1,21 +1,58 @@
 import { Metadata, ResolvingMetadata } from "next";
 
-import ProfileComponent from "@/components/Profile";
 import { standardLabel } from "@/components/StandardLabel";
 
-import MembersArticleList from "@/app/(main)/profile/[id]/article-list";
-import { NEXT_PUBLIC_API_URL } from "@/constant/env";
 import jxios from "@/utils/jxios";
 
 import { profileApiType } from "@/types/profile";
+import { articleListType, PortfolioProjectType } from "@/types/article";
 import serverApi from "@/utils/serverApi";
-import ASNextImage from "@/components/ASNextImage";
-import StatisticCard from "./statistic-card";
-import Link from "next/link";
+
+// Components
+import HeroArtist from "./components/HeroArtist";
+import FeaturedPortfolioGrid from "./components/FeaturedPortfolioGrid";
+import ArtistAboutSection from "./components/ArtistAboutSection";
+import HistoryTimeline from "./components/HistoryTimeline";
+import ExternalLinksSection from "./components/ExternalLinksSection";
+import AllWorksSection from "./components/AllWorksSection";
 
 const fetchProfile = async (id: string) => {
   return await serverApi.get<profileApiType>(`/api/server/members/${id}`);
 };
+
+const fetchFeaturedWorks = async (username: string) => {
+  return await jxios
+    .get("/api/server/magazines/members/" + username, {
+      params: {
+        page: 0,
+        size: 6,
+      },
+    })
+    .then((res) => res.data as articleListType);
+};
+
+// Keywords 추출 (introduction에서 키워드 추출)
+function extractKeywords(introduction?: string): string[] {
+  if (!introduction) return [];
+
+  // 간단한 키워드 추출 로직
+  const keywords: string[] = [];
+
+  if (introduction.includes("설치")) keywords.push("설치미술");
+  if (introduction.includes("영상") || introduction.includes("비디오"))
+    keywords.push("영상");
+  if (introduction.includes("사진") || introduction.includes("photography"))
+    keywords.push("사진");
+  if (introduction.includes("회화") || introduction.includes("painting"))
+    keywords.push("회화");
+  if (introduction.includes("조각") || introduction.includes("sculpture"))
+    keywords.push("조각");
+  if (introduction.includes("미디어")) keywords.push("뉴미디어");
+  if (introduction.includes("퍼포먼스")) keywords.push("퍼포먼스");
+  if (introduction.includes("드로잉")) keywords.push("드로잉");
+
+  return keywords;
+}
 
 export async function generateMetadata(
   { params }: { params: Promise<{ id: string }> },
@@ -30,12 +67,12 @@ export async function generateMetadata(
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
-    title: `${standardLabel(profile.name)} 작가 - Artscope`,
-    description: standardLabel(profile.introduction).slice(0, 40),
+    title: `${standardLabel(profile.name)} - Artscope Portfolio`,
+    description: standardLabel(profile.introduction).slice(0, 160),
     openGraph: {
       images: [profile.picture, ...previousImages],
-      title: `${standardLabel(profile.name)} 작가 - Artscope`,
-      description: standardLabel(profile.introduction).slice(0, 40),
+      title: `${standardLabel(profile.name)} - Artscope Portfolio`,
+      description: standardLabel(profile.introduction).slice(0, 160),
       siteName: "Artscope",
     },
   };
@@ -48,110 +85,72 @@ export default async function Page({
 }) {
   const { id } = await params;
   const profile = await fetchProfile(id);
-  const historyArray = profile.history?.split("\n\n");
+
+  // Fetch featured works (최신 6개)
+  let featuredWorks: PortfolioProjectType[] = [];
+  try {
+    const worksData = await fetchFeaturedWorks(profile.username);
+    featuredWorks = worksData.magazines.map((article) => ({
+      ...article,
+      isFeatured: true,
+    }));
+  } catch (error) {
+    console.error("Failed to fetch featured works:", error);
+  }
+
+  // Extract keywords
+  const keywords = extractKeywords(profile.introduction);
+
+  // Featured images (작품의 첫 이미지들)
+  const featuredImages = featuredWorks
+    .slice(0, 3)
+    .map((work) => work.mediaUrls[0])
+    .filter(Boolean);
+
+  // Fallback to profile picture if no featured images
+  const heroImages =
+    featuredImages.length > 0
+      ? featuredImages
+      : [profile.picture || "prod/images/default.jpg"];
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-6xl mx-auto px-6 py-16">
-        {/* 프로필 헤더 */}
-        <div className="border-b border-gray-200 pb-16 mb-16">
-          <div className="flex flex-col lg:flex-row gap-12 items-start">
-            {/* 프로필 이미지 */}
-            <div className="flex-shrink-0">
-              <ASNextImage
-                width={160}
-                height={160}
-                src={profile.picture ?? "prod/images/default.jpg"}
-                alt={`${standardLabel(profile.name)} 프로필`}
-                className="w-40 h-40 rounded-full object-cover"
-              />
-            </div>
+    <main className="min-h-screen bg-white dark:bg-gray-900/50">
+      {/* Hero Section */}
+      <HeroArtist
+        name={standardLabel(profile.name)}
+        tagline={profile.introduction}
+        featuredImages={heroImages}
+        snsUrl={profile.snsUrl}
+        websiteUrl={profile.websiteUrl}
+      />
 
-            {/* 프로필 정보 */}
-            <div className="flex-1 space-y-6">
-              <div>
-                <h1 className="text-4xl font-light text-gray-900 mb-2">
-                  {standardLabel(profile.name)}
-                </h1>
-                <p className="text-lg text-gray-600 font-light">
-                  @{profile.username}
-                </p>
-              </div>
-              {profile.introduction && (
-                <div className="max-w-2xl">
-                  <p className="text-gray-700 leading-relaxed font-light text-lg">
-                    {standardLabel(profile.introduction)}
-                  </p>
-                </div>
-              )}
-              <StatisticCard username={profile.username} />
-            </div>
-          </div>
-        </div>
+      {/* Featured Portfolio Grid */}
+      {featuredWorks.length > 0 && (
+        <FeaturedPortfolioGrid
+          projects={featuredWorks}
+          title="Featured Works"
+        />
+      )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-16">
-          {/* 왼쪽 컬럼 - 정보 */}
-          <div className="lg:col-span-1 space-y-16">
-            {/* 작가 이력 */}
-            {historyArray && historyArray.length > 0 && (
-              <div>
-                <h2 className="text-lg font-medium text-gray-900 mb-8">이력</h2>
-                <div className="space-y-6">
-                  {historyArray.map((history, historyIndex) => (
-                    <div key={historyIndex} className="space-y-2">
-                      {history.split("\n").map((line, lineIndex) => (
-                        <p
-                          key={lineIndex}
-                          className="text-gray-600 leading-relaxed font-light text-sm"
-                        >
-                          {standardLabel(line)}
-                        </p>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+      {/* Artist About Section */}
+      <ArtistAboutSection
+        shortBio={profile.introduction}
+        keywords={keywords}
+        longBio={undefined}
+      />
 
-            {/* 연락처 */}
-            <div>
-              <h3 className="text-lg font-light text-gray-900 mb-6">연락처</h3>
-              <div className="space-y-3">
-                {profile.websiteUrl && (
-                  <div className="flex items-center gap-3">
-                    <Link
-                      href={profile.websiteUrl}
-                      className="text-sm text-gray-600 hover:text-blue-500"
-                      target="_blank"
-                    >
-                      {profile.websiteUrl.replace(/^https?:\/\/(www\.)?/, "")}
-                    </Link>
-                  </div>
-                )}
-                {profile.snsUrl && (
-                  <div className="flex items-center gap-3">
-                    <Link
-                      href={profile.snsUrl}
-                      className="text-sm text-gray-600 hover:text-blue-500"
-                      target="_blank"
-                    >
-                      {profile.snsUrl.replace(/^https?:\/\/(www\.)?/, "")}
-                    </Link>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+      {/* Exhibition & Career Timeline */}
+      <HistoryTimeline history={profile.history} />
 
-          {/* 오른쪽 컬럼 - 작품 */}
-          <div className="lg:col-span-3">
-            <div>
-              <h2 className="text-2xl font-light text-gray-900 mb-8">작품</h2>
-              <MembersArticleList username={profile.username} />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      {/* All Works Section */}
+      <AllWorksSection username={profile.username} />
+
+      {/* External Links */}
+      <ExternalLinksSection
+        websiteUrl={profile.websiteUrl}
+        snsUrl={profile.snsUrl}
+        artistName={standardLabel(profile.name)}
+      />
+    </main>
   );
 }
