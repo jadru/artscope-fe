@@ -1,9 +1,9 @@
 "use client";
 
+import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 
@@ -16,23 +16,25 @@ type CurationHeroProps = {
 };
 
 export default function CurationHero({ items }: CurationHeroProps) {
-  if (!items || items.length === 0) return null;
-
-  const first = items[0];
-  const imageUrl = first.mediaUrls?.[0];
+  const normalizedItems = items ?? [];
   const router = useRouter();
   const [search, setSearch] = useState("");
 
   const accentTags = useMemo(() => {
     const tags = new Set<string>();
-    items.forEach((item) => {
+    normalizedItems.forEach((item) => {
       if (item.categoryName) tags.add(item.categoryName);
       if (item.author?.authorName) tags.add(item.author.authorName);
     });
     return Array.from(tags).slice(0, 4);
-  }, [items]);
+  }, [normalizedItems]);
 
-  const curatedShots = items.slice(1, 4);
+  if (!normalizedItems.length) return null;
+
+  const first = normalizedItems[0];
+  const imageUrl = first.mediaUrls?.[0];
+
+  const curatedShots = normalizedItems.slice(1, 4);
 
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
