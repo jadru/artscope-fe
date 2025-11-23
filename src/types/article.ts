@@ -25,6 +25,16 @@ export type articleItemType = {
   magazineComments: CommentType[];
 };
 
+// 포트폴리오 프로젝트 타입
+export type PortfolioProjectType = articleItemType & {
+  shortDescription?: string; // 짧은 설명 (카드용)
+  year?: number; // 작품 연도
+  medium?: string; // 매체/기법
+  dimensions?: string; // 크기
+  isFeatured?: boolean; // 대표작 여부
+  series?: string; // 시리즈명
+};
+
 export type AuthorType = {
   authorUsername: string;
   authorName: string;

@@ -100,7 +100,7 @@ function TabFeed({ tab }: { tab: TabKey }) {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         {data.pages.map((page, i) => (
           <React.Fragment key={i}>
             {page.magazines.map((article) => (
@@ -180,7 +180,8 @@ export default function FeedTabs() {
             Discovery Feed
           </h3>
           <p className="text-sm text-gray-600 dark:text-white/60">
-            하루에도 여러 번 업데이트되는 작품과 작가 이야기를 이곳에서 만나보세요.
+            하루에도 여러 번 업데이트되는 작품과 작가 이야기를 이곳에서
+            만나보세요.
           </p>
         </div>
         <div
