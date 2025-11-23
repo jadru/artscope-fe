@@ -1,8 +1,11 @@
-import { articleListType } from "@/types/article";
-import { standardLabel } from "@/components/StandardLabel";
 import { useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { formatDistanceToNow } from "date-fns";
+import { ko } from "date-fns/locale";
+
+import { articleListType } from "@/types/article";
+import { standardLabel } from "@/components/StandardLabel";
 
 export default function ArticleCard({
   article,
@@ -21,65 +24,65 @@ export default function ArticleCard({
     setIsLoading(false);
   }, []);
 
+  const uploadType = article.categorySlug?.toLowerCase().includes("post")
+    ? "POST"
+    : "ARTWORK";
+  const timeAgo = article.createdTime
+    ? formatDistanceToNow(new Date(article.createdTime), {
+        addSuffix: true,
+        locale: ko,
+      })
+    : undefined;
+
   return (
-    <Link href={`/article/${article.id}`} className="block group">
-      <div className="relative aspect-[4/5] bg-gray-50 transition-transform duration-200 ease-out md:group-hover:scale-[0.98] md:group-hover:shadow-sm overflow-hidden">
-        {!isError ? (
+    <Link
+      href={`/article/${article.id}`}
+      className="group relative block overflow-hidden rounded-[28px] border border-neutral-200 bg-white/70 shadow-sm transition duration-300 ease-out hover:-translate-y-0.5 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
+    >
+      <div className="relative aspect-square sm:aspect-[4/5]">
+        {!isError && article.mediaUrls?.[0] ? (
           <Image
             src={article.mediaUrls[0]}
             alt={article.title}
-            width={300}
-            height={375}
+            fill
             onError={handleImageError}
             onLoad={handleImageLoad}
-            className="object-cover w-full h-full"
+            className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+            sizes="(min-width: 1280px) 180px, 45vw"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center">
-            <div
-              className="text-center"
-              aria-label="이미지가 없어 작가 시그니처를 표시합니다"
-            >
-              <div className="h-10 w-10 rounded-full ring-1 ring-gray-300/60 bg-white/40 mx-auto mb-2 flex items-center justify-center">
-                <div className="h-px w-4 bg-gray-300/80 -rotate-12"></div>
-              </div>
-              <div className="text-[11px] text-gray-500 italic">
-                {article.author.authorName}
-              </div>
-            </div>
+          <div className="flex h-full items-center justify-center bg-neutral-200 text-sm text-neutral-500">
+            {article.author.authorName}
           </div>
         )}
 
         {isLoading && !isError && (
-          <div className="absolute inset-0 bg-gray-100 animate-pulse"></div>
+          <div className="absolute inset-0 animate-pulse bg-neutral-100" />
         )}
 
-        {/* 작품 정보 오버레이 - 모바일에서는 숨기고 데스크톱에서만 hover로 표시 */}
-        <div className="hidden md:block absolute inset-0 bg-black/10 opacity-0 md:group-hover:opacity-100 transition-opacity duration-200">
-          <div className="absolute bottom-0 left-0 right-0 p-3">
-            <div className="space-y-1">
-              <h3 className="text-white text-sm font-light leading-tight line-clamp-2">
-                {standardLabel(article.title)}
-              </h3>
-              <p className="text-white/80 text-xs font-light">
-                {article.author.authorName} ·{" "}
-                <span className="uppercase">{article.categoryName}</span>
-              </p>
-            </div>
+        <div className="absolute inset-0 flex flex-col justify-between bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 transition duration-300 group-hover:opacity-100">
+          <div className="flex items-center justify-between px-3 pt-3 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/60">
+            <span>{uploadType}</span>
+            {timeAgo && <span className="tracking-normal text-white/70">{timeAgo}</span>}
+          </div>
+          <div className="px-3 pb-3 text-white">
+            <p className="text-xs text-white/70">{article.author.authorName}</p>
+            <p className="text-sm font-semibold leading-snug line-clamp-2">
+              {standardLabel(article.title)}
+            </p>
+            <p className="text-[11px] uppercase tracking-[0.3em] text-white/60">
+              {article.categoryName}
+            </p>
           </div>
         </div>
       </div>
-      {/* 모바일 최소 메타 정보 표시 */}
-      <div className="md:hidden mt-2">
-        <div className="space-y-1">
-          <h3 className="text-gray-900 text-sm font-medium leading-snug line-clamp-2">
-            {standardLabel(article.title)}
-          </h3>
-          <p className="text-gray-500 text-xs">
-            {article.author.authorName} ·{" "}
-            <span className="uppercase">{article.categoryName}</span>
-          </p>
-        </div>
+      <div className="block px-3 py-3 text-left text-xs text-neutral-600 md:hidden">
+        <p className="font-medium text-neutral-900 line-clamp-2">
+          {standardLabel(article.title)}
+        </p>
+        <p className="mt-1 text-[11px] uppercase tracking-[0.3em] text-neutral-500">
+          {article.author.authorName}
+        </p>
       </div>
     </Link>
   );
