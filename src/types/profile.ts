@@ -1,19 +1,19 @@
 export type roleStatus =
-  | 'NONE'
-  | 'ARTIST_REJECTED'
-  | 'ARTIST_PENDING'
-  | 'ARTIST'
-  | 'CURATOR_REJECTED'
-  | 'CURATOR_PENDING'
-  | 'CURATOR'
-  | 'ADMIN';
+  | "NONE"
+  | "ARTIST_REJECTED"
+  | "ARTIST_PENDING"
+  | "ARTIST"
+  | "CURATOR_REJECTED"
+  | "CURATOR_PENDING"
+  | "CURATOR"
+  | "ADMIN";
 
 export type profileApiType = {
   username: string;
   name: string;
   email: string;
   picture: string;
-  oauthProvider: undefined | 'google' | 'naver';
+  oauthProvider: undefined | "google" | "naver";
   roleStatus: roleStatus;
   snsUrl: string;
   websiteUrl: string | undefined;
@@ -32,7 +32,7 @@ export type profileApiResponseType = {
   roleStatus: roleStatus;
   createdTime: Date;
   email: string;
-  oauthProvider: undefined | 'google' | 'naver';
+  oauthProvider: undefined | "google" | "naver";
   history: string;
   introduction: string;
   activated: boolean;
