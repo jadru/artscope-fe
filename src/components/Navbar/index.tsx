@@ -7,6 +7,17 @@ import { useProfile } from "@/auth/use-profile";
 import { Skeleton } from "../ui/skeleton";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
+
+const NAV_ITEMS = [
+  { href: "/gallery", label: "Discovery" },
+  { href: "/list", label: "AI Curator" },
+];
+const EDITOR_NAV_ITEMS = [
+  { href: "/editor", label: "아티클" },
+  { href: "/editor/statistics", label: "통계", disabled: true },
+  { href: "/editor/settings", label: "설정" },
+];
 
 export default function Navbar({ isEditor }: { isEditor?: boolean }) {
   const { data: user, isLoading } = useProfile();
@@ -15,59 +26,64 @@ export default function Navbar({ isEditor }: { isEditor?: boolean }) {
 
   const NavBarLinkItem = ({
     href,
-    children,
+    label,
     disabled,
   }: {
     href: string;
-    children: React.ReactNode;
+    label: string;
     disabled?: boolean;
   }) => {
-    const isActive = pathname === href;
-
+    const isActive =
+      href === "/"
+        ? pathname === "/"
+        : pathname === href || pathname.startsWith(`${href}/`);
     return (
       <Link
         href={disabled ? "#" : href}
         className={cn(
-          "px-3 py-2 text-sm font-light transition-colors duration-200",
-          isActive ? "text-gray-900" : "text-gray-600 hover:text-gray-900",
-          disabled && "pointer-events-none opacity-40 cursor-not-allowed"
+          "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+          isActive
+            ? "bg-gray-900 text-white shadow dark:bg-white/20 dark:text-white dark:shadow-[0_0_20px_rgba(180,139,255,0.6)]"
+            : "text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white",
+          disabled && "cursor-not-allowed opacity-50"
         )}
       >
-        {children}
+        {label}
       </Link>
     );
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-200 bg-white">
+    <header className="sticky top-0 z-50 border-b border-black/5 bg-white/80 text-gray-900 backdrop-blur dark:border-white/5 dark:bg-[#050307]/80 dark:text-white">
       <nav>
-        <div className="flex h-14 w-full items-center justify-between px-6">
-          {/* 로고 섹션 */}
+        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6">
           <Link
             href={logoHref}
             prefetch={false}
             className="flex items-center space-x-2"
           >
-            <h1 className="text-xl font-light text-gray-900">Artscope</h1>
+            <h1 className="text-lg font-semibold tracking-[0.2em] text-gray-900 dark:text-white">
+              ArtScopeKR
+            </h1>
           </Link>
 
-          {/* 네비게이션 링크들 */}
-          <div className="hidden md:flex items-center space-x-6">
-            <NavBarLinkItem href="/gallery">피드</NavBarLinkItem>
-            <NavBarLinkItem href="/location">스페이스</NavBarLinkItem>
-            {user && isEditor && (
-              <>
-                <NavBarLinkItem href="/editor">아티클</NavBarLinkItem>
-                <NavBarLinkItem href="/editor/statistics" disabled>
-                  통계
-                </NavBarLinkItem>
-                <NavBarLinkItem href="/editor/settings">설정</NavBarLinkItem>
-              </>
+          <div className="hidden md:flex items-center gap-2">
+            <div className="flex items-center gap-1 rounded-full border border-black/10 bg-white/80 px-2 py-1 shadow-sm dark:border-white/10 dark:bg-white/5">
+              {NAV_ITEMS.map((nav) => (
+                <NavBarLinkItem key={nav.href} {...nav} />
+              ))}
+            </div>
+            {isEditor && (
+              <div className="flex items-center gap-1 rounded-full border border-black/10 bg-white/80 px-2 py-1 shadow-sm dark:border-white/10 dark:bg-white/5">
+                {EDITOR_NAV_ITEMS.map((nav) => (
+                  <NavBarLinkItem key={nav.href} {...nav} />
+                ))}
+              </div>
             )}
           </div>
 
-          {/* 사용자 액션 섹션 */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
             {!user ? (
               !isLoading ? (
                 <>
@@ -75,7 +91,7 @@ export default function Navbar({ isEditor }: { isEditor?: boolean }) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-gray-600 hover:text-gray-900 font-light"
+                      className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
                     >
                       로그인
                     </Button>
@@ -83,7 +99,7 @@ export default function Navbar({ isEditor }: { isEditor?: boolean }) {
                   <Link href="/user/signup">
                     <Button
                       size="sm"
-                      className="bg-gray-900 hover:bg-gray-800 text-white font-light"
+                      className="bg-gray-900 text-white shadow-sm hover:bg-black dark:bg-gradient-to-r dark:from-[#8c4bff] dark:via-[#c778ff] dark:to-[#f0a1ff] dark:text-black dark:shadow-lg dark:shadow-purple-900/40"
                     >
                       회원가입
                     </Button>
@@ -91,8 +107,8 @@ export default function Navbar({ isEditor }: { isEditor?: boolean }) {
                 </>
               ) : (
                 <div className="flex space-x-2">
-                  <Skeleton className="w-16 h-8 rounded" />
-                  <Skeleton className="w-20 h-8 rounded" />
+                  <Skeleton className="w-16 h-8 rounded-full" />
+                  <Skeleton className="w-20 h-8 rounded-full" />
                 </div>
               )
             ) : (
@@ -100,37 +116,24 @@ export default function Navbar({ isEditor }: { isEditor?: boolean }) {
                 <Link href={`/profile/${user?.username}`}>
                   <Button
                     variant="ghost"
-                    size="sm"
-                    className="text-gray-600 hover:text-gray-900 font-light"
+                    size="icon"
+                    className="h-9 w-9 rounded-full bg-gray-200 text-gray-900 hover:bg-gray-300 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
+                    aria-label="내 프로필"
                   >
-                    <div className="flex items-center space-x-2">
-                      <div className="w-5 h-5 bg-gray-300 rounded-full flex items-center justify-center text-xs font-light text-gray-600">
-                        {user?.username?.charAt(0).toUpperCase()}
-                      </div>
-                      <span className="hidden sm:inline">내 프로필</span>
-                    </div>
+                    <span className="text-sm font-semibold">
+                      {user?.username?.charAt(0).toUpperCase()}
+                    </span>
                   </Button>
                 </Link>
                 {!isEditor && (
-                  <>
-                    <Link href="/editor/new">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="font-light"
-                      >
-                        새 글 작성
-                      </Button>
-                    </Link>
-                    <Link href="/editor">
-                      <Button
-                        size="sm"
-                        className="bg-gray-900 hover:bg-gray-800 text-white font-light"
-                      >
-                        대시보드
-                      </Button>
-                    </Link>
-                  </>
+                  <Link href="/editor/new">
+                    <Button
+                      size="sm"
+                      className="bg-gray-900 text-white hover:bg-black dark:bg-gradient-to-r dark:from-[#7144ff] dark:via-[#b568ff] dark:to-[#f07dff] dark:text-black dark:shadow-lg dark:shadow-purple-900/40"
+                    >
+                      작품 업로드
+                    </Button>
+                  </Link>
                 )}
               </>
             )}
