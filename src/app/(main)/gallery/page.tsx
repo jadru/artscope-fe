@@ -134,19 +134,19 @@ export default function GalleryPage() {
         <section aria-label="트렌딩 아트웍" className="space-y-4">
           <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-xs uppercase tracking-[0.35em] text-white/60">
+              <p className="text-xs uppercase tracking-[0.35em] text-gray-500 dark:text-white/60">
                 Trending Now
               </p>
-              <h3 className="text-2xl font-semibold text-white">
+              <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
                 오늘 주목해야 할 장면들
               </h3>
-              <p className="text-sm text-white/60">
-                다양한 장르가 섞인 시네마틱 컬렉션을 모았어요.
+              <p className="text-sm text-gray-600 dark:text-white/60">
+                다양한 장르가 뒤섞인 인기 작품을 간단한 스토리와 함께 소개해요.
               </p>
             </div>
             <Link
               href="#feed"
-              className="text-sm text-white/70 hover:text-white"
+              className="text-sm text-gray-600 underline-offset-4 hover:text-gray-900 dark:text-white/70 dark:hover:text-white"
               aria-label="피드 섹션으로 이동"
             >
               전체 피드 보기 →
@@ -158,9 +158,9 @@ export default function GalleryPage() {
               <Link
                 key={article.id}
                 href={`/article/${article.id}`}
-                className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-gradient-to-b from-white/10 to-white/5"
+                className="group relative overflow-hidden rounded-[28px] border border-[color:var(--panel-border)] bg-[color:var(--panel-bg)] shadow-lg shadow-black/5 dark:shadow-white/5"
               >
-                <div className="relative h-56 overflow-hidden">
+                <div className="relative h-56 overflow-hidden rounded-[28px]">
                   {article.mediaUrls?.[0] ? (
                     <Image
                       src={article.mediaUrls[0]}
@@ -170,21 +170,21 @@ export default function GalleryPage() {
                       className="object-cover transition duration-500 group-hover:scale-105"
                     />
                   ) : (
-                    <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-black/70" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-white/40 to-black/70 dark:from-white/10" />
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                  <div className="absolute left-4 top-4 rounded-full border border-white/20 bg-black/40 px-3 py-1 text-xs font-semibold text-white/80">
+                  <div className="absolute left-4 top-4 rounded-full border border-white/30 bg-black/50 px-3 py-1 text-xs font-semibold text-white">
                     {index + 1 < 10 ? `0${index + 1}` : index + 1}
                   </div>
                 </div>
-                <div className="p-5">
-                  <p className="text-xs uppercase text-white/60">
+                <div className="p-5 text-gray-800 dark:text-white">
+                  <p className="text-xs uppercase text-gray-500 dark:text-white/70">
                     {article.categoryName}
                   </p>
-                  <h4 className="mt-1 text-lg font-semibold text-white line-clamp-2">
+                  <h4 className="mt-1 text-lg font-semibold line-clamp-2">
                     {article.title}
                   </h4>
-                  <p className="mt-2 text-sm text-white/60">
+                  <p className="mt-2 text-sm text-gray-600 dark:text-white/70">
                     {article.author?.authorName} · 좋아요 {article.likes ?? 0}
                   </p>
                 </div>
@@ -198,13 +198,13 @@ export default function GalleryPage() {
         <section aria-label="피처드 컬렉션" className="space-y-4">
           <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="text-xs uppercase tracking-[0.35em] text-white/60">
+              <p className="text-xs uppercase tracking-[0.35em] text-gray-500 dark:text-white/60">
                 Featured Collections
               </p>
-              <h3 className="text-xl font-semibold text-white">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                 국내 예술 · 사진 · 디지털 아트
               </h3>
-              <p className="text-sm text-white/60">
+              <p className="text-sm text-gray-600 dark:text-white/60">
                 에디터가 고른 세 가지 테마 컬렉션으로 다양한 장르를 즐겨보세요.
               </p>
             </div>
@@ -215,9 +215,9 @@ export default function GalleryPage() {
               <Link
                 key={article.id}
                 href={`/article/${article.id}`}
-                className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-4"
+                className="relative overflow-hidden rounded-3xl border border-[color:var(--panel-border)] bg-[color:var(--panel-bg)] p-4 shadow-lg shadow-black/5 dark:shadow-white/5"
               >
-                <div className="relative h-48 overflow-hidden rounded-2xl bg-black/40">
+                <div className="relative h-48 overflow-hidden rounded-2xl bg-[color:var(--panel-muted)]">
                   {article.mediaUrls?.[0] ? (
                     <Image
                       src={article.mediaUrls[0]}
@@ -227,21 +227,23 @@ export default function GalleryPage() {
                       className="object-cover transition duration-500 hover:scale-105"
                     />
                   ) : (
-                    <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-black/40" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-white/40 to-black/40 dark:from-white/10" />
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                  <div className="absolute inset-x-4 bottom-4">
-                    <p className="text-xs uppercase text-white/60">
+                  <div className="absolute inset-x-4 bottom-4 text-white">
+                    <p className="text-xs uppercase text-white/70">
                       {article.categoryName}
                     </p>
-                    <p className="text-lg font-semibold text-white line-clamp-2">
+                    <p className="text-lg font-semibold line-clamp-2">
                       {article.title}
                     </p>
                   </div>
                 </div>
-                <div className="mt-4 flex items-center justify-between text-sm text-white/70">
+                <div className="mt-4 flex items-center justify-between text-sm text-gray-700 dark:text-white/80">
                   <span>{article.author?.authorName}</span>
-                  <span className="text-white/60">♥ {article.likes ?? 0}</span>
+                  <span className="text-gray-500 dark:text-white/70">
+                    ♥ {article.likes ?? 0}
+                  </span>
                 </div>
               </Link>
             ))}
@@ -272,34 +274,34 @@ function DiscoverySearchBar() {
   return (
     <section
       aria-label="작품 검색"
-      className="rounded-[28px] border border-white/10 bg-white/5 p-5 shadow-[0_20px_50px_rgba(6,6,12,0.55)] sm:p-7"
+      className="rounded-[28px] border border-[color:var(--panel-border)] bg-[color:var(--panel-bg)] p-5 shadow-[0_20px_50px_rgba(6,6,12,0.15)] dark:shadow-[0_20px_50px_rgba(6,6,12,0.55)] sm:p-7"
     >
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-white/60">
+          <p className="text-xs uppercase tracking-[0.3em] text-gray-500 dark:text-white/60">
             Search Artwork
           </p>
-          <h3 className="text-xl font-semibold text-white">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
             찾고 싶은 작가나 키워드를 입력해 주세요
           </h3>
         </div>
         <form
           onSubmit={handleSubmit}
-          className="w-full rounded-full border border-white/20 bg-white/10 px-4 py-3 text-white shadow-lg shadow-purple-900/30 backdrop-blur md:w-[360px]"
+          className="w-full rounded-full border border-[color:var(--panel-border)] bg-transparent px-4 py-3 text-gray-900 shadow-sm shadow-purple-100/60 backdrop-blur dark:text-white dark:shadow-purple-900/30 md:w-[360px]"
         >
           <div className="flex items-center gap-3">
-            <Search size={18} className="text-white/60" />
+            <Search size={18} className="text-gray-500 dark:text-white/70" />
             <input
               type="text"
               value={keyword}
               onChange={(event) => setKeyword(event.target.value)}
               placeholder="예: 김 작가, 드로잉, 에세이"
-              className="flex-1 bg-transparent text-sm placeholder:text-white/50 focus:outline-none"
+              className="flex-1 bg-transparent text-sm placeholder:text-gray-500 focus:outline-none dark:placeholder:text-white/50"
               aria-label="검색어 입력"
             />
             <button
               type="submit"
-              className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white hover:bg-white/30"
+              className="rounded-full bg-gray-900 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white hover:bg-black dark:bg-white/20 dark:text-white dark:hover:bg-white/30"
             >
               찾기
             </button>

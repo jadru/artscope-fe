@@ -4,6 +4,57 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --background: #f7f5ff;
+  --foreground: #1e1630;
+  --card: #ffffff;
+  --card-foreground: #1e1630;
+  --popover: #ffffff;
+  --popover-foreground: #1e1630;
+  --primary: #6d4ef5;
+  --primary-foreground: #ffffff;
+  --secondary: #ece6ff;
+  --secondary-foreground: #2b1f45;
+  --muted: #f1edf9;
+  --muted-foreground: #5b536f;
+  --accent: #efe3ff;
+  --accent-foreground: #2b1f45;
+  --destructive: #f97373;
+  --destructive-foreground: #3c0d0d;
+  --border: rgba(32, 22, 58, 0.12);
+  --input: rgba(32, 22, 58, 0.22);
+  --ring: #7d5cf5;
+  --chart-1: #7e57c2;
+  --chart-2: #36a2eb;
+  --chart-3: #2ec5b6;
+  --chart-4: #ffb74d;
+  --chart-5: #ef5350;
+  --radius: 0.625rem;
+  --sidebar: #f8f6ff;
+  --sidebar-foreground: #1e1630;
+  --sidebar-primary: #6d4ef5;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ebe2ff;
+  --sidebar-accent-foreground: #2b1f45;
+  --sidebar-border: rgba(32, 22, 58, 0.12);
+  --sidebar-ring: #7d5cf5;
+  --panel-bg: rgba(255, 255, 255, 0.95);
+  --panel-border: rgba(32, 22, 58, 0.12);
+  --panel-muted: rgba(32, 22, 58, 0.06);
+  --page-bg: radial-gradient(
+        circle at 20% 0%,
+        rgba(142, 129, 212, 0.25),
+        transparent 45%
+      ),
+    radial-gradient(
+        circle at 80% 20%,
+        rgba(255, 207, 150, 0.35),
+        transparent 50%
+      ),
+    linear-gradient(135deg, #f8f6ff 0%, #f0ecff 60%, #f7f1ff 100%);
+  color-scheme: light;
+}
+
+.dark {
   --background: #040407;
   --foreground: #f4f1ff;
   --card: #0d0b14;
@@ -28,7 +79,6 @@
   --chart-3: #4ecdc4;
   --chart-4: #ffb86c;
   --chart-5: #ff6f91;
-  --radius: 0.625rem;
   --sidebar: #0d0b14;
   --sidebar-foreground: #f4f1ff;
   --sidebar-primary: #b48bff;
@@ -37,41 +87,21 @@
   --sidebar-accent-foreground: #ede8ff;
   --sidebar-border: #2e243d;
   --sidebar-ring: #a771ff;
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+  --panel-bg: rgba(255, 255, 255, 0.05);
+  --panel-border: rgba(255, 255, 255, 0.14);
+  --panel-muted: rgba(255, 255, 255, 0.08);
+  --page-bg: radial-gradient(
+        circle at 20% 20%,
+        rgba(102, 60, 189, 0.25),
+        transparent 45%
+      ),
+    radial-gradient(
+        circle at 80% 0%,
+        rgba(19, 105, 179, 0.2),
+        transparent 50%
+      ),
+    linear-gradient(135deg, #040407 0%, #090212 50%, #050305 100%);
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -125,17 +155,7 @@
     @apply text-foreground;
     min-height: 100vh;
     background-color: var(--background);
-    background-image: radial-gradient(
-        circle at 20% 20%,
-        rgba(102, 60, 189, 0.25),
-        transparent 45%
-      ),
-      radial-gradient(
-        circle at 80% 0%,
-        rgba(19, 105, 179, 0.2),
-        transparent 50%
-      ),
-      linear-gradient(135deg, #040407 0%, #090212 50%, #050305 100%);
+    background-image: var(--page-bg);
     background-attachment: fixed;
   }
 }

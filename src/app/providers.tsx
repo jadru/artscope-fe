@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import { CRONITOR_ANALYTICS_KEY } from "@/constant/env";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -27,7 +28,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
+      <ThemeProvider>{children}</ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
