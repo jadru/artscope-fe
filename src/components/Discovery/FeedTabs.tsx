@@ -4,7 +4,7 @@ import {
   useQueryClient,
   useSuspenseInfiniteQuery,
 } from "@tanstack/react-query";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState, useId } from "react";
 import { useRouter } from "next/navigation";
 
 import { useObserver } from "@/hooks/useObserver";
@@ -92,7 +92,7 @@ function TabFeed({ tab }: { tab: TabKey }) {
 
   if (isError) {
     return (
-      <div className="w-full py-12 text-center text-white/60">
+      <div className="w-full py-12 text-center text-gray-500 dark:text-white/60">
         콘텐츠를 불러오지 못했습니다.
       </div>
     );
@@ -100,7 +100,7 @@ function TabFeed({ tab }: { tab: TabKey }) {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
         {data.pages.map((page, i) => (
           <React.Fragment key={i}>
             {page.magazines.map((article) => (
@@ -124,6 +124,10 @@ export default function FeedTabs() {
   const router = useRouter();
   const { data: user } = useProfile();
   const isLoggedIn = !!user;
+  const tabBaseId = useId();
+
+  const getTabId = (key: TabKey) => `${tabBaseId}-${key}-tab`;
+  const getPanelId = (key: TabKey) => `${tabBaseId}-${key}-panel`;
 
   useEffect(() => {
     if (active === "following" && !isLoggedIn) {
@@ -143,10 +147,15 @@ export default function FeedTabs() {
         className={cn(
           "rounded-full px-5 py-2 text-sm font-medium transition-all",
           isActive
-            ? "bg-white text-black shadow-lg shadow-purple-900/40"
-            : "text-white/70 hover:text-white",
+            ? "bg-gray-900 text-white shadow dark:bg-white dark:text-black dark:shadow-lg dark:shadow-purple-900/40"
+            : "text-gray-600 hover:text-gray-900 dark:text-white/70 dark:hover:text-white",
           options?.disabled && "cursor-not-allowed opacity-40"
         )}
+        role="tab"
+        id={getTabId(key)}
+        aria-controls={getPanelId(key)}
+        aria-selected={isActive}
+        tabIndex={isActive ? 0 : -1}
         onClick={() => {
           if (options?.disabled) {
             router.push("/user/login");
@@ -154,7 +163,6 @@ export default function FeedTabs() {
           }
           setActive(key);
         }}
-        aria-current={isActive}
       >
         {label}
       </button>
@@ -165,17 +173,21 @@ export default function FeedTabs() {
     <section id="feed" className="w-full space-y-6">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-white/50">
+          <p className="text-xs uppercase tracking-[0.3em] text-gray-500 dark:text-white/50">
             Daily Highlights
           </p>
-          <h3 className="text-2xl font-semibold text-white">
+          <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
             Discovery Feed
           </h3>
-          <p className="text-sm text-white/60">
+          <p className="text-sm text-gray-600 dark:text-white/60">
             하루에도 여러 번 업데이트되는 작품과 작가 이야기를 이곳에서 만나보세요.
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-2 rounded-full border border-white/15 bg-white/5 p-1">
+        <div
+          className="flex flex-wrap items-center gap-2 rounded-full border border-[color:var(--panel-border)] bg-[color:var(--panel-bg)] p-1 shadow-sm dark:shadow-white/5"
+          role="tablist"
+          aria-label="피드 정렬"
+        >
           {renderTabButton("explore", "탐색")}
           {renderTabButton("following", "팔로잉", {
             disabled: !isLoggedIn,
@@ -185,16 +197,37 @@ export default function FeedTabs() {
       </div>
 
       <div>
-        {active === "explore" && <TabFeed tab="explore" />}
-        {active === "following" &&
-          (isLoggedIn ? (
-            <TabFeed tab="following" />
-          ) : (
-            <div className="w-full rounded-3xl border border-white/10 bg-white/5 py-16 text-center text-white/70">
-              팔로잉 피드는 로그인 후 이용할 수 있습니다.
-            </div>
-          ))}
-        {active === "latest" && <TabFeed tab="latest" />}
+        <div
+          id={getPanelId("explore")}
+          role="tabpanel"
+          aria-labelledby={getTabId("explore")}
+          hidden={active !== "explore"}
+        >
+          {active === "explore" && <TabFeed tab="explore" />}
+        </div>
+        <div
+          id={getPanelId("following")}
+          role="tabpanel"
+          aria-labelledby={getTabId("following")}
+          hidden={active !== "following"}
+        >
+          {active === "following" &&
+            (isLoggedIn ? (
+              <TabFeed tab="following" />
+            ) : (
+              <div className="w-full rounded-3xl border border-[color:var(--panel-border)] bg-[color:var(--panel-bg)] py-16 text-center text-gray-500 dark:text-white/70">
+                팔로잉 피드는 로그인 후 이용할 수 있습니다.
+              </div>
+            ))}
+        </div>
+        <div
+          id={getPanelId("latest")}
+          role="tabpanel"
+          aria-labelledby={getTabId("latest")}
+          hidden={active !== "latest"}
+        >
+          {active === "latest" && <TabFeed tab="latest" />}
+        </div>
       </div>
     </section>
   );

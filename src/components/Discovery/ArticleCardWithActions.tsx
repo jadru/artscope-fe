@@ -113,14 +113,14 @@ export default function ArticleCardWithActions({
   const coverImage = article.mediaUrls?.[0];
 
   return (
-    <article className="group flex flex-col gap-3 rounded-[32px] border border-white/10 bg-white/5 p-3 shadow-[0_25px_60px_rgba(4,4,8,0.55)] backdrop-blur-xl">
+    <article className="group flex flex-col gap-3 rounded-[32px] border border-[color:var(--panel-border)] bg-[color:var(--panel-bg)] p-3 text-[color:var(--foreground)] shadow-lg shadow-black/5 backdrop-blur dark:shadow-[0_25px_60px_rgba(4,4,8,0.55)]">
       <div className="flex items-center justify-between px-1.5">
         <Link
           href={`/profile/${article.author.authorUsername}`}
           aria-label={`${article.author.authorName} 프로필로 이동`}
           className="flex min-w-0 items-center gap-2"
         >
-          <div className="relative h-8 w-8 overflow-hidden rounded-full border border-white/20 bg-white/10">
+          <div className="relative h-8 w-8 overflow-hidden rounded-full border border-[color:var(--panel-border)] bg-[color:var(--panel-muted)]">
             {article.author.authorProfileImage ? (
               <Image
                 src={article.author.authorProfileImage}
@@ -132,10 +132,10 @@ export default function ArticleCardWithActions({
             ) : null}
           </div>
           <div className="truncate">
-            <span className="text-sm font-medium text-white">
+            <span className="text-sm font-medium text-gray-900 dark:text-white">
               {article.author.authorName}
             </span>
-            <p className="text-xs text-white/60">
+            <p className="text-xs text-gray-500 dark:text-white/60">
               @{article.author.authorUsername}
             </p>
           </div>
@@ -146,9 +146,10 @@ export default function ArticleCardWithActions({
           className={cn(
             "text-[11px] rounded-full px-3 py-1 font-medium transition-colors",
             following
-              ? "bg-white text-black"
-              : "border border-white/20 text-white/80 hover:bg-white/10"
+              ? "bg-gray-900 text-white dark:bg-white dark:text-black"
+              : "border border-[color:var(--panel-border)] text-gray-700 hover:bg-[color:var(--panel-muted)] dark:text-white/80 dark:hover:bg-white/10"
           )}
+          aria-pressed={following}
         >
           {following ? "팔로잉" : "팔로우"}
         </button>
@@ -156,7 +157,7 @@ export default function ArticleCardWithActions({
 
       <Link
         href={`/article/${article.id}`}
-        className="block rounded-[28px] border border-white/10 bg-black/40"
+        className="block rounded-[28px] border border-[color:var(--panel-border)] bg-[color:var(--panel-muted)]"
       >
         <div className="relative aspect-[4/5] overflow-hidden rounded-[28px]">
           {!isError && coverImage ? (
@@ -170,21 +171,21 @@ export default function ArticleCardWithActions({
               className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
             />
           ) : (
-            <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-b from-white/10 to-black/60 text-center text-white/70">
+            <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-b from-white to-white text-center text-gray-500 dark:from-white/10 dark:to-black/60 dark:text-white/70">
               <div
-                className="mb-2 h-11 w-11 rounded-full border border-white/30 bg-white/5"
+                className="mb-2 h-11 w-11 rounded-full border border-[color:var(--panel-border)] bg-[color:var(--panel-bg)]"
                 aria-hidden="true"
               />
-              <div className="text-xs uppercase tracking-[0.3em] text-white/60">
+              <div className="text-xs uppercase tracking-[0.3em] text-gray-500 dark:text-white/60">
                 {article.author.authorName}
               </div>
             </div>
           )}
 
           {isLoading && !isError && (
-            <div className="absolute inset-0 animate-pulse bg-white/5" />
+            <div className="absolute inset-0 animate-pulse bg-white/10 dark:bg-white/5" />
           )}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
           <div className="absolute bottom-4 right-4 flex items-center gap-1 rounded-full bg-black/70 px-3 py-1 text-xs text-white">
             <FaHeart
               size={14}
@@ -202,13 +203,14 @@ export default function ArticleCardWithActions({
         <button
           aria-label={isLiked ? "좋아요 취소" : "좋아요"}
           onClick={() => (isLiked ? handleUnLike() : handleLike())}
-          className="flex items-center gap-2 rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-white/80 transition hover:bg-white/10"
+          className="flex items-center gap-2 rounded-full border border-[color:var(--panel-border)] px-3 py-1 text-xs font-medium text-gray-700 transition hover:bg-[color:var(--panel-muted)] dark:text-white/80 dark:hover:bg-white/10"
+          aria-pressed={isLiked}
         >
           <FaHeart
             size={16}
             className={cn(
               "transition-colors",
-              isLiked ? "text-red-400 fill-red-400" : "text-white/70"
+              isLiked ? "text-red-400 fill-red-400" : "text-gray-500 dark:text-white/70"
             )}
           />
           {isLiked ? "Liked" : "Like"}
@@ -217,7 +219,7 @@ export default function ArticleCardWithActions({
         <button
           aria-label="공유"
           onClick={handleShare}
-          className="rounded-full border border-white/20 p-2 text-white/70 transition hover:bg-white/10"
+          className="rounded-full border border-[color:var(--panel-border)] p-2 text-gray-500 transition hover:bg-[color:var(--panel-muted)] dark:text-white/70 dark:hover:bg-white/10"
           title="공유"
         >
           {shared ? (
@@ -228,21 +230,28 @@ export default function ArticleCardWithActions({
         </button>
       </div>
 
-      <div className="px-1 text-[13px] text-white/70">
-        좋아요 <span className="font-semibold text-white">{likes}</span>개
+      <div
+        className="px-1 text-[13px] text-gray-600 dark:text-white/70"
+        aria-live="polite"
+      >
+        좋아요{" "}
+        <span className="font-semibold text-gray-900 dark:text-white">
+          {likes}
+        </span>
+        개
       </div>
-      <div className="px-1 text-sm text-white">
+      <div className="px-1 text-sm text-gray-900 dark:text-white">
         <Link
           href={`/profile/${article.author.authorUsername}`}
-          className="mr-1 font-semibold text-white hover:text-white/80"
+          className="mr-1 font-semibold text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-white/80"
         >
           {article.author.authorName}
         </Link>
-        <span className="text-white/80 line-clamp-2">
+        <span className="text-gray-700 dark:text-white/80 line-clamp-2">
           {standardLabel(article.title)}
         </span>
       </div>
-      <div className="px-1 text-[11px] uppercase tracking-[0.2em] text-white/50">
+      <div className="px-1 text-[11px] uppercase tracking-[0.2em] text-gray-400 dark:text-white/50">
         {article.categoryName}
       </div>
     </article>
