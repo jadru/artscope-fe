@@ -4,9 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import jxios from "@/utils/jxios";
 import { useState } from "react";
+
+import jxios from "@/utils/jxios";
 import { useProfile } from "@/auth/use-profile";
+import { cn } from "@/utils";
 import type { articleListType, AuthorType } from "@/types/article";
 
 const LIMIT = 30;
@@ -50,37 +52,30 @@ export default function FollowSuggestions() {
   if (suggestions.length === 0) return null;
 
   return (
-    <section
-      className="mt-12 rounded-[32px] border border-[color:var(--panel-border)] bg-[color:var(--panel-bg)] p-5 shadow-lg shadow-black/5 dark:shadow-white/5 md:p-7"
-      aria-label="팔로우 제안"
-    >
-      <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-        <div>
-          <p className="text-xs uppercase tracking-[0.4em] text-gray-500 dark:text-white/60">
-            더 깊은 연결
-          </p>
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-            관심 있을 만한 작가
-          </h3>
-          <p className="text-sm text-gray-600 dark:text-white/60">
-            꾸준히 트렌딩 피드에 등장한 작가들을 소개합니다.
+    <section className="space-y-6" aria-label="Suggested artists">
+      {/* Header */}
+      <div className="flex items-end justify-between">
+        <div className="space-y-1">
+          <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-white sm:text-2xl">
+            Artists to Follow
+          </h2>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+            Trending creators this week
           </p>
         </div>
-        <Link
-          href="/gallery"
-          className="self-start rounded-full border border-[color:var(--panel-border)] px-4 py-2 text-sm text-gray-700 hover:bg-[color:var(--panel-muted)] dark:text-white/70 dark:hover:bg-white/10"
-        >
-          전체 작가 보기
-        </Link>
       </div>
-      <div className="mt-5 flex gap-4 overflow-x-auto pb-2 pr-2 no-scrollbar">
-        {suggestions.map((s) => (
-          <SuggestionCard
-            key={s.author.authorUsername}
-            author={s.author}
-            count={s.count}
-          />
-        ))}
+
+      {/* Horizontal Scroll */}
+      <div className="-mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+        <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
+          {suggestions.map((s) => (
+            <SuggestionCard
+              key={s.author.authorUsername}
+              author={s.author}
+              count={s.count}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -115,41 +110,52 @@ function SuggestionCard({
   };
 
   return (
-    <div className="flex w-56 flex-shrink-0 flex-col rounded-3xl border border-[color:var(--panel-border)] bg-[color:var(--panel-bg)] p-4 shadow-sm dark:shadow-white/5">
-      <div className="flex items-center gap-3">
-        <div className="relative h-12 w-12 overflow-hidden rounded-full border border-[color:var(--panel-border)] bg-[color:var(--panel-muted)]">
-          {author.authorProfileImage ? (
-            <Image
-              src={author.authorProfileImage}
-              alt={author.authorName}
-              fill
-              sizes="48px"
-              className="object-cover"
-            />
-          ) : null}
-        </div>
-        <div className="min-w-0">
-          <div className="truncate text-sm font-semibold text-gray-900 dark:text-white">
-            {author.authorName}
+    <div className="group flex w-48 flex-shrink-0 flex-col items-center rounded-2xl bg-neutral-50 p-5 transition-colors hover:bg-neutral-100 dark:bg-neutral-900 dark:hover:bg-neutral-800/80">
+      {/* Avatar */}
+      <Link
+        href={`/profile/${author.authorUsername}`}
+        className="relative mb-3 h-16 w-16 overflow-hidden rounded-full bg-neutral-200 ring-2 ring-white dark:bg-neutral-800 dark:ring-neutral-900"
+      >
+        {author.authorProfileImage ? (
+          <Image
+            src={author.authorProfileImage}
+            alt={author.authorName}
+            fill
+            sizes="64px"
+            className="object-cover"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-lg font-medium text-neutral-400">
+            {author.authorName?.charAt(0).toUpperCase()}
           </div>
-          <div className="truncate text-xs text-gray-500 dark:text-white/60">
-            @{author.authorUsername}
-          </div>
-        </div>
-      </div>
-      <p className="mt-3 text-xs text-gray-500 dark:text-white/70">
-        트렌딩 노출 {count}회
-      </p>
+        )}
+      </Link>
+
+      {/* Info */}
+      <Link
+        href={`/profile/${author.authorUsername}`}
+        className="mb-1 text-center"
+      >
+        <p className="text-sm font-medium text-neutral-900 dark:text-white">
+          {author.authorName}
+        </p>
+        <p className="text-xs text-neutral-500 dark:text-neutral-400">
+          {count} trending {count === 1 ? "work" : "works"}
+        </p>
+      </Link>
+
+      {/* Follow Button */}
       <button
         onClick={toggle}
-        className={`mt-4 w-full rounded-full px-4 py-2 text-sm font-medium transition ${
+        className={cn(
+          "mt-3 w-full rounded-full py-2 text-xs font-medium transition-all",
           following
-            ? "bg-gray-900 text-white hover:bg-black dark:bg-white dark:text-black"
-            : "border border-[color:var(--panel-border)] text-gray-700 hover:bg-[color:var(--panel-muted)] dark:text-white dark:hover:bg-white/10"
-        }`}
-        aria-label={following ? "팔로잉" : "팔로우"}
+            ? "bg-neutral-900 text-white dark:bg-white dark:text-black"
+            : "bg-neutral-900/5 text-neutral-700 hover:bg-neutral-900/10 dark:bg-white/10 dark:text-white dark:hover:bg-white/15"
+        )}
+        aria-label={following ? "Following" : "Follow"}
       >
-        {following ? "팔로잉" : "팔로우"}
+        {following ? "Following" : "Follow"}
       </button>
     </div>
   );
