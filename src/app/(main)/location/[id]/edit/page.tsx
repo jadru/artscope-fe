@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useLocation, useUpdateLocation } from "@/hooks/use-location";
+import { useLocation, useUpdateLocation } from "@/hooks/useLocation";
 import { useProfile } from "@/auth/use-profile";
 
 type Inputs = {

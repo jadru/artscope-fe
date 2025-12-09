@@ -1,18 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import { AiOutlineCoffee } from "react-icons/ai";
+import { useEffect, useState } from "react";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
-
-import Title from "@/components/Title";
-import { Button } from "@/components/ui/button";
 
 const RedirectOAuth2 = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+  const [status, setStatus] = useState<"loading" | "success">("loading");
 
   useEffect(() => {
     if (!token) {
@@ -37,8 +34,13 @@ const RedirectOAuth2 = () => {
           throw new Error("refresh failed");
         }
 
-        router.refresh();
-        router.push("/");
+        setStatus("success");
+        toast.success("로그인에 성공했습니다.");
+
+        setTimeout(() => {
+          router.refresh();
+          router.push("/");
+        }, 1500);
       } catch (error) {
         toast.error("로그인에 실패했습니다.");
         router.push("/");
@@ -51,13 +53,39 @@ const RedirectOAuth2 = () => {
   }, [router, token]);
 
   return (
-    <>
-      <Title title="로그인 성공" description="로그인이 완료되었습니다." />
-      <AiOutlineCoffee size={60} className="drop-shadow-glow text-orange-800" />
-      <Link className="my-8" href="/">
-        <Button color="primary">홈으로 돌아가기</Button>
-      </Link>
-    </>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 dark:bg-[#0A0A0A]">
+      <div className="w-full max-w-md space-y-8">
+        {/* Header */}
+        <div className="space-y-2 text-center">
+          <h1 className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-gray-50">
+            로그인 성공
+          </h1>
+        </div>
+
+        {/* Status Card */}
+        <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-[#1A1A1A]">
+          <div className="flex flex-col items-center space-y-4 text-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-50 dark:bg-green-950">
+              {status === "loading" ? (
+                <Loader2 className="h-8 w-8 animate-spin text-green-600 dark:text-green-400" />
+              ) : (
+                <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400" />
+              )}
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-50">
+                {status === "loading" ? "로그인 처리 중" : "로그인 완료"}
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {status === "loading"
+                  ? "잠시만 기다려주세요..."
+                  : "홈 페이지로 이동합니다..."}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

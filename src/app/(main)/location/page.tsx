@@ -3,14 +3,14 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
-import { useInfiniteSearchLocations } from "@/hooks/use-location";
+import { useInfiniteSearchLocations } from "@/hooks/useLocation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProfile } from "@/auth/use-profile";
 import { LocationSearchItemType } from "@/types/location";
 import LocationCard from "@/app/(main)/location/LocationCard";
-import ObservationComponent from "@/components/ObservationComponent";
+import ObservationComponent from "@/components/shared/ObservationComponent";
 
 export default function LocationSearchPage() {
   const [keyword, setKeyword] = useState("");

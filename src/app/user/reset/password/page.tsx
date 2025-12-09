@@ -6,8 +6,8 @@ import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import * as yup from "yup";
+import { Lock, AlertCircle } from "lucide-react";
 
-import Title from "@/components/Title";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -80,55 +80,101 @@ export default function ResetPassword() {
   };
 
   return (
-    <div onSubmit={form.handleSubmit(onSubmit)}>
-      <Title
-        title="비밀번호 찾기"
-        description="가입하신 이메일로 비밀번호 재설정 링크를 보내드립니다."
-      />
+    <div className="flex flex-col items-stretch gap-8 py-8">
+      {/* Header */}
+      <div className="space-y-2 text-center">
+        <h1 className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
+          비밀번호 재설정
+        </h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          새로운 비밀번호를 설정해주세요
+        </p>
+      </div>
 
       <Form {...form}>
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="비밀번호 입력" {...field} />
-              </FormControl>
-              <FormDescription>새로운 비밀번호를 입력해주세요.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="passwordConfirm"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl>
-                <Input
-                  type="password"
-                  placeholder="확인 비밀번호 입력"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                새로운 비밀번호를 다시 입력해주세요.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button
-          color="primary"
-          type="submit"
-          disabled={form.formState.isSubmitting}
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-full space-y-6"
         >
-          비밀번호 재설정
-        </Button>
+          {/* Password Field */}
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem className="space-y-2">
+                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  새 비밀번호
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="8자리 이상"
+                    {...field}
+                    className="h-12 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-1 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:placeholder:text-gray-600 dark:focus:border-white dark:focus:bg-black dark:focus:ring-white"
+                  />
+                </FormControl>
+                <FormDescription className="text-xs text-gray-500 dark:text-gray-500">
+                  8자 이상의 비밀번호를 입력해주세요
+                </FormDescription>
+                <FormMessage className="text-xs" />
+              </FormItem>
+            )}
+          />
+
+          {/* Password Confirm Field */}
+          <FormField
+            control={form.control}
+            name="passwordConfirm"
+            render={({ field }) => (
+              <FormItem className="space-y-2">
+                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  비밀번호 확인
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="비밀번호 재입력"
+                    {...field}
+                    className="h-12 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-1 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:placeholder:text-gray-600 dark:focus:border-white dark:focus:bg-black dark:focus:ring-white"
+                  />
+                </FormControl>
+                <FormDescription className="text-xs text-gray-500 dark:text-gray-500">
+                  동일한 비밀번호를 다시 입력해주세요
+                </FormDescription>
+                <FormMessage className="text-xs" />
+              </FormItem>
+            )}
+          />
+
+          <Button
+            type="submit"
+            className="h-12 w-full rounded-full bg-gray-900 text-sm font-medium text-white transition-all hover:bg-gray-800 disabled:opacity-50 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+            disabled={form.formState.isSubmitting}
+          >
+            {form.formState.isSubmitting
+              ? "처리 중..."
+              : "비밀번호 재설정"}
+          </Button>
+        </form>
       </Form>
+
+      {/* Warning Box */}
+      <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 dark:border-amber-900 dark:bg-amber-950">
+        <div className="flex gap-4">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900">
+            <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+          </div>
+          <div className="flex-1 space-y-1">
+            <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-100">
+              안전한 비밀번호를 사용하세요
+            </h3>
+            <p className="text-sm leading-relaxed text-amber-700 dark:text-amber-300">
+              다른 사이트에서 사용하지 않는 고유한 비밀번호를 설정하세요.
+              영문, 숫자, 특수문자를 조합하면 더욱 안전합니다.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

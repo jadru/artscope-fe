@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 
-import FormCard from "@/components/FormCard";
+import FormCard from "@/components/shared/FormCard";
 import { Button } from "@/components/ui/button";
 import {
   Form,

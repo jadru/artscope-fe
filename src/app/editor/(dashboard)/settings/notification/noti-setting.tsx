@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-import FormCard from "@/components/FormCard";
+import FormCard from "@/components/shared/FormCard";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import jxios from "@/utils/jxios";

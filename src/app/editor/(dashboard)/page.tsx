@@ -5,8 +5,8 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import MarkdownViewer from "@/components/MarkdownViewer";
-import { standardLabel } from "@/components/StandardLabel";
+import MarkdownViewer from "@/components/shared/MarkdownViewer";
+import { standardLabel } from "@/components/shared/StandardLabel";
 import {
   Card,
   CardContent,
@@ -135,10 +135,12 @@ export default function Page() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-50">
             에러가 발생했습니다
           </h3>
-          <p className="text-gray-600">잠시 후 다시 시도해주세요.</p>
+          <p className="text-gray-600 dark:text-gray-400">
+            잠시 후 다시 시도해주세요.
+          </p>
         </div>
       </div>
     );
@@ -286,14 +288,22 @@ export default function Page() {
 
                     {/* 편집 버튼 */}
                     <div className="flex gap-2">
-                      <Link href={"/article/" + article.id}>
-                        <Button>보기</Button>
+                      <Link href={"/article/" + article.id} className="flex-1">
+                        <Button className="w-full rounded-full bg-gray-900 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100">
+                          보기
+                        </Button>
                       </Link>
                       <Link
                         href={`/editor/${article.id}/modify`}
                         onClick={(e) => e.stopPropagation()}
+                        className="flex-1"
                       >
-                        <Button variant="outline">편집하기</Button>
+                        <Button
+                          variant="outline"
+                          className="w-full rounded-full border-gray-200 hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-900"
+                        >
+                          편집하기
+                        </Button>
                       </Link>
                     </div>
                   </div>
@@ -402,15 +412,16 @@ export default function Page() {
       {isSuccess && data.pages[0]?.magazines.length === 0 && (
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-50">
               작성된 글이 없습니다
             </h3>
-            <p className="text-gray-600 mb-4">첫 번째 글을 작성해보세요!</p>
-            <Link
-              href="/editor/new"
-              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-            >
-              새 글 작성하기
+            <p className="mb-4 text-gray-600 dark:text-gray-400">
+              첫 번째 글을 작성해보세요!
+            </p>
+            <Link href="/editor/new">
+              <Button className="rounded-full bg-gray-900 px-6 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100">
+                새 글 작성하기
+              </Button>
             </Link>
           </div>
         </div>

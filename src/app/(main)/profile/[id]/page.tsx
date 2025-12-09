@@ -1,6 +1,6 @@
 import { Metadata, ResolvingMetadata } from "next";
 
-import { standardLabel } from "@/components/StandardLabel";
+import { standardLabel } from "@/components/shared/StandardLabel";
 
 import jxios from "@/utils/jxios";
 
