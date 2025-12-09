@@ -15,13 +15,39 @@ async function refreshAccessToken(): Promise<loginResponseType | null> {
     const refreshToken = await getRefreshToken();
     if (!refreshToken) return null;
 
-    const response = await fetch(`${NEXT_PUBLIC_API_URL}/api/refresh`, {
+    const refreshOptions: Record<string, unknown> = {
       method: "POST",
       headers: {
         "Content-Type": "text/plain",
       },
       body: refreshToken as string,
-    });
+    };
+
+    // SSL 검증 우회 (개발 환경 또는 SSL 검증 비활성화 설정 시)
+    if (
+      process.env.NODE_ENV === "development" ||
+      process.env.NEXT_PUBLIC_SKIP_SSL_VERIFICATION === "true"
+    ) {
+      if (typeof process !== "undefined") {
+        try {
+          // Node.js 18+ native fetch의 경우 undici를 사용
+          const { Agent } = await import("undici");
+          refreshOptions.dispatcher = new Agent({
+            connect: {
+              rejectUnauthorized: false,
+            },
+          });
+        } catch {
+          // undici가 없는 경우 fallback (프로덕션 환경에서는 정상 동작)
+          console.warn("SSL 검증 우회 설정 불가 - undici 사용 불가");
+        }
+      }
+    }
+
+    const response = await fetch(
+      `${NEXT_PUBLIC_API_URL}/api/refresh`,
+      refreshOptions as RequestInit
+    );
 
     if (response.ok) {
       const data: loginResponseType = await response.json();
@@ -106,7 +132,10 @@ async function handleProxyRequest(
         accessToken = tokenData.accessToken;
         // 새로운 토큰들을 쿠키에 저장
         await setAccessToken(tokenData.accessToken, tokenData.expiresIn);
-        await setRefreshToken(tokenData.refreshToken, tokenData.refreshExpiresIn);
+        await setRefreshToken(
+          tokenData.refreshToken,
+          tokenData.refreshExpiresIn
+        );
       }
     }
 
@@ -146,28 +175,35 @@ async function handleProxyRequest(
     const targetUrl = `${NEXT_PUBLIC_API_URL}${pathname}${url.search}`;
 
     // 배포 환경에서 SSL 인증서 검증 우회
-    const fetchOptions: RequestInit = {
+    const fetchOptions: Record<string, unknown> = {
       method,
       headers: proxyHeaders,
       body,
     };
 
-    // SSL 검증 우회가 필요한 경우 (환경 변수로 제어)
-    if (process.env.NEXT_PUBLIC_SKIP_SSL_VERIFICATION === "true") {
+    // SSL 검증 우회 (개발 환경 또는 SSL 검증 비활성화 설정 시)
+    if (
+      process.env.NODE_ENV === "development" ||
+      process.env.NEXT_PUBLIC_SKIP_SSL_VERIFICATION === "true"
+    ) {
       // Node.js 환경에서만 사용 가능한 옵션
-      if (typeof process !== "undefined" && typeof require !== "undefined") {
+      if (typeof process !== "undefined") {
         try {
-          const https = require("https");
-          (fetchOptions as any).agent = new https.Agent({
-            rejectUnauthorized: false,
+          // Node.js 18+ native fetch의 경우 undici를 사용
+          const { Agent } = await import("undici");
+          fetchOptions.dispatcher = new Agent({
+            connect: {
+              rejectUnauthorized: false,
+            },
           });
-        } catch (error) {
-          console.warn("HTTPS agent 설정 실패:", error);
+        } catch {
+          // undici가 없는 경우 fallback (프로덕션 환경에서는 정상 동작)
+          console.warn("SSL 검증 우회 설정 불가 - undici 사용 불가");
         }
       }
     }
 
-    let proxyResponse = await fetch(targetUrl, fetchOptions);
+    let proxyResponse = await fetch(targetUrl, fetchOptions as RequestInit);
 
     // 만료 등으로 401이면 한 번만 토큰 갱신 후 재시도
     if (
@@ -184,10 +220,14 @@ async function handleProxyRequest(
 
         const retryHeaders = new Headers(proxyHeaders);
         retryHeaders.set("Authorization", `Bearer ${tokenData.accessToken}`);
-        proxyResponse = await fetch(targetUrl, {
+
+        // 재시도 시에도 동일한 SSL 설정 사용
+        const retryOptions: Record<string, unknown> = {
           ...fetchOptions,
           headers: retryHeaders,
-        });
+        };
+
+        proxyResponse = await fetch(targetUrl, retryOptions as RequestInit);
       }
     }
 
@@ -253,7 +293,7 @@ async function handleProxyRequest(
 }
 
 // OPTIONS 요청 처리 (CORS preflight)
-export async function OPTIONS(request: NextRequest) {
+export async function OPTIONS() {
   return new NextResponse(null, {
     status: 200,
     headers: {

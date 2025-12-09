@@ -2,9 +2,9 @@ import * as React from "react"
 import { type Editor } from "@tiptap/react"
 
 // --- Hooks ---
-import { useMenuNavigation } from "@/hooks/use-menu-navigation"
-import { useIsMobile } from "@/hooks/use-mobile"
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
+import { useMenuNavigation } from "@/hooks/useMenuNavigation"
+import { useIsMobile } from "@/hooks/useMobile"
+import { useTiptapEditor } from "@/hooks/useTiptapEditor"
 
 // --- Icons ---
 import { BanIcon } from "@/components/tiptap-icons/ban-icon"

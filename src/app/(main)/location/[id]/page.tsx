@@ -1,7 +1,7 @@
 import { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 
-import { standardLabel } from "@/components/StandardLabel";
+import { standardLabel } from "@/components/shared/StandardLabel";
 import serverApi from "@/utils/serverApi";
 import { LocationType } from "@/types/location";
 

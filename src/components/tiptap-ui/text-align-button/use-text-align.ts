@@ -6,14 +6,14 @@ import type { ChainedCommands } from "@tiptap/react"
 import { type Editor } from "@tiptap/react"
 
 // --- Hooks ---
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
-import { useIsMobile } from "@/hooks/use-mobile"
+import { useTiptapEditor } from "@/hooks/useTiptapEditor"
+import { useIsMobile } from "@/hooks/useMobile"
 
 // --- Lib ---
 import {
   isExtensionAvailable,
   isNodeTypeSelected,
-} from "@/lib/tiptap-utils"
+} from "@/utils/tiptap-utils"
 
 // --- Icons ---
 import { AlignCenterIcon } from "@/components/tiptap-icons/align-center-icon"

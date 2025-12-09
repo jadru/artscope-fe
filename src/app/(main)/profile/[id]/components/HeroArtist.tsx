@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import ASNextImage from "@/components/ASNextImage";
+import ASNextImage from "@/components/shared/ASNextImage";
 import Link from "next/link";
-import { standardLabel } from "@/components/StandardLabel";
+import { standardLabel } from "@/components/shared/StandardLabel";
 
 type HeroArtistProps = {
   name: string;

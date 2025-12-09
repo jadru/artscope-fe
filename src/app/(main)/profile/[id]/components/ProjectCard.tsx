@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import ASNextImage from "@/components/ASNextImage";
+import ASNextImage from "@/components/shared/ASNextImage";
 import Link from "next/link";
 import { PortfolioProjectType } from "@/types/article";
-import { standardLabel } from "@/components/StandardLabel";
+import { standardLabel } from "@/components/shared/StandardLabel";
 
 type ProjectCardProps = {
   project: PortfolioProjectType;
