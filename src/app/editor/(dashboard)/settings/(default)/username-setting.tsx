@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 
-import FormCard from "@/components/FormCard";
+import FormCard from "@/components/shared/FormCard";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -76,13 +76,13 @@ export default function UserNameSetting(props: { username: string }) {
                   <Input
                     placeholder="새로운 ID를 입력해주세요"
                     defaultValue={props.username}
-                    className="h-11 border-gray-200 focus:border-blue-300 focus:ring-blue-200"
+                    className="h-12 rounded-lg border-gray-200 transition-colors focus:border-gray-900 dark:border-gray-800 dark:focus:border-gray-100"
                     {...field}
                   />
                 </FormControl>
                 <FormMessage className="text-sm" />
                 {!form.formState.errors.username && form.formState.isValid && (
-                  <p className="text-sm text-green-600 font-medium">
+                  <p className="text-sm font-medium text-green-600 dark:text-green-400">
                     ✓ 사용 가능한 ID입니다
                   </p>
                 )}
@@ -91,7 +91,7 @@ export default function UserNameSetting(props: { username: string }) {
           />
           <Button
             type="submit"
-            className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium"
+            className="h-12 w-full rounded-full bg-gray-900 font-medium text-white hover:bg-gray-800 disabled:bg-gray-200 disabled:text-gray-400 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 dark:disabled:bg-gray-800 dark:disabled:text-gray-600"
             disabled={form.formState.isSubmitting || !form.formState.isValid}
           >
             {form.formState.isSubmitting ? "변경 중..." : "아이디 변경"}

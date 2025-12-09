@@ -1,7 +1,7 @@
 import { Metadata, ResolvingMetadata } from "next";
 
-import ASNextImage from "@/components/ASNextImage";
-import StandardLabel, { standardLabel } from "@/components/StandardLabel";
+import ASNextImage from "@/components/shared/ASNextImage";
+import StandardLabel, { standardLabel } from "@/components/shared/StandardLabel";
 
 import { NEXT_PUBLIC_API_URL } from "@/constant/env";
 import jxios from "@/utils/jxios";

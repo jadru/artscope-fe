@@ -1,9 +1,6 @@
 import type { NextConfig } from "next";
 
 const config: NextConfig = {
-  eslint: {
-    dirs: ["src"],
-  },
   async rewrites() {
     return [
       {
@@ -16,12 +13,24 @@ const config: NextConfig = {
   reactStrictMode: true,
 
   images: {
-    domains: [process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL ?? ""],
+    remotePatterns: process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL
+      ? [
+          {
+            protocol: "https",
+            hostname: process.env.NEXT_PUBLIC_MEDIA_STORAGE_URL,
+          },
+        ]
+      : [],
     loader: "custom",
     loaderFile: "./src/utils/imageLoader.ts",
+    unoptimized: true,
   },
 
   compress: true,
+
+  turbopack: {
+    root: process.cwd(),
+  },
 };
 
 export default config;

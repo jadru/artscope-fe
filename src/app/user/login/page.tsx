@@ -22,15 +22,23 @@ const Login = () => {
       router.push("/");
     }
   }, [router, user]);
+
   return (
-    <div className="flex flex-col items-center gap-6 py-6">
-      <h1 className="w-full text-left text-2xl font-semibold tracking-tight">
-        로그인
-      </h1>
+    <div className="flex flex-col items-stretch gap-8 py-8">
+      {/* Header */}
+      <div className="space-y-2 text-center">
+        <h1 className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
+          로그인
+        </h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          ArtScope에 오신 것을 환영합니다
+        </p>
+      </div>
+
+      {/* Google OAuth */}
       <Button
         variant="outline"
-        className="w-full"
-        size="lg"
+        className="w-full rounded-full border-gray-300 py-6 text-sm font-medium hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-900"
         onClick={() =>
           router.push(NEXT_PUBLIC_API_URL + "/oauth2/authorization/google")
         }
@@ -39,22 +47,33 @@ const Login = () => {
         구글로 계속하기
       </Button>
 
-      <div className="relative w-full">
+      {/* Divider */}
+      <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t"></span>
+          <span className="w-full border-t border-gray-200 dark:border-gray-800"></span>
         </div>
-        <div className="relative flex justify-center text-xs">
-          <span className="bg-background px-2 text-muted-foreground">또는</span>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-white px-3 text-gray-500 dark:bg-[#0A0A0A] dark:text-gray-400">
+            또는
+          </span>
         </div>
       </div>
 
+      {/* Login Form */}
       <LoginForm redirect={redirect} />
 
-      <div className="mt-2 flex w-full justify-between text-sm text-muted-foreground">
-        <Link href="/user/signup" className="hover:underline">
+      {/* Footer Links */}
+      <div className="flex items-center justify-between border-t border-gray-100 pt-6 dark:border-gray-900">
+        <Link
+          href="/user/signup"
+          className="text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+        >
           회원가입
         </Link>
-        <Link href="/user/find" className="hover:underline">
+        <Link
+          href="/user/find"
+          className="text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+        >
           아이디 / 비밀번호 찾기
         </Link>
       </div>

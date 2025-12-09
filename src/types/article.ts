@@ -16,6 +16,7 @@ export type articleItemType = {
   categorySlug: string;
   views: number;
   likes: number;
+  isLiked: boolean;
   comments: number;
   author: AuthorType;
   teamName: string | null;

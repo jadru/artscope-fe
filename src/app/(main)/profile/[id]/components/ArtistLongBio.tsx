@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { standardLabel } from "@/components/StandardLabel";
+import { standardLabel } from "@/components/shared/StandardLabel";
 
 type ArtistLongBioProps = {
   bio: string;

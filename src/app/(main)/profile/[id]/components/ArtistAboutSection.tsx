@@ -1,6 +1,6 @@
 "use client";
 
-import { standardLabel } from "@/components/StandardLabel";
+import { standardLabel } from "@/components/shared/StandardLabel";
 import ArtistKeywords from "./ArtistKeywords";
 import ArtistLongBio from "./ArtistLongBio";
 

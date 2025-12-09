@@ -1,5 +1,9 @@
 {
-  "exclude": ["node_modules", "dist", "**/node_modules/**"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/node_modules/**"
+  ],
   "compilerOptions": {
     "target": "es2022",
     "module": "esnext",
@@ -8,17 +12,25 @@
     "strict": true,
     "skipLibCheck": true,
     "noEmitOnError": false,
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "moduleResolution": "node",
     "noEmit": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "~/*": ["./public/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "~/*": [
+        "./public/*"
+      ]
     },
     "incremental": true,
     "plugins": [
@@ -26,14 +38,20 @@
         "name": "next"
       }
     ],
-    "types": ["kakao.maps.d.ts"]
+    "types": [
+      "kakao.maps.d.ts"
+    ]
   },
   "include": [
     "next-env.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.d.ts",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
-  "moduleResolution": [".next", "node"]
+  "moduleResolution": [
+    ".next",
+    "node"
+  ]
 }

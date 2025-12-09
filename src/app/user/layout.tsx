@@ -1,8 +1,7 @@
 import { Metadata } from "next";
 import React from "react";
 
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+import { MainNavbar, MainFooter } from "@/components/layout";
 
 export const metadata: Metadata = {
   title: "회원 정보 관리",
@@ -10,16 +9,17 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardLayout({
-  children, // will be a pages or nested layout
+  children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <div className="container my-12 mx-auto flex min-h-[calc(100vh-10rem)] max-w-md flex-col items-stretch gap-2 p-4 justify-center pb-3">
+    <div className="flex min-h-screen flex-col bg-white">
+      <MainNavbar />
+      <div className="mx-auto my-12 flex min-h-[calc(100vh-10rem)] w-full max-w-md flex-col items-stretch justify-center gap-2 p-4 pb-3">
         {children}
       </div>
-      <Footer />
-    </>
+      <MainFooter />
+    </div>
   );
 }

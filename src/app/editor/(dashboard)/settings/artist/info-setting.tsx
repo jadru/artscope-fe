@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import * as yup from "yup";
 import { useState, useEffect, useMemo } from "react";
 
-import FormCard from "@/components/FormCard";
+import FormCard from "@/components/shared/FormCard";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -135,14 +135,14 @@ export default function InfoSetting(props: {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-700">
+                  <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">
                     작가명
                   </FormLabel>
                   <FormControl>
                     <Input
                       type="text"
                       placeholder="작가명을 입력해주세요"
-                      className="h-11 border-gray-200 focus:border-blue-300 focus:ring-blue-200"
+                      className="h-12 rounded-lg border-gray-200 transition-colors focus:border-gray-900 dark:border-gray-800 dark:focus:border-gray-100"
                       {...field}
                     />
                   </FormControl>
@@ -155,14 +155,14 @@ export default function InfoSetting(props: {
               name="snsUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-700">
+                  <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">
                     SNS URL
                   </FormLabel>
                   <FormControl>
                     <Input
                       type="url"
                       placeholder="SNS URL을 입력해주세요"
-                      className="h-11 border-gray-200 focus:border-blue-300 focus:ring-blue-200"
+                      className="h-12 rounded-lg border-gray-200 transition-colors focus:border-gray-900 dark:border-gray-800 dark:focus:border-gray-100"
                       {...field}
                     />
                   </FormControl>
@@ -177,14 +177,14 @@ export default function InfoSetting(props: {
             name="websiteUrl"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700">
+                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   웹사이트 URL
                 </FormLabel>
                 <FormControl>
                   <Input
                     type="url"
                     placeholder="웹사이트 URL을 입력해주세요"
-                    className="h-11 border-gray-200 focus:border-blue-300 focus:ring-blue-200"
+                    className="h-12 rounded-lg border-gray-200 transition-colors focus:border-gray-900 dark:border-gray-800 dark:focus:border-gray-100"
                     {...field}
                   />
                 </FormControl>
@@ -198,13 +198,13 @@ export default function InfoSetting(props: {
             name="introduction"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700">
+                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   작가 소개
                 </FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="작가 소개를 입력해주세요"
-                    className="min-h-[100px] border-gray-200 focus:border-blue-300 focus:ring-blue-200 resize-none"
+                    className="min-h-[100px] resize-none rounded-lg border-gray-200 transition-colors focus:border-gray-900 dark:border-gray-800 dark:focus:border-gray-100"
                     {...field}
                   />
                 </FormControl>
@@ -215,7 +215,7 @@ export default function InfoSetting(props: {
 
           {/* 작가 이력 - 라인별 입력 */}
           <div className="space-y-4">
-            <FormLabel className="text-sm font-medium text-gray-700">
+            <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">
               작가 이력
             </FormLabel>
 
@@ -227,7 +227,7 @@ export default function InfoSetting(props: {
                       placeholder={`이력 ${index + 1}을 입력해주세요`}
                       value={line}
                       onChange={(e) => updateHistoryLine(index, e.target.value)}
-                      className="h-11 border-gray-200 focus:border-blue-300 focus:ring-blue-200"
+                      className="h-12 rounded-lg border-gray-200 transition-colors focus:border-gray-900 dark:border-gray-800 dark:focus:border-gray-100"
                     />
                   </div>
                   {historyLines.length > 1 && (
@@ -236,7 +236,7 @@ export default function InfoSetting(props: {
                       variant="outline"
                       size="sm"
                       onClick={() => removeHistoryLine(index)}
-                      className="h-11 px-3 text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300"
+                      className="h-12 rounded-lg border-red-200 px-3 text-red-600 hover:border-red-300 hover:bg-red-50"
                     >
                       삭제
                     </Button>
@@ -248,13 +248,13 @@ export default function InfoSetting(props: {
                 type="button"
                 variant="outline"
                 onClick={addHistoryLine}
-                className="w-full h-11 border-dashed border-gray-300 text-gray-600 hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50"
+                className="h-12 w-full rounded-lg border-dashed border-gray-300 text-gray-600 hover:border-gray-900 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700 dark:text-gray-400 dark:hover:border-gray-500 dark:hover:bg-gray-900 dark:hover:text-gray-50"
               >
                 + 이력 추가
               </Button>
             </div>
 
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               각 이력은 별도의 줄로 표시됩니다. 최소 1개 이상의 이력이
               필요합니다.
             </p>
@@ -262,7 +262,7 @@ export default function InfoSetting(props: {
 
           <Button
             type="submit"
-            className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium"
+            className="h-12 w-full rounded-full bg-gray-900 font-medium text-white hover:bg-gray-800 disabled:bg-gray-200 disabled:text-gray-400 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 dark:disabled:bg-gray-800 dark:disabled:text-gray-600"
             disabled={form.formState.isSubmitting || isSameAsProfile}
           >
             {form.formState.isSubmitting
