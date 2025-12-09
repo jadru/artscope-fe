@@ -1,22 +1,35 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Loader2, Sparkles } from "lucide-react";
 
 export default function Loading() {
-  // 스켈레톤 카드 컴포넌트
-  const SkeletonCard = () => (
-    <div className="aspect-[4/5] relative overflow-hidden rounded-lg">
-      {/* 이미지 스켈레톤 */}
-      <Skeleton className="w-full h-full" />
-    </div>
-  );
-
   return (
-    <div className="px-2 md:px-4 pb-16">
-      {/* 그리드 레이아웃 - page.tsx와 동일한 구조 */}
-      <div className="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-6 gap-1 md:gap-2">
-        {/* 스켈레톤 카드들을 반복 생성 (페이지당 30개) */}
-        {Array.from({ length: 30 }).map((_, index) => (
-          <SkeletonCard key={index} />
-        ))}
+    <div className="flex min-h-[60vh] items-center justify-center px-4">
+      <div className="text-center">
+        {/* Animated Icons */}
+        <div className="relative mb-8 flex items-center justify-center">
+          {/* Main Spinner */}
+          <Loader2 className="h-12 w-12 animate-spin text-gray-400 dark:text-gray-600" />
+
+          {/* Sparkle Decorations */}
+          <Sparkles className="absolute -left-8 -top-2 h-5 w-5 animate-pulse text-gray-300 dark:text-gray-700" />
+          <Sparkles className="absolute -right-8 -bottom-2 h-4 w-4 animate-pulse text-gray-300 delay-150 dark:text-gray-700" />
+        </div>
+
+        {/* Loading Text */}
+        <div className="space-y-2">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-50">
+            로딩 중
+          </h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            작품을 불러오고 있습니다...
+          </p>
+        </div>
+
+        {/* Animated Dots */}
+        <div className="mt-6 flex items-center justify-center gap-2">
+          <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400 dark:bg-gray-600"></div>
+          <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400 delay-100 dark:bg-gray-600"></div>
+          <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400 delay-200 dark:bg-gray-600"></div>
+        </div>
       </div>
     </div>
   );

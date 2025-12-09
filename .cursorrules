@@ -3,9 +3,14 @@
 ## 프로젝트 개요
 Artscope는 창의적인 예술가들의 작품과 생각을 공유하는 고급스러운 커뮤니티 플랫폼입니다. 예술가들이 자신의 작품을 아름답게 표현하고, 서로 영감을 주고받을 수 있는 공간을 제공합니다.
 
+## 관련 문서
+- `AGENT.md` - AI 에이전트 가이드라인
+- `CLAUDE.md` - Claude AI 특화 지침
+- `docs/adr/001-design-system-improvement.md` - 디자인 시스템 ADR
+
 ## 기술 스택
 - **Frontend**: Next.js 15, React 19, TypeScript
-- **Styling**: Tailwind CSS 4, OKLCH 색상 시스템
+- **Styling**: Tailwind CSS 4, CSS Variables
 - **Editor**: Tiptap (리치 텍스트 에디터)
 - **UI Components**: Radix UI 프리미티브
 - **Animation**: Framer Motion
@@ -13,17 +18,83 @@ Artscope는 창의적인 예술가들의 작품과 생각을 공유하는 고급
 - **Data Fetching**: TanStack Query
 - **Fonts**: Pretendard (본문), Source Code Pro (로고)
 
+## 디자인 시스템
+
+### 1. 색상 팔레트 (CSS Variables)
+
+```css
+/* 배경색 */
+--background-primary: #FAFAFA;    /* 페이지 배경 */
+--background-secondary: #F5F5F5;  /* 섹션 배경 */
+--background-card: #FFFFFF;       /* 카드/컴포넌트 */
+
+/* 텍스트색 */
+--text-primary: #1A1A1A;          /* 제목, 중요 텍스트 */
+--text-secondary: #666666;        /* 본문 */
+--text-muted: #999999;            /* 보조 텍스트 */
+
+/* UI 요소 */
+--border-default: #E5E5E5;        /* 테두리 */
+--accent-primary: #1A1A1A;        /* 버튼, 강조 */
+--like-active: #E74C3C;           /* 좋아요 활성화 */
+```
+
+### 2. 타이포그래피 스케일
+
+| 용도 | 크기 | 웨이트 |
+|------|------|--------|
+| Hero Title | text-4xl ~ text-5xl (36-48px) | font-bold (700) |
+| Section Title | text-2xl ~ text-3xl (24-28px) | font-semibold (600) |
+| Card Title | text-sm ~ text-base (14-16px) | font-medium (500) |
+| Body | text-sm ~ text-base (14-16px) | font-normal (400) |
+| Caption | text-xs ~ text-sm (12-14px) | font-normal (400) |
+
+### 3. 간격 시스템
+
+```
+space-1: 4px   | space-6: 24px
+space-2: 8px   | space-8: 32px
+space-3: 12px  | space-10: 40px
+space-4: 16px  | space-12: 48px
+space-5: 20px  | space-16: 64px
+```
+
+- **컴포넌트 내부**: space-2 ~ space-4 (8-16px)
+- **컴포넌트 간격**: space-4 ~ space-6 (16-24px)
+- **섹션 간격**: space-12 ~ space-16 (48-64px)
+
+### 4. Border Radius
+
+```
+radius-sm: 4px      → 태그, 뱃지
+radius-md: 8px      → 이미지
+radius-lg: 12px     → 카드
+radius-pill: 9999px → 버튼
+radius-full: 50%    → 아바타
+```
+
+### 5. 그림자
+
+```css
+--shadow-sm: 0 1px 2px rgba(0,0,0,0.05);    /* 기본 */
+--shadow-md: 0 2px 8px rgba(0,0,0,0.08);    /* 카드 */
+--shadow-lg: 0 4px 16px rgba(0,0,0,0.12);   /* 호버 */
+--shadow-xl: 0 8px 24px rgba(0,0,0,0.16);   /* 모달 */
+```
+
 ## 디자인 원칙
 
 ### 1. 고급스러운 미니멀리즘
-- **색상**: OKLCH 색상 공간을 활용한 세련된 색상 팔레트
+- **색상**: 회색 톤 중심 + 단일 강조색
 - **공간 활용**: 넉넉한 화이트 스페이스와 여유로운 레이아웃
 - **Typography**: Pretendard의 다양한 웨이트를 활용한 계층적 타이포그래피
-- **모션**: 부드럽고 세련된 Framer Motion 애니메이션
+- **모션**: 부드럽고 미묘한 트랜지션 (과도한 애니메이션 금지)
 
 ### 2. 예술 작품 중심 디자인
 - **이미지 우선**: 작품 이미지가 가장 돋보이도록 배치
 - **그리드 시스템**: 작품 갤러리에 적합한 반응형 그리드
+  - 갤러리: 5열 (desktop) / 3열 (tablet) / 2열 (mobile)
+  - 작품 섹션: 2열
 - **시각적 계층**: 작품, 제목, 설명의 명확한 시각적 위계
 
 ### 3. 접근성 & 사용성
@@ -37,6 +108,10 @@ Artscope는 창의적인 예술가들의 작품과 생각을 공유하는 고급
 ```
 components/
 ├── ui/                    # 기본 UI 컴포넌트 (Button, Input 등)
+├── layout/               # 레이아웃 (Header, Footer, Container)
+├── artwork/              # 작품 관련 (ArtworkCard, ArtworkGrid)
+├── artist/               # 아티스트 관련 (ArtistCard, ArtistProfile)
+├── gallery/              # 갤러리 관련 (GalleryGrid, SearchBar)
 ├── tiptap-ui/            # 에디터 관련 UI 컴포넌트
 ├── tiptap-node/          # 에디터 노드 스타일
 └── [Feature]/            # 기능별 컴포넌트 그룹화
@@ -51,10 +126,63 @@ components/
 - **타입**: PascalCase + Type 접미사 (예: `ArtworkDataType`)
 
 ### 3. 스타일링 패턴
-- **CSS 변수 우선**: Tailwind의 디자인 토큰 활용
-- **컴포넌트별 스타일**: 각 컴포넌트에 scoped 스타일
-- **반응형**: 모바일 퍼스트 접근법
-- **다크 모드**: CSS 변수로 자동 지원
+- **CSS 변수 우선**: 디자인 토큰으로 정의된 CSS 변수 사용
+- **Tailwind 클래스 순서**: 레이아웃 → 박스 모델 → 타이포그래피 → 비주얼
+- **반응형**: 모바일 퍼스트 접근법 (sm: → md: → lg:)
+- **다크 모드**: CSS 변수로 자동 지원 (dark: prefix)
+
+### 4. 컴포넌트 패턴 예시
+
+```tsx
+// 작품 카드 컴포넌트
+export function ArtworkCard({ title, image, artist, likes }: ArtworkCardProps) {
+  return (
+    <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+      <div className="aspect-square relative">
+        <Image src={image} alt={title} fill className="object-cover" />
+      </div>
+      <div className="p-4 space-y-1">
+        <h3 className="text-sm font-medium text-gray-900 truncate">{title}</h3>
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-gray-500">{artist}</span>
+          <div className="flex items-center gap-1 text-xs text-gray-400">
+            <Heart className="w-3.5 h-3.5" />
+            <span>{likes}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### 5. 버튼 스타일 가이드
+
+```tsx
+// Primary Button (검정, pill 형태)
+<Button className="bg-gray-900 text-white hover:bg-gray-800 rounded-full px-6">
+  Primary Action
+</Button>
+
+// Secondary Button (outline, pill 형태)
+<Button variant="outline" className="rounded-full px-6">
+  Secondary Action
+</Button>
+```
+
+### 6. 그리드 레이아웃
+
+```tsx
+// 갤러리 그리드 (5열)
+<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+  {artworks.map(artwork => <ArtworkCard key={artwork.id} {...artwork} />)}
+</div>
+
+// 작품 섹션 그리드 (2열)
+<div className="grid grid-cols-2 gap-4 md:gap-6">
+  {featuredWorks.map(work => <WorkCard key={work.id} {...work} />)}
+</div>
+```
 
 ## 에디터 (Tiptap) 활용
 
@@ -162,5 +290,36 @@ components/
 - **댓글 시스템**: 작품별 토론 공간
 - **좋아요/북마크**: 작품 평가 기능
 - **팔로우**: 관심 작가 팔로우
+
+## 금지 사항 (DO NOT)
+
+### UI/UX 금지 사항
+- **과도한 색상**: 회색 톤 + 단일 강조색 외 사용 금지
+- **네온/형광 색상**: 사용 금지
+- **복잡한 그라데이션**: 미묘한 회색 그라데이션만 허용
+- **무거운 그림자**: shadow-xl 이상 자제
+- **과도한 애니메이션**: 미묘한 트랜지션만 사용
+- **밀집된 레이아웃**: 충분한 화이트 스페이스 확보 필수
+- **불필요한 장식 요소**: 아이콘, 뱃지 최소화
+
+### 코드 금지 사항
+- **인라인 스타일**: Tailwind 클래스 사용
+- **하드코딩 색상**: CSS 변수 또는 Tailwind 색상 사용
+- **any 타입**: 적절한 TypeScript 타입 정의 필수
+- **console.log**: 프로덕션 코드에 남기기 금지
+- **접근성 누락**: aria-label, alt 속성 필수
+
+## 체크리스트
+
+새 컴포넌트 작성 후 확인:
+- [ ] 디자인 토큰/CSS 변수 사용
+- [ ] 반응형 디자인 (sm, md, lg breakpoints)
+- [ ] 다크 모드 지원 (dark: prefix)
+- [ ] 호버/포커스 상태 정의
+- [ ] 접근성 (키보드 네비게이션, 스크린 리더)
+- [ ] TypeScript 타입 정의
+- [ ] 일관된 간격과 정렬
+
+---
 
 이 규칙들은 Artscope의 고급스러운 예술가 커뮤니티 경험을 유지하기 위해 만들어졌습니다. 모든 개발은 이러한 가이드라인을 따라야 합니다.

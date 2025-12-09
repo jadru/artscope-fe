@@ -1,6 +1,6 @@
 "use client";
 
-import { standardLabel } from "@/components/StandardLabel";
+import { standardLabel } from "@/components/shared/StandardLabel";
 
 type ArtistKeywordsProps = {
   keywords: string[];

@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useMemo } from "react";
 
 import { LocationSearchItemType } from "@/types/location";
-import { standardLabel } from "@/components/StandardLabel";
+import { standardLabel } from "@/components/shared/StandardLabel";
 
 export default function LocationCard({
   item,

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { standardLabel } from "@/components/StandardLabel";
+import { standardLabel } from "@/components/shared/StandardLabel";
 
 type PreviewCardProps = {
   title: string;

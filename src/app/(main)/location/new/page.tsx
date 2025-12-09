@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useCreateLocation } from "@/hooks/use-location";
+import { useCreateLocation } from "@/hooks/useLocation";
 import { useForm } from "react-hook-form";
 
 type Inputs = {

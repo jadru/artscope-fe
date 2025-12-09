@@ -6,12 +6,13 @@ import { Button } from "@/components/ui/button";
 import { useProfile } from "@/auth/use-profile";
 import { Skeleton } from "../ui/skeleton";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { ProfileMenu } from "@/components/Navbar/ProfileMenu";
 
 const NAV_ITEMS = [
   { href: "/gallery", label: "Discovery" },
-  { href: "/list", label: "AI Curator" },
+  { href: "/artists", label: "Artists" },
 ];
 const EDITOR_NAV_ITEMS = [
   { href: "/editor", label: "아티클" },
@@ -113,18 +114,7 @@ export default function Navbar({ isEditor }: { isEditor?: boolean }) {
               )
             ) : (
               <>
-                <Link href={`/profile/${user?.username}`}>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-9 w-9 rounded-full bg-gray-200 text-gray-900 hover:bg-gray-300 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
-                    aria-label="내 프로필"
-                  >
-                    <span className="text-sm font-semibold">
-                      {user?.username?.charAt(0).toUpperCase()}
-                    </span>
-                  </Button>
-                </Link>
+                <ProfileMenu user={user} />
                 {!isEditor && (
                   <Link href="/editor/new">
                     <Button

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import ASNextImage from "@/components/ASNextImage";
+import ASNextImage from "@/components/shared/ASNextImage";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 

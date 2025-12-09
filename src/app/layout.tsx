@@ -16,7 +16,6 @@ import {
   NEXT_PUBLIC_ROOT_URL,
 } from "@/constant/env";
 import { cn } from "@/utils";
-import Navbar from "@/components/Navbar";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
