@@ -1,7 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+
+import ASNextImage from "@/components/shared/ASNextImage";
 
 interface SupportingWork {
   id: number;
@@ -36,7 +37,7 @@ export default function SupportingWorks({ works }: SupportingWorksProps) {
             <div className="overflow-hidden rounded-lg bg-gray-200">
               <div className="relative aspect-square">
                 {work.imageUrl ? (
-                  <Image
+                  <ASNextImage
                     src={work.imageUrl}
                     alt={work.title}
                     fill

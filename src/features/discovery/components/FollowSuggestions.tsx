@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
+import ASNextImage from "@/components/shared/ASNextImage";
 import jxios from "@/utils/jxios";
 import { useProfile } from "@/auth/use-profile";
 import { cn } from "@/utils";
@@ -117,7 +117,7 @@ function SuggestionCard({
         className="relative mb-3 h-16 w-16 overflow-hidden rounded-full bg-neutral-200 ring-2 ring-white dark:bg-neutral-800 dark:ring-neutral-900"
       >
         {author.authorProfileImage ? (
-          <Image
+          <ASNextImage
             src={author.authorProfileImage}
             alt={author.authorName}
             fill
