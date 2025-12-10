@@ -1,9 +1,9 @@
 import { useState, useCallback } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 
+import ASNextImage from "@/components/shared/ASNextImage";
 import { articleListType } from "@/types/article";
 import { standardLabel } from "@/components/shared/StandardLabel";
 
@@ -41,7 +41,7 @@ export default function ArticleCard({
     >
       <div className="relative aspect-square sm:aspect-[4/5]">
         {!isError && article.mediaUrls?.[0] ? (
-          <Image
+          <ASNextImage
             src={article.mediaUrls[0]}
             alt={article.title}
             fill

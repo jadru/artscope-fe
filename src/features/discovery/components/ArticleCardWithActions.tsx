@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState, useCallback } from "react";
 import { Heart } from "lucide-react";
 
+import ASNextImage from "@/components/shared/ASNextImage";
 import type { articleItemType } from "@/types/article";
 import { standardLabel } from "@/components/shared/StandardLabel";
 import { useLike } from "@/hooks/useLike";
@@ -45,7 +45,7 @@ export default function ArticleCardWithActions({
         className="relative block aspect-[4/5] overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900"
       >
         {!isError && coverImage ? (
-          <Image
+          <ASNextImage
             src={coverImage}
             alt={title}
             fill
@@ -105,7 +105,7 @@ export default function ArticleCardWithActions({
         >
           <div className="relative h-6 w-6 flex-shrink-0 overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
             {article.author.authorProfileImage ? (
-              <Image
+              <ASNextImage
                 src={article.author.authorProfileImage}
                 alt={article.author.authorName}
                 fill

@@ -2,6 +2,7 @@ import { Metadata, ResolvingMetadata } from "next";
 
 import { serverArticlesApi } from "@/utils/serverApi";
 import { removeMarkdown } from "@/utils/stringConverter";
+import { normalizeMediaUrl } from "@/utils/mediaUrl";
 import { standardLabel } from "@/components/shared/StandardLabel";
 
 import type { articleItemType } from "@/types/article";
@@ -32,7 +33,7 @@ export async function generateMetadata(
     )}`,
     description: standardLabel(removeMarkdown(article.content).slice(0, 40)),
     openGraph: {
-      images: [article.mediaUrls[0], ...previousImages],
+      images: [normalizeMediaUrl(article.mediaUrls[0]), ...previousImages],
       title: `${standardLabel(article.title)} - ${standardLabel(
         article.author.authorName
       )}`,
