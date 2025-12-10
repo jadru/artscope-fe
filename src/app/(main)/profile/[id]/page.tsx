@@ -3,6 +3,7 @@ import { Metadata, ResolvingMetadata } from "next";
 import { standardLabel } from "@/components/shared/StandardLabel";
 
 import jxios from "@/utils/jxios";
+import { normalizeMediaUrl } from "@/utils/mediaUrl";
 
 import { profileApiType } from "@/types/profile";
 import { articleListType, PortfolioProjectType } from "@/types/article";
@@ -70,7 +71,7 @@ export async function generateMetadata(
     title: `${standardLabel(profile.name)} - Artscope Portfolio`,
     description: standardLabel(profile.introduction).slice(0, 160),
     openGraph: {
-      images: [profile.picture, ...previousImages],
+      images: [normalizeMediaUrl(profile.picture), ...previousImages],
       title: `${standardLabel(profile.name)} - Artscope Portfolio`,
       description: standardLabel(profile.introduction).slice(0, 160),
       siteName: "Artscope",
