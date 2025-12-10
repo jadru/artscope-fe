@@ -1,7 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+
+import ASNextImage from "@/components/shared/ASNextImage";
 import { AuthorType } from "@/types/article";
 
 interface ArtistAuthorCardProps {
@@ -19,7 +20,7 @@ export default function ArtistAuthorCard({ author }: ArtistAuthorCardProps) {
         >
           <div className="relative h-16 w-16 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800">
             {author.authorProfileImage ? (
-              <Image
+              <ASNextImage
                 src={author.authorProfileImage}
                 alt={author.authorName}
                 fill

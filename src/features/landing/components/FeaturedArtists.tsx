@@ -1,7 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+
+import ASNextImage from "@/components/shared/ASNextImage";
 import type { articleItemType } from "@/types/article";
 
 interface FeaturedArtwork {
@@ -58,7 +59,7 @@ function FeaturedArtworkCard({ artwork }: { artwork: FeaturedArtwork }) {
       <div className="overflow-hidden rounded-lg bg-white">
         <div className="relative aspect-[4/3]">
           {artwork.imageUrl ? (
-            <Image
+            <ASNextImage
               src={artwork.imageUrl}
               alt={artwork.title}
               fill

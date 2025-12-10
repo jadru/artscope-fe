@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { standardLabel } from "@/components/shared/StandardLabel";
+import ASNextImage from "@/components/shared/ASNextImage";
 
 type PreviewCardProps = {
   title: string;
@@ -68,9 +69,11 @@ export default function PreviewCard({
       {/* Thumbnail (optional) */}
       {thumbnail && (
         <div className="aspect-[2/1] overflow-hidden bg-gray-100 dark:bg-gray-800">
-          <img
+          <ASNextImage
             src={thumbnail}
             alt={title}
+            width={800}
+            height={600}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         </div>
@@ -112,4 +115,3 @@ export default function PreviewCard({
     </Link>
   );
 }
-

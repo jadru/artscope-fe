@@ -3,8 +3,8 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 
+import ASNextImage from "@/components/shared/ASNextImage";
 import MarkdownViewer from "@/components/shared/MarkdownViewer";
 import { standardLabel } from "@/components/shared/StandardLabel";
 import {
@@ -161,7 +161,7 @@ export default function Page() {
                   {article.mediaUrls && article.mediaUrls.length > 0 ? (
                     <div className="relative w-full h-full">
                       {/* 메인 이미지 */}
-                      <Image
+                      <ASNextImage
                         src={article.mediaUrls[0]}
                         alt={article.title}
                         fill
@@ -186,7 +186,7 @@ export default function Page() {
                               key={index}
                               className="w-8 h-8 rounded border-2 border-white overflow-hidden"
                             >
-                              <Image
+                              <ASNextImage
                                 src={url}
                                 alt={`${article.title} 이미지 ${index + 2}`}
                                 width={32}

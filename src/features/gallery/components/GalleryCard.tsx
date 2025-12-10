@@ -2,9 +2,9 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Heart } from "lucide-react";
 
+import ASNextImage from "@/components/shared/ASNextImage";
 import type { articleItemType } from "@/types/article";
 import { standardLabel } from "@/components/shared/StandardLabel";
 import { useLike } from "@/hooks/useLike";
@@ -38,7 +38,7 @@ export default function GalleryCard({ article }: GalleryCardProps) {
       {/* Image */}
       <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100">
         {!isError && article.mediaUrls?.[0] ? (
-          <Image
+          <ASNextImage
             src={article.mediaUrls[0]}
             alt={article.title}
             fill

@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
+import ASNextImage from "@/components/shared/ASNextImage";
 import { standardLabel } from "@/components/shared/StandardLabel";
 import type { articleItemType } from "@/types/article";
 
@@ -28,7 +28,7 @@ export default function CurationHero({ items }: CurationHeroProps) {
         className="group relative block aspect-[16/9] overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 sm:aspect-[2/1] lg:aspect-[2.5/1]"
       >
         {featured.mediaUrls?.[0] ? (
-          <Image
+          <ASNextImage
             src={featured.mediaUrls[0]}
             alt={standardLabel(featured.title)}
             fill
@@ -60,7 +60,7 @@ export default function CurationHero({ items }: CurationHeroProps) {
             <div className="flex items-center gap-3">
               {featured.author?.authorProfileImage && (
                 <div className="relative h-8 w-8 overflow-hidden rounded-full">
-                  <Image
+                  <ASNextImage
                     src={featured.author.authorProfileImage}
                     alt={featured.author.authorName}
                     fill
@@ -97,7 +97,7 @@ export default function CurationHero({ items }: CurationHeroProps) {
                 className="group relative block aspect-[4/5] overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900"
               >
                 {item.mediaUrls?.[0] ? (
-                  <Image
+                  <ASNextImage
                     src={item.mediaUrls[0]}
                     alt={standardLabel(item.title)}
                     fill

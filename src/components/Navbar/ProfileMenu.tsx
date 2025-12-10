@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import {
   User,
   FileText,
@@ -11,6 +10,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
+import ASNextImage from "@/components/shared/ASNextImage";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -42,7 +42,7 @@ export function ProfileMenu({ user }: ProfileMenuProps) {
         >
           {user.profileImage ? (
             <div className="relative h-9 w-9 overflow-hidden rounded-full">
-              <Image
+              <ASNextImage
                 src={user.profileImage}
                 alt={user.name || user.username}
                 fill
@@ -63,7 +63,7 @@ export function ProfileMenu({ user }: ProfileMenuProps) {
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-900">
               {user.profileImage ? (
-                <Image
+                <ASNextImage
                   src={user.profileImage}
                   alt={user.name || user.username}
                   width={48}
