@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import ASNextImage from "@/components/shared/ASNextImage";
 
 interface ArticleHeaderProps {
   title: string;
@@ -20,7 +20,7 @@ export default function ArticleHeader({
       {/* Hero Image */}
       <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-gray-200">
         {imageUrl ? (
-          <Image
+          <ASNextImage
             src={imageUrl}
             alt={title}
             fill
