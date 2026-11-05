@@ -26,7 +26,6 @@ module.exports = {
     ],
   },
   exclude: [
-    'https://dev.artscope.kr/**',
     '/404',
     '/editor/**',
     '/user/**',
