@@ -1,6 +1,20 @@
 import { cookies } from "next/headers";
 import { NEXT_PUBLIC_API_URL, NEXT_PUBLIC_ROOT_URL } from "@/constant/env";
 
+// HTTP 상태 코드를 함께 전달하는 에러 (404 등 구분용)
+export class ServerApiError extends Error {
+  status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = "ServerApiError";
+    this.status = status;
+  }
+}
+
+export const isServerNotFound = (error: unknown) =>
+  error instanceof ServerApiError && error.status === 404;
+
 // 서버 컴포넌트에서 사용할 API 클라이언트
 class ServerApiClient {
   private baseUrl: string;
@@ -46,8 +60,9 @@ class ServerApiClient {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(
-          errorData.message || `HTTP error! status: ${response.status}`
+        throw new ServerApiError(
+          errorData.message || `HTTP error! status: ${response.status}`,
+          response.status
         );
       }
 
