@@ -7,6 +7,8 @@ import { useObserver } from "@/hooks/useObserver";
 import jxios from "@/utils/jxios";
 import type { articleListType } from "@/types/article";
 
+import LoadErrorState from "@/components/shared/LoadErrorState";
+
 import GalleryCard from "./GalleryCard";
 
 const LIMIT = 30;
@@ -23,6 +25,8 @@ export default function GalleryGrid() {
     data,
     isError,
     isLoading,
+    isRefetching,
+    refetch,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -34,6 +38,8 @@ export default function GalleryGrid() {
     gcTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
+    retry: 1,
+    meta: { inlineError: true },
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage.magazines.length < LIMIT) return undefined;
       return allPages.length;
@@ -68,8 +74,20 @@ export default function GalleryGrid() {
 
   if (isError || !data) {
     return (
+      <LoadErrorState
+        title="갤러리를 불러오지 못했어요"
+        onRetry={() => refetch()}
+        isRetrying={isRefetching}
+      />
+    );
+  }
+
+  const hasArticles = data.pages.some((page) => page.magazines.length > 0);
+
+  if (!hasArticles) {
+    return (
       <div className="py-20 text-center">
-        <p className="text-sm text-gray-500">콘텐츠를 불러올 수 없습니다</p>
+        <p className="text-sm text-gray-600">아직 공개된 작품이 없어요.</p>
       </div>
     );
   }

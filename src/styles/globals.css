@@ -151,7 +151,12 @@
     cursor: pointer;
   }
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring;
+  }
+  /* AS-07: 키보드 포커스 표시를 2px 실선 + 2px 간격으로 명확하게 (--ring: #1a1a1a / 다크 #fff) */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
   }
   body {
     @apply text-foreground;

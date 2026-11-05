@@ -55,10 +55,10 @@ export default function MainNavbar() {
         )}
 
         {/* Right Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1">
           <button
             type="button"
-            className="p-2 text-gray-500 hover:text-gray-900"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full text-gray-600 hover:bg-gray-100 hover:text-gray-900"
             aria-label="검색"
           >
             <Search className="h-5 w-5" />
@@ -67,7 +67,7 @@ export default function MainNavbar() {
           {user ? (
             <Link
               href={`/profile/${user.username}`}
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-sm font-medium text-gray-900 hover:bg-gray-200"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-gray-100 text-sm font-medium text-gray-900 hover:bg-gray-200"
               aria-label="내 프로필"
             >
               {user.username?.charAt(0).toUpperCase()}
@@ -75,7 +75,7 @@ export default function MainNavbar() {
           ) : (
             <Link
               href="/user/login"
-              className="p-2 text-gray-500 hover:text-gray-900"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full text-gray-600 hover:bg-gray-100 hover:text-gray-900"
               aria-label="로그인"
             >
               <User className="h-5 w-5" />
