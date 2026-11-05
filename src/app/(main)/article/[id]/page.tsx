@@ -39,7 +39,7 @@ export async function generateMetadata(
     article = await fetchArticle(id);
   } catch {
     // 메타데이터 조회 실패가 페이지 전체 장애로 번지지 않도록 기본 제목을 사용한다.
-    return { title: "작품", alternates: page.alternates, openGraph: { url: page.url } };
+    return { title: "작품", alternates: page.alternates, openGraph: { url: page.url, title: "작품", siteName: "Artscope" } };
   }
   const previousImages = (await parent).openGraph?.images || [];
 

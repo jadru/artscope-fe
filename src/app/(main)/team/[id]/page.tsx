@@ -24,7 +24,13 @@ export async function generateMetadata(
   if (!id) throw new Error("id is required");
   const page = canonicalPageMetadata(["team", id]);
 
-  const team = await fetchTeam(id);
+  let team: TeamDetailType;
+  try {
+    team = await fetchTeam(id);
+  } catch {
+    // AS-17: an API failure must not leave the page without title/canonical/og:url.
+    return { title: "팀", alternates: page.alternates, openGraph: { url: page.url, title: "팀", siteName: "Artscope" } };
+  }
 
   const previousImages = (await parent).openGraph?.images || [];
 

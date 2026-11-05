@@ -65,7 +65,13 @@ export async function generateMetadata(
   if (!id) throw new Error("id is required");
   const page = canonicalPageMetadata(["profile", id]);
 
-  const profile = await fetchProfile(id);
+  let profile: profileApiType;
+  try {
+    profile = await fetchProfile(id);
+  } catch {
+    // AS-17: an API failure must not leave the page without title/canonical/og:url.
+    return { title: "아티스트 프로필", alternates: page.alternates, openGraph: { url: page.url, title: "아티스트 프로필", siteName: "Artscope" } };
+  }
 
   const previousImages = (await parent).openGraph?.images || [];
 

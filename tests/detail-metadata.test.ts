@@ -71,6 +71,31 @@ describe("AS-16 detail page metadata", () => {
     expect((meta.openGraph as { url?: string }).url).toBe(`${CANON}/team/9`);
   });
 
+  it("article fallback also carries og:title", async () => {
+    api.magazine.mockRejectedValue(new Error("backend down"));
+    const { generateMetadata } = await import("@/app/(main)/article/[id]/page");
+    const meta = await generateMetadata({ params: Promise.resolve({ id: "7" }) }, parent);
+    expect((meta.openGraph as { title?: string }).title).toBe("작품");
+  });
+
+  it("AS-17 profile: API failure still returns a default title, canonical and og:url", async () => {
+    api.serverGet.mockRejectedValue(new Error("502 Bad Gateway"));
+    const { generateMetadata } = await import("@/app/(main)/profile/[id]/page");
+    const meta = await generateMetadata({ params: Promise.resolve({ id: "lee" }) }, parent);
+    expect(meta.title).toBe("아티스트 프로필");
+    expect(meta.alternates?.canonical).toBe(`${CANON}/profile/lee`);
+    expect(meta.openGraph).toMatchObject({ url: `${CANON}/profile/lee`, title: "아티스트 프로필", siteName: "Artscope" });
+  });
+
+  it("AS-17 team: API failure still returns a default title, canonical and og:url", async () => {
+    api.jxiosGet.mockRejectedValue(new Error("timeout"));
+    const { generateMetadata } = await import("@/app/(main)/team/[id]/page");
+    const meta = await generateMetadata({ params: Promise.resolve({ id: "9" }) }, parent);
+    expect(meta.title).toBe("팀");
+    expect(meta.alternates?.canonical).toBe(`${CANON}/team/9`);
+    expect(meta.openGraph).toMatchObject({ url: `${CANON}/team/9`, title: "팀", siteName: "Artscope" });
+  });
+
   it("no detail page emits a non-canonical host", async () => {
     api.magazine.mockResolvedValue({ id: 1, title: "t", content: "c", mediaUrls: [], author: { authorName: "a" } });
     api.serverGet.mockResolvedValue({ name: "n", introduction: "", picture: "", username: "u" });
