@@ -8,7 +8,6 @@ export default function Footer() {
       links: [
         { label: "작품 탐색", href: "/" },
         { label: "갤러리", href: "/gallery" },
-        { label: "커뮤니티", href: "/simple" },
         { label: "작품 업로드", href: "/editor/dashboard" },
       ],
     },

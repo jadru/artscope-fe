@@ -41,3 +41,61 @@ export function resolveSiteUrl(env: Record<string, string | undefined> = process
 export function absoluteUrl(siteUrl: string, path: string): string {
   return path === '/' ? siteUrl : `${siteUrl}${path.startsWith('/') ? path : `/${path}`}`;
 }
+
+export type SitemapEntry = {
+  url: string;
+  lastModified?: Date;
+  changeFrequency?: 'daily' | 'weekly' | 'monthly' | 'yearly';
+  priority?: number;
+};
+
+type MagazineList = { magazines?: { id: number | string; updatedTime?: string; createdTime?: string }[] };
+
+export const ARTICLES_PATH = '/api/magazines?size=1000&page=0';
+export const MEMBERS_PATH = '/api/members/username';
+
+/**
+ * Article and profile entries for the sitemap. `fetchJson` must throw on any failure
+ * (network, timeout, non-2xx, bad JSON). Each failure is reported in `failures` instead of
+ * being swallowed, so the caller can log it and decide whether to publish a partial sitemap.
+ */
+export async function loadDynamicEntries(
+  siteUrl: string,
+  fetchJson: (path: string) => Promise<unknown>,
+): Promise<{ entries: SitemapEntry[]; failures: string[] }> {
+  const failures: string[] = [];
+  const attempt = async (path: string): Promise<unknown> => {
+    try {
+      return await fetchJson(path);
+    } catch (error) {
+      failures.push(`${path}: ${error instanceof Error ? error.message : String(error)}`);
+      return null;
+    }
+  };
+  const [articles, members] = await Promise.all([attempt(ARTICLES_PATH), attempt(MEMBERS_PATH)]);
+
+  const entries: SitemapEntry[] = [];
+  if (articles !== null) {
+    const list = (articles as MagazineList)?.magazines;
+    if (!Array.isArray(list)) failures.push(`${ARTICLES_PATH}: unexpected response shape`);
+    for (const m of Array.isArray(list) ? list : []) {
+      const time = m.updatedTime ?? m.createdTime;
+      const date = time ? new Date(time) : null;
+      entries.push({
+        url: absoluteUrl(siteUrl, `/article/${encodeURIComponent(String(m.id))}`),
+        changeFrequency: 'weekly',
+        priority: 0.8,
+        ...(date && !Number.isNaN(date.getTime()) ? { lastModified: date } : {}),
+      });
+    }
+  }
+  if (members !== null) {
+    if (!Array.isArray(members)) failures.push(`${MEMBERS_PATH}: unexpected response shape`);
+    for (const username of Array.isArray(members) ? members : []) {
+      if (typeof username === 'string' && username) {
+        entries.push({ url: absoluteUrl(siteUrl, `/profile/${encodeURIComponent(username)}`), changeFrequency: 'weekly', priority: 0.5 });
+      }
+    }
+  }
+  return { entries, failures };
+}

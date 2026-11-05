@@ -1,6 +1,17 @@
 import type { NextConfig } from "next";
 
+export const LEGACY_SITEMAP_PATHS = ["/sitemap/article.xml", "/sitemap/user.xml"];
+
 const config: NextConfig = {
+  async redirects() {
+    // Old next-sitemap endpoints (500 in production) now point at the generated /sitemap.xml.
+    return LEGACY_SITEMAP_PATHS.map((source) => ({
+      source,
+      destination: "/sitemap.xml",
+      permanent: true, // 308
+    }));
+  },
+
   async rewrites() {
     return [
       {

@@ -1,49 +1,44 @@
 import type { MetadataRoute } from 'next';
 
-import { PUBLIC_ROUTES, absoluteUrl, resolveSiteUrl } from '@/lib/seo';
+import { PUBLIC_ROUTES, absoluteUrl, loadDynamicEntries, resolveSiteUrl } from '@/lib/seo';
 
-export const revalidate = 86400; // regenerate daily
+// Regenerated at most hourly (ISR). A failed regeneration throws, and Next.js keeps serving the last
+// good sitemap and retries on a later request, so an API outage never replaces it with a partial one.
+export const revalidate = 3600;
 
-type MagazineList = { magazines?: { id: number | string; updatedTime?: string; createdTime?: string }[] };
+const API_TIMEOUT_MS = 5000;
 
-/** Best effort: articles and profiles from the API. Any failure leaves the static routes in place. */
-async function fetchJson<T>(path: string): Promise<T | null> {
+async function fetchJson(path: string): Promise<unknown> {
   const api = process.env.NEXT_PUBLIC_API_URL;
-  if (!api) return null;
-  try {
-    const res = await fetch(api + path, { headers: { accept: 'application/json' }, signal: AbortSignal.timeout(5000), next: { revalidate } });
-    return res.ok ? ((await res.json()) as T) : null;
-  } catch {
-    return null;
-  }
+  if (!api) throw new Error('NEXT_PUBLIC_API_URL is not set');
+  const res = await fetch(api + path, {
+    headers: { accept: 'application/json' },
+    signal: AbortSignal.timeout(API_TIMEOUT_MS),
+    next: { revalidate },
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = resolveSiteUrl();
-  const entries: MetadataRoute.Sitemap = PUBLIC_ROUTES.map((route) => ({
+  const staticEntries: MetadataRoute.Sitemap = PUBLIC_ROUTES.map((route) => ({
     url: absoluteUrl(siteUrl, route.path),
     changeFrequency: route.changeFrequency,
     priority: route.priority,
   }));
 
-  const [articles, members] = await Promise.all([
-    fetchJson<MagazineList>('/api/magazines?size=1000&page=0'),
-    fetchJson<string[]>('/api/members/username'),
-  ]);
-  for (const m of articles?.magazines ?? []) {
-    const time = m.updatedTime ?? m.createdTime;
-    const date = time ? new Date(time) : null;
-    entries.push({
-      url: absoluteUrl(siteUrl, `/article/${encodeURIComponent(String(m.id))}`),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-      ...(date && !Number.isNaN(date.getTime()) ? { lastModified: date } : {}),
+  const { entries, failures } = await loadDynamicEntries(siteUrl, fetchJson);
+  if (failures.length > 0) {
+    const isBuild = process.env.NEXT_PHASE === 'phase-production-build';
+    console.error('[sitemap.xml] article/profile entries unavailable', {
+      phase: isBuild ? 'build' : 'revalidate',
+      failures,
     });
+    // At runtime, throw so the previously generated sitemap stays cached. During `next build` there is
+    // no previous version, so publish the static routes (plus any source that did load); the short
+    // revalidate window above retries within an hour.
+    if (!isBuild) throw new Error(`sitemap.xml regeneration failed: ${failures.join('; ')}`);
   }
-  for (const username of Array.isArray(members) ? members : []) {
-    if (typeof username === 'string' && username) {
-      entries.push({ url: absoluteUrl(siteUrl, `/profile/${encodeURIComponent(username)}`), changeFrequency: 'weekly', priority: 0.5 });
-    }
-  }
-  return entries;
+  return [...staticEntries, ...entries];
 }
