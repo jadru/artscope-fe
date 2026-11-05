@@ -1,4 +1,5 @@
 import { Metadata, ResolvingMetadata } from "next";
+import { canonicalPageMetadata } from "@/lib/seo";
 
 import { standardLabel } from "@/components/shared/StandardLabel";
 
@@ -62,6 +63,7 @@ export async function generateMetadata(
   const { id } = await params;
 
   if (!id) throw new Error("id is required");
+  const page = canonicalPageMetadata(["profile", id]);
 
   const profile = await fetchProfile(id);
 
@@ -70,7 +72,9 @@ export async function generateMetadata(
   return {
     title: `${standardLabel(profile.name)} - Artscope Portfolio`,
     description: standardLabel(profile.introduction).slice(0, 160),
+    alternates: page.alternates,
     openGraph: {
+      url: page.url,
       images: [normalizeMediaUrl(profile.picture), ...previousImages],
       title: `${standardLabel(profile.name)} - Artscope Portfolio`,
       description: standardLabel(profile.introduction).slice(0, 160),

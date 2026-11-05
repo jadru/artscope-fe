@@ -1,4 +1,5 @@
 import { Metadata, ResolvingMetadata } from "next";
+import { canonicalPageMetadata } from "@/lib/seo";
 
 import ASNextImage from "@/components/shared/ASNextImage";
 import StandardLabel, { standardLabel } from "@/components/shared/StandardLabel";
@@ -21,6 +22,7 @@ export async function generateMetadata(
   const { id } = await params;
 
   if (!id) throw new Error("id is required");
+  const page = canonicalPageMetadata(["team", id]);
 
   const team = await fetchTeam(id);
 
@@ -29,7 +31,9 @@ export async function generateMetadata(
   return {
     title: `${standardLabel(team.name)} - Artscope`,
     description: standardLabel(team.description).slice(0, 40),
+    alternates: page.alternates,
     openGraph: {
+      url: page.url,
       images: [team.profileImage, ...previousImages],
       title: `${standardLabel(team.name)} - Artscope`,
       description: standardLabel(team.description).slice(0, 40),

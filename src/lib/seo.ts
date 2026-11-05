@@ -32,6 +32,15 @@ export function absoluteUrl(siteUrl: string, path: string): string {
   return path === '/' ? siteUrl : `${siteUrl}${path.startsWith('/') ? path : `/${path}`}`;
 }
 
+/**
+ * AS-16: canonical URL + og:url for a detail page, always on the canonical host.
+ * Each path segment is URI-encoded so ids/usernames cannot break out of the path.
+ */
+export function canonicalPageMetadata(segments: ReadonlyArray<string>, siteUrl: string = resolveSiteUrl()) {
+  const url = absoluteUrl(siteUrl, `/${segments.map((part) => encodeURIComponent(part)).join('/')}`);
+  return { url, alternates: { canonical: url } };
+}
+
 export type SitemapEntry = {
   url: string;
   lastModified?: Date;

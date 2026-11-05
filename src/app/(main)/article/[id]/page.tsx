@@ -1,4 +1,5 @@
 import { Metadata, ResolvingMetadata } from "next";
+import { canonicalPageMetadata } from "@/lib/seo";
 
 import { notFound } from "next/navigation";
 
@@ -31,13 +32,14 @@ export async function generateMetadata(
   const { id } = await params;
 
   if (!id) throw new Error("id is required");
+  const page = canonicalPageMetadata(["article", id]);
 
   let article: articleItemType;
   try {
     article = await fetchArticle(id);
   } catch {
     // 메타데이터 조회 실패가 페이지 전체 장애로 번지지 않도록 기본 제목을 사용한다.
-    return { title: "작품" };
+    return { title: "작품", alternates: page.alternates, openGraph: { url: page.url } };
   }
   const previousImages = (await parent).openGraph?.images || [];
 
@@ -46,7 +48,9 @@ export async function generateMetadata(
       article.author.authorName
     )}`,
     description: standardLabel(removeMarkdown(article.content).slice(0, 40)),
+    alternates: page.alternates,
     openGraph: {
+      url: page.url,
       images: [normalizeMediaUrl(article.mediaUrls[0]), ...previousImages],
       title: `${standardLabel(article.title)} - ${standardLabel(
         article.author.authorName
