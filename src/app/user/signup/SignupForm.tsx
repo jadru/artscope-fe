@@ -169,7 +169,7 @@ const SignupForm = () => {
                   placeholder="example@email.com"
                   {...field}
                   onChange={checkEmailDuplication}
-                  className="h-12 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-1 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:placeholder:text-gray-600 dark:focus:border-white dark:focus:bg-black dark:focus:ring-white"
+                  className="h-12 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-2 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:placeholder:text-gray-600 dark:focus:border-white dark:focus:bg-black dark:focus:ring-white"
                 />
               </FormControl>
               <FormMessage className="text-xs" />
@@ -191,7 +191,7 @@ const SignupForm = () => {
                   type="text"
                   placeholder="아티스트 이름"
                   {...field}
-                  className="h-12 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-1 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:placeholder:text-gray-600 dark:focus:border-white dark:focus:bg-black dark:focus:ring-white"
+                  className="h-12 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-2 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:placeholder:text-gray-600 dark:focus:border-white dark:focus:bg-black dark:focus:ring-white"
                 />
               </FormControl>
               <FormMessage className="text-xs" />
@@ -214,7 +214,7 @@ const SignupForm = () => {
                   placeholder="영문, 숫자 4~12자리"
                   {...field}
                   onChange={checkUsernameDuplication}
-                  className="h-12 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-1 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:placeholder:text-gray-600 dark:focus:border-white dark:focus:bg-black dark:focus:ring-white"
+                  className="h-12 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-2 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:placeholder:text-gray-600 dark:focus:border-white dark:focus:bg-black dark:focus:ring-white"
                 />
               </FormControl>
               <FormMessage className="text-xs" />
@@ -236,7 +236,7 @@ const SignupForm = () => {
                   type="password"
                   placeholder="8자리 이상"
                   {...field}
-                  className="h-12 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-1 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:placeholder:text-gray-600 dark:focus:border-white dark:focus:bg-black dark:focus:ring-white"
+                  className="h-12 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-2 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:placeholder:text-gray-600 dark:focus:border-white dark:focus:bg-black dark:focus:ring-white"
                 />
               </FormControl>
               <FormMessage className="text-xs" />
@@ -258,7 +258,7 @@ const SignupForm = () => {
                   type="password"
                   placeholder="비밀번호 재입력"
                   {...field}
-                  className="h-12 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-1 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:placeholder:text-gray-600 dark:focus:border-white dark:focus:bg-black dark:focus:ring-white"
+                  className="h-12 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-2 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:placeholder:text-gray-600 dark:focus:border-white dark:focus:bg-black dark:focus:ring-white"
                 />
               </FormControl>
               <FormMessage className="text-xs" />
@@ -272,16 +272,16 @@ const SignupForm = () => {
             control={form.control}
             name="agreeRegulation"
             render={({ field }) => (
-              <FormItem className="flex items-start space-x-3 space-y-0">
+              <FormItem className="flex items-start space-x-4 space-y-0 py-1">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
-                    className="mt-0.5 data-[state=checked]:bg-gray-900 data-[state=checked]:border-gray-900 dark:data-[state=checked]:bg-white dark:data-[state=checked]:border-white"
+                    className="relative mt-0.5 after:absolute after:-inset-4 after:content-[''] data-[state=checked]:bg-gray-900 data-[state=checked]:border-gray-900 dark:data-[state=checked]:bg-white dark:data-[state=checked]:border-white"
                   />
                 </FormControl>
                 <div className="flex-1 space-y-1">
-                  <FormLabel className="text-sm font-normal leading-relaxed text-gray-700 dark:text-gray-300">
+                  <FormLabel className="cursor-pointer text-sm font-normal leading-relaxed text-gray-700 dark:text-gray-300">
                     이용약관 및 개인정보 처리방침 동의 (필수)
                   </FormLabel>
                   <FormDescription className="text-xs leading-relaxed text-gray-500 dark:text-gray-500">
@@ -320,16 +320,16 @@ const SignupForm = () => {
             control={form.control}
             name="agreeMarketing"
             render={({ field }) => (
-              <FormItem className="flex items-start space-x-3 space-y-0">
+              <FormItem className="flex items-start space-x-4 space-y-0 py-1">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
-                    className="mt-0.5 data-[state=checked]:bg-gray-900 data-[state=checked]:border-gray-900 dark:data-[state=checked]:bg-white dark:data-[state=checked]:border-white"
+                    className="relative mt-0.5 after:absolute after:-inset-4 after:content-[''] data-[state=checked]:bg-gray-900 data-[state=checked]:border-gray-900 dark:data-[state=checked]:bg-white dark:data-[state=checked]:border-white"
                   />
                 </FormControl>
                 <div className="flex-1 space-y-1">
-                  <FormLabel className="text-sm font-normal leading-relaxed text-gray-700 dark:text-gray-300">
+                  <FormLabel className="cursor-pointer text-sm font-normal leading-relaxed text-gray-700 dark:text-gray-300">
                     홍보성 메일 수신 동의 (선택)
                   </FormLabel>
                   <FormDescription className="text-xs leading-relaxed text-gray-500 dark:text-gray-500">

@@ -48,32 +48,44 @@ export default function LoginForm({ redirect }: { redirect: string | null }) {
     <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-4">
       <div className="space-y-3">
         <div className="space-y-1.5">
+          <label htmlFor="login-username" className="block text-sm font-medium text-gray-900 dark:text-gray-100">
+            아이디
+          </label>
           <Input
+            id="login-username"
             type="text"
             placeholder="아이디"
             autoComplete="username"
             formNoValidate={!!errors.username}
+            aria-invalid={!!errors.username}
+            aria-describedby={errors.username ? "login-username-error" : undefined}
             {...register("username")}
-            className="h-12 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-1 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:placeholder:text-gray-600 dark:focus:border-white dark:focus:bg-black dark:focus:ring-white"
+            className="h-12 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-2 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:placeholder:text-gray-600 dark:focus:border-white dark:focus:bg-black dark:focus:ring-white"
           />
           {errors.username && (
-            <p className="text-xs text-red-500 dark:text-red-400">
+            <p id="login-username-error" className="text-xs text-red-600 dark:text-red-400">
               {errors.username.message}
             </p>
           )}
         </div>
 
         <div className="space-y-1.5">
+          <label htmlFor="login-password" className="block text-sm font-medium text-gray-900 dark:text-gray-100">
+            비밀번호
+          </label>
           <Input
+            id="login-password"
             placeholder="비밀번호"
             type="password"
             autoComplete="current-password"
             formNoValidate={!!errors.password}
+            aria-invalid={!!errors.password}
+            aria-describedby={errors.password ? "login-password-error" : undefined}
             {...register("password")}
-            className="h-12 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-1 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:placeholder:text-gray-600 dark:focus:border-white dark:focus:bg-black dark:focus:ring-white"
+            className="h-12 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm transition-colors placeholder:text-gray-400 focus:border-gray-900 focus:bg-white focus:ring-2 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:placeholder:text-gray-600 dark:focus:border-white dark:focus:bg-black dark:focus:ring-white"
           />
           {errors.password && (
-            <p className="text-xs text-red-500 dark:text-red-400">
+            <p id="login-password-error" className="text-xs text-red-600 dark:text-red-400">
               {errors.password.message}
             </p>
           )}
