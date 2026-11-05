@@ -3,16 +3,36 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import { DEFAULT_SITE_URL, DISALLOWED_PATHS, PUBLIC_ROUTES, absoluteUrl, resolveSiteUrl } from '../src/lib/seo.ts';
+import { CANONICAL_SITE_URL, DEFAULT_SITE_URL, DISALLOWED_PATHS, PUBLIC_ROUTES, absoluteUrl, resolveSiteUrl } from '../src/lib/seo.ts';
 
-test('site URL comes from NEXT_PUBLIC_ROOT_URL and is never localhost', () => {
-  assert.equal(resolveSiteUrl({ NEXT_PUBLIC_ROOT_URL: 'https://artscope.jadru.com/' }), 'https://artscope.jadru.com');
-  assert.equal(resolveSiteUrl({ NEXT_PUBLIC_ROOT_URL: 'artscope.jadru.com' }), 'https://artscope.jadru.com');
-  assert.equal(resolveSiteUrl({ NEXT_PUBLIC_ROOT_URL: 'https://example.org/some/path' }), 'https://example.org');
-  for (const bad of [undefined, '', '  ', 'http://localhost:3000', 'https://localhost', 'http://127.0.0.1:3000', 'http://artscope.jadru.com', 'not a url ::', 'https://x-git-y.vercel.app']) {
-    assert.equal(resolveSiteUrl({ NEXT_PUBLIC_ROOT_URL: bad }), DEFAULT_SITE_URL, String(bad));
+test('site URL is always the canonical https://artscope.jadru.com, whatever the env says', () => {
+  assert.equal(CANONICAL_SITE_URL, 'https://artscope.jadru.com');
+  assert.equal(DEFAULT_SITE_URL, CANONICAL_SITE_URL);
+  for (const env of ['https://artscope.jadru.com/', 'artscope.jadru.com', 'https://artscope.kr', 'https://www.artscope.kr', 'https://example.org/some/path', 'http://localhost:3000', 'https://artscope-abc.vercel.app', '', undefined]) {
+    assert.equal(resolveSiteUrl({ NEXT_PUBLIC_ROOT_URL: env }), CANONICAL_SITE_URL, String(env));
   }
-  assert.equal(DEFAULT_SITE_URL, 'https://artscope.jadru.com');
+});
+
+test('artscope.kr and www.artscope.kr 308 to the canonical host with the path kept', async () => {
+  const { CANONICAL_ORIGIN, legacyHostRedirects, default: config } = await import('../next.config.ts');
+  assert.equal(CANONICAL_ORIGIN, CANONICAL_SITE_URL);
+  const rules = legacyHostRedirects();
+  const all = await config.redirects();
+  assert.deepEqual(all.slice(0, rules.length), rules);
+  assert.deepEqual(rules.map((r) => r.has[0].value).sort(), ['artscope.kr', 'www.artscope.kr']);
+  for (const r of rules) {
+    assert.equal(r.source, '/:path*');
+    assert.equal(r.destination, 'https://artscope.jadru.com/:path*');
+    assert.equal(r.permanent, true);
+    assert.equal(r.has[0].type, 'host');
+  }
+});
+
+test('root layout sets a per-page canonical and og:url relative to the canonical metadataBase', () => {
+  const src = readFileSync(new URL('../src/app/layout.tsx', import.meta.url), 'utf8');
+  assert.match(src, /alternates: \{ canonical: "\.\/" \}/);
+  assert.match(src, /url: "\.\/"/);
+  assert.doesNotMatch(src, /artscope\.kr/);
 });
 
 test('public routes cover /, /privacy, /story and each maps to a real page', () => {
@@ -87,6 +107,5 @@ test('AS-15: root layout metadata uses resolveSiteUrl, not the raw env value', (
   const src = readFileSync('src/app/layout.tsx', 'utf8');
   assert.match(src, /resolveSiteUrl\(\)/);
   assert.match(src, /metadataBase: new URL\(SITE_URL \+ "\/"\)/);
-  assert.match(src, /url: SITE_URL,/);
   assert.doesNotMatch(src, /NEXT_PUBLIC_ROOT_URL/);
 });

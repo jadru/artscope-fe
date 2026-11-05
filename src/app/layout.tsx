@@ -31,6 +31,8 @@ const SITE_URL = resolveSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL + "/"),
+  // Every page declares its own path on the canonical host (https://artscope.jadru.com).
+  alternates: { canonical: "./" },
   title: {
     template: "%s | 창의적인 예술가들의 아카이브 커뮤니티 Artscope",
     default: "Artscope | 창의적인 예술가들의 아카이브 커뮤니티",
@@ -83,7 +85,7 @@ export const metadata: Metadata = {
     siteName: "Artscope",
     type: "website",
     locale: "ko_KR",
-    url: SITE_URL,
+    url: "./",
   },
   robots: {
     index: true,

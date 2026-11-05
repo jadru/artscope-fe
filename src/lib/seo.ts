@@ -1,7 +1,9 @@
 // robots.txt / sitemap.xml helpers. Kept free of path aliases and framework imports
 // so `node --test tests/seo.test.mjs` can load this file directly (Node strips the types).
 
-export const DEFAULT_SITE_URL = 'https://artscope.jadru.com';
+/** The one canonical origin (decided 2026-11-06). artscope.kr / www.artscope.kr 308 here (LEGACY_HOSTS in next.config.ts). */
+export const CANONICAL_SITE_URL = 'https://artscope.jadru.com';
+export const DEFAULT_SITE_URL = CANONICAL_SITE_URL;
 
 /** Public, indexable routes that exist on the site (checked against src/app/(main) and src/app/about). */
 export const PUBLIC_ROUTES: ReadonlyArray<{ path: string; changeFrequency: 'daily' | 'weekly' | 'monthly' | 'yearly'; priority: number }> = [
@@ -16,26 +18,14 @@ export const PUBLIC_ROUTES: ReadonlyArray<{ path: string; changeFrequency: 'dail
 /** Paths crawlers should skip: editor/account areas, the editor demo page, the 404 route. */
 export const DISALLOWED_PATHS = ['/404', '/editor/', '/user/', '/new/', '/simple'];
 
-const LOCAL_HOSTS = /^(localhost|127\.\d+\.\d+\.\d+|0\.0\.0\.0|\[::1\])$/i;
-
 /**
- * Canonical site origin for robots.txt and sitemap.xml.
- * Uses NEXT_PUBLIC_ROOT_URL (set on Vercel) when it is a public https origin; anything empty,
- * malformed, http, or local falls back to https://artscope.jadru.com so crawlers never see localhost.
+ * Origin for canonical links, Open Graph URLs, robots.txt and sitemap.xml.
+ * Always https://artscope.jadru.com: the env value (NEXT_PUBLIC_ROOT_URL is also used as the
+ * server-side API base) never changes the SEO origin, so a deployment reached through
+ * artscope.kr, a *.vercel.app preview or localhost still points crawlers at the canonical host.
  */
-export function resolveSiteUrl(env: Record<string, string | undefined> = process.env): string {
-  const raw = (env.NEXT_PUBLIC_ROOT_URL ?? '').trim();
-  if (!raw) return DEFAULT_SITE_URL;
-  let url: URL;
-  try {
-    url = new URL(/^[a-z][a-z0-9+.-]*:\/\//i.test(raw) ? raw : `https://${raw}`);
-  } catch {
-    return DEFAULT_SITE_URL;
-  }
-  if (url.protocol !== 'https:' || LOCAL_HOSTS.test(url.hostname) || url.hostname.endsWith('.vercel.app')) {
-    return DEFAULT_SITE_URL;
-  }
-  return url.origin;
+export function resolveSiteUrl(_env: Record<string, string | undefined> = process.env): string {
+  return CANONICAL_SITE_URL;
 }
 
 export function absoluteUrl(siteUrl: string, path: string): string {
