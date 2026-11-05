@@ -48,3 +48,16 @@ export class DetailUnavailableError extends Error {
     this.name = 'DetailUnavailableError';
   }
 }
+
+/** AS-19: 404 pages must not advertise a self-referencing canonical / og:url (conflicts with noindex).
+ * `null` clears inherited root `./` values at runtime (Next metadata merge). */
+export const NOT_FOUND_META = {
+  title: "페이지를 찾을 수 없습니다",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: { index: false, follow: false },
+  },
+  alternates: { canonical: null },
+  openGraph: null,
+};

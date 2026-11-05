@@ -2,7 +2,7 @@ import { Metadata, ResolvingMetadata } from "next";
 import { cache } from "react";
 import { notFound } from "next/navigation";
 import { canonicalPageMetadata } from "@/lib/seo";
-import { DetailUnavailableError, loadDetail, UNAVAILABLE_ROBOTS } from "@/lib/detail-load";
+import { DetailUnavailableError, loadDetail, NOT_FOUND_META, UNAVAILABLE_ROBOTS } from "@/lib/detail-load";
 
 import { standardLabel } from "@/components/shared/StandardLabel";
 
@@ -73,7 +73,9 @@ export async function generateMetadata(
   const page = canonicalPageMetadata(["profile", id]);
 
   const loaded = await loadProfile(id);
-  if (loaded.status === "not-found") notFound();
+  // AS-19: return cleared canonical/og:url (do not call notFound() here — that
+  // would discard this return and inherit root "./" canonical onto the 404).
+  if (loaded.status === "not-found") return { ...NOT_FOUND_META };
   if (loaded.status === "unavailable") {
     // AS-17 fallback stays; AS-18 keeps the placeholder out of search results.
     return {

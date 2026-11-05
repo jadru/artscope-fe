@@ -155,10 +155,14 @@ describe("AS-18 failure handling", () => {
         ["API 410", () => p.fail(statusError(p.kind, 410))],
         ["empty body", () => p.ok("")],
         ["empty object", () => p.ok({})],
-      ])("%s → notFound() in metadata and page", async (_label, arrange) => {
+      ])("%s → AS-19 no canonical/og:url in metadata + notFound() in page", async (_label, arrange) => {
         arrange();
         const { generateMetadata, default: Page } = await import(p.mod);
-        await expect(generateMetadata({ params: Promise.resolve({ id: "5" }) }, parent)).rejects.toThrow("NEXT_NOT_FOUND");
+        const meta = await generateMetadata({ params: Promise.resolve({ id: "5" }) }, parent);
+        expect(meta.title).toBe("페이지를 찾을 수 없습니다");
+        expect(meta.robots).toEqual({ index: false, follow: false, googleBot: { index: false, follow: false } });
+        expect(meta.alternates?.canonical).toBeNull();
+        expect(meta.openGraph).toBeNull();
         await expect(Page({ params: Promise.resolve({ id: "5" }) })).rejects.toThrow("NEXT_NOT_FOUND");
       });
 
@@ -172,4 +176,18 @@ describe("AS-18 failure handling", () => {
       });
     });
   }
+});
+
+
+describe("AS-19 not-found page metadata", () => {
+  it("clears self-referencing canonical and og:url while keeping noindex", async () => {
+    const { NOT_FOUND_META } = await import("@/lib/detail-load");
+    expect(NOT_FOUND_META.alternates.canonical).toBeNull();
+    expect(NOT_FOUND_META.openGraph).toBeNull();
+    expect(NOT_FOUND_META.robots).toEqual({
+      index: false,
+      follow: false,
+      googleBot: { index: false, follow: false },
+    });
+  });
 });

@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 
 import { MainNavbar, MainFooter } from "@/components/layout";
 import NotFoundContent from "@/components/shared/NotFoundContent";
+import { NOT_FOUND_META } from "@/lib/detail-load";
 
 export const metadata: Metadata = {
-  title: "페이지를 찾을 수 없습니다",
-  robots: { index: false, follow: false },
+  ...NOT_FOUND_META,
 };
 
 export default function NotFoundPage() {
