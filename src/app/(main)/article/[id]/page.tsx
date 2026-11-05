@@ -1,9 +1,11 @@
 import { Metadata, ResolvingMetadata } from "next";
+import { cache } from "react";
 import { canonicalPageMetadata } from "@/lib/seo";
+import { DetailUnavailableError, loadDetail, UNAVAILABLE_ROBOTS } from "@/lib/detail-load";
 
 import { notFound } from "next/navigation";
 
-import { isServerNotFound, serverArticlesApi } from "@/utils/serverApi";
+import { serverArticlesApi } from "@/utils/serverApi";
 import { removeMarkdown } from "@/utils/stringConverter";
 import { normalizeMediaUrl } from "@/utils/mediaUrl";
 import { standardLabel } from "@/components/shared/StandardLabel";
@@ -15,15 +17,12 @@ import ArticleContent from "@/features/article/components/ArticleContent";
 import SupportingWorks from "@/features/article/components/SupportingWorks";
 import ArtistAuthorCard from "@/features/article/components/ArtistAuthorCard";
 
-const fetchArticle = async (id: string) => {
-  try {
-    return (await serverArticlesApi.getMagazineById(id)) as articleItemType;
-  } catch (error) {
-    // 존재하지 않는 글은 404, 그 외(백엔드 장애 등)는 error.tsx에서 다시 시도 화면을 보여준다.
-    if (isServerNotFound(error)) notFound();
-    throw error;
-  }
-};
+const fetchArticle = async (id: string) =>
+  (await serverArticlesApi.getMagazineById(id)) as articleItemType;
+
+// AS-18: 404/empty → notFound(); network/5xx/timeout → noindex metadata + error boundary.
+// cache() shares one API call between generateMetadata and the page within a request.
+const loadArticle = cache((id: string) => loadDetail(() => fetchArticle(id)));
 
 export async function generateMetadata(
   { params }: { params: Promise<{ id: string }> },
@@ -34,13 +33,18 @@ export async function generateMetadata(
   if (!id) throw new Error("id is required");
   const page = canonicalPageMetadata(["article", id]);
 
-  let article: articleItemType;
-  try {
-    article = await fetchArticle(id);
-  } catch {
-    // 메타데이터 조회 실패가 페이지 전체 장애로 번지지 않도록 기본 제목을 사용한다.
-    return { title: "작품", alternates: page.alternates, openGraph: { url: page.url, title: "작품", siteName: "Artscope" } };
+  const loaded = await loadArticle(id);
+  if (loaded.status === "not-found") notFound();
+  if (loaded.status === "unavailable") {
+    // AS-17 fallback stays; AS-18 keeps the placeholder out of search results.
+    return {
+      title: "작품",
+      alternates: page.alternates,
+      robots: UNAVAILABLE_ROBOTS,
+      openGraph: { url: page.url, title: "작품", siteName: "Artscope" },
+    };
   }
+  const article = loaded.data;
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
@@ -69,7 +73,10 @@ export default async function ArticlePage({
   const { id } = await params;
   if (!id) throw new Error("id is required");
 
-  const article = await fetchArticle(id);
+  const loaded = await loadArticle(id);
+  if (loaded.status === "not-found") notFound();
+  if (loaded.status === "unavailable") throw new DetailUnavailableError("article", loaded.error);
+  const article = loaded.data;
 
   // Extract year from createdTime
   const year = article.createdTime

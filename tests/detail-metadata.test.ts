@@ -13,6 +13,11 @@ vi.mock("@/utils/serverApi", () => ({
   serverArticlesApi: { getMagazineById: api.magazine },
   isServerNotFound: () => false,
 }));
+vi.mock("next/navigation", () => ({
+  notFound: () => {
+    throw new Error("NEXT_NOT_FOUND");
+  },
+}));
 vi.mock("@/utils/jxios", () => ({ default: { get: api.jxiosGet } }));
 vi.mock("@/utils/mediaUrl", () => ({ normalizeMediaUrl: (u: string) => `https://media.example/${u}` }));
 vi.mock("@/components/shared/StandardLabel", () => ({
@@ -107,4 +112,64 @@ describe("AS-16 detail page metadata", () => {
       expect(json).not.toMatch(/artscope\.kr|vercel\.app|localhost/);
     }
   });
+});
+
+// AS-18: transient failure → noindex metadata + page throws to the error boundary;
+// API 404 / empty body → notFound() for both metadata and page.
+const pages = [
+  { kind: "article", mod: "@/app/(main)/article/[id]/page", title: "작품", fail: (e: unknown) => api.magazine.mockRejectedValue(e), ok: (v: unknown) => api.magazine.mockResolvedValue(v) },
+  { kind: "profile", mod: "@/app/(main)/profile/[id]/page", title: "아티스트 프로필", fail: (e: unknown) => api.serverGet.mockRejectedValue(e), ok: (v: unknown) => api.serverGet.mockResolvedValue(v) },
+  { kind: "team", mod: "@/app/(main)/team/[id]/page", title: "팀", fail: (e: unknown) => api.jxiosGet.mockRejectedValue(e), ok: (v: unknown) => api.jxiosGet.mockResolvedValue({ data: v }) },
+] as const;
+
+const serverError = (status: number) => Object.assign(new Error(`HTTP ${status}`), { status });
+const axiosError = (status: number) => Object.assign(new Error(`HTTP ${status}`), { response: { status } });
+const statusError = (kind: string, status: number) => (kind === "team" ? axiosError(status) : serverError(status));
+
+describe("AS-18 failure handling", () => {
+  for (const p of pages) {
+    describe(p.kind, () => {
+      it.each([
+        ["network error", () => new TypeError("fetch failed")],
+        ["timeout", () => Object.assign(new Error("timeout of 10000ms exceeded"), { code: "ECONNABORTED" })],
+        ["HTTP 503", () => statusError(p.kind, 503)],
+        ["HTTP 500", () => statusError(p.kind, 500)],
+      ])("%s → default title + canonical + noindex", async (_label, make) => {
+        p.fail(make());
+        const { generateMetadata } = await import(p.mod);
+        const meta = await generateMetadata({ params: Promise.resolve({ id: "5" }) }, parent);
+        expect(meta.title).toBe(p.title);
+        expect(meta.alternates?.canonical).toBe(`${CANON}/${p.kind}/5`);
+        expect(meta.openGraph).toMatchObject({ url: `${CANON}/${p.kind}/5`, title: p.title });
+        expect(meta.robots).toEqual({ index: false, follow: false, googleBot: { index: false, follow: false } });
+      });
+
+      it("transient failure → page throws to the error boundary (not a 200 placeholder)", async () => {
+        p.fail(statusError(p.kind, 502));
+        const { default: Page } = await import(p.mod);
+        await expect(Page({ params: Promise.resolve({ id: "5" }) })).rejects.toMatchObject({ name: "DetailUnavailableError" });
+      });
+
+      it.each([
+        ["API 404", () => p.fail(statusError(p.kind, 404))],
+        ["API 410", () => p.fail(statusError(p.kind, 410))],
+        ["empty body", () => p.ok("")],
+        ["empty object", () => p.ok({})],
+      ])("%s → notFound() in metadata and page", async (_label, arrange) => {
+        arrange();
+        const { generateMetadata, default: Page } = await import(p.mod);
+        await expect(generateMetadata({ params: Promise.resolve({ id: "5" }) }, parent)).rejects.toThrow("NEXT_NOT_FOUND");
+        await expect(Page({ params: Promise.resolve({ id: "5" }) })).rejects.toThrow("NEXT_NOT_FOUND");
+      });
+
+      it("success → indexable (no robots override)", async () => {
+        p.ok(p.kind === "article"
+          ? { id: 5, title: "t", content: "c", mediaUrls: [], author: { authorName: "a" } }
+          : { name: "n", introduction: "", description: "", picture: "", profileImage: "", username: "u" });
+        const { generateMetadata } = await import(p.mod);
+        const meta = await generateMetadata({ params: Promise.resolve({ id: "5" }) }, parent);
+        expect(meta.robots).toBeUndefined();
+      });
+    });
+  }
 });
