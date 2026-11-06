@@ -1,4 +1,8 @@
 import { Metadata, ResolvingMetadata } from "next";
+import { cache } from "react";
+import { notFound } from "next/navigation";
+import { canonicalPageMetadata } from "@/lib/seo";
+import { DetailUnavailableError, loadDetail, NOT_FOUND_META, UNAVAILABLE_ROBOTS } from "@/lib/detail-load";
 
 import ASNextImage from "@/components/shared/ASNextImage";
 import StandardLabel, { standardLabel } from "@/components/shared/StandardLabel";
@@ -14,6 +18,10 @@ const fetchTeam = async (id: string) => {
     .then((res) => res.data as TeamDetailType);
 };
 
+// AS-18: 404/empty → notFound(); network/5xx/timeout → noindex metadata + error boundary.
+// cache() shares one API call between generateMetadata and the page within a request.
+const loadTeam = cache((id: string) => loadDetail(() => fetchTeam(id)));
+
 export async function generateMetadata(
   { params }: { params: Promise<{ id: string }> },
   parent: ResolvingMetadata
@@ -21,15 +29,31 @@ export async function generateMetadata(
   const { id } = await params;
 
   if (!id) throw new Error("id is required");
+  const page = canonicalPageMetadata(["team", id]);
 
-  const team = await fetchTeam(id);
+  const loaded = await loadTeam(id);
+  // AS-19: return cleared canonical/og:url (do not call notFound() here — that
+  // would discard this return and inherit root "./" canonical onto the 404).
+  if (loaded.status === "not-found") return { ...NOT_FOUND_META };
+  if (loaded.status === "unavailable") {
+    // AS-17 fallback stays; AS-18 keeps the placeholder out of search results.
+    return {
+      title: "팀",
+      alternates: page.alternates,
+      robots: UNAVAILABLE_ROBOTS,
+      openGraph: { url: page.url, title: "팀", siteName: "Artscope" },
+    };
+  }
+  const team = loaded.data;
 
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
     title: `${standardLabel(team.name)} - Artscope`,
     description: standardLabel(team.description).slice(0, 40),
+    alternates: page.alternates,
     openGraph: {
+      url: page.url,
       images: [team.profileImage, ...previousImages],
       title: `${standardLabel(team.name)} - Artscope`,
       description: standardLabel(team.description).slice(0, 40),
@@ -44,7 +68,10 @@ export default async function Page({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const team = await fetchTeam(id);
+  const loaded = await loadTeam(id);
+  if (loaded.status === "not-found") notFound();
+  if (loaded.status === "unavailable") throw new DetailUnavailableError("team", loaded.error);
+  const team = loaded.data;
   return (
     <div className="py-3">
       <div className="container max-w-screen-md px-2.5 flex flex-col items-stretch gap-1 text-[#1A1A1A]">

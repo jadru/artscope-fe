@@ -1,4 +1,8 @@
 import { Metadata, ResolvingMetadata } from "next";
+import { cache } from "react";
+import { notFound } from "next/navigation";
+import { canonicalPageMetadata } from "@/lib/seo";
+import { DetailUnavailableError, loadDetail, NOT_FOUND_META, UNAVAILABLE_ROBOTS } from "@/lib/detail-load";
 
 import { standardLabel } from "@/components/shared/StandardLabel";
 
@@ -55,6 +59,10 @@ function extractKeywords(introduction?: string): string[] {
   return keywords;
 }
 
+// AS-18: 404/empty → notFound(); network/5xx/timeout → noindex metadata + error boundary.
+// cache() shares one API call between generateMetadata and the page within a request.
+const loadProfile = cache((id: string) => loadDetail(() => fetchProfile(id)));
+
 export async function generateMetadata(
   { params }: { params: Promise<{ id: string }> },
   parent: ResolvingMetadata
@@ -62,15 +70,31 @@ export async function generateMetadata(
   const { id } = await params;
 
   if (!id) throw new Error("id is required");
+  const page = canonicalPageMetadata(["profile", id]);
 
-  const profile = await fetchProfile(id);
+  const loaded = await loadProfile(id);
+  // AS-19: return cleared canonical/og:url (do not call notFound() here — that
+  // would discard this return and inherit root "./" canonical onto the 404).
+  if (loaded.status === "not-found") return { ...NOT_FOUND_META };
+  if (loaded.status === "unavailable") {
+    // AS-17 fallback stays; AS-18 keeps the placeholder out of search results.
+    return {
+      title: "아티스트 프로필",
+      alternates: page.alternates,
+      robots: UNAVAILABLE_ROBOTS,
+      openGraph: { url: page.url, title: "아티스트 프로필", siteName: "Artscope" },
+    };
+  }
+  const profile = loaded.data;
 
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
     title: `${standardLabel(profile.name)} - Artscope Portfolio`,
     description: standardLabel(profile.introduction).slice(0, 160),
+    alternates: page.alternates,
     openGraph: {
+      url: page.url,
       images: [normalizeMediaUrl(profile.picture), ...previousImages],
       title: `${standardLabel(profile.name)} - Artscope Portfolio`,
       description: standardLabel(profile.introduction).slice(0, 160),
@@ -85,7 +109,10 @@ export default async function Page({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const profile = await fetchProfile(id);
+  const loaded = await loadProfile(id);
+  if (loaded.status === "not-found") notFound();
+  if (loaded.status === "unavailable") throw new DetailUnavailableError("profile", loaded.error);
+  const profile = loaded.data;
 
   // Fetch featured works (최신 6개)
   let featuredWorks: PortfolioProjectType[] = [];

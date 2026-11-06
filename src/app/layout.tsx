@@ -10,11 +10,8 @@ import { Analytics } from "@vercel/analytics/next";
 import "../styles/globals.css";
 
 import { Providers } from "@/app/providers";
-import {
-  GOOGLE_ANALYTICS_ID,
-  GOOGLE_TAG_MANAGER_ID,
-  NEXT_PUBLIC_ROOT_URL,
-} from "@/constant/env";
+import { GOOGLE_ANALYTICS_ID, GOOGLE_TAG_MANAGER_ID } from "@/constant/env";
+import { resolveSiteUrl } from "@/lib/seo";
 import { cn } from "@/utils";
 
 const pretendard = localFont({
@@ -30,8 +27,12 @@ const source_Code_PRO = Source_Code_Pro({
   subsets: ["latin"],
 });
 
+const SITE_URL = resolveSiteUrl();
+
 export const metadata: Metadata = {
-  metadataBase: new URL(NEXT_PUBLIC_ROOT_URL + "/"),
+  metadataBase: new URL(SITE_URL + "/"),
+  // Every page declares its own path on the canonical host (https://artscope.jadru.com).
+  alternates: { canonical: "./" },
   title: {
     template: "%s | 창의적인 예술가들의 아카이브 커뮤니티 Artscope",
     default: "Artscope | 창의적인 예술가들의 아카이브 커뮤니티",
@@ -84,7 +85,7 @@ export const metadata: Metadata = {
     siteName: "Artscope",
     type: "website",
     locale: "ko_KR",
-    url: NEXT_PUBLIC_ROOT_URL,
+    url: "./",
   },
   robots: {
     index: true,
